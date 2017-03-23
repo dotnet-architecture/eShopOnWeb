@@ -1,4 +1,4 @@
-﻿namespace Microsoft.eShopWeb.Business.Entities
+﻿namespace Microsoft.eShopWeb.ApplicationCore.Entities
 {
     public class CatalogItem : BaseEntity
     {

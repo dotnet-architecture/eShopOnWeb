@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.eShopWeb.Infrastructure;
 using Microsoft.eShopWeb.ViewModels;
-using Microsoft.eShopWeb.Business.Entities;
+using Microsoft.eShopWeb.ApplicationCore.Entities;
 
 namespace Microsoft.eShopWeb.Services
 {
@@ -51,8 +51,10 @@ namespace Microsoft.eShopWeb.Services
         public async Task<IEnumerable<SelectListItem>> GetBrands()
         {
             var brands = await _context.CatalogBrands.ToListAsync();
-            var items = new List<SelectListItem>();
-            items.Add(new SelectListItem() { Value = null, Text = "All", Selected = true });
+            var items = new List<SelectListItem>
+            {
+                new SelectListItem() { Value = null, Text = "All", Selected = true }
+            };
             foreach (CatalogBrand brand in brands)
             {
                 items.Add(new SelectListItem() { Value = brand.Id.ToString(), Text = brand.Brand });
@@ -64,8 +66,10 @@ namespace Microsoft.eShopWeb.Services
         public async Task<IEnumerable<SelectListItem>> GetTypes()
         {
             var types = await _context.CatalogTypes.ToListAsync();
-            var items = new List<SelectListItem>();
-            items.Add(new SelectListItem() { Value = null, Text = "All", Selected = true });
+            var items = new List<SelectListItem>
+            {
+                new SelectListItem() { Value = null, Text = "All", Selected = true }
+            };
             foreach (CatalogType type in types)
             {
                 items.Add(new SelectListItem() { Value = type.Id.ToString(), Text = type.Type });
