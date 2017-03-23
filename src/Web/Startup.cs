@@ -33,7 +33,6 @@ namespace Microsoft.eShopWeb
             {
                 try
                 {
-                    var text = Configuration["ConnectionString"];
                     c.UseSqlServer(Configuration["ConnectionString"]);
                     c.ConfigureWarnings(wb =>
                     {
