@@ -1,9 +1,7 @@
 ﻿namespace Microsoft.eShopWeb.Business.Entities
 {
-    public class CatalogType
+    public class CatalogType : BaseEntity
     {
-        public int Id { get; set; }
-
         public string Type { get; set; }
     }
 }
