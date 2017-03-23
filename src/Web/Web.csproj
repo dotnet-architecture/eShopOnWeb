@@ -28,7 +28,6 @@
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="1.0.0-msbuild3-final" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
     <Folder Include="Pics\" />
     <Folder Include="Views\Catalog\" />
     <Folder Include="wwwroot\css\catalog\" />

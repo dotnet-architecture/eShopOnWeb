@@ -1,8 +1,8 @@
 ﻿namespace Microsoft.eShopWeb.Infrastructure
 {
-    using eShopWeb.Models;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.eShopWeb.Business.Entities;
     using Microsoft.Extensions.Logging;
     using System;
     using System.Collections.Generic;

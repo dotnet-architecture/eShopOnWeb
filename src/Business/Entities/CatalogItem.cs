@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Microsoft.eShopWeb.Models
+﻿namespace Microsoft.eShopWeb.Business.Entities
 {
     public class CatalogItem
     {

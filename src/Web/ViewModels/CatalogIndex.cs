@@ -1,5 +1,5 @@
-﻿using Microsoft.eShopWeb.Models;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.eShopWeb.Business.Entities;
 using System.Collections.Generic;
 
 namespace Microsoft.eShopWeb.ViewModels

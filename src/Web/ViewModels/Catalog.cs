@@ -1,4 +1,4 @@
-﻿using Microsoft.eShopWeb.Models;
+﻿using Microsoft.eShopWeb.Business.Entities;
 using System.Collections.Generic;
 
 namespace Microsoft.eShopWeb.ViewModels

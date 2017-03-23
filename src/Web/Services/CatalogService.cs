@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.eShopWeb.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.eShopWeb.Infrastructure;
 using Microsoft.eShopWeb.ViewModels;
+using Microsoft.eShopWeb.Business.Entities;
 
 namespace Microsoft.eShopWeb.Services
 {
