@@ -1,7 +1,7 @@
 ﻿namespace Microsoft.eShopWeb.ApplicationCore.Entities
 {
-    public class BaseEntity
+    public class BaseEntity<T>
     {
-        public int Id { get; set; }
+        public T Id { get; set; }
     }
 }
