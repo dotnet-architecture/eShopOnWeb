@@ -6,7 +6,7 @@ namespace Microsoft.eShopWeb.Infrastructure
 
     public class CatalogContext : DbContext
     {
-        public CatalogContext(DbContextOptions options) : base(options)
+        public CatalogContext(DbContextOptions<CatalogContext> options) : base(options)
         {
         }
         public DbSet<CatalogItem> CatalogItems { get; set; }

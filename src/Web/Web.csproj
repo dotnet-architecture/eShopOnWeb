@@ -30,11 +30,13 @@
   <ItemGroup>
     <Folder Include="Pics\" />
     <Folder Include="Views\Catalog\" />
+    <Folder Include="Views\Account\" />
     <Folder Include="wwwroot\css\catalog\" />
     <Folder Include="wwwroot\fonts\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ApplicationCore\ApplicationCore.csproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Microsoft.eShopWeb
 {
@@ -33,7 +35,7 @@ namespace Microsoft.eShopWeb
             {
                 try
                 {
-                    c.UseSqlServer(Configuration["ConnectionString"]);
+                    c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection"));
                     c.ConfigureWarnings(wb =>
                     {
                         //By default, in this application, we don't want to have client evaluations
@@ -45,6 +47,15 @@ namespace Microsoft.eShopWeb
                     var message = ex.Message;
                 }                
             });
+
+            // Add Identity DbContext
+            services.AddDbContext<AppIdentityDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppIdentityDbContext>()
+                .AddDefaultTokenProviders();
+
 
             services.AddTransient<ICatalogService, CatalogService>();
             services.Configure<CatalogSettings>(Configuration);
@@ -68,6 +79,8 @@ namespace Microsoft.eShopWeb
             }
 
             app.UseStaticFiles();
+
+            app.UseIdentity();
 
             app.UseMvc(routes =>
             {
