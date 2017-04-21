@@ -19,7 +19,8 @@
                 var context = (CatalogContext)applicationBuilder
                     .ApplicationServices.GetService(typeof(CatalogContext));
 
-                context.Database.Migrate();                
+                // TODO: Only run this if using a real database
+                // context.Database.Migrate();
 
                 if (!context.CatalogBrands.Any())
                 {

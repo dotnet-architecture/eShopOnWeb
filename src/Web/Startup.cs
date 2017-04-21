@@ -35,7 +35,8 @@ namespace Microsoft.eShopWeb
             {
                 try
                 {
-                    c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection"));
+                    c.UseInMemoryDatabase("Catalog");
+                    //c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection"));
                     c.ConfigureWarnings(wb =>
                     {
                         //By default, in this application, we don't want to have client evaluations
@@ -50,7 +51,8 @@ namespace Microsoft.eShopWeb
 
             // Add Identity DbContext
             services.AddDbContext<AppIdentityDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
+                options.UseInMemoryDatabase("Identity"));
+//                options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
