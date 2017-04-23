@@ -7,6 +7,9 @@ using Microsoft.Extensions.Options;
 using Microsoft.eShopWeb.Infrastructure;
 using Microsoft.eShopWeb.ViewModels;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
+using System.Data.SqlClient;
+using Dapper;
+using Microsoft.Extensions.Logging;
 
 namespace Microsoft.eShopWeb.Services
 {
@@ -14,15 +17,20 @@ namespace Microsoft.eShopWeb.Services
     {
         private readonly CatalogContext _context;
         private readonly IOptionsSnapshot<CatalogSettings> _settings;
+        private readonly ILogger<CatalogService> _logger;
         
-        public CatalogService(CatalogContext context, IOptionsSnapshot<CatalogSettings> settings)
+        public CatalogService(CatalogContext context, 
+            IOptionsSnapshot<CatalogSettings> settings,
+            ILoggerFactory loggerFactory)
         {
             _context = context;
-            _settings = settings;            
+            _settings = settings;
+            _logger = loggerFactory.CreateLogger<CatalogService>();
         }
 
         public async Task<Catalog> GetCatalogItems(int pageIndex, int itemsPage, int? brandId, int? typeId)
         {
+            _logger.LogInformation("GetCatalogItems called.");
             var root = (IQueryable<CatalogItem>)_context.CatalogItems;
 
             if (typeId.HasValue)
@@ -50,7 +58,29 @@ namespace Microsoft.eShopWeb.Services
 
         public async Task<IEnumerable<SelectListItem>> GetBrands()
         {
+            _logger.LogInformation("GetBrands called.");
             var brands = await _context.CatalogBrands.ToListAsync();
+
+//// create
+//var newBrand = new CatalogBrand() { Brand = "Acme" };
+//_context.Add(newBrand);
+//await _context.SaveChangesAsync();
+
+//// read and update
+//var existingBrand = _context.Find<CatalogBrand>(1);
+//existingBrand.Brand = "Updated Brand";
+//await _context.SaveChangesAsync();
+
+//// delete
+//var brandToDelete = _context.Find<CatalogBrand>(2);
+//_context.CatalogBrands.Remove(brandToDelete);
+//await _context.SaveChangesAsync();
+
+//var brandsWithItems = await _context.CatalogBrands
+//    .Include(b => b.Items)
+//    .ToListAsync();
+
+
             var items = new List<SelectListItem>
             {
                 new SelectListItem() { Value = null, Text = "All", Selected = true }
@@ -65,6 +95,7 @@ namespace Microsoft.eShopWeb.Services
 
         public async Task<IEnumerable<SelectListItem>> GetTypes()
         {
+            _logger.LogInformation("GetTypes called.");
             var types = await _context.CatalogTypes.ToListAsync();
             var items = new List<SelectListItem>
             {
@@ -88,5 +119,16 @@ namespace Microsoft.eShopWeb.Services
 
             return items;
         }
+
+        //public async Task<IEnumerable<CatalogType>> GetCatalogTypes()
+        //{
+        //    return await _context.CatalogTypes.ToListAsync();
+        //}
+
+        //private readonly SqlConnection _conn;
+        //public async Task<IEnumerable<CatalogType>> GetCatalogTypesWithDapper()
+        //{
+        //    return await _conn.QueryAsync<CatalogType>("SELECT * FROM CatalogType");
+        //}
     }
 }

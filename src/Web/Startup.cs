@@ -9,11 +9,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System.Text;
+using Microsoft.AspNetCore.Http;
 
 namespace Microsoft.eShopWeb
 {
     public class Startup
     {
+        private IServiceCollection _services;
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -35,8 +38,8 @@ namespace Microsoft.eShopWeb
             {
                 try
                 {
-                    c.UseInMemoryDatabase("Catalog");
-                    //c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection"));
+                    //c.UseInMemoryDatabase("Catalog");
+                    c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection"));
                     c.ConfigureWarnings(wb =>
                     {
                         //By default, in this application, we don't want to have client evaluations
@@ -51,17 +54,20 @@ namespace Microsoft.eShopWeb
 
             // Add Identity DbContext
             services.AddDbContext<AppIdentityDbContext>(options =>
-                options.UseInMemoryDatabase("Identity"));
-//                options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
+                //options.UseInMemoryDatabase("Identity"));
+                options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
                 .AddDefaultTokenProviders();
 
-
-            services.AddTransient<ICatalogService, CatalogService>();
+            services.AddMemoryCache();
+            services.AddScoped<ICatalogService, CachedCatalogService>();
+            services.AddScoped<CatalogService>();
             services.Configure<CatalogSettings>(Configuration);
             services.AddMvc();
+
+            _services = services;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,6 +80,25 @@ namespace Microsoft.eShopWeb
             {
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
+
+                app.Map("/allservices", builder => builder.Run(async context =>
+                {
+                    var sb = new StringBuilder();
+                    sb.Append("<h1>All Services</h1>");
+                    sb.Append("<table><thead>");
+                    sb.Append("<tr><th>Type</th><th>Lifetime</th><th>Instance</th></tr>");
+                    sb.Append("</thead><tbody>");
+                    foreach (var svc in _services)
+                    {
+                        sb.Append("<tr>");
+                        sb.Append($"<td>{svc.ServiceType.FullName}</td>");
+                        sb.Append($"<td>{svc.Lifetime}</td>");
+                        sb.Append($"<td>{svc.ImplementationType?.FullName}</td>");
+                        sb.Append("</tr>");
+                    }
+                    sb.Append("</tbody></table>");
+                    await context.Response.WriteAsync(sb.ToString());
+                }));
             }
             else
             {
