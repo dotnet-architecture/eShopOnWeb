@@ -13,7 +13,7 @@
     {
         public static async Task SeedAsync(IApplicationBuilder applicationBuilder, ILoggerFactory loggerFactory, int? retry = 0)
         {
-            int retryForAvaiability = retry.Value;
+            int retryForAvailability = retry.Value;
             try
             {
                 var context = (CatalogContext)applicationBuilder
@@ -48,12 +48,12 @@
             }
             catch (Exception ex)
             {
-                if (retryForAvaiability < 10)
+                if (retryForAvailability < 10)
                 {
-                    retryForAvaiability++;
+                    retryForAvailability++;
                     var log = loggerFactory.CreateLogger("catalog seed");
                     log.LogError(ex.Message);
-                    await SeedAsync(applicationBuilder, loggerFactory, retryForAvaiability);
+                    await SeedAsync(applicationBuilder, loggerFactory, retryForAvailability);
                 }
             }
         }
