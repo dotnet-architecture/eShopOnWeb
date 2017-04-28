@@ -5,13 +5,12 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Interfaces
 {
-    public interface IBasketService
+
+    public interface IImageService
     {
-        Task<Basket> GetBasket(ApplicationUser user);
+        byte[] GetImageBytesById(int id);
     }
 
-    public interface IIdentityParser<T>
-    {
-        T Parse(IPrincipal principal);
-    }
+
+
 }

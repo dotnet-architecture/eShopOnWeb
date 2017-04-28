@@ -5,18 +5,24 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using ApplicationCore.Interfaces;
+using ApplicationCore.Exceptions;
 
 namespace Microsoft.eShopWeb.Controllers
 {
     public class CatalogController : Controller
     {
         private readonly IHostingEnvironment _env;
-        private readonly ICatalogService _catalogSvc;
+        private readonly ICatalogService _catalogService;
+        private readonly IImageService _imageService;
 
-        public CatalogController(IHostingEnvironment env, ICatalogService catalogSvc)
+        public CatalogController(IHostingEnvironment env,
+            ICatalogService catalogService,
+            IImageService imageService)
         {
             _env = env;
-            _catalogSvc = catalogSvc;
+            _catalogService = catalogService;
+            _imageService = imageService;
         }   
 
 
@@ -24,13 +30,13 @@ namespace Microsoft.eShopWeb.Controllers
         public async Task<IActionResult> Index(int? BrandFilterApplied, int? TypesFilterApplied, int? page)
         {
             var itemsPage = 10;           
-            var catalog = await _catalogSvc.GetCatalogItems(page ?? 0, itemsPage, BrandFilterApplied, TypesFilterApplied);        
+            var catalog = await _catalogService.GetCatalogItems(page ?? 0, itemsPage, BrandFilterApplied, TypesFilterApplied);        
 
             var vm = new CatalogIndex()
             {
                 CatalogItems = catalog.Data,
-                Brands = await _catalogSvc.GetBrands(),
-                Types = await _catalogSvc.GetTypes(),
+                Brands = await _catalogService.GetBrands(),
+                Types = await _catalogService.GetTypes(),
                 BrandFilterApplied = BrandFilterApplied ?? 0,
                 TypesFilterApplied = TypesFilterApplied ?? 0,
                 PaginationInfo = new PaginationInfo()
@@ -53,13 +59,18 @@ namespace Microsoft.eShopWeb.Controllers
         // GET: /<controller>/pic/{id}
         public IActionResult GetImage(int id)
         {
-            var contentRoot = _env.ContentRootPath + "//Pics";
-            var path = Path.Combine(contentRoot, id + ".png");
-            Byte[] b = System.IO.File.ReadAllBytes(path);
-            return File(b, "image/png");
-
+            byte[] imageBytes;
+            try
+            {
+                imageBytes = _imageService.GetImageBytesById(id);
+            }
+            catch (CatalogImageMissingException ex)
+            {
+                return NotFound();
+            }
+            return File(imageBytes, "image/png");
         }
-        
+
         public IActionResult Error()
         {
             return View();
