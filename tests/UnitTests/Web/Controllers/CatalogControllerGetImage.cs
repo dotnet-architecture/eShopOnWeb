@@ -3,6 +3,7 @@ using ApplicationCore.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopWeb.Controllers;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
@@ -11,22 +12,21 @@ namespace UnitTests
     public class CatalogControllerGetImage
     {
         private Mock<IImageService> _mockImageService = new Mock<IImageService>();
+        private Mock<ILogger<CatalogController>> _mockLogger = new Mock<ILogger<CatalogController>>();
         private CatalogController _controller;
         private int _testImageId = 123;
         private byte[] _testBytes = { 0x01, 0x02, 0x03 };
 
         public CatalogControllerGetImage()
         {
-            _controller = new CatalogController(null, null, _mockImageService.Object);
+            _controller = new CatalogController(null, null, _mockImageService.Object,
+                _mockLogger.Object);
         }
 
         [Fact]
         public void CallsImageServiceWithId()
         {
-            _mockImageService
-                .Setup(i => i.GetImageBytesById(_testImageId))
-                .Returns(_testBytes)
-                .Verifiable();
+            SetupImageWithTestBytes();
 
             _controller.GetImage(_testImageId);
             _mockImageService.Verify();
@@ -35,9 +35,7 @@ namespace UnitTests
         [Fact]
         public void ReturnsFileResultWithBytesGivenSuccess()
         {
-            _mockImageService
-                .Setup(i => i.GetImageBytesById(_testImageId))
-                .Returns(_testBytes);
+            SetupImageWithTestBytes();
 
             var result = _controller.GetImage(_testImageId);
 
@@ -48,13 +46,38 @@ namespace UnitTests
         [Fact]
         public void ReturnsNotFoundResultGivenImageMissingException()
         {
-            _mockImageService
-                .Setup(i => i.GetImageBytesById(_testImageId))
-                .Throws(new CatalogImageMissingException("missing image"));
+            SetupMissingImage();
 
             var result = _controller.GetImage(_testImageId);
 
             var actionResult = Assert.IsType<NotFoundResult>(result);
+        }
+
+        [Fact]
+        public void LogsWarningGivenImageMissingException()
+        {
+            SetupMissingImage();
+            _mockLogger.Setup(l => l.LogWarning(It.IsAny<string>()))
+                .Verifiable();
+
+            _controller.GetImage(_testImageId);
+
+            _mockLogger.Verify();
+        }
+
+        private void SetupMissingImage()
+        {
+            _mockImageService
+                .Setup(i => i.GetImageBytesById(_testImageId))
+                .Throws(new CatalogImageMissingException("missing image"));
+        }
+
+        private void SetupImageWithTestBytes()
+        {
+            _mockImageService
+                .Setup(i => i.GetImageBytesById(_testImageId))
+                .Returns(_testBytes)
+                .Verifiable();
         }
     }
 }

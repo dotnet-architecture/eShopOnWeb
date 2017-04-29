@@ -3,10 +3,10 @@ using Microsoft.eShopWeb.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.IO;
 using System.Threading.Tasks;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Exceptions;
+using Microsoft.Extensions.Logging;
 
 namespace Microsoft.eShopWeb.Controllers
 {
@@ -15,16 +15,18 @@ namespace Microsoft.eShopWeb.Controllers
         private readonly IHostingEnvironment _env;
         private readonly ICatalogService _catalogService;
         private readonly IImageService _imageService;
+        private readonly ILogger<CatalogController> _logger;
 
         public CatalogController(IHostingEnvironment env,
             ICatalogService catalogService,
-            IImageService imageService)
+            IImageService imageService,
+            ILogger<CatalogController> logger)
         {
             _env = env;
             _catalogService = catalogService;
             _imageService = imageService;
-        }   
-
+            _logger = logger;
+        }
 
         // GET: /<controller>/
         public async Task<IActionResult> Index(int? BrandFilterApplied, int? TypesFilterApplied, int? page)
@@ -66,6 +68,7 @@ namespace Microsoft.eShopWeb.Controllers
             }
             catch (CatalogImageMissingException ex)
             {
+                _logger.LogWarning($"No image found for id: {id}");
                 return NotFound();
             }
             return File(imageBytes, "image/png");
