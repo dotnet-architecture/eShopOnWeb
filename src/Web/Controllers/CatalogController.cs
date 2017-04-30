@@ -15,12 +15,12 @@ namespace Microsoft.eShopWeb.Controllers
         private readonly IHostingEnvironment _env;
         private readonly ICatalogService _catalogService;
         private readonly IImageService _imageService;
-        private readonly ILogger<CatalogController> _logger;
+        private readonly IAppLogger<CatalogController> _logger;
 
         public CatalogController(IHostingEnvironment env,
             ICatalogService catalogService,
             IImageService imageService,
-            ILogger<CatalogController> logger)
+            IAppLogger<CatalogController> logger)
         {
             _env = env;
             _catalogService = catalogService;

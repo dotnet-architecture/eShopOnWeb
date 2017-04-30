@@ -12,7 +12,7 @@ namespace UnitTests
     public class CatalogControllerGetImage
     {
         private Mock<IImageService> _mockImageService = new Mock<IImageService>();
-        private Mock<ILogger<CatalogController>> _mockLogger = new Mock<ILogger<CatalogController>>();
+        private Mock<IAppLogger<CatalogController>> _mockLogger = new Mock<IAppLogger<CatalogController>>();
         private CatalogController _controller;
         private int _testImageId = 123;
         private byte[] _testBytes = { 0x01, 0x02, 0x03 };
