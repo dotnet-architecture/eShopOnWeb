@@ -56,9 +56,7 @@ namespace Microsoft.eShopWeb.Controllers
             return View(vm);
         }
 
-        [HttpGet("{id}")]
-        [Route("[controller]/pic/{id}")]
-        // GET: /<controller>/pic/{id}
+        [HttpGet("[controller]/pic/{id}")]
         public IActionResult GetImage(int id)
         {
             byte[] imageBytes;
@@ -73,6 +71,7 @@ namespace Microsoft.eShopWeb.Controllers
             }
             return File(imageBytes, "image/png");
         }
+
 
         public IActionResult Error()
         {
