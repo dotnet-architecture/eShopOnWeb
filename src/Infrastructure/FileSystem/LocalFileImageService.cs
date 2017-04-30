@@ -1,4 +1,5 @@
-﻿using ApplicationCore.Interfaces;
+﻿using ApplicationCore.Exceptions;
+using ApplicationCore.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 
@@ -14,9 +15,16 @@ namespace Infrastructure.FileSystem
         }
         public byte[] GetImageBytesById(int id)
         {
-            var contentRoot = _env.ContentRootPath + "//Pics";
-            var path = Path.Combine(contentRoot, id + ".png");
-            return File.ReadAllBytes(path);
+            try
+            {
+                var contentRoot = _env.ContentRootPath + "//Pics";
+                var path = Path.Combine(contentRoot, id + ".png");
+                return File.ReadAllBytes(path);
+            }
+            catch (FileNotFoundException ex)
+            {
+                throw new CatalogImageMissingException(ex);
+            }
         }
     }
 }
