@@ -11,6 +11,9 @@ using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Text;
 using Microsoft.AspNetCore.Http;
+using ApplicationCore.Interfaces;
+using Infrastructure.FileSystem;
+using Infrastructure.Logging;
 
 namespace Microsoft.eShopWeb
 {
@@ -65,6 +68,8 @@ namespace Microsoft.eShopWeb
             services.AddScoped<ICatalogService, CachedCatalogService>();
             services.AddScoped<CatalogService>();
             services.Configure<CatalogSettings>(Configuration);
+            services.AddSingleton<IImageService, LocalFileImageService>();
+            services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
             services.AddMvc();
 
             _services = services;

@@ -3,34 +3,42 @@ using Microsoft.eShopWeb.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.IO;
 using System.Threading.Tasks;
+using ApplicationCore.Interfaces;
+using ApplicationCore.Exceptions;
+using Microsoft.Extensions.Logging;
 
 namespace Microsoft.eShopWeb.Controllers
 {
     public class CatalogController : Controller
     {
         private readonly IHostingEnvironment _env;
-        private readonly ICatalogService _catalogSvc;
+        private readonly ICatalogService _catalogService;
+        private readonly IImageService _imageService;
+        private readonly IAppLogger<CatalogController> _logger;
 
-        public CatalogController(IHostingEnvironment env, ICatalogService catalogSvc)
+        public CatalogController(IHostingEnvironment env,
+            ICatalogService catalogService,
+            IImageService imageService,
+            IAppLogger<CatalogController> logger)
         {
             _env = env;
-            _catalogSvc = catalogSvc;
-        }   
-
+            _catalogService = catalogService;
+            _imageService = imageService;
+            _logger = logger;
+        }
 
         // GET: /<controller>/
         public async Task<IActionResult> Index(int? BrandFilterApplied, int? TypesFilterApplied, int? page)
         {
             var itemsPage = 10;           
-            var catalog = await _catalogSvc.GetCatalogItems(page ?? 0, itemsPage, BrandFilterApplied, TypesFilterApplied);        
+            var catalog = await _catalogService.GetCatalogItems(page ?? 0, itemsPage, BrandFilterApplied, TypesFilterApplied);        
 
             var vm = new CatalogIndex()
             {
                 CatalogItems = catalog.Data,
-                Brands = await _catalogSvc.GetBrands(),
-                Types = await _catalogSvc.GetTypes(),
+                Brands = await _catalogService.GetBrands(),
+                Types = await _catalogService.GetTypes(),
                 BrandFilterApplied = BrandFilterApplied ?? 0,
                 TypesFilterApplied = TypesFilterApplied ?? 0,
                 PaginationInfo = new PaginationInfo()
@@ -48,18 +56,23 @@ namespace Microsoft.eShopWeb.Controllers
             return View(vm);
         }
 
-        [HttpGet("{id}")]
-        [Route("[controller]/pic/{id}")]
-        // GET: /<controller>/pic/{id}
+        [HttpGet("[controller]/pic/{id}")]
         public IActionResult GetImage(int id)
         {
-            var contentRoot = _env.ContentRootPath + "//Pics";
-            var path = Path.Combine(contentRoot, id + ".png");
-            Byte[] b = System.IO.File.ReadAllBytes(path);
-            return File(b, "image/png");
-
+            byte[] imageBytes;
+            try
+            {
+                imageBytes = _imageService.GetImageBytesById(id);
+            }
+            catch (CatalogImageMissingException ex)
+            {
+                _logger.LogWarning($"No image found for id: {id}");
+                return NotFound();
+            }
+            return File(imageBytes, "image/png");
         }
-        
+
+
         public IActionResult Error()
         {
             return View();

@@ -14,5 +14,4 @@ namespace ApplicationCore.Interfaces
     {
         T Parse(IPrincipal principal);
     }
-
 }
