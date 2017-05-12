@@ -29,18 +29,18 @@ namespace Microsoft.eShopWeb.Controllers
         }
 
         // GET: /<controller>/
-        public async Task<IActionResult> Index(int? BrandFilterApplied, int? TypesFilterApplied, int? page)
+        public async Task<IActionResult> Index(int? brandFilterApplied, int? typesFilterApplied, int? page)
         {
             var itemsPage = 10;           
-            var catalog = await _catalogService.GetCatalogItems(page ?? 0, itemsPage, BrandFilterApplied, TypesFilterApplied);        
+            var catalog = await _catalogService.GetCatalogItems(page ?? 0, itemsPage, brandFilterApplied, typesFilterApplied);        
 
             var vm = new CatalogIndex()
             {
                 CatalogItems = catalog.Data,
                 Brands = await _catalogService.GetBrands(),
                 Types = await _catalogService.GetTypes(),
-                BrandFilterApplied = BrandFilterApplied ?? 0,
-                TypesFilterApplied = TypesFilterApplied ?? 0,
+                BrandFilterApplied = brandFilterApplied ?? 0,
+                TypesFilterApplied = typesFilterApplied ?? 0,
                 PaginationInfo = new PaginationInfo()
                 {
                     ActualPage = page ?? 0,
