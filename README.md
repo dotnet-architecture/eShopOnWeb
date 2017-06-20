@@ -20,3 +20,14 @@ The **eShopOnWeb** is related to the [eShopOnContainers](https://github.com/dotn
 - Testing ASP.NET Core MVC Apps
 - Development Process for Azure-Hosted ASP.NET Core Apps
 - Azure Hosting Recommendations for ASP.NET Core Web Apps
+
+## Running the sample
+
+After cloning or downloading the sample you will need to run its Entity Framework Core migrations before you will be able to run the app. To do so, open a command prompt in the Web folder and execute the following commands:
+
+```
+dotnet restore
+dotnet ef database update --context Microsoft.eShopWeb.Infrastructure.CatalogContext
+```
+
+**NOTE** The application uses a separate DbContext for its authentication system, which is not yet complete.
