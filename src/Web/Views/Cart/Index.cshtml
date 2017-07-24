@@ -1,0 +1,32 @@
+﻿@using Microsoft.eShopWeb.ApplicationCore.Entities;
+@{
+    ViewData["Title"] = "Catalog";
+    @model Basket
+}
+<section class="esh-catalog-hero">
+    <div class="container">
+        <img class="esh-catalog-title" src="../images/main_banner_text.png" />
+    </div>
+</section>
+
+<div class="container">
+
+    @if (Model.Items.Any())
+    {
+        <div class="esh-catalog-items row">
+            @foreach (var item in Model.Items)
+            {
+                <div class="esh-catalog-item col-md-4">
+                    @item.ProductId
+                </div>
+            }
+        </div>
+
+    }
+    else
+    {
+        <div class="esh-catalog-items row">
+            Cart is empty.
+        </div>
+    }
+</div>

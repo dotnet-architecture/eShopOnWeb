@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using ApplicationCore.Interfaces;
 using Infrastructure.FileSystem;
 using Infrastructure.Logging;
+using Web.Services;
 
 namespace Microsoft.eShopWeb
 {
@@ -41,8 +42,8 @@ namespace Microsoft.eShopWeb
             {
                 try
                 {
-                    //c.UseInMemoryDatabase("Catalog");
-                    c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection"));
+                    c.UseInMemoryDatabase("Catalog");
+                    //c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection"));
                     c.ConfigureWarnings(wb =>
                     {
                         //By default, in this application, we don't want to have client evaluations
@@ -57,8 +58,8 @@ namespace Microsoft.eShopWeb
 
             // Add Identity DbContext
             services.AddDbContext<AppIdentityDbContext>(options =>
-                //options.UseInMemoryDatabase("Identity"));
-                options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
+                options.UseInMemoryDatabase("Identity"));
+                //options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
@@ -66,10 +67,19 @@ namespace Microsoft.eShopWeb
 
             services.AddMemoryCache();
             services.AddScoped<ICatalogService, CachedCatalogService>();
+            services.AddScoped<IBasketService, BasketService>();
             services.AddScoped<CatalogService>();
             services.Configure<CatalogSettings>(Configuration);
             services.AddSingleton<IImageService, LocalFileImageService>();
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
+
+
+            // Add memory cache services
+            services.AddMemoryCache();
+
+            // Add session related services.
+            services.AddSession();
+
             services.AddMvc();
 
             _services = services;
@@ -109,6 +119,8 @@ namespace Microsoft.eShopWeb
             {
                 app.UseExceptionHandler("/Catalog/Error");
             }
+
+            app.UseSession();
 
             app.UseStaticFiles();
 

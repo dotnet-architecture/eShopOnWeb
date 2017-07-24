@@ -1,52 +1,63 @@
-﻿using Microsoft.eShopWeb.Services;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using ApplicationCore.Interfaces;
-using ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
-using System;
+using Microsoft.AspNetCore.Http;
 
 namespace Microsoft.eShopWeb.Controllers
 {
     public class CartController : Controller
     {
-        private readonly ICatalogService _catalogSvc;
-        private readonly IBasketService _basketSvc;
-        private readonly IIdentityParser<ApplicationUser> _appUserParser;
+        private readonly IBasketService _basketService;
+        //private readonly IIdentityParser<ApplicationUser> _appUserParser;
+        private const string _basketSessionKey = "basketId";
 
-        public CartController(IBasketService basketSvc,
-            IIdentityParser<ApplicationUser> appUserParser)
+        public CartController(IBasketService basketService)
+//            IIdentityParser<ApplicationUser> appUserParser)
         {
-            //_catalogSvc = catalogSvc;
-            _basketSvc = basketSvc;
-            _appUserParser = appUserParser;
+            _basketService = basketService;
+  //          _appUserParser = appUserParser;
         }
 
 
         // GET: /<controller>/
         public async Task<IActionResult> Index()
         {
-            var user = _appUserParser.Parse(HttpContext.User);
-            var viewmodel = await _basketSvc.GetBasket(user);
+            //var user = _appUserParser.Parse(HttpContext.User);
+            var basket = await GetBasketFromSessionAsync();
 
-            return View(viewmodel);
+            return View(basket);
         }
 
         public async Task<IActionResult> AddToCart(CatalogItem productDetails)
         {
-            if (productDetails.Id != null)
+            if (productDetails?.Id == null)
             {
-                var user = _appUserParser.Parse(HttpContext.User);
-                var product = new BasketItem()
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Quantity = 1,
-                    UnitPrice = productDetails.Price,
-                    ProductId = productDetails.Id
-                };
-                //await _basketSvc.AddItemToBasket(user, product);
+                return RedirectToAction("Index", "Catalog");
             }
-            return RedirectToAction("Index", "Catalog");
+            var basket = await GetBasketFromSessionAsync();
+
+            basket.AddItem(productDetails.Id, productDetails.Price, 1);
+
+            await _basketService.UpdateBasket(basket);
+
+            return RedirectToAction("Index");
+        }
+
+        private async Task<Basket> GetBasketFromSessionAsync()
+        {
+            string basketId = HttpContext.Session.GetString(_basketSessionKey);
+            Basket basket = null;
+            if (basketId == null)
+            {
+                basket = await _basketService.CreateBasketForUser(User.Identity.Name);
+                HttpContext.Session.SetString(_basketSessionKey, basket.Id);
+            }
+            else
+            {
+                basket = await _basketService.GetBasket(basketId);
+            }
+            return basket;
         }
 
     }

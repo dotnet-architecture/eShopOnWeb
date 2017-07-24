@@ -1,17 +1,13 @@
-﻿using ApplicationCore.Entities;
-using Microsoft.eShopWeb.ApplicationCore.Entities;
-using System.Security.Principal;
+﻿using Microsoft.eShopWeb.ApplicationCore.Entities;
 using System.Threading.Tasks;
 
 namespace ApplicationCore.Interfaces
 {
     public interface IBasketService
     {
-        Task<Basket> GetBasket(ApplicationUser user);
-    }
-
-    public interface IIdentityParser<T>
-    {
-        T Parse(IPrincipal principal);
+        Task<Basket> GetBasket(string basketId);
+        Task<Basket> CreateBasket();
+        Task<Basket> CreateBasketForUser(string userId);
+        Task UpdateBasket(Basket basket);
     }
 }
