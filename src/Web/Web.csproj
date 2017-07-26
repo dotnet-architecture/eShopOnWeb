@@ -41,5 +41,24 @@
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="1.0.1" />
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Design" Version="1.1.2" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\images\products\1.png" />
+    <None Include="wwwroot\images\products\10.png" />
+    <None Include="wwwroot\images\products\11.png" />
+    <None Include="wwwroot\images\products\12.png" />
+    <None Include="wwwroot\images\products\2.png" />
+    <None Include="wwwroot\images\products\3.png" />
+    <None Include="wwwroot\images\products\4.png" />
+    <None Include="wwwroot\images\products\5.png" />
+    <None Include="wwwroot\images\products\6.png" />
+    <None Include="wwwroot\images\products\7.png" />
+    <None Include="wwwroot\images\products\8.png" />
+    <None Include="wwwroot\images\products\9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 
 </Project>
