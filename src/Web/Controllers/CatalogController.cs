@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using ApplicationCore.Interfaces;
-using ApplicationCore.Exceptions;
-using Microsoft.Extensions.Logging;
 
 namespace Microsoft.eShopWeb.Controllers
 {
@@ -55,23 +53,6 @@ namespace Microsoft.eShopWeb.Controllers
 
             return View(vm);
         }
-
-        //[HttpGet("[controller]/pic/{id}")]
-        //public IActionResult GetImage(int id)
-        //{
-        //    byte[] imageBytes;
-        //    try
-        //    {
-        //        imageBytes = _imageService.GetImageBytesById(id);
-        //    }
-        //    catch (CatalogImageMissingException ex)
-        //    {
-        //        _logger.LogWarning($"No image found for id: {id}");
-        //        return NotFound();
-        //    }
-        //    return File(imageBytes, "image/png");
-        //}
-
 
         public IActionResult Error()
         {

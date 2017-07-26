@@ -32,22 +32,21 @@ namespace Microsoft.eShopWeb.Controllers
             return View(viewmodel);
         }
 
+        // GET: /Cart/AddToCart
+        // TODO: This should be a POST.
         public async Task<IActionResult> AddToCart(CatalogItem productDetails)
         {
-            if (productDetails.Id != null)
+            var user = _appUserParser.Parse(HttpContext.User);
+            var product = new BasketItem()
             {
-                var user = _appUserParser.Parse(HttpContext.User);
-                var product = new BasketItem()
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Quantity = 1,
-                    UnitPrice = productDetails.Price,
-                    ProductId = productDetails.Id
-                };
-                //await _basketSvc.AddItemToBasket(user, product);
-            }
+                Id = Guid.NewGuid().ToString(),
+                Quantity = 1,
+                UnitPrice = productDetails.Price,
+                ProductId = productDetails.Id
+            };
+            // TODO: Save the item
+            //await _basketSvc.AddItemToBasket(user, product);
             return RedirectToAction("Index", "Catalog");
         }
-
     }
 }
