@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using ApplicationCore.Interfaces;
 using Infrastructure.FileSystem;
 using Infrastructure.Logging;
+using Microsoft.AspNetCore.Identity;
 
 namespace Microsoft.eShopWeb
 {
@@ -41,8 +42,8 @@ namespace Microsoft.eShopWeb
             {
                 try
                 {
-                    //c.UseInMemoryDatabase("Catalog");
-                    c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection"));
+                    c.UseInMemoryDatabase("Catalog");
+                    //c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection"));
                     c.ConfigureWarnings(wb =>
                     {
                         //By default, in this application, we don't want to have client evaluations
@@ -57,8 +58,8 @@ namespace Microsoft.eShopWeb
 
             // Add Identity DbContext
             services.AddDbContext<AppIdentityDbContext>(options =>
-                //options.UseInMemoryDatabase("Identity"));
-                options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
+                options.UseInMemoryDatabase("Identity"));
+                //options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
@@ -76,11 +77,11 @@ namespace Microsoft.eShopWeb
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, 
+            IHostingEnvironment env, 
+            ILoggerFactory loggerFactory,
+            UserManager<ApplicationUser> userManager)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -124,6 +125,9 @@ namespace Microsoft.eShopWeb
             //Seed Data
             CatalogContextSeed.SeedAsync(app, loggerFactory)
             .Wait();
+
+            var defaultUser = new ApplicationUser { UserName = "demouser@microsoft.com", Email = "demouser@microsoft.com" };
+            userManager.CreateAsync(defaultUser, "Pass@word1").Wait();
         }
     }
 }

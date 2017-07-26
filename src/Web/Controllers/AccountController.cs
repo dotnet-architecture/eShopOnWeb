@@ -89,7 +89,7 @@ namespace Microsoft.eShopWeb.Controllers
             }
             else
             {
-                return RedirectToAction(nameof(CatalogController.Index), "Home");
+                return RedirectToAction(nameof(CatalogController.Index), "Catalog");
             }
         }
 
