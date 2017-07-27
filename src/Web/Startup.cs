@@ -15,6 +15,7 @@ using ApplicationCore.Interfaces;
 using Infrastructure.FileSystem;
 using Infrastructure.Logging;
 using Microsoft.AspNetCore.Identity;
+using Web.Services;
 
 namespace Microsoft.eShopWeb
 {
@@ -67,10 +68,19 @@ namespace Microsoft.eShopWeb
 
             services.AddMemoryCache();
             services.AddScoped<ICatalogService, CachedCatalogService>();
+            services.AddScoped<IBasketService, BasketService>();
             services.AddScoped<CatalogService>();
             services.Configure<CatalogSettings>(Configuration);
             services.AddSingleton<IImageService, LocalFileImageService>();
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
+
+
+            // Add memory cache services
+            services.AddMemoryCache();
+
+            // Add session related services.
+            services.AddSession();
+
             services.AddMvc();
 
             _services = services;
@@ -110,6 +120,8 @@ namespace Microsoft.eShopWeb
             {
                 app.UseExceptionHandler("/Catalog/Error");
             }
+
+            app.UseSession();
 
             app.UseStaticFiles();
 
