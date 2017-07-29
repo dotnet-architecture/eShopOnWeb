@@ -6,7 +6,8 @@ namespace FunctionalTests.Web.Controllers
 {
     public class CatalogControllerGetImage : BaseWebTest
     {
-        [Fact]
+        //[Fact]
+        // GetImage replaced by static file middleware
         public async Task ReturnsFileContentResultGivenValidId()
         {
             var testFilePath = Path.Combine(_contentRoot, "pics//1.png");
