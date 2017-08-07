@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.eShopWeb.ViewModels;
+using System.Linq;
 
 namespace Microsoft.eShopWeb.Controllers
 {
@@ -11,12 +13,15 @@ namespace Microsoft.eShopWeb.Controllers
         private readonly IBasketService _basketService;
         //private readonly IIdentityParser<ApplicationUser> _appUserParser;
         private const string _basketSessionKey = "basketId";
+        private readonly IUriComposer _uriComposer;
 
-        public CartController(IBasketService basketService)
+        public CartController(IBasketService basketService,
+            IUriComposer uriComposer)
 //            IIdentityParser<ApplicationUser> appUserParser)
         {
             _basketService = basketService;
-  //          _appUserParser = appUserParser;
+            _uriComposer = uriComposer;
+            //          _appUserParser = appUserParser;
         }
 
 
@@ -26,7 +31,21 @@ namespace Microsoft.eShopWeb.Controllers
             //var user = _appUserParser.Parse(HttpContext.User);
             var basket = await GetBasketFromSessionAsync();
 
-            return View(basket);
+            var viewModel = new BasketViewModel()
+            {
+                BuyerId = basket.BuyerId,
+                Items = basket.Items.Select(i => new BasketItemViewModel()
+                {
+                    Id = i.Id,
+                    UnitPrice = i.UnitPrice,
+                    PictureUrl = _uriComposer.ComposePicUri(i.Item.PictureUri),
+                    ProductId = i.Item.Id.ToString(),
+                    ProductName = i.Item.Name,
+                    Quantity = i.Quantity
+                }).ToList()
+            };
+
+            return View(viewModel);
         }
 
         // GET: /Cart/AddToCart
@@ -39,9 +58,7 @@ namespace Microsoft.eShopWeb.Controllers
             }
             var basket = await GetBasketFromSessionAsync();
 
-            basket.AddItem(productDetails.Id, productDetails.Price, 1);
-
-            await _basketService.UpdateBasket(basket);
+            await _basketService.AddItemToBasket(basket, productDetails.Id, 1);
 
             return RedirectToAction("Index");
         }

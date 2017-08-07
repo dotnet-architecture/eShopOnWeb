@@ -11,6 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Pics\**" />
+    <Content Remove="Pics\**" />
+    <EmbeddedResource Remove="Pics\**" />
+    <None Remove="Pics\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Dapper" Version="1.50.2" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
@@ -27,7 +34,6 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.1.2" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Pics\" />
     <Folder Include="Views\Catalog\" />
     <Folder Include="Views\Account\" />
     <Folder Include="wwwroot\css\catalog\" />
