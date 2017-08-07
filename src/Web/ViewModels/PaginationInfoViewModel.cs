@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Microsoft.eShopWeb.ViewModels
+﻿namespace Microsoft.eShopWeb.ViewModels
 {
-    public class PaginationInfo
+    public class PaginationInfoViewModel
     {
         public int TotalItems { get; set; }
         public int ItemsPerPage { get; set; }

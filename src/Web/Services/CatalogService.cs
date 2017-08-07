@@ -2,84 +2,88 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.eShopWeb.ViewModels;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
-using System.Data.SqlClient;
-using Dapper;
 using Microsoft.Extensions.Logging;
-using Infrastructure.Data;
+using ApplicationCore.Interfaces;
+using System;
+using ApplicationCore.Specifications;
 
 namespace Microsoft.eShopWeb.Services
 {
     public class CatalogService : ICatalogService
     {
-        private readonly CatalogContext _context;
-        private readonly IOptionsSnapshot<CatalogSettings> _settings;
         private readonly ILogger<CatalogService> _logger;
-        
-        public CatalogService(CatalogContext context, 
-            IOptionsSnapshot<CatalogSettings> settings,
-            ILoggerFactory loggerFactory)
+        private readonly IRepository<CatalogItem> _itemRepository;
+        private readonly IRepository<CatalogBrand> _brandRepository;
+        private readonly IRepository<CatalogType> _typeRepository;
+        private readonly IUriComposer _uriComposer;
+
+        public CatalogService(
+            ILoggerFactory loggerFactory,
+            IRepository<CatalogItem> itemRepository,
+            IRepository<CatalogBrand> brandRepository,
+            IRepository<CatalogType> typeRepository,
+            IUriComposer uriComposer)
         {
-            _context = context;
-            _settings = settings;
             _logger = loggerFactory.CreateLogger<CatalogService>();
+            _itemRepository = itemRepository;
+            _brandRepository = brandRepository;
+            _typeRepository = typeRepository;
+            _uriComposer = uriComposer;
         }
 
-        public async Task<Catalog> GetCatalogItems(int pageIndex, int itemsPage, int? brandId, int? typeId)
+        public async Task<CatalogIndexViewModel> GetCatalogItems(int pageIndex, int itemsPage, int? brandId, int? typeId)
         {
             _logger.LogInformation("GetCatalogItems called.");
-            var root = (IQueryable<CatalogItem>)_context.CatalogItems;
 
-            if (typeId.HasValue)
-            {
-                root = root.Where(ci => ci.CatalogTypeId == typeId);
-            }
+            var filterSpecification = new CatalogFilterSpecification(brandId, typeId);
+            var root = _itemRepository.List(filterSpecification);
 
-            if (brandId.HasValue)
-            {
-                root = root.Where(ci => ci.CatalogBrandId == brandId);
-            }
+            var totalItems = root.Count();
 
-            var totalItems = await root
-                .LongCountAsync();
-
-            var itemsOnPage = await root
+            var itemsOnPage = root
                 .Skip(itemsPage * pageIndex)
                 .Take(itemsPage)
-                .ToListAsync();
+                .ToList();
 
-            itemsOnPage = ComposePicUri(itemsOnPage);
+            itemsOnPage.ForEach(x =>
+            {
+                x.PictureUri = _uriComposer.ComposePicUri(x.PictureUri);
+            });
 
-            return new Catalog() { Data = itemsOnPage, PageIndex = pageIndex, Count = (int)totalItems };           
+            var vm = new CatalogIndexViewModel()
+            {
+                CatalogItems = itemsOnPage.Select(i => new CatalogItemViewModel()
+                {
+                    Id = i.Id,
+                    Name = i.Name,
+                    PictureUri = i.PictureUri,
+                    Price = i.Price
+                }),
+                Brands = await GetBrands(),
+                Types = await GetTypes(),
+                BrandFilterApplied = brandId ?? 0,
+                TypesFilterApplied = typeId ?? 0,
+                PaginationInfo = new PaginationInfoViewModel()
+                {
+                    ActualPage = pageIndex,
+                    ItemsPerPage = itemsOnPage.Count,
+                    TotalItems = totalItems,
+                    TotalPages = int.Parse(Math.Ceiling(((decimal)totalItems / itemsPage)).ToString())
+                }
+            };
+
+            vm.PaginationInfo.Next = (vm.PaginationInfo.ActualPage == vm.PaginationInfo.TotalPages - 1) ? "is-disabled" : "";
+            vm.PaginationInfo.Previous = (vm.PaginationInfo.ActualPage == 0) ? "is-disabled" : "";
+
+            return vm;
         }
 
         public async Task<IEnumerable<SelectListItem>> GetBrands()
         {
             _logger.LogInformation("GetBrands called.");
-            var brands = await _context.CatalogBrands.ToListAsync();
-
-//// create
-//var newBrand = new CatalogBrand() { Brand = "Acme" };
-//_context.Add(newBrand);
-//await _context.SaveChangesAsync();
-
-//// read and update
-//var existingBrand = _context.Find<CatalogBrand>(1);
-//existingBrand.Brand = "Updated Brand";
-//await _context.SaveChangesAsync();
-
-//// delete
-//var brandToDelete = _context.Find<CatalogBrand>(2);
-//_context.CatalogBrands.Remove(brandToDelete);
-//await _context.SaveChangesAsync();
-
-//var brandsWithItems = await _context.CatalogBrands
-//    .Include(b => b.Items)
-//    .ToListAsync();
-
+            var brands = _brandRepository.List();
 
             var items = new List<SelectListItem>
             {
@@ -96,7 +100,7 @@ namespace Microsoft.eShopWeb.Services
         public async Task<IEnumerable<SelectListItem>> GetTypes()
         {
             _logger.LogInformation("GetTypes called.");
-            var types = await _context.CatalogTypes.ToListAsync();
+            var types = _typeRepository.List();
             var items = new List<SelectListItem>
             {
                 new SelectListItem() { Value = null, Text = "All", Selected = true }
@@ -108,27 +112,5 @@ namespace Microsoft.eShopWeb.Services
 
             return items;
         }
-
-        private List<CatalogItem> ComposePicUri(List<CatalogItem> items)
-        {
-            var baseUri = _settings.Value.CatalogBaseUrl;                      
-            items.ForEach(x =>
-            {
-                x.PictureUri = x.PictureUri.Replace("http://catalogbaseurltobereplaced", baseUri);
-            });
-
-            return items;
-        }
-
-        //public async Task<IEnumerable<CatalogType>> GetCatalogTypes()
-        //{
-        //    return await _context.CatalogTypes.ToListAsync();
-        //}
-
-        //private readonly SqlConnection _conn;
-        //public async Task<IEnumerable<CatalogType>> GetCatalogTypesWithDapper()
-        //{
-        //    return await _conn.QueryAsync<CatalogType>("SELECT * FROM CatalogType");
-        //}
     }
 }

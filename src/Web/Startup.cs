@@ -67,6 +67,8 @@ namespace Microsoft.eShopWeb
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+
             services.AddMemoryCache();
             services.AddScoped<ICatalogService, CachedCatalogService>();
             services.AddScoped<IBasketService, BasketService>();
@@ -93,9 +95,7 @@ namespace Microsoft.eShopWeb
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, 
-            IHostingEnvironment env, 
-            ILoggerFactory loggerFactory,
-            UserManager<ApplicationUser> userManager)
+            IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -138,6 +138,15 @@ namespace Microsoft.eShopWeb
                     name: "default",
                     template: "{controller=Catalog}/{action=Index}/{id?}");
             });
+
+        }
+
+        public void ConfigureDevelopment(IApplicationBuilder app,
+                                        IHostingEnvironment env,
+                                        ILoggerFactory loggerFactory,
+                                        UserManager<ApplicationUser> userManager)
+        {
+            Configure(app, env);
 
             //Seed Data
             CatalogContextSeed.SeedAsync(app, loggerFactory)

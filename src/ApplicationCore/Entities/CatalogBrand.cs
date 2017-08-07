@@ -2,7 +2,7 @@
 
 namespace Microsoft.eShopWeb.ApplicationCore.Entities
 {
-    public class CatalogBrand : BaseEntity<int>
+    public class CatalogBrand : BaseEntity
     {
         public string Brand { get; set; }
     }

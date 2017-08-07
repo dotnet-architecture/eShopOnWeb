@@ -29,23 +29,10 @@ namespace Microsoft.eShopWeb.Controllers
         public async Task<IActionResult> Index()
         {
             //var user = _appUserParser.Parse(HttpContext.User);
-            var basket = await GetBasketFromSessionAsync();
+            var basketModel = await GetBasketFromSessionAsync();
 
-            var viewModel = new BasketViewModel()
-            {
-                BuyerId = basket.BuyerId,
-                Items = basket.Items.Select(i => new BasketItemViewModel()
-                {
-                    Id = i.Id,
-                    UnitPrice = i.UnitPrice,
-                    PictureUrl = _uriComposer.ComposePicUri(i.Item.PictureUri),
-                    ProductId = i.Item.Id.ToString(),
-                    ProductName = i.Item.Name,
-                    Quantity = i.Quantity
-                }).ToList()
-            };
 
-            return View(viewModel);
+            return View(basketModel);
         }
 
         // GET: /Cart/AddToCart
@@ -58,23 +45,23 @@ namespace Microsoft.eShopWeb.Controllers
             }
             var basket = await GetBasketFromSessionAsync();
 
-            await _basketService.AddItemToBasket(basket, productDetails.Id, 1);
+            await _basketService.AddItemToBasket(basket.Id, productDetails.Id, productDetails.Price, 1);
 
             return RedirectToAction("Index");
         }
 
-        private async Task<Basket> GetBasketFromSessionAsync()
+        private async Task<BasketViewModel> GetBasketFromSessionAsync()
         {
             string basketId = HttpContext.Session.GetString(_basketSessionKey);
-            Basket basket = null;
+            BasketViewModel basket = null;
             if (basketId == null)
             {
                 basket = await _basketService.CreateBasketForUser(User.Identity.Name);
-                HttpContext.Session.SetString(_basketSessionKey, basket.Id);
+                HttpContext.Session.SetString(_basketSessionKey, basket.Id.ToString());
             }
             else
             {
-                basket = await _basketService.GetBasket(basketId);
+                basket = await _basketService.GetBasket(int.Parse(basketId));
             }
             return basket;
         }

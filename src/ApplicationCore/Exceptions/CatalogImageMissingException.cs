@@ -2,6 +2,9 @@
 
 namespace ApplicationCore.Exceptions
 {
+    /// <summary>
+    /// Note: No longer required.
+    /// </summary>
     public class CatalogImageMissingException : Exception
     {
         public CatalogImageMissingException(string message,
@@ -12,6 +15,14 @@ namespace ApplicationCore.Exceptions
         public CatalogImageMissingException(Exception innerException)
             : base("No catalog image found for the provided id.", 
                   innerException: innerException)
+        {
+        }
+
+        public CatalogImageMissingException() : base()
+        {
+        }
+
+        public CatalogImageMissingException(string message) : base(message)
         {
         }
     }
