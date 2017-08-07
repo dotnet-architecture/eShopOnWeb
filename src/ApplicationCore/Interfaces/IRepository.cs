@@ -1,5 +1,7 @@
 ﻿using Microsoft.eShopWeb.ApplicationCore.Entities;
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace ApplicationCore.Interfaces
 {
@@ -8,6 +10,7 @@ namespace ApplicationCore.Interfaces
     {
         T GetById(int id);
         List<T> List();
+        List<T> List(ISpecification<T> spec);
         T Add(T entity);
         void Update(T entity);
         void Delete(T entity);

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace Infrastructure.Data
 {
@@ -25,6 +26,14 @@ namespace Infrastructure.Data
             return _dbContext.Set<T>().ToList();
         }
 
+        public List<T> List(ISpecification<T> spec)
+        {
+            return _dbContext.Set<T>()
+                            .Include(spec.Include)
+                            .Where(spec.Criteria)
+                            .ToList();
+        }
+
         public T Add(T entity)
         {
             _dbContext.Set<T>().Add(entity);
@@ -44,5 +53,6 @@ namespace Infrastructure.Data
             _dbContext.Entry(entity).State = EntityState.Modified;
             _dbContext.SaveChanges();
         }
+
     }
 }
