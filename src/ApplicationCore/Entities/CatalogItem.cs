@@ -10,6 +10,5 @@
         public CatalogType CatalogType { get; set; }
         public int CatalogBrandId { get; set; }
         public CatalogBrand CatalogBrand { get; set; }
-        public CatalogItem() { }
     }
 }

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Web.Services
 {
@@ -18,6 +19,7 @@ namespace Web.Services
         {
             var basket = await _context.Baskets
                 .Include(b => b.Items)
+                .ThenInclude(i => i.Item)
                 .FirstOrDefaultAsync(b => b.Id == basketId);
             if (basket == null)
             {
@@ -43,11 +45,19 @@ namespace Web.Services
         }
 
 
-        public async Task UpdateBasket(Basket basket)
+        //public async Task UpdateBasket(Basket basket)
+        //{
+        //    // only need to save changes here
+        //    await _context.SaveChangesAsync();
+        //}
+
+        public async Task AddItemToBasket(Basket basket, int productId, int quantity)
         {
-            // only need to save changes here
+            var item = await _context.CatalogItems.FirstOrDefaultAsync(i => i.Id == productId);
+
+            basket.AddItem(item, item.Price, quantity);
+
             await _context.SaveChangesAsync();
         }
-
     }
 }

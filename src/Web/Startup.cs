@@ -16,6 +16,7 @@ using Infrastructure.FileSystem;
 using Infrastructure.Logging;
 using Microsoft.AspNetCore.Identity;
 using Web.Services;
+using ApplicationCore.Services;
 
 namespace Microsoft.eShopWeb
 {
@@ -71,7 +72,11 @@ namespace Microsoft.eShopWeb
             services.AddScoped<IBasketService, BasketService>();
             services.AddScoped<CatalogService>();
             services.Configure<CatalogSettings>(Configuration);
+            services.AddSingleton<IUriComposer>(new UriComposer(Configuration.Get<CatalogSettings>()));
+
+            // TODO: Remove
             services.AddSingleton<IImageService, LocalFileImageService>();
+
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
 
 
