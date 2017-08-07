@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Microsoft.eShopWeb.Infrastructure;
 using Microsoft.eShopWeb.ViewModels;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using System.Data.SqlClient;
 using Dapper;
 using Microsoft.Extensions.Logging;
+using Infrastructure.Data;
 
 namespace Microsoft.eShopWeb.Services
 {
