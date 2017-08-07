@@ -6,7 +6,7 @@ using Microsoft.eShopWeb.ViewModels;
 
 namespace Microsoft.eShopWeb.Controllers
 {
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     public class CartController : Controller
     {
         private readonly IBasketService _basketService;
@@ -29,7 +29,7 @@ namespace Microsoft.eShopWeb.Controllers
         }
 
         // POST: /Cart/AddToCart
-        [HttpPost("AddToCart")]
+        [HttpPost]
         public async Task<IActionResult> AddToCart(CatalogItemViewModel productDetails)
         {
             if (productDetails?.Id == null)
@@ -41,6 +41,16 @@ namespace Microsoft.eShopWeb.Controllers
             await _basketService.AddItemToBasket(basket.Id, productDetails.Id, productDetails.Price, 1);
 
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Checkout()
+        {
+            var basket = await GetBasketFromSessionAsync();
+
+            await _basketService.Checkout(basket.Id);
+
+            return View("Checkout");
         }
 
         private async Task<BasketViewModel> GetBasketFromSessionAsync()

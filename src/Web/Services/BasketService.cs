@@ -1,9 +1,7 @@
 ﻿using ApplicationCore.Interfaces;
 using System.Threading.Tasks;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
-using Microsoft.EntityFrameworkCore;
 using System;
-using Infrastructure.Data;
 using System.Linq;
 using Microsoft.eShopWeb.ViewModels;
 using System.Collections.Generic;
@@ -81,6 +79,15 @@ namespace Web.Services
             basket.AddItem(catalogItemId, price, quantity);
 
             _basketRepository.Update(basket);
+        }
+
+        public async Task Checkout(int basketId)
+        {
+            var basket = _basketRepository.GetById(basketId);
+            
+            // TODO: Actually Process the order
+
+            _basketRepository.Delete(basket);
         }
     }
 }

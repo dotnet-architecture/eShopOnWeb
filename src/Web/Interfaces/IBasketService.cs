@@ -10,5 +10,7 @@ namespace ApplicationCore.Interfaces
         Task<BasketViewModel> CreateBasketForUser(string userId);
 
         Task AddItemToBasket(int basketId, int catalogItemId, decimal price, int quantity);
+
+        Task Checkout(int basketId);
     }
 }
