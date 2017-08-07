@@ -132,13 +132,7 @@ namespace Microsoft.eShopWeb
 
             app.UseIdentity();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Catalog}/{action=Index}/{id?}");
-            });
-
+            app.UseMvc();
         }
 
         public void ConfigureDevelopment(IApplicationBuilder app,

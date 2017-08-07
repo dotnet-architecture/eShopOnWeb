@@ -8,6 +8,7 @@ using Infrastructure.Identity;
 
 namespace Microsoft.eShopWeb.Controllers
 {
+    [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -17,7 +18,7 @@ namespace Microsoft.eShopWeb.Controllers
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-                        IOptions<IdentityCookieOptions> identityCookieOptions
+            IOptions<IdentityCookieOptions> identityCookieOptions
 
 )
         {
@@ -56,6 +57,16 @@ namespace Microsoft.eShopWeb.Controllers
             }
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> SignOut()
+        {
+            HttpContext.Session.Clear();
+            await _signInManager.SignOutAsync();
+
+            return RedirectToAction(nameof(CatalogController.Index), "Catalog");
         }
 
         private IActionResult RedirectToLocal(string returnUrl)
