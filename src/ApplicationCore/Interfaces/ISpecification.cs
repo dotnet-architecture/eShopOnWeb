@@ -1,14 +1,13 @@
-﻿using Microsoft.eShopWeb.ApplicationCore.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace ApplicationCore.Interfaces
 {
-
     public interface ISpecification<T>
     {
         Expression<Func<T, bool>> Criteria { get; }
-        Expression<Func<T, object>> Include { get; }
+        List<Expression<Func<T, object>>> Includes { get; }
+        void AddInclude(Expression<Func<T, object>> includeExpression);
     }
 }

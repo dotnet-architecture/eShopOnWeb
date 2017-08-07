@@ -28,8 +28,10 @@ namespace Infrastructure.Data
 
         public List<T> List(ISpecification<T> spec)
         {
-            return _dbContext.Set<T>()
-                            .Include(spec.Include)
+            var queryableResultWithIncludes = spec.Includes
+                .Aggregate(_dbContext.Set<T>().AsQueryable(), 
+                            (current, include) => current.Include(include));
+            return queryableResultWithIncludes
                             .Where(spec.Criteria)
                             .ToList();
         }

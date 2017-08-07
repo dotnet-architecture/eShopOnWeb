@@ -7,6 +7,7 @@ using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.Extensions.Logging;
 using ApplicationCore.Interfaces;
 using System;
+using ApplicationCore.Specifications;
 
 namespace Microsoft.eShopWeb.Services
 {
@@ -38,17 +39,20 @@ namespace Microsoft.eShopWeb.Services
 
             // TODO: Replace with specification pattern
             // TODO: Add async methods to IRepository<T>
-            var root = _itemRepository.List();
 
-            if (typeId.HasValue)
-            {
-                root = root.Where(ci => ci.CatalogTypeId == typeId).ToList();
-            }
+            var filterSpecification = new CatalogFilterSpecification(brandId, typeId);
+            var root = _itemRepository.List(filterSpecification);
+            //var root = _itemRepository.List();
 
-            if (brandId.HasValue)
-            {
-                root = root.Where(ci => ci.CatalogBrandId == brandId).ToList();
-            }
+            //if (typeId.HasValue)
+            //{
+            //    root = root.Where(ci => ci.CatalogTypeId == typeId).ToList();
+            //}
+
+            //if (brandId.HasValue)
+            //{
+            //    root = root.Where(ci => ci.CatalogBrandId == brandId).ToList();
+            //}
 
             var totalItems = root.Count();
 
