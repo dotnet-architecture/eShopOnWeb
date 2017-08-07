@@ -23,21 +23,5 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities
             var existingItem = Items.FirstOrDefault(i => i.CatalogItemId == catalogItemId);
             existingItem.Quantity += quantity;
         }
-        //public void AddItem(CatalogItem item, decimal unitPrice, int quantity = 1)
-        //{
-        //    if (!Items.Any(i => i.Item.Id == item.Id))
-        //    {
-        //        Items.Add(new BasketItem()
-        //        {
-        //            Item = item,
-        //            //ProductId = productId,
-        //            Quantity = quantity,
-        //            UnitPrice = unitPrice
-        //        });
-        //        return;
-        //    }
-        //    var existingItem = Items.FirstOrDefault(i => i.Item.Id == item.Id);
-        //    existingItem.Quantity += quantity;
-        //}
     }
 }

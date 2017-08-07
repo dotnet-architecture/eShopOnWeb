@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Microsoft.eShopWeb.ViewModels
 {
-    public class Catalog
+    public class CatalogViewModel
     {
         public int PageIndex { get; set; }
         public int PageSize { get; set; }

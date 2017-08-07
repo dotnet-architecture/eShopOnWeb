@@ -31,7 +31,7 @@ namespace Microsoft.eShopWeb.Services
             _uriComposer = uriComposer;
         }
 
-        public async Task<Catalog> GetCatalogItems(int pageIndex, int itemsPage, int? brandId, int? typeId)
+        public async Task<CatalogViewModel> GetCatalogItems(int pageIndex, int itemsPage, int? brandId, int? typeId)
         {
             _logger.LogInformation("GetCatalogItems called.");
 
@@ -61,7 +61,7 @@ namespace Microsoft.eShopWeb.Services
                 x.PictureUri = _uriComposer.ComposePicUri(x.PictureUri);
             });
 
-            return new Catalog() { Data = itemsOnPage, PageIndex = pageIndex, Count = (int)totalItems };           
+            return new CatalogViewModel() { Data = itemsOnPage, PageIndex = pageIndex, Count = (int)totalItems };           
         }
 
         public async Task<IEnumerable<SelectListItem>> GetBrands()

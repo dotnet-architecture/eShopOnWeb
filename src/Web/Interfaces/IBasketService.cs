@@ -1,5 +1,4 @@
-﻿using Microsoft.eShopWeb.ApplicationCore.Entities;
-using Microsoft.eShopWeb.ViewModels;
+﻿using Microsoft.eShopWeb.ViewModels;
 using System.Threading.Tasks;
 
 namespace ApplicationCore.Interfaces
