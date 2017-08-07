@@ -37,22 +37,8 @@ namespace Microsoft.eShopWeb.Services
         {
             _logger.LogInformation("GetCatalogItems called.");
 
-            // TODO: Replace with specification pattern
-            // TODO: Add async methods to IRepository<T>
-
             var filterSpecification = new CatalogFilterSpecification(brandId, typeId);
             var root = _itemRepository.List(filterSpecification);
-            //var root = _itemRepository.List();
-
-            //if (typeId.HasValue)
-            //{
-            //    root = root.Where(ci => ci.CatalogTypeId == typeId).ToList();
-            //}
-
-            //if (brandId.HasValue)
-            //{
-            //    root = root.Where(ci => ci.CatalogBrandId == brandId).ToList();
-            //}
 
             var totalItems = root.Count();
 
@@ -65,8 +51,6 @@ namespace Microsoft.eShopWeb.Services
             {
                 x.PictureUri = _uriComposer.ComposePicUri(x.PictureUri);
             });
-
-           // var vm = new CatalogViewModel() { Data = itemsOnPage, PageIndex = pageIndex, Count = (int)totalItems };
 
             var vm = new CatalogIndexViewModel()
             {
