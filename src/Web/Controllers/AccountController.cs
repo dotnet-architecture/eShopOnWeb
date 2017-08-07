@@ -8,6 +8,7 @@ using Infrastructure.Identity;
 
 namespace Microsoft.eShopWeb.Controllers
 {
+    [Route("[controller]")]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

@@ -4,13 +4,15 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.Controllers
 {
+    [Route("")]
     public class CatalogController : Controller
     {
         private readonly ICatalogService _catalogService;
 
         public CatalogController(ICatalogService catalogService) => _catalogService = catalogService;
 
-        // GET: /<controller>/
+        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> Index(int? brandFilterApplied, int? typesFilterApplied, int? page)
         {
             var itemsPage = 10;           
@@ -18,6 +20,7 @@ namespace Microsoft.eShopWeb.Controllers
             return View(catalogModel);
         }
 
+        [HttpGet("Error")]
         public IActionResult Error()
         {
             return View();
