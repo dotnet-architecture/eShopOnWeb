@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Microsoft.eShopWeb.Infrastructure.Migrations
+namespace Infrastructure.Data.Migrations
 {
     public partial class Initial : Migration
     {

@@ -1,9 +1,9 @@
 ﻿using ApplicationCore.Interfaces;
 using System.Threading.Tasks;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
-using Microsoft.eShopWeb.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System;
+using Infrastructure.Data;
 
 namespace Web.Services
 {

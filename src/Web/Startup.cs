@@ -1,5 +1,4 @@
-﻿using Microsoft.eShopWeb.Infrastructure;
-using Microsoft.eShopWeb.Services;
+﻿using Microsoft.eShopWeb.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +16,7 @@ using Infrastructure.Logging;
 using Microsoft.AspNetCore.Identity;
 using Web.Services;
 using ApplicationCore.Services;
+using Infrastructure.Data;
 
 namespace Microsoft.eShopWeb
 {
