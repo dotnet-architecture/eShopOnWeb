@@ -10,12 +10,15 @@ namespace Web.Services
     public class BasketService : IBasketService
     {
         private readonly CatalogContext _context;
+        private readonly IRepository<Basket> _basketRepository;
 
-        public BasketService(CatalogContext context)
+        public BasketService(CatalogContext context,
+            IRepository<Basket> basketRepository)
         {
             _context = context;
+            _basketRepository = basketRepository;
         }
-        public async Task<Basket> GetBasket(string basketId)
+        public async Task<Basket> GetBasket(int basketId)
         {
             var basket = await _context.Baskets
                 .Include(b => b.Items)

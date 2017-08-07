@@ -39,7 +39,7 @@ namespace Microsoft.eShopWeb.Controllers
                     Id = i.Id,
                     UnitPrice = i.UnitPrice,
                     PictureUrl = _uriComposer.ComposePicUri(i.Item.PictureUri),
-                    ProductId = i.Item.Id.ToString(),
+                    ProductId = i.Item.Id,
                     ProductName = i.Item.Name,
                     Quantity = i.Quantity
                 }).ToList()
@@ -70,11 +70,11 @@ namespace Microsoft.eShopWeb.Controllers
             if (basketId == null)
             {
                 basket = await _basketService.CreateBasketForUser(User.Identity.Name);
-                HttpContext.Session.SetString(_basketSessionKey, basket.Id);
+                HttpContext.Session.SetString(_basketSessionKey, basket.Id.ToString());
             }
             else
             {
-                basket = await _basketService.GetBasket(basketId);
+                basket = await _basketService.GetBasket(int.Parse(basketId));
             }
             return basket;
         }

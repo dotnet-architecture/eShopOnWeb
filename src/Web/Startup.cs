@@ -67,6 +67,8 @@ namespace Microsoft.eShopWeb
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+
             services.AddMemoryCache();
             services.AddScoped<ICatalogService, CachedCatalogService>();
             services.AddScoped<IBasketService, BasketService>();
