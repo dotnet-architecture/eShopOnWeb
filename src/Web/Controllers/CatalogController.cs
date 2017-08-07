@@ -1,57 +1,21 @@
 ﻿using Microsoft.eShopWeb.Services;
-using Microsoft.eShopWeb.ViewModels;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
-using ApplicationCore.Interfaces;
 
 namespace Microsoft.eShopWeb.Controllers
 {
     public class CatalogController : Controller
     {
-        private readonly IHostingEnvironment _env;
         private readonly ICatalogService _catalogService;
-        private readonly IImageService _imageService;
-        private readonly IAppLogger<CatalogController> _logger;
 
-        public CatalogController(IHostingEnvironment env,
-            ICatalogService catalogService,
-            IImageService imageService,
-            IAppLogger<CatalogController> logger)
-        {
-            _env = env;
-            _catalogService = catalogService;
-            _imageService = imageService;
-            _logger = logger;
-        }
+        public CatalogController(ICatalogService catalogService) => _catalogService = catalogService;
 
         // GET: /<controller>/
         public async Task<IActionResult> Index(int? brandFilterApplied, int? typesFilterApplied, int? page)
         {
             var itemsPage = 10;           
-            var catalog = await _catalogService.GetCatalogItems(page ?? 0, itemsPage, brandFilterApplied, typesFilterApplied);        
-
-            var vm = new CatalogIndex()
-            {
-                CatalogItems = catalog.Data,
-                Brands = await _catalogService.GetBrands(),
-                Types = await _catalogService.GetTypes(),
-                BrandFilterApplied = brandFilterApplied ?? 0,
-                TypesFilterApplied = typesFilterApplied ?? 0,
-                PaginationInfo = new PaginationInfo()
-                {
-                    ActualPage = page ?? 0,
-                    ItemsPerPage = catalog.Data.Count,
-                    TotalItems = catalog.Count,
-                    TotalPages = int.Parse(Math.Ceiling(((decimal)catalog.Count / itemsPage)).ToString())
-                }
-            };
-
-            vm.PaginationInfo.Next = (vm.PaginationInfo.ActualPage == vm.PaginationInfo.TotalPages - 1) ? "is-disabled" : "";
-            vm.PaginationInfo.Previous = (vm.PaginationInfo.ActualPage == 0) ? "is-disabled" : "";
-
-            return View(vm);
+            var catalogModel = await _catalogService.GetCatalogItems(page ?? 0, itemsPage, brandFilterApplied, typesFilterApplied);
+            return View(catalogModel);
         }
 
         public IActionResult Error()

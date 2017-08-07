@@ -1,6 +1,6 @@
 ﻿namespace Microsoft.eShopWeb.ViewModels
 {
-    public class PaginationInfo
+    public class PaginationInfoViewModel
     {
         public int TotalItems { get; set; }
         public int ItemsPerPage { get; set; }

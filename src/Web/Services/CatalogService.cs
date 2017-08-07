@@ -6,6 +6,7 @@ using Microsoft.eShopWeb.ViewModels;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.Extensions.Logging;
 using ApplicationCore.Interfaces;
+using System;
 
 namespace Microsoft.eShopWeb.Services
 {
@@ -31,7 +32,7 @@ namespace Microsoft.eShopWeb.Services
             _uriComposer = uriComposer;
         }
 
-        public async Task<CatalogViewModel> GetCatalogItems(int pageIndex, int itemsPage, int? brandId, int? typeId)
+        public async Task<CatalogIndexViewModel> GetCatalogItems(int pageIndex, int itemsPage, int? brandId, int? typeId)
         {
             _logger.LogInformation("GetCatalogItems called.");
 
@@ -61,7 +62,34 @@ namespace Microsoft.eShopWeb.Services
                 x.PictureUri = _uriComposer.ComposePicUri(x.PictureUri);
             });
 
-            return new CatalogViewModel() { Data = itemsOnPage, PageIndex = pageIndex, Count = (int)totalItems };           
+           // var vm = new CatalogViewModel() { Data = itemsOnPage, PageIndex = pageIndex, Count = (int)totalItems };
+
+            var vm = new CatalogIndexViewModel()
+            {
+                CatalogItems = itemsOnPage.Select(i => new CatalogItemViewModel()
+                {
+                    Id = i.Id,
+                    Name = i.Name,
+                    PictureUri = i.PictureUri,
+                    Price = i.Price
+                }),
+                Brands = await GetBrands(),
+                Types = await GetTypes(),
+                BrandFilterApplied = brandId ?? 0,
+                TypesFilterApplied = typeId ?? 0,
+                PaginationInfo = new PaginationInfoViewModel()
+                {
+                    ActualPage = pageIndex,
+                    ItemsPerPage = itemsOnPage.Count,
+                    TotalItems = totalItems,
+                    TotalPages = int.Parse(Math.Ceiling(((decimal)totalItems / itemsPage)).ToString())
+                }
+            };
+
+            vm.PaginationInfo.Next = (vm.PaginationInfo.ActualPage == vm.PaginationInfo.TotalPages - 1) ? "is-disabled" : "";
+            vm.PaginationInfo.Previous = (vm.PaginationInfo.ActualPage == 0) ? "is-disabled" : "";
+
+            return vm;
         }
 
         public async Task<IEnumerable<SelectListItem>> GetBrands()
