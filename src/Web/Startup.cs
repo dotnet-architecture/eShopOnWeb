@@ -149,5 +149,28 @@ namespace Microsoft.eShopWeb
             var defaultUser = new ApplicationUser { UserName = "demouser@microsoft.com", Email = "demouser@microsoft.com" };
             userManager.CreateAsync(defaultUser, "Pass@word1").Wait();
         }
+
+        /// <summary>
+        /// Use this section to perform production-specific configuration.
+        /// In this case it is duplicating Development so that deployments to Azure will have sample data immediately.
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
+        /// <param name="loggerFactory"></param>
+        /// <param name="userManager"></param>
+        public void ConfigureProduction(IApplicationBuilder app,
+                                        IHostingEnvironment env,
+                                        ILoggerFactory loggerFactory,
+                                        UserManager<ApplicationUser> userManager)
+        {
+            Configure(app, env);
+
+            //Seed Data
+            CatalogContextSeed.SeedAsync(app, loggerFactory)
+            .Wait();
+
+            var defaultUser = new ApplicationUser { UserName = "demouser@microsoft.com", Email = "demouser@microsoft.com" };
+            userManager.CreateAsync(defaultUser, "Pass@word1").Wait();
+        }
     }
 }
