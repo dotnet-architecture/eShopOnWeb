@@ -7,13 +7,13 @@ using Microsoft.eShopWeb.ViewModels;
 namespace Microsoft.eShopWeb.Controllers
 {
     [Route("[controller]/[action]")]
-    public class CartController : Controller
+    public class BasketController : Controller
     {
         private readonly IBasketService _basketService;
         private const string _basketSessionKey = "basketId";
         private readonly IUriComposer _uriComposer;
 
-        public CartController(IBasketService basketService,
+        public BasketController(IBasketService basketService,
             IUriComposer uriComposer)
         {
             _basketService = basketService;
@@ -28,9 +28,9 @@ namespace Microsoft.eShopWeb.Controllers
             return View(basketModel);
         }
 
-        // POST: /Cart/AddToCart
+        // POST: /Basket/AddToBasket
         [HttpPost]
-        public async Task<IActionResult> AddToCart(CatalogItemViewModel productDetails)
+        public async Task<IActionResult> AddToBasket(CatalogItemViewModel productDetails)
         {
             if (productDetails?.Id == null)
             {
