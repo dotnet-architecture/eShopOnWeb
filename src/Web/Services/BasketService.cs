@@ -67,8 +67,7 @@ namespace Web.Services
             return new BasketViewModel()
             {
                 BuyerId = basket.BuyerId,
-                Id = basket.Id,
-                Items = new List<BasketItemViewModel>()
+                Id = basket.Id
             };
         }
 
