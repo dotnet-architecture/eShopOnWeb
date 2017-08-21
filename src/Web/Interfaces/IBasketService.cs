@@ -5,12 +5,9 @@ namespace ApplicationCore.Interfaces
 {
     public interface IBasketService
     {
-        Task<BasketViewModel> GetBasket(int basketId);
-        Task<BasketViewModel> CreateBasket();
-        Task<BasketViewModel> CreateBasketForUser(string userId);
-
+        Task<BasketViewModel> GetOrCreateBasketForUser(string userName);
+        Task TransferBasket(string anonymousId, string userName);
         Task AddItemToBasket(int basketId, int catalogItemId, decimal price, int quantity);
-
         Task Checkout(int basketId);
     }
 }

@@ -13,10 +13,18 @@ namespace ApplicationCore.Specifications
             BasketId = basketId;
             AddInclude(b => b.Items);
         }
+        public BasketWithItemsSpecification(string buyerId)
+        {
+            BuyerId = buyerId;
+            AddInclude(b => b.Items);
+        }
 
-        public int BasketId { get; }
+        public int? BasketId { get; }
+        public string BuyerId { get; }
 
-        public Expression<Func<Basket, bool>> Criteria => b => b.Id == BasketId;
+        public Expression<Func<Basket, bool>> Criteria => b =>
+            (BasketId.HasValue && b.Id == BasketId.Value)
+            || (BuyerId != null && b.BuyerId == BuyerId);
 
         public List<Expression<Func<Basket, object>>> Includes { get; } = new List<Expression<Func<Basket, object>>>();
 

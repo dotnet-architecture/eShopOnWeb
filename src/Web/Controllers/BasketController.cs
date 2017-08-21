@@ -3,6 +3,10 @@ using System.Threading.Tasks;
 using ApplicationCore.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.eShopWeb.ViewModels;
+using Microsoft.AspNetCore.Identity;
+using Infrastructure.Identity;
+using System;
+using Web;
 
 namespace Microsoft.eShopWeb.Controllers
 {
@@ -12,18 +16,21 @@ namespace Microsoft.eShopWeb.Controllers
         private readonly IBasketService _basketService;
         private const string _basketSessionKey = "basketId";
         private readonly IUriComposer _uriComposer;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
         public BasketController(IBasketService basketService,
-            IUriComposer uriComposer)
+            IUriComposer uriComposer,
+            SignInManager<ApplicationUser> signInManager)
         {
             _basketService = basketService;
             _uriComposer = uriComposer;
+            _signInManager = signInManager;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var basketModel = await GetBasketFromSessionAsync();
+            var basketModel = await GetBasketViewModelAsync();
 
             return View(basketModel);
         }
@@ -36,9 +43,9 @@ namespace Microsoft.eShopWeb.Controllers
             {
                 return RedirectToAction("Index", "Catalog");
             }
-            var basket = await GetBasketFromSessionAsync();
+            var basketViewModel = await GetBasketViewModelAsync();
 
-            await _basketService.AddItemToBasket(basket.Id, productDetails.Id, productDetails.Price, 1);
+            await _basketService.AddItemToBasket(basketViewModel.Id, productDetails.Id, productDetails.Price, 1);
 
             return RedirectToAction("Index");
         }
@@ -46,27 +53,34 @@ namespace Microsoft.eShopWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> Checkout()
         {
-            var basket = await GetBasketFromSessionAsync();
+            var basket = await GetBasketViewModelAsync();
 
             await _basketService.Checkout(basket.Id);
 
             return View("Checkout");
         }
 
-        private async Task<BasketViewModel> GetBasketFromSessionAsync()
+        private async Task<BasketViewModel> GetBasketViewModelAsync()
         {
-            string basketId = HttpContext.Session.GetString(_basketSessionKey);
-            BasketViewModel basket = null;
-            if (basketId == null)
+            if (_signInManager.IsSignedIn(HttpContext.User))
             {
-                basket = await _basketService.CreateBasketForUser(User.Identity.Name);
-                HttpContext.Session.SetString(_basketSessionKey, basket.Id.ToString());
+                return await _basketService.GetOrCreateBasketForUser(User.Identity.Name);
             }
-            else
+            string anonymousId = GetOrSetBasketCookie();
+            return await _basketService.GetOrCreateBasketForUser(anonymousId);
+        }
+
+        private string GetOrSetBasketCookie()
+        {
+            if (Request.Cookies.ContainsKey(Constants.BASKET_COOKIENAME))
             {
-                basket = await _basketService.GetBasket(int.Parse(basketId));
+                return Request.Cookies[Constants.BASKET_COOKIENAME];
             }
-            return basket;
+            string anonymousId = Guid.NewGuid().ToString();
+            var cookieOptions = new CookieOptions();
+            cookieOptions.Expires = DateTime.Today.AddYears(10);
+            Response.Cookies.Append(Constants.BASKET_COOKIENAME, anonymousId, cookieOptions);
+            return anonymousId;
         }
     }
 }
