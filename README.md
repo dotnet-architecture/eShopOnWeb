@@ -27,11 +27,54 @@ The goal for this sample is to demonstrate some of the principles and patterns d
 
 After cloning or downloading the sample you should be able to run it using an In Memory database immediately.
 
-If you wish to use the sample with a persistent database, you will need to run its Entity Framework Core migrations before you will be able to run the app. To do so, open a command prompt in the Web folder and execute the following commands:
+If you wish to use the sample with a persistent database, you will need to run its Entity Framework Core migrations before you will be able to run the app, and update `ConfigureServices` method in `Startup.cs`.
+
+### Configuring the sample to use SQL Server
+
+1. Update `Startup.cs`'s `ConfigureServices` method as follows:
+
+```
+public void ConfigureServices(IServiceCollection services)
+{
+    // Requires LocalDB which can be installed with SQL Server Express 2016
+    // https://www.microsoft.com/en-us/download/details.aspx?id=54284
+    services.AddDbContext<CatalogContext>(c =>
+    {
+        try
+        {
+            //c.UseInMemoryDatabase("Catalog");
+            c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection"));
+            c.ConfigureWarnings(wb =>
+            {
+                //By default, in this application, we don't want to have client evaluations
+                wb.Log(RelationalEventId.QueryClientEvaluationWarning);
+            });
+        }
+        catch (System.Exception ex )
+        {
+            var message = ex.Message;
+        }                
+    });
+
+    // Add Identity DbContext
+    services.AddDbContext<AppIdentityDbContext>(options =>
+        //options.UseInMemoryDatabase("Identity"));
+        options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
+
+
+// leave the rest of the method as-is
+```
+1. Ensure your connection strings in `appsettings.json` point to a local SQL Server instance.
+
+1. Open a command prompt in the Web folder and execute the following commands:
 
 ```
 dotnet restore
-dotnet ef database update --context Microsoft.eShopWeb.Infrastructure.CatalogContext
+dotnet ef database update -c catalogcontext -p ../Infrastructure/Infrastructure.csproj -s Web.csproj
+dotnet ef database update -c appidentitydbcontext -p ../Infrastructure/Infrastructure.csproj -s Web.csproj
 ```
 
-**NOTE** The application uses a separate DbContext for its authentication system, which is not yet complete.
+These commands will create two separate databases, one for the store's catalog data and shopping cart information, and one for the app's user credentials and identity data.
+
+1. Run the application.
+The first time you run the application, it will seed both databases with data such that you should see products in the store, and you should be able to log in using the demouser@microsoft.com account.

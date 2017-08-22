@@ -12,6 +12,10 @@ namespace Infrastructure.Data
         public CatalogContext(DbContextOptions<CatalogContext> options) : base(options)
         {
         }
+        //public CatalogContext()
+        //{
+        //    // required by migrations
+        //}
         public DbSet<Basket> Baskets { get; set; }
         public DbSet<CatalogItem> CatalogItems { get; set; }
         public DbSet<CatalogBrand> CatalogBrands { get; set; }
