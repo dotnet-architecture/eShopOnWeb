@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Infrastructure.Data
 {
@@ -14,11 +16,20 @@ namespace Infrastructure.Data
         public DbSet<CatalogItem> CatalogItems { get; set; }
         public DbSet<CatalogBrand> CatalogBrands { get; set; }
         public DbSet<CatalogType> CatalogTypes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<Basket>(ConfigureBasket);
             builder.Entity<CatalogBrand>(ConfigureCatalogBrand);
             builder.Entity<CatalogType>(ConfigureCatalogType);
             builder.Entity<CatalogItem>(ConfigureCatalogItem);
+        }
+
+        private void ConfigureBasket(EntityTypeBuilder<Basket> builder)
+        {
+            var navigation = builder.Metadata.FindNavigation(nameof(Basket.Items));
+
+            navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
         }
 
         void ConfigureCatalogItem(EntityTypeBuilder<CatalogItem> builder)

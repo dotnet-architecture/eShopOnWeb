@@ -85,9 +85,6 @@ namespace Microsoft.eShopWeb
             // Add memory cache services
             services.AddMemoryCache();
 
-            // Add session related services.
-            services.AddSession();
-
             services.AddMvc();
 
             _services = services;
@@ -126,10 +123,7 @@ namespace Microsoft.eShopWeb
                 app.UseExceptionHandler("/Catalog/Error");
             }
 
-            app.UseSession();
-
             app.UseStaticFiles();
-
             app.UseIdentity();
 
             app.UseMvc();
@@ -171,6 +165,7 @@ namespace Microsoft.eShopWeb
 
             var defaultUser = new ApplicationUser { UserName = "demouser@microsoft.com", Email = "demouser@microsoft.com" };
             userManager.CreateAsync(defaultUser, "Pass@word1").Wait();
+
         }
     }
 }

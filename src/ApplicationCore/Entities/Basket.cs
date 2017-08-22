@@ -6,13 +6,14 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities
     public class Basket : BaseEntity
     {
         public string BuyerId { get; set; }
-        public List<BasketItem> Items { get; set; } = new List<BasketItem>();
+        private readonly List<BasketItem> _items = new List<BasketItem>();
+        public IEnumerable<BasketItem> Items => _items.ToList();
 
         public void AddItem(int catalogItemId, decimal unitPrice, int quantity = 1)
         {
             if (!Items.Any(i => i.CatalogItemId == catalogItemId))
             {
-                Items.Add(new BasketItem()
+                _items.Add(new BasketItem()
                 {
                     CatalogItemId = catalogItemId,
                     Quantity = quantity,

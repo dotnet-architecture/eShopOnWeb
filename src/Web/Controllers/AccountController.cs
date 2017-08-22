@@ -5,6 +5,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Infrastructure.Identity;
+using System;
+using Microsoft.eShopWeb.ApplicationCore.Entities;
+using ApplicationCore.Interfaces;
+using Web;
 
 namespace Microsoft.eShopWeb.Controllers
 {
@@ -14,20 +18,21 @@ namespace Microsoft.eShopWeb.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly string _externalCookieScheme;
+        private readonly IBasketService _basketService;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IOptions<IdentityCookieOptions> identityCookieOptions
-
-)
+            IOptions<IdentityCookieOptions> identityCookieOptions,
+            IBasketService basketService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
+            _basketService = basketService;
         }
 
-        // GET: /Account/SignIn
+        // GET: /Account/SignIn 
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> SignIn(string returnUrl = null)
@@ -53,6 +58,12 @@ namespace Microsoft.eShopWeb.Controllers
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
             if (result.Succeeded)
             {
+                string anonymousBasketId = Request.Cookies[Constants.BASKET_COOKIENAME];
+                if (!String.IsNullOrEmpty(anonymousBasketId))
+                {
+                    _basketService.TransferBasket(anonymousBasketId, model.Email);
+                    Response.Cookies.Delete(Constants.BASKET_COOKIENAME);
+                }
                 return RedirectToLocal(returnUrl);
             }
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");

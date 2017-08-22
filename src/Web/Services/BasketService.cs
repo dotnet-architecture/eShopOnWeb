@@ -23,40 +23,41 @@ namespace Web.Services
             _uriComposer = uriComposer;
             _itemRepository = itemRepository;
         }
-        public async Task<BasketViewModel> GetBasket(int basketId)
-        {
-            var basketSpec = new BasketWithItemsSpecification(basketId);
-            var basket = _basketRepository.List(basketSpec).FirstOrDefault();
-            if (basket == null)
-            {
-                return await CreateBasket();
-            }
 
+        public async Task<BasketViewModel> GetOrCreateBasketForUser(string userName)
+        {
+            var basketSpec = new BasketWithItemsSpecification(userName);
+            var basket = _basketRepository.List(basketSpec).FirstOrDefault();
+
+            if(basket == null)
+            {
+                return await CreateBasketForUser(userName);
+            }
+            return CreateViewModelFromBasket(basket);
+        }
+
+        private BasketViewModel CreateViewModelFromBasket(Basket basket)
+        {
             var viewModel = new BasketViewModel();
             viewModel.Id = basket.Id;
             viewModel.BuyerId = basket.BuyerId;
             viewModel.Items = basket.Items.Select(i =>
-                            {
-                                var itemModel = new BasketItemViewModel()
-                                {
-                                    Id = i.Id,
-                                    UnitPrice = i.UnitPrice,
-                                    Quantity = i.Quantity,
-                                    CatalogItemId = i.CatalogItemId
+            {
+                var itemModel = new BasketItemViewModel()
+                {
+                    Id = i.Id,
+                    UnitPrice = i.UnitPrice,
+                    Quantity = i.Quantity,
+                    CatalogItemId = i.CatalogItemId
 
-                                };
-                                var item = _itemRepository.GetById(i.CatalogItemId);
-                                itemModel.PictureUrl = _uriComposer.ComposePicUri(item.PictureUri);
-                                itemModel.ProductName = item.Name;
-                                return itemModel;
-                            })
+                };
+                var item = _itemRepository.GetById(i.CatalogItemId);
+                itemModel.PictureUrl = _uriComposer.ComposePicUri(item.PictureUri);
+                itemModel.ProductName = item.Name;
+                return itemModel;
+            })
                             .ToList();
             return viewModel;
-        }
-
-        public Task<BasketViewModel> CreateBasket()
-        {
-            return CreateBasketForUser(null);
         }
 
         public async Task<BasketViewModel> CreateBasketForUser(string userId)
@@ -88,6 +89,16 @@ namespace Web.Services
             // TODO: Actually Process the order
 
             _basketRepository.Delete(basket);
+        }
+
+        public Task TransferBasket(string anonymousId, string userName)
+        {
+            var basketSpec = new BasketWithItemsSpecification(anonymousId);
+            var basket = _basketRepository.List(basketSpec).FirstOrDefault();
+            if (basket == null) return Task.CompletedTask;
+            basket.BuyerId = userName;
+            _basketRepository.Update(basket);
+            return Task.CompletedTask;
         }
     }
 }
