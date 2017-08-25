@@ -15,15 +15,15 @@ namespace Microsoft.eShopWeb.Services
     {
         private readonly ILogger<CatalogService> _logger;
         private readonly IRepository<CatalogItem> _itemRepository;
-        private readonly IRepository<CatalogBrand> _brandRepository;
-        private readonly IRepository<CatalogType> _typeRepository;
+        private readonly IAsyncRepository<CatalogBrand> _brandRepository;
+        private readonly IAsyncRepository<CatalogType> _typeRepository;
         private readonly IUriComposer _uriComposer;
 
         public CatalogService(
             ILoggerFactory loggerFactory,
             IRepository<CatalogItem> itemRepository,
-            IRepository<CatalogBrand> brandRepository,
-            IRepository<CatalogType> typeRepository,
+            IAsyncRepository<CatalogBrand> brandRepository,
+            IAsyncRepository<CatalogType> typeRepository,
             IUriComposer uriComposer)
         {
             _logger = loggerFactory.CreateLogger<CatalogService>();
@@ -83,7 +83,7 @@ namespace Microsoft.eShopWeb.Services
         public async Task<IEnumerable<SelectListItem>> GetBrands()
         {
             _logger.LogInformation("GetBrands called.");
-            var brands = _brandRepository.List();
+            var brands = await _brandRepository.ListAllAsync();
 
             var items = new List<SelectListItem>
             {
@@ -100,7 +100,7 @@ namespace Microsoft.eShopWeb.Services
         public async Task<IEnumerable<SelectListItem>> GetTypes()
         {
             _logger.LogInformation("GetTypes called.");
-            var types = _typeRepository.List();
+            var types = await _typeRepository.ListAllAsync();
             var items = new List<SelectListItem>
             {
                 new SelectListItem() { Value = null, Text = "All", Selected = true }
