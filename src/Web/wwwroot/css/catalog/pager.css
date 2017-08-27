@@ -3,8 +3,12 @@
     text-align: center;
 }
 
-.esh-pager-item {
-    margin: 0 5vw;
+.esh-pager-item-left {
+    float: left;
+}
+
+.esh-pager-item-right {
+    float: right;
 }
 
 .esh-pager-item--navigable {
