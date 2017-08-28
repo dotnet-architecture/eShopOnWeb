@@ -1,7 +1,6 @@
 ﻿using ApplicationCore.Interfaces;
 using ApplicationCore.Services;
 using Infrastructure.Data;
-using Infrastructure.FileSystem;
 using Infrastructure.Identity;
 using Infrastructure.Logging;
 using Microsoft.AspNetCore.Builder;
@@ -64,11 +63,7 @@ namespace Microsoft.eShopWeb
             services.Configure<CatalogSettings>(Configuration);
             services.AddSingleton<IUriComposer>(new UriComposer(Configuration.Get<CatalogSettings>()));
 
-            // TODO: Remove
-            services.AddSingleton<IImageService, LocalFileImageService>();
-
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
-
 
             // Add memory cache services
             services.AddMemoryCache();
@@ -125,12 +120,13 @@ namespace Microsoft.eShopWeb
         public void ConfigureDevelopment(IApplicationBuilder app,
                                         IHostingEnvironment env,
                                         ILoggerFactory loggerFactory,
-                                        UserManager<ApplicationUser> userManager)
+                                        UserManager<ApplicationUser> userManager,
+                                        CatalogContext catalogContext)
         {
             Configure(app, env);
 
             //Seed Data
-            CatalogContextSeed.SeedAsync(app, loggerFactory)
+            CatalogContextSeed.SeedAsync(app, catalogContext, loggerFactory)
             .Wait();
 
             var defaultUser = new ApplicationUser { UserName = "demouser@microsoft.com", Email = "demouser@microsoft.com" };
@@ -148,17 +144,17 @@ namespace Microsoft.eShopWeb
         public void ConfigureProduction(IApplicationBuilder app,
                                         IHostingEnvironment env,
                                         ILoggerFactory loggerFactory,
-                                        UserManager<ApplicationUser> userManager)
+                                        UserManager<ApplicationUser> userManager,
+                                        CatalogContext catalogContext)
         {
             Configure(app, env);
 
             //Seed Data
-            CatalogContextSeed.SeedAsync(app, loggerFactory)
+            CatalogContextSeed.SeedAsync(app, catalogContext, loggerFactory)
             .Wait();
 
             var defaultUser = new ApplicationUser { UserName = "demouser@microsoft.com", Email = "demouser@microsoft.com" };
             userManager.CreateAsync(defaultUser, "Pass@word1").Wait();
-
         }
     }
 }

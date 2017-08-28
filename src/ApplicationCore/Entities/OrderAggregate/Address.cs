@@ -26,14 +26,14 @@ namespace ApplicationCore.Entities.OrderAggregate
             ZipCode = zipcode;
         }
 
-        protected override IEnumerable<object> GetAtomicValues()
-        {
-            yield return Street;
-            yield return City;
-            yield return State;
-            yield return Country;
-            yield return ZipCode;
-        }
+        //protected override IEnumerable<object> GetAtomicValues()
+        //{
+        //    yield return Street;
+        //    yield return City;
+        //    yield return State;
+        //    yield return Country;
+        //    yield return ZipCode;
+        //}
 
     }
 }

@@ -70,7 +70,6 @@ namespace Microsoft.eShopWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SignOut()
         {
-            HttpContext.Session.Clear();
             await _signInManager.SignOutAsync();
 
             return RedirectToAction(nameof(CatalogController.Index), "Catalog");

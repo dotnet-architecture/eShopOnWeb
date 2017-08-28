@@ -17,23 +17,4 @@ namespace Microsoft.eShopWeb
                 .UseStartup<Startup>()
                 .Build();
     }
-
-    //public static void Main(string[] args)
-    //{
-    //    var host = new WebHostBuilder()
-    //        .UseKestrel()
-    //        .UseUrls("http://0.0.0.0:5106")
-    //        .UseContentRoot(Directory.GetCurrentDirectory())
-    //        .ConfigureLogging(factory =>
-    //        {
-    //            factory.AddConsole(LogLevel.Warning);
-    //            factory.AddDebug();
-    //        })
-    //        .UseIISIntegration()
-    //        .UseStartup<Startup>()
-    //        .UseApplicationInsights()
-    //        .Build();
-
-    //    host.Run();
-    //}
 }
