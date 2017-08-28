@@ -3,12 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
 using Infrastructure.Identity;
 using System;
-using Microsoft.eShopWeb.ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using Web;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Microsoft.eShopWeb.Controllers
 {
@@ -17,18 +16,15 @@ namespace Microsoft.eShopWeb.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly string _externalCookieScheme;
         private readonly IBasketService _basketService;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IOptions<IdentityCookieOptions> identityCookieOptions,
             IBasketService basketService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
             _basketService = basketService;
         }
 
@@ -37,7 +33,7 @@ namespace Microsoft.eShopWeb.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> SignIn(string returnUrl = null)
         {
-            await HttpContext.Authentication.SignOutAsync(_externalCookieScheme);
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             ViewData["ReturnUrl"] = returnUrl;
             return View();
@@ -61,7 +57,7 @@ namespace Microsoft.eShopWeb.Controllers
                 string anonymousBasketId = Request.Cookies[Constants.BASKET_COOKIENAME];
                 if (!String.IsNullOrEmpty(anonymousBasketId))
                 {
-                    _basketService.TransferBasket(anonymousBasketId, model.Email);
+                    await _basketService.TransferBasketAsync(anonymousBasketId, model.Email);
                     Response.Cookies.Delete(Constants.BASKET_COOKIENAME);
                 }
                 return RedirectToLocal(returnUrl);
@@ -74,7 +70,6 @@ namespace Microsoft.eShopWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SignOut()
         {
-            HttpContext.Session.Clear();
             await _signInManager.SignOutAsync();
 
             return RedirectToAction(nameof(CatalogController.Index), "Catalog");

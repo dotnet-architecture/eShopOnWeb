@@ -3,10 +3,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Data
 {
-    public class EfRepository<T> : IRepository<T> where T : BaseEntity
+    /// <summary>
+    /// "There's some repetition here - couldn't we have some the sync methods call the async?"
+    /// https://blogs.msdn.microsoft.com/pfxteam/2012/04/13/should-i-expose-synchronous-wrappers-for-asynchronous-methods/
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class EfRepository<T> : IRepository<T>, IAsyncRepository<T> where T : BaseEntity
     {
         private readonly CatalogContext _dbContext;
 
@@ -17,22 +23,41 @@ namespace Infrastructure.Data
 
         public T GetById(int id)
         {
-            return _dbContext.Set<T>().SingleOrDefault(e => e.Id == id);
+            return _dbContext.Set<T>().Find(id);
         }
 
-        public List<T> List()
+        public async Task<T> GetByIdAsync(int id)
         {
-            return _dbContext.Set<T>().ToList();
+            return await _dbContext.Set<T>().FindAsync(id);
         }
 
-        public List<T> List(ISpecification<T> spec)
+        public IEnumerable<T> ListAll()
+        {
+            return _dbContext.Set<T>().AsEnumerable();
+        }
+
+        public async Task<List<T>> ListAllAsync()
+        {
+            return await _dbContext.Set<T>().ToListAsync();
+        }
+
+        public IEnumerable<T> List(ISpecification<T> spec)
         {
             var queryableResultWithIncludes = spec.Includes
-                .Aggregate(_dbContext.Set<T>().AsQueryable(), 
+                .Aggregate(_dbContext.Set<T>().AsQueryable(),
                             (current, include) => current.Include(include));
             return queryableResultWithIncludes
                             .Where(spec.Criteria)
-                            .ToList();
+                            .AsEnumerable();
+        }
+        public async Task<List<T>> ListAsync(ISpecification<T> spec)
+        {
+            var queryableResultWithIncludes = spec.Includes
+                .Aggregate(_dbContext.Set<T>().AsQueryable(),
+                            (current, include) => current.Include(include));
+            return await queryableResultWithIncludes
+                            .Where(spec.Criteria)
+                            .ToListAsync();
         }
 
         public T Add(T entity)
@@ -43,10 +68,12 @@ namespace Infrastructure.Data
             return entity;
         }
 
-        public void Delete(T entity)
+        public async Task<T> AddAsync(T entity)
         {
-            _dbContext.Set<T>().Remove(entity);
-            _dbContext.SaveChanges();
+            _dbContext.Set<T>().Add(entity);
+            await _dbContext.SaveChangesAsync();
+
+            return entity;
         }
 
         public void Update(T entity)
@@ -54,6 +81,21 @@ namespace Infrastructure.Data
             _dbContext.Entry(entity).State = EntityState.Modified;
             _dbContext.SaveChanges();
         }
+        public async Task UpdateAsync(T entity)
+        {
+            _dbContext.Entry(entity).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
+        }
 
+        public void Delete(T entity)
+        {
+            _dbContext.Set<T>().Remove(entity);
+            _dbContext.SaveChanges();
+        }
+        public async Task DeleteAsync(T entity)
+        {
+            _dbContext.Set<T>().Remove(entity);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

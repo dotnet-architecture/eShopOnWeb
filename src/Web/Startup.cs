@@ -1,41 +1,32 @@
-﻿using Microsoft.eShopWeb.Services;
+﻿using ApplicationCore.Interfaces;
+using ApplicationCore.Services;
+using Infrastructure.Data;
+using Infrastructure.Identity;
+using Infrastructure.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.eShopWeb.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Infrastructure.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Text;
-using Microsoft.AspNetCore.Http;
-using ApplicationCore.Interfaces;
-using Infrastructure.FileSystem;
-using Infrastructure.Logging;
-using Microsoft.AspNetCore.Identity;
 using Web.Services;
-using ApplicationCore.Services;
-using Infrastructure.Data;
 
 namespace Microsoft.eShopWeb
 {
     public class Startup
     {
         private IServiceCollection _services;
-        public Startup(IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
-            Configuration = builder.Build();
+            Configuration = configuration;
         }
 
-        public IConfigurationRoot Configuration { get; }
+        public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             // Requires LocalDB which can be installed with SQL Server Express 2016
@@ -46,11 +37,6 @@ namespace Microsoft.eShopWeb
                 {
                     c.UseInMemoryDatabase("Catalog");
                     //c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection"));
-                    c.ConfigureWarnings(wb =>
-                    {
-                        //By default, in this application, we don't want to have client evaluations
-                        wb.Log(RelationalEventId.QueryClientEvaluationWarning);
-                    });
                 }
                 catch (System.Exception ex )
                 {
@@ -68,6 +54,7 @@ namespace Microsoft.eShopWeb
                 .AddDefaultTokenProviders();
 
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+            services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
 
             services.AddMemoryCache();
             services.AddScoped<ICatalogService, CachedCatalogService>();
@@ -76,11 +63,7 @@ namespace Microsoft.eShopWeb
             services.Configure<CatalogSettings>(Configuration);
             services.AddSingleton<IUriComposer>(new UriComposer(Configuration.Get<CatalogSettings>()));
 
-            // TODO: Remove
-            services.AddSingleton<IImageService, LocalFileImageService>();
-
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
-
 
             // Add memory cache services
             services.AddMemoryCache();
@@ -98,25 +81,8 @@ namespace Microsoft.eShopWeb
             {
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
-
-                app.Map("/allservices", builder => builder.Run(async context =>
-                {
-                    var sb = new StringBuilder();
-                    sb.Append("<h1>All Services</h1>");
-                    sb.Append("<table><thead>");
-                    sb.Append("<tr><th>Type</th><th>Lifetime</th><th>Instance</th></tr>");
-                    sb.Append("</thead><tbody>");
-                    foreach (var svc in _services)
-                    {
-                        sb.Append("<tr>");
-                        sb.Append($"<td>{svc.ServiceType.FullName}</td>");
-                        sb.Append($"<td>{svc.Lifetime}</td>");
-                        sb.Append($"<td>{svc.ImplementationType?.FullName}</td>");
-                        sb.Append("</tr>");
-                    }
-                    sb.Append("</tbody></table>");
-                    await context.Response.WriteAsync(sb.ToString());
-                }));
+                ListAllRegisteredServices(app);
+                app.UseDatabaseErrorPage();
             }
             else
             {
@@ -124,20 +90,43 @@ namespace Microsoft.eShopWeb
             }
 
             app.UseStaticFiles();
-            app.UseIdentity();
+            app.UseAuthentication();
 
             app.UseMvc();
+        }
+
+        private void ListAllRegisteredServices(IApplicationBuilder app)
+        {
+            app.Map("/allservices", builder => builder.Run(async context =>
+            {
+                var sb = new StringBuilder();
+                sb.Append("<h1>All Services</h1>");
+                sb.Append("<table><thead>");
+                sb.Append("<tr><th>Type</th><th>Lifetime</th><th>Instance</th></tr>");
+                sb.Append("</thead><tbody>");
+                foreach (var svc in _services)
+                {
+                    sb.Append("<tr>");
+                    sb.Append($"<td>{svc.ServiceType.FullName}</td>");
+                    sb.Append($"<td>{svc.Lifetime}</td>");
+                    sb.Append($"<td>{svc.ImplementationType?.FullName}</td>");
+                    sb.Append("</tr>");
+                }
+                sb.Append("</tbody></table>");
+                await context.Response.WriteAsync(sb.ToString());
+            }));
         }
 
         public void ConfigureDevelopment(IApplicationBuilder app,
                                         IHostingEnvironment env,
                                         ILoggerFactory loggerFactory,
-                                        UserManager<ApplicationUser> userManager)
+                                        UserManager<ApplicationUser> userManager,
+                                        CatalogContext catalogContext)
         {
             Configure(app, env);
 
             //Seed Data
-            CatalogContextSeed.SeedAsync(app, loggerFactory)
+            CatalogContextSeed.SeedAsync(app, catalogContext, loggerFactory)
             .Wait();
 
             var defaultUser = new ApplicationUser { UserName = "demouser@microsoft.com", Email = "demouser@microsoft.com" };
@@ -155,17 +144,17 @@ namespace Microsoft.eShopWeb
         public void ConfigureProduction(IApplicationBuilder app,
                                         IHostingEnvironment env,
                                         ILoggerFactory loggerFactory,
-                                        UserManager<ApplicationUser> userManager)
+                                        UserManager<ApplicationUser> userManager,
+                                        CatalogContext catalogContext)
         {
             Configure(app, env);
 
             //Seed Data
-            CatalogContextSeed.SeedAsync(app, loggerFactory)
+            CatalogContextSeed.SeedAsync(app, catalogContext, loggerFactory)
             .Wait();
 
             var defaultUser = new ApplicationUser { UserName = "demouser@microsoft.com", Email = "demouser@microsoft.com" };
             userManager.CreateAsync(defaultUser, "Pass@word1").Wait();
-
         }
     }
 }
