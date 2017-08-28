@@ -12,14 +12,17 @@ namespace Web.Services
     {
         private readonly IAsyncRepository<Basket> _basketRepository;
         private readonly IUriComposer _uriComposer;
+        private readonly IAppLogger<BasketService> _logger;
         private readonly IRepository<CatalogItem> _itemRepository;
 
         public BasketService(IAsyncRepository<Basket> basketRepository,
             IRepository<CatalogItem> itemRepository,
-            IUriComposer uriComposer)
+            IUriComposer uriComposer,
+            IAppLogger<BasketService> logger)
         {
             _basketRepository = basketRepository;
             _uriComposer = uriComposer;
+            this._logger = logger;
             _itemRepository = itemRepository;
         }
 
@@ -78,6 +81,20 @@ namespace Web.Services
 
             basket.AddItem(catalogItemId, price, quantity);
 
+            await _basketRepository.UpdateAsync(basket);
+        }
+
+        public async Task SetQuantities(int basketId, Dictionary<string,int> quantities)
+        {
+            var basket = await _basketRepository.GetByIdAsync(basketId);
+            foreach (var item in basket.Items)
+            {
+                if (quantities.TryGetValue(item.Id.ToString(), out var quantity))
+                {
+                    _logger.LogWarning($"Updating quantity of item ID:{item.Id} to {quantity}.");
+                    item.Quantity = quantity;
+                }
+            }
             await _basketRepository.UpdateAsync(basket);
         }
 
