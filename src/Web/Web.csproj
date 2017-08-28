@@ -16,7 +16,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Catalog\" />
-    <Folder Include="wwwroot\css\catalog\" />
     <Folder Include="wwwroot\fonts\" />
   </ItemGroup>
   <ItemGroup>
