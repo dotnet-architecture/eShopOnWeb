@@ -1,27 +1,52 @@
 ﻿using ApplicationCore.Interfaces;
+using Infrastructure.Identity;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopWeb.ViewModels;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Web.ViewComponents
 {
     public class Basket : ViewComponent
     {
-        private readonly IBasketService _cartSvc;
+        private readonly IBasketService _basketService;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public Basket(IBasketService cartSvc) => _cartSvc = cartSvc;
+        public Basket(IBasketService basketService,
+                        SignInManager<ApplicationUser> signInManager)
+        {
+            _basketService = basketService;
+            _signInManager = signInManager;
+        }
 
         public async Task<IViewComponentResult> InvokeAsync(string userName)
         {
             var vm = new BasketComponentViewModel();
-            var itemsInCart = await ItemsInBasketAsync(userName);
-            vm.ItemsCount = itemsInCart;
+            vm.ItemsCount = (await GetBasketViewModelAsync()).Items.Sum(i => i.Quantity);
             return View(vm);
         }
-        private async Task<int> ItemsInBasketAsync(string userName)
+
+        private async Task<BasketViewModel> GetBasketViewModelAsync()
         {
-            var basket = await _cartSvc.GetOrCreateBasketForUser(userName);
-            return basket.Items.Count;
+            if (_signInManager.IsSignedIn(HttpContext.User))
+            {
+                return await _basketService.GetOrCreateBasketForUser(User.Identity.Name);
+            }
+            string anonymousId = GetBasketIdFromCookie();
+            if (anonymousId == null) return new BasketViewModel();
+            return await _basketService.GetOrCreateBasketForUser(anonymousId);
+        }
+
+        private string GetBasketIdFromCookie()
+        {
+            if (Request.Cookies.ContainsKey(Constants.BASKET_COOKIENAME))
+            {
+                return Request.Cookies[Constants.BASKET_COOKIENAME];
+            }
+            return null;
         }
     }
 }
