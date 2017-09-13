@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Infrastructure.Identity;
 using System;
 using Web;
+using System.Collections.Generic;
 
 namespace Microsoft.eShopWeb.Controllers
 {
@@ -17,14 +18,17 @@ namespace Microsoft.eShopWeb.Controllers
         private const string _basketSessionKey = "basketId";
         private readonly IUriComposer _uriComposer;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IAppLogger<BasketController> _logger;
 
         public BasketController(IBasketService basketService,
             IUriComposer uriComposer,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            IAppLogger<BasketController> logger)
         {
             _basketService = basketService;
             _uriComposer = uriComposer;
             _signInManager = signInManager;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -34,6 +38,16 @@ namespace Microsoft.eShopWeb.Controllers
 
             return View(basketModel);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(Dictionary<string, int> items)
+        {
+            var basketViewModel = await GetBasketViewModelAsync();
+            await _basketService.SetQuantities(basketViewModel.Id, items);
+
+            return View(await GetBasketViewModelAsync());
+        }
+
 
         // POST: /Basket/AddToBasket
         [HttpPost]
@@ -51,9 +65,17 @@ namespace Microsoft.eShopWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Checkout()
+        public async Task<IActionResult> Checkout(List<BasketItemViewModel> model)
         {
+            // TODO: Get model binding working with collection of items
             var basket = await GetBasketViewModelAsync();
+            //await _basketService.SetQuantities(basket.Id, quantities);
+
+            foreach (var item in basket.Items)
+            {
+                _logger.LogWarning($"Id: {item.Id}; Qty: {item.Quantity}");
+            }
+            // redirect to OrdersController
 
             await _basketService.Checkout(basket.Id);
 

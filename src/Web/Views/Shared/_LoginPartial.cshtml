@@ -39,7 +39,7 @@
 }
 else
 {
-        <section class="col-lg-4 col-md-5 col-xs-12">
+        <section class="col-lg-1 col-lg-offset-3 col-md-3 col-xs-6">
             <div class="esh-identity">
                 <section class="esh-identity-section">
                     <div class="esh-identity-item">
@@ -52,6 +52,7 @@ else
             </div>
         </section>
 
-        <section class="col-lg-1 col-xs-12">@await Component.InvokeAsync("Basket")
-</section>
+        <section class="col-lg-1 col-xs-12">
+            @await Component.InvokeAsync("Basket")
+        </section>
 }
