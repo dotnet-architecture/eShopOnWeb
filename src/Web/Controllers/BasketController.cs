@@ -39,6 +39,16 @@ namespace Microsoft.eShopWeb.Controllers
             return View(basketModel);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Index(Dictionary<string, int> items)
+        {
+            var basketViewModel = await GetBasketViewModelAsync();
+            await _basketService.SetQuantities(basketViewModel.Id, items);
+
+            return View(await GetBasketViewModelAsync());
+        }
+
+
         // POST: /Basket/AddToBasket
         [HttpPost]
         public async Task<IActionResult> AddToBasket(CatalogItemViewModel productDetails)
