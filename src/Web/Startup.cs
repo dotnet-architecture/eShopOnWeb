@@ -3,6 +3,7 @@ using ApplicationCore.Services;
 using Infrastructure.Data;
 using Infrastructure.Identity;
 using Infrastructure.Logging;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -59,6 +60,7 @@ namespace Microsoft.eShopWeb
             services.AddMemoryCache();
             services.AddScoped<ICatalogService, CachedCatalogService>();
             services.AddScoped<IBasketService, BasketService>();
+            services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<CatalogService>();
             services.Configure<CatalogSettings>(Configuration);
             services.AddSingleton<IUriComposer>(new UriComposer(Configuration.Get<CatalogSettings>()));

@@ -1,8 +1,8 @@
 [
-  //{
-  //  "outputFile": "wwwroot/css/orders/orders.component.css",
-  //  "inputFile": "wwwroot/css/orders/orders.component.scss"
-  //},
+  {
+    "outputFile": "wwwroot/css/orders/orders.component.css",
+    "inputFile": "wwwroot/css/orders/orders.component.scss"
+  },
   //{
   //  "outputFile": "wwwroot/css/orders/orders-new/orders-new.component.css",
   //  "inputFile": "wwwroot/css/orders/orders-new/orders-new.component.scss"

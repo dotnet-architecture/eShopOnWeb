@@ -98,12 +98,10 @@ namespace Web.Services
             await _basketRepository.UpdateAsync(basket);
         }
 
-        public async Task Checkout(int basketId)
+        public async Task DeleteBasketAsync(int basketId)
         {
             var basket = await _basketRepository.GetByIdAsync(basketId);
             
-            // TODO: Actually Process the order
-
             await _basketRepository.DeleteAsync(basket);
         }
 
