@@ -3,6 +3,7 @@ using Microsoft.eShopWeb.ApplicationCore.Entities;
 using System;
 using System.Linq.Expressions;
 using System.Collections.Generic;
+using ApplicationCore.Entities.OrderAggregate;
 
 namespace ApplicationCore.Specifications
 {

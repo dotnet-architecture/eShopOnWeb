@@ -9,6 +9,7 @@ using System;
 using Web;
 using System.Collections.Generic;
 using ApplicationCore.Entities.OrderAggregate;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Microsoft.eShopWeb.Controllers
 {
@@ -69,6 +70,7 @@ namespace Microsoft.eShopWeb.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Checkout(Dictionary<string, int> items)
         {
             var basketViewModel = await GetBasketViewModelAsync();

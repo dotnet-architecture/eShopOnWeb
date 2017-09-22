@@ -14,19 +14,19 @@ namespace Infrastructure.Data
     /// <typeparam name="T"></typeparam>
     public class EfRepository<T> : IRepository<T>, IAsyncRepository<T> where T : BaseEntity
     {
-        private readonly CatalogContext _dbContext;
+        protected readonly CatalogContext _dbContext;
 
         public EfRepository(CatalogContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public T GetById(int id)
+        public virtual T GetById(int id)
         {
             return _dbContext.Set<T>().Find(id);
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public virtual async Task<T> GetByIdAsync(int id)
         {
             return await _dbContext.Set<T>().FindAsync(id);
         }
