@@ -12,6 +12,10 @@
             ProductName = productName;
             PictureUri = pictureUri;
         }
+        private CatalogItemOrdered()
+        {
+            // required by EF
+        }
         public int CatalogItemId { get; private set; }
         public string ProductName { get; private set; }
         public string PictureUri { get; private set; }

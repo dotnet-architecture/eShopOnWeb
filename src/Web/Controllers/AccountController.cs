@@ -36,7 +36,8 @@ namespace Microsoft.eShopWeb.Controllers
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             ViewData["ReturnUrl"] = returnUrl;
-            if (returnUrl.ToLower().Contains("checkout"))
+            if (!String.IsNullOrEmpty(returnUrl) && 
+                returnUrl.ToLower().Contains("checkout"))
             {
                 ViewData["ReturnUrl"] = "/Basket/Index";
             }

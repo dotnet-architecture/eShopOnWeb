@@ -16,6 +16,7 @@ namespace Infrastructure.Data
         {
             return _dbContext.Orders
                 .Include(o => o.OrderItems)
+                .Include("OrderItems.ItemOrdered")
                 .FirstOrDefault();
         }
 
@@ -23,6 +24,7 @@ namespace Infrastructure.Data
         {
             return _dbContext.Orders
                 .Include(o => o.OrderItems)
+                .Include("OrderItems.ItemOrdered")
                 .FirstOrDefaultAsync();
         }
     }

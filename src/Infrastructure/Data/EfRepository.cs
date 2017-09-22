@@ -45,8 +45,11 @@ namespace Infrastructure.Data
         {
             var queryableResultWithIncludes = spec.Includes
                 .Aggregate(_dbContext.Set<T>().AsQueryable(),
-                            (current, include) => current.Include(include));
-            return queryableResultWithIncludes
+                    (current, include) => current.Include(include));
+            var secondaryResult = spec.IncludeStrings
+                .Aggregate(queryableResultWithIncludes,
+                    (current, include) => current.Include(include));
+            return secondaryResult
                             .Where(spec.Criteria)
                             .AsEnumerable();
         }
@@ -54,8 +57,12 @@ namespace Infrastructure.Data
         {
             var queryableResultWithIncludes = spec.Includes
                 .Aggregate(_dbContext.Set<T>().AsQueryable(),
-                            (current, include) => current.Include(include));
-            return await queryableResultWithIncludes
+                    (current, include) => current.Include(include));
+            var secondaryResult = spec.IncludeStrings
+                .Aggregate(queryableResultWithIncludes,
+                    (current, include) => current.Include(include));
+
+            return await secondaryResult
                             .Where(spec.Criteria)
                             .ToListAsync();
         }

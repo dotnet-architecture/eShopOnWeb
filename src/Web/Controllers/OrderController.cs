@@ -28,15 +28,15 @@ namespace Microsoft.eShopWeb.Controllers
                 .Select(o => new OrderViewModel()
                 {
                     OrderDate = o.OrderDate,
-                    //OrderItems = o.OrderItems?.Select(oi => new OrderItemViewModel()
-                    //{
-                    //    Discount = 0,
-                    //    PictureUrl = oi.ItemOrdered.PictureUri,
-                    //    ProductId = oi.ItemOrdered.CatalogItemId,
-                    //    ProductName = oi.ItemOrdered.ProductName,
-                    //    UnitPrice = oi.UnitPrice,
-                    //    Units = oi.Units
-                    //}).ToList(),
+                    OrderItems = o.OrderItems?.Select(oi => new OrderItemViewModel()
+                    {
+                        Discount = 0,
+                        PictureUrl = oi.ItemOrdered.PictureUri,
+                        ProductId = oi.ItemOrdered.CatalogItemId,
+                        ProductName = oi.ItemOrdered.ProductName,
+                        UnitPrice = oi.UnitPrice,
+                        Units = oi.Units
+                    }).ToList(),
                     OrderNumber = o.Id,
                     ShippingAddress = o.ShipToAddress,
                     Status = "Pending",
@@ -49,7 +49,7 @@ namespace Microsoft.eShopWeb.Controllers
         [HttpGet("{orderId}")]
         public async Task<IActionResult> Detail(int orderId)
         {
-            var order = _orderRepository.GetById(orderId);
+            var order = await _orderRepository.GetByIdWithItemsAsync(orderId);
             var viewModel = new OrderViewModel()
             {
                 OrderDate = order.OrderDate,

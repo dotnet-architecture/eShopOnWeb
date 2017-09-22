@@ -29,6 +29,8 @@ namespace ApplicationCore.Specifications
 
         public List<Expression<Func<Basket, object>>> Includes { get; } = new List<Expression<Func<Basket, object>>>();
 
+        public List<string> IncludeStrings { get; } = new List<string>();
+
         public void AddInclude(Expression<Func<Basket, object>> includeExpression)
         {
             Includes.Add(includeExpression);
