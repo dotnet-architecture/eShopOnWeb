@@ -10,39 +10,38 @@ namespace Infrastructure.Data
 {
     public class CatalogContextSeed
     {
-        public static async Task SeedAsync(IApplicationBuilder applicationBuilder, ILoggerFactory loggerFactory, int? retry = 0)
+        public static async Task SeedAsync(IApplicationBuilder applicationBuilder, 
+            CatalogContext catalogContext,
+            ILoggerFactory loggerFactory, int? retry = 0)
         {
             int retryForAvailability = retry.Value;
             try
             {
-                var context = (CatalogContext)applicationBuilder
-                    .ApplicationServices.GetService(typeof(CatalogContext));
-
                 // TODO: Only run this if using a real database
                 // context.Database.Migrate();
 
-                if (!context.CatalogBrands.Any())
+                if (!catalogContext.CatalogBrands.Any())
                 {
-                    context.CatalogBrands.AddRange(
+                    catalogContext.CatalogBrands.AddRange(
                         GetPreconfiguredCatalogBrands());
 
-                    await context.SaveChangesAsync();
+                    await catalogContext.SaveChangesAsync();
                 }
 
-                if (!context.CatalogTypes.Any())
+                if (!catalogContext.CatalogTypes.Any())
                 {
-                    context.CatalogTypes.AddRange(
+                    catalogContext.CatalogTypes.AddRange(
                         GetPreconfiguredCatalogTypes());
 
-                    await context.SaveChangesAsync();
+                    await catalogContext.SaveChangesAsync();
                 }
 
-                if (!context.CatalogItems.Any())
+                if (!catalogContext.CatalogItems.Any())
                 {
-                    context.CatalogItems.AddRange(
+                    catalogContext.CatalogItems.AddRange(
                         GetPreconfiguredItems());
 
-                    await context.SaveChangesAsync();
+                    await catalogContext.SaveChangesAsync();
                 }
             }
             catch (Exception ex)
@@ -50,9 +49,9 @@ namespace Infrastructure.Data
                 if (retryForAvailability < 10)
                 {
                     retryForAvailability++;
-                    var log = loggerFactory.CreateLogger("catalog seed");
+                    var log = loggerFactory.CreateLogger<CatalogContextSeed>();
                     log.LogError(ex.Message);
-                    await SeedAsync(applicationBuilder, loggerFactory, retryForAvailability);
+                    await SeedAsync(applicationBuilder, catalogContext, loggerFactory, retryForAvailability);
                 }
             }
         }

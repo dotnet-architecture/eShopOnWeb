@@ -1,7 +1,6 @@
 ﻿using ApplicationCore.Interfaces;
 using System.Threading.Tasks;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
-using System;
 using System.Linq;
 using Microsoft.eShopWeb.ViewModels;
 using System.Collections.Generic;
@@ -11,23 +10,26 @@ namespace Web.Services
 {
     public class BasketService : IBasketService
     {
-        private readonly IRepository<Basket> _basketRepository;
+        private readonly IAsyncRepository<Basket> _basketRepository;
         private readonly IUriComposer _uriComposer;
+        private readonly IAppLogger<BasketService> _logger;
         private readonly IRepository<CatalogItem> _itemRepository;
 
-        public BasketService(IRepository<Basket> basketRepository,
+        public BasketService(IAsyncRepository<Basket> basketRepository,
             IRepository<CatalogItem> itemRepository,
-            IUriComposer uriComposer)
+            IUriComposer uriComposer,
+            IAppLogger<BasketService> logger)
         {
             _basketRepository = basketRepository;
             _uriComposer = uriComposer;
+            this._logger = logger;
             _itemRepository = itemRepository;
         }
 
         public async Task<BasketViewModel> GetOrCreateBasketForUser(string userName)
         {
             var basketSpec = new BasketWithItemsSpecification(userName);
-            var basket = _basketRepository.List(basketSpec).FirstOrDefault();
+            var basket = (await _basketRepository.ListAsync(basketSpec)).FirstOrDefault();
 
             if(basket == null)
             {
@@ -63,7 +65,7 @@ namespace Web.Services
         public async Task<BasketViewModel> CreateBasketForUser(string userId)
         {
             var basket = new Basket() { BuyerId = userId };
-            _basketRepository.Add(basket);
+            await _basketRepository.AddAsync(basket);
 
             return new BasketViewModel()
             {
@@ -75,30 +77,41 @@ namespace Web.Services
 
         public async Task AddItemToBasket(int basketId, int catalogItemId, decimal price, int quantity)
         {
-            var basket = _basketRepository.GetById(basketId);
+            var basket = await _basketRepository.GetByIdAsync(basketId);
 
             basket.AddItem(catalogItemId, price, quantity);
 
-            _basketRepository.Update(basket);
+            await _basketRepository.UpdateAsync(basket);
         }
 
-        public async Task Checkout(int basketId)
+        public async Task SetQuantities(int basketId, Dictionary<string,int> quantities)
         {
-            var basket = _basketRepository.GetById(basketId);
-            
-            // TODO: Actually Process the order
-
-            _basketRepository.Delete(basket);
+            var basket = await _basketRepository.GetByIdAsync(basketId);
+            foreach (var item in basket.Items)
+            {
+                if (quantities.TryGetValue(item.Id.ToString(), out var quantity))
+                {
+                    _logger.LogWarning($"Updating quantity of item ID:{item.Id} to {quantity}.");
+                    item.Quantity = quantity;
+                }
+            }
+            await _basketRepository.UpdateAsync(basket);
         }
 
-        public Task TransferBasket(string anonymousId, string userName)
+        public async Task DeleteBasketAsync(int basketId)
+        {
+            var basket = await _basketRepository.GetByIdAsync(basketId);
+            
+            await _basketRepository.DeleteAsync(basket);
+        }
+
+        public async Task TransferBasketAsync(string anonymousId, string userName)
         {
             var basketSpec = new BasketWithItemsSpecification(anonymousId);
-            var basket = _basketRepository.List(basketSpec).FirstOrDefault();
-            if (basket == null) return Task.CompletedTask;
+            var basket = (await _basketRepository.ListAsync(basketSpec)).FirstOrDefault();
+            if (basket == null) return;
             basket.BuyerId = userName;
-            _basketRepository.Update(basket);
-            return Task.CompletedTask;
+            await _basketRepository.UpdateAsync(basket);
         }
     }
 }

@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Identity;
 using Infrastructure.Identity;
 using System;
 using Web;
+using System.Collections.Generic;
+using ApplicationCore.Entities.OrderAggregate;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Microsoft.eShopWeb.Controllers
 {
@@ -17,14 +20,20 @@ namespace Microsoft.eShopWeb.Controllers
         private const string _basketSessionKey = "basketId";
         private readonly IUriComposer _uriComposer;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IAppLogger<BasketController> _logger;
+        private readonly IOrderService _orderService;
 
         public BasketController(IBasketService basketService,
+            IOrderService orderService,
             IUriComposer uriComposer,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            IAppLogger<BasketController> logger)
         {
             _basketService = basketService;
             _uriComposer = uriComposer;
             _signInManager = signInManager;
+            _logger = logger;
+            _orderService = orderService;
         }
 
         [HttpGet]
@@ -34,6 +43,16 @@ namespace Microsoft.eShopWeb.Controllers
 
             return View(basketModel);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(Dictionary<string, int> items)
+        {
+            var basketViewModel = await GetBasketViewModelAsync();
+            await _basketService.SetQuantities(basketViewModel.Id, items);
+
+            return View(await GetBasketViewModelAsync());
+        }
+
 
         // POST: /Basket/AddToBasket
         [HttpPost]
@@ -51,11 +70,15 @@ namespace Microsoft.eShopWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Checkout()
+        [Authorize]
+        public async Task<IActionResult> Checkout(Dictionary<string, int> items)
         {
-            var basket = await GetBasketViewModelAsync();
+            var basketViewModel = await GetBasketViewModelAsync();
+            await _basketService.SetQuantities(basketViewModel.Id, items);
 
-            await _basketService.Checkout(basket.Id);
+            await _orderService.CreateOrderAsync(basketViewModel.Id, new Address("123 Main St.", "Kent", "OH", "United States", "44240"));
+
+            await _basketService.DeleteBasketAsync(basketViewModel.Id);
 
             return View("Checkout");
         }

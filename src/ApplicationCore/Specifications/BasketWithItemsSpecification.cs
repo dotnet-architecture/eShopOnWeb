@@ -3,6 +3,7 @@ using Microsoft.eShopWeb.ApplicationCore.Entities;
 using System;
 using System.Linq.Expressions;
 using System.Collections.Generic;
+using ApplicationCore.Entities.OrderAggregate;
 
 namespace ApplicationCore.Specifications
 {
@@ -27,6 +28,8 @@ namespace ApplicationCore.Specifications
             || (BuyerId != null && b.BuyerId == BuyerId);
 
         public List<Expression<Func<Basket, object>>> Includes { get; } = new List<Expression<Func<Basket, object>>>();
+
+        public List<string> IncludeStrings { get; } = new List<string>();
 
         public void AddInclude(Expression<Func<Basket, object>> includeExpression)
         {

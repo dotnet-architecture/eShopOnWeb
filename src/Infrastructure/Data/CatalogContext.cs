@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.EntityFrameworkCore.Metadata;
+using ApplicationCore.Entities.OrderAggregate;
 
 namespace Infrastructure.Data
 {
@@ -20,6 +21,8 @@ namespace Infrastructure.Data
         public DbSet<CatalogItem> CatalogItems { get; set; }
         public DbSet<CatalogBrand> CatalogBrands { get; set; }
         public DbSet<CatalogType> CatalogTypes { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -27,6 +30,8 @@ namespace Infrastructure.Data
             builder.Entity<CatalogBrand>(ConfigureCatalogBrand);
             builder.Entity<CatalogType>(ConfigureCatalogType);
             builder.Entity<CatalogItem>(ConfigureCatalogItem);
+            builder.Entity<Order>(ConfigureOrder);
+            builder.Entity<OrderItem>(ConfigureOrderItem);
         }
 
         private void ConfigureBasket(EntityTypeBuilder<Basket> builder)
@@ -36,7 +41,7 @@ namespace Infrastructure.Data
             navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
         }
 
-        void ConfigureCatalogItem(EntityTypeBuilder<CatalogItem> builder)
+        private void ConfigureCatalogItem(EntityTypeBuilder<CatalogItem> builder)
         {
             builder.ToTable("Catalog");
 
@@ -63,7 +68,7 @@ namespace Infrastructure.Data
                 .HasForeignKey(ci => ci.CatalogTypeId);
         }
 
-        void ConfigureCatalogBrand(EntityTypeBuilder<CatalogBrand> builder)
+        private void ConfigureCatalogBrand(EntityTypeBuilder<CatalogBrand> builder)
         {
             builder.ToTable("CatalogBrand");
 
@@ -78,7 +83,7 @@ namespace Infrastructure.Data
                 .HasMaxLength(100);
         }
 
-        void ConfigureCatalogType(EntityTypeBuilder<CatalogType> builder)
+        private void ConfigureCatalogType(EntityTypeBuilder<CatalogType> builder)
         {
             builder.ToTable("CatalogType");
 
@@ -92,5 +97,14 @@ namespace Infrastructure.Data
                 .IsRequired()
                 .HasMaxLength(100);
         }
+        private void ConfigureOrder(EntityTypeBuilder<Order> builder)
+        {
+            builder.OwnsOne(o => o.ShipToAddress);
+        }
+        private void ConfigureOrderItem(EntityTypeBuilder<OrderItem> builder)
+        {
+            builder.OwnsOne(i => i.ItemOrdered);
+        }
+
     }
 }

@@ -1,5 +1,4 @@
 @using Microsoft.AspNetCore.Identity
-@*@inject IIdentityParser<ApplicationUser> UserManager*@
 
     @if (Context.User.Identity.IsAuthenticated)
 {
@@ -14,13 +13,13 @@
 
                     <section class="esh-identity-drop">
 
-                        @*<a class="esh-identity-item"
+                        <a class="esh-identity-item"
                            asp-controller="Order"
                            asp-action="Index">
 
                             <div class="esh-identity-name esh-identity-name--upper">My orders</div>
                             <img class="esh-identity-image" src="~/images/my_orders.png">
-                        </a>*@
+                        </a>
 
                         <a class="esh-identity-item"
                            href="javascript:document.getElementById('logoutForm').submit()">
@@ -33,9 +32,9 @@
             </div>
         </section>
 
-        @*<section class="col-lg-1 col-xs-12">
-            @await Component.InvokeAsync("Basket", new { user = UserManager.Parse(User) })
-        </section>*@
+        <section class="col-lg-1 col-xs-12">
+            @await Component.InvokeAsync("Basket",  User.Identity.Name)
+        </section>
 
 }
 else
@@ -53,5 +52,7 @@ else
             </div>
         </section>
 
-        @*<section class="col-lg-1 col-xs-12"></section>*@
+        <section class="col-lg-1 col-xs-12">
+            @await Component.InvokeAsync("Basket")
+        </section>
 }
