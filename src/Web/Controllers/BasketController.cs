@@ -8,6 +8,8 @@ using Infrastructure.Identity;
 using System;
 using Web;
 using System.Collections.Generic;
+using ApplicationCore.Entities.OrderAggregate;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Microsoft.eShopWeb.Controllers
 {
@@ -19,8 +21,10 @@ namespace Microsoft.eShopWeb.Controllers
         private readonly IUriComposer _uriComposer;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IAppLogger<BasketController> _logger;
+        private readonly IOrderService _orderService;
 
         public BasketController(IBasketService basketService,
+            IOrderService orderService,
             IUriComposer uriComposer,
             SignInManager<ApplicationUser> signInManager,
             IAppLogger<BasketController> logger)
@@ -29,6 +33,7 @@ namespace Microsoft.eShopWeb.Controllers
             _uriComposer = uriComposer;
             _signInManager = signInManager;
             _logger = logger;
+            _orderService = orderService;
         }
 
         [HttpGet]
@@ -65,19 +70,15 @@ namespace Microsoft.eShopWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Checkout(List<BasketItemViewModel> model)
+        [Authorize]
+        public async Task<IActionResult> Checkout(Dictionary<string, int> items)
         {
-            // TODO: Get model binding working with collection of items
-            var basket = await GetBasketViewModelAsync();
-            //await _basketService.SetQuantities(basket.Id, quantities);
+            var basketViewModel = await GetBasketViewModelAsync();
+            await _basketService.SetQuantities(basketViewModel.Id, items);
 
-            foreach (var item in basket.Items)
-            {
-                _logger.LogWarning($"Id: {item.Id}; Qty: {item.Quantity}");
-            }
-            // redirect to OrdersController
+            await _orderService.CreateOrderAsync(basketViewModel.Id, new Address("123 Main St.", "Kent", "OH", "United States", "44240"));
 
-            await _basketService.Checkout(basket.Id);
+            await _basketService.DeleteBasketAsync(basketViewModel.Id);
 
             return View("Checkout");
         }

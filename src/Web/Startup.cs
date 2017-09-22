@@ -1,8 +1,10 @@
-﻿using ApplicationCore.Interfaces;
+﻿using ApplicationCore.Entities.OrderAggregate;
+using ApplicationCore.Interfaces;
 using ApplicationCore.Services;
 using Infrastructure.Data;
 using Infrastructure.Identity;
 using Infrastructure.Logging;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,6 +14,7 @@ using Microsoft.eShopWeb.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Text;
 using Web.Services;
 
@@ -53,12 +56,22 @@ namespace Microsoft.eShopWeb
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromHours(1);
+                options.LoginPath = "/Account/Signin";
+                options.LogoutPath = "/Account/Signout";
+            });
+
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
 
             services.AddMemoryCache();
             services.AddScoped<ICatalogService, CachedCatalogService>();
             services.AddScoped<IBasketService, BasketService>();
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<CatalogService>();
             services.Configure<CatalogSettings>(Configuration);
             services.AddSingleton<IUriComposer>(new UriComposer(Configuration.Get<CatalogSettings>()));
