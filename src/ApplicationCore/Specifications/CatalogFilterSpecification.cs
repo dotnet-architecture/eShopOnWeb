@@ -1,34 +1,14 @@
-﻿using ApplicationCore.Interfaces;
-using Microsoft.eShopWeb.ApplicationCore.Entities;
-using System;
-using System.Linq.Expressions;
-using System.Collections.Generic;
+﻿using Microsoft.eShopWeb.ApplicationCore.Entities;
 
 namespace ApplicationCore.Specifications
 {
 
-    public class CatalogFilterSpecification : ISpecification<CatalogItem>
+    public class CatalogFilterSpecification : BaseSpecification<CatalogItem>
     {
         public CatalogFilterSpecification(int? brandId, int? typeId)
+            : base(i => (!brandId.HasValue || i.CatalogBrandId == brandId) &&
+                (!typeId.HasValue || i.CatalogTypeId == typeId))
         {
-            BrandId = brandId;
-            TypeId = typeId;
-        }
-
-        public int? BrandId { get; }
-        public int? TypeId { get; }
-
-        public Expression<Func<CatalogItem, bool>> Criteria => 
-            i => (!BrandId.HasValue || i.CatalogBrandId == BrandId) && 
-                (!TypeId.HasValue || i.CatalogTypeId == TypeId);
-
-        public List<Expression<Func<CatalogItem, object>>> Includes { get; }  = new List<Expression<Func<CatalogItem, object>>>();
-
-        public List<string> IncludeStrings { get; } = new List<string>();
-
-        public void AddInclude(Expression<Func<CatalogItem, object>> includeExpression)
-        {
-            Includes.Add(includeExpression);
         }
     }
 }

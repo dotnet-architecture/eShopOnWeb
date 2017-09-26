@@ -9,6 +9,6 @@ namespace ApplicationCore.Interfaces
         Expression<Func<T, bool>> Criteria { get; }
         List<Expression<Func<T, object>>> Includes { get; }
         List<string> IncludeStrings { get; }
-        void AddInclude(Expression<Func<T, object>> includeExpression);
+        //void AddInclude(Expression<Func<T, object>> includeExpression);
     }
 }
