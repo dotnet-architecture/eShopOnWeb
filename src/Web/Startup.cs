@@ -32,14 +32,15 @@ namespace Microsoft.eShopWeb
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // Requires LocalDB which can be installed with SQL Server Express 2016
-            // https://www.microsoft.com/en-us/download/details.aspx?id=54284
             services.AddDbContext<CatalogContext>(c =>
             {
                 try
                 {
-                    c.UseInMemoryDatabase("Catalog");
-                    //c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection"));
+                    //c.UseInMemoryDatabase("Catalog");
+
+                    // Requires LocalDB which can be installed with SQL Server Express 2016
+                    // https://www.microsoft.com/en-us/download/details.aspx?id=54284
+                    c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection"));
                 }
                 catch (System.Exception ex )
                 {
@@ -49,8 +50,8 @@ namespace Microsoft.eShopWeb
 
             // Add Identity DbContext
             services.AddDbContext<AppIdentityDbContext>(options =>
-                options.UseInMemoryDatabase("Identity"));
-                //options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
+                //options.UseInMemoryDatabase("Identity"));
+                options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
@@ -129,44 +130,21 @@ namespace Microsoft.eShopWeb
             }));
         }
 
-        public void ConfigureDevelopment(IApplicationBuilder app,
-                                        IHostingEnvironment env,
-                                        ILoggerFactory loggerFactory,
-                                        UserManager<ApplicationUser> userManager,
-                                        CatalogContext catalogContext)
-        {
-            Configure(app, env);
+        // moved to Program.cs
+        //public void ConfigureDevelopment(IApplicationBuilder app,
+        //                                IHostingEnvironment env,
+        //                                ILoggerFactory loggerFactory,
+        //                                UserManager<ApplicationUser> userManager,
+        //                                CatalogContext catalogContext)
+        //{
+        //    Configure(app, env);
 
-            //Seed Data
-            CatalogContextSeed.SeedAsync(app, catalogContext, loggerFactory)
-            .Wait();
+        //    //Seed Data
+        //    CatalogContextSeed.SeedAsync(app, catalogContext, loggerFactory)
+        //    .Wait();
 
-            var defaultUser = new ApplicationUser { UserName = "demouser@microsoft.com", Email = "demouser@microsoft.com" };
-            userManager.CreateAsync(defaultUser, "Pass@word1").Wait();
-        }
-
-        /// <summary>
-        /// Use this section to perform production-specific configuration.
-        /// In this case it is duplicating Development so that deployments to Azure will have sample data immediately.
-        /// </summary>
-        /// <param name="app"></param>
-        /// <param name="env"></param>
-        /// <param name="loggerFactory"></param>
-        /// <param name="userManager"></param>
-        public void ConfigureProduction(IApplicationBuilder app,
-                                        IHostingEnvironment env,
-                                        ILoggerFactory loggerFactory,
-                                        UserManager<ApplicationUser> userManager,
-                                        CatalogContext catalogContext)
-        {
-            Configure(app, env);
-
-            //Seed Data
-            CatalogContextSeed.SeedAsync(app, catalogContext, loggerFactory)
-            .Wait();
-
-            var defaultUser = new ApplicationUser { UserName = "demouser@microsoft.com", Email = "demouser@microsoft.com" };
-            userManager.CreateAsync(defaultUser, "Pass@word1").Wait();
-        }
+        //    var defaultUser = new ApplicationUser { UserName = "demouser@microsoft.com", Email = "demouser@microsoft.com" };
+        //    userManager.CreateAsync(defaultUser, "Pass@word1").Wait();
+        //}
     }
 }
