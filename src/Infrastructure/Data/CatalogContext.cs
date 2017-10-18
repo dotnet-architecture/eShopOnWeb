@@ -1,8 +1,6 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
-using Microsoft.EntityFrameworkCore.Metadata;
 using ApplicationCore.Entities.OrderAggregate;
 
 namespace Infrastructure.Data
@@ -105,6 +103,5 @@ namespace Infrastructure.Data
         {
             builder.OwnsOne(i => i.ItemOrdered);
         }
-
     }
 }
