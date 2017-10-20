@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WebRazorPages.Pages
+namespace Microsoft.eShopWeb.RazorPages.Pages
 {
     public class ErrorModel : PageModel
     {
