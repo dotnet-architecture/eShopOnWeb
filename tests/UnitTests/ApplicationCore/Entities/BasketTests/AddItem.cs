@@ -1,10 +1,8 @@
-﻿using ApplicationCore.Specifications;
-using Microsoft.eShopWeb.ApplicationCore.Entities;
-using System.Collections.Generic;
+﻿using Microsoft.eShopWeb.ApplicationCore.Entities;
 using System.Linq;
 using Xunit;
 
-namespace UnitTests
+namespace UnitTests.ApplicationCore.Entities.BasketTests
 {
     public class AddItem
     {
