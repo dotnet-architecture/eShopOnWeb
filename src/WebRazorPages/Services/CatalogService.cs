@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using ApplicationCore.Interfaces;
+using ApplicationCore.Specifications;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.eShopWeb.ApplicationCore.Entities;
+using Microsoft.eShopWeb.RazorPages.Interfaces;
+using Microsoft.eShopWeb.RazorPages.ViewModels;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.eShopWeb.ViewModels;
-using Microsoft.eShopWeb.ApplicationCore.Entities;
-using Microsoft.Extensions.Logging;
-using ApplicationCore.Interfaces;
-using System;
-using ApplicationCore.Specifications;
 
 namespace Microsoft.eShopWeb.RazorPages.Services
 {

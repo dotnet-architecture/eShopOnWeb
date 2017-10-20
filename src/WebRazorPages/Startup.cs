@@ -1,4 +1,3 @@
-using ApplicationCore.Entities.OrderAggregate;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Services;
 using Infrastructure.Data;
@@ -10,13 +9,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.eShopWeb.Services;
+using Microsoft.eShopWeb.RazorPages.Interfaces;
+using Microsoft.eShopWeb.RazorPages.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Text;
-using Web.Services;
 
 namespace Microsoft.eShopWeb.RazorPages
 {

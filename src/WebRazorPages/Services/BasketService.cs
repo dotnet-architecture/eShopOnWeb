@@ -2,9 +2,10 @@
 using System.Threading.Tasks;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using System.Linq;
-using Microsoft.eShopWeb.ViewModels;
 using System.Collections.Generic;
 using ApplicationCore.Specifications;
+using Microsoft.eShopWeb.RazorPages.Interfaces;
+using Microsoft.eShopWeb.RazorPages.ViewModels;
 
 namespace Microsoft.eShopWeb.RazorPages.Services
 {

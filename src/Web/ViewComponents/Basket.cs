@@ -1,10 +1,10 @@
-﻿using ApplicationCore.Interfaces;
-using Infrastructure.Identity;
+﻿using Infrastructure.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.eShopWeb;
+using Microsoft.eShopWeb.Interfaces;
 using Microsoft.eShopWeb.ViewModels;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 

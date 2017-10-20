@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.eShopWeb.ViewModels;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.eShopWeb.RazorPages.Interfaces;
+using Microsoft.eShopWeb.RazorPages.ViewModels;
 using Microsoft.Extensions.Caching.Memory;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.RazorPages.Services
 {
