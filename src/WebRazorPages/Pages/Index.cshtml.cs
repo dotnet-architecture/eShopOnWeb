@@ -15,13 +15,11 @@ namespace Microsoft.eShopWeb.RazorPages.Pages
             _catalogService = catalogService;
         }
 
-        [BindProperty]
-        public CatalogIndexViewModel CatalogModel { get; set; }
+        public CatalogIndexViewModel CatalogModel { get; set; } = new CatalogIndexViewModel();
 
-        public async Task OnGet(int? brandFilterApplied, int? typesFilterApplied, int? page)
+        public async Task OnGet(CatalogIndexViewModel catalogModel, int? pageId)
         {
-            var itemsPage = 10;
-            CatalogModel = await _catalogService.GetCatalogItems(page ?? 0, itemsPage, brandFilterApplied, typesFilterApplied);
+            CatalogModel = await _catalogService.GetCatalogItems(pageId ?? 0, Constants.ITEMS_PER_PAGE, catalogModel.BrandFilterApplied, catalogModel.TypesFilterApplied);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{pageId?}"
 @{
     ViewData["Title"] = "Catalog";
     @model IndexModel
@@ -11,7 +11,7 @@
 
 <section class="esh-catalog-filters">
     <div class="container">
-        <form asp-action="Index" asp-controller="Catalog" method="post">
+        <form method="get">
             <label class="esh-catalog-label" data-title="brand">
                 <select asp-for="@Model.CatalogModel.BrandFilterApplied" asp-items="@Model.CatalogModel.Brands" class="esh-catalog-filter"></select>
             </label>

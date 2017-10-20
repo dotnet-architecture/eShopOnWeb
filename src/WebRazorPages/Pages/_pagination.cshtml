@@ -7,9 +7,7 @@
 				<div class="col-md-2 col-xs-12">
 					<a class="esh-pager-item-left esh-pager-item--navigable @Model.Previous"
 					   id="Previous"
-					   asp-controller="Catalog"
-					   asp-action="Index"
-					   asp-route-page="@(Model.ActualPage - 1)"
+					   asp-route-pageid="@(Model.ActualPage - 1)"
 					   aria-label="Previous">
 						Previous
 					</a>
@@ -24,9 +22,7 @@
 				<div class="col-md-2 col-xs-12">
 					<a class="esh-pager-item-right esh-pager-item--navigable @Model.Next"
 					   id="Next"
-					   asp-controller="Catalog"
-					   asp-action="Index"
-					   asp-route-page="@(Model.ActualPage + 1)"
+					   asp-route-pageid="@(Model.ActualPage + 1)"
 					   aria-label="Next">
 						Next
 					</a>
