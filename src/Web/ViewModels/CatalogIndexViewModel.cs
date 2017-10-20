@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.eShopWeb.ApplicationCore.Entities;
 using System.Collections.Generic;
 
 namespace Microsoft.eShopWeb.ViewModels

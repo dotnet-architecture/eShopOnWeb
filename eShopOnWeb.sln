@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.12
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{419A6ACE-0419-4315-A6FB-B0E63D39432E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "src\Infrastructure\Infrastructure.csproj", "{7C461394-ABDC-43CD-A798-71249C58BA67}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "src\Infrastructure\Infrastructure.csproj", "{7C461394-ABDC-43CD-A798-71249C58BA67}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "src\Web\Web.csproj", "{9CB6566E-E86A-4C07-BB8D-E0B95BCD4BD2}"
 EndProject
@@ -13,11 +13,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationCore", "src\Appl
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{15EA4737-125B-4E6E-A806-E13B7EBCDCCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "tests\UnitTests\UnitTests.csproj", "{EF6877E6-59CB-43A7-8C2C-E70DD70CC5B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "tests\UnitTests\UnitTests.csproj", "{EF6877E6-59CB-43A7-8C2C-E70DD70CC5B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "tests\IntegrationTests\IntegrationTests.csproj", "{0F576306-7E2D-49B7-87B1-EB5D94CFD5FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "tests\IntegrationTests\IntegrationTests.csproj", "{0F576306-7E2D-49B7-87B1-EB5D94CFD5FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunctionalTests", "tests\FunctionalTests\FunctionalTests.csproj", "{7EFB5482-F942-4C3D-94B0-9B70596E6D0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunctionalTests", "tests\FunctionalTests\FunctionalTests.csproj", "{7EFB5482-F942-4C3D-94B0-9B70596E6D0A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebRazorPages", "src\WebRazorPages\WebRazorPages.csproj", "{3CA62E98-218E-4A74-BF79-1098900BD421}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +51,10 @@ Global
 		{7EFB5482-F942-4C3D-94B0-9B70596E6D0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EFB5482-F942-4C3D-94B0-9B70596E6D0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7EFB5482-F942-4C3D-94B0-9B70596E6D0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CA62E98-218E-4A74-BF79-1098900BD421}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CA62E98-218E-4A74-BF79-1098900BD421}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CA62E98-218E-4A74-BF79-1098900BD421}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CA62E98-218E-4A74-BF79-1098900BD421}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,5 +66,9 @@ Global
 		{EF6877E6-59CB-43A7-8C2C-E70DD70CC5B6} = {15EA4737-125B-4E6E-A806-E13B7EBCDCCF}
 		{0F576306-7E2D-49B7-87B1-EB5D94CFD5FC} = {15EA4737-125B-4E6E-A806-E13B7EBCDCCF}
 		{7EFB5482-F942-4C3D-94B0-9B70596E6D0A} = {15EA4737-125B-4E6E-A806-E13B7EBCDCCF}
+		{3CA62E98-218E-4A74-BF79-1098900BD421} = {419A6ACE-0419-4315-A6FB-B0E63D39432E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {49813262-5DA3-4D61-ABD3-493C74CE8C2B}
 	EndGlobalSection
 EndGlobal

@@ -6,10 +6,10 @@ using Microsoft.eShopWeb.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Infrastructure.Identity;
 using System;
-using Web;
 using System.Collections.Generic;
 using ApplicationCore.Entities.OrderAggregate;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.eShopWeb.Interfaces;
 
 namespace Microsoft.eShopWeb.Controllers
 {
