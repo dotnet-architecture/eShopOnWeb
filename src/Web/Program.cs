@@ -18,25 +18,20 @@ namespace Microsoft.eShopWeb
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-
+                var loggerFactory = services.GetRequiredService<ILoggerFactory>();
                 try
                 {
                     var catalogContext = services.GetRequiredService<CatalogContext>();
-                    var loggerFactory = services.GetRequiredService<ILoggerFactory>();
                     CatalogContextSeed.SeedAsync(catalogContext, loggerFactory)
             .Wait();
 
-                    // move to IdentitySeed method
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                    var defaultUser = new ApplicationUser { UserName = "demouser@microsoft.com", Email = "demouser@microsoft.com" };
-                    userManager.CreateAsync(defaultUser, "Pass@word1").Wait();
-
+                    AppIdentityDbContextSeed.SeedAsync(userManager).Wait();
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.ToString());
-                    //var logger = services.GetRequiredService<ILogger<Program>>();
-                    //logger.LogError(ex, "An error occurred seeding the DB.");
+                    var logger = loggerFactory.CreateLogger<Program>();
+                    logger.LogError(ex, "An error occurred seeding the DB.");
                 }
             }
 
