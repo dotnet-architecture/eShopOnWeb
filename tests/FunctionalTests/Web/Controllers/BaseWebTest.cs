@@ -6,6 +6,11 @@ using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.eShopWeb;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Logging;
+using Infrastructure.Data;
+using Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FunctionalTests.Web.Controllers
 {
@@ -25,12 +30,25 @@ namespace FunctionalTests.Web.Controllers
             _contentRoot = GetProjectPath("src", startupAssembly);
             var builder = new WebHostBuilder()
                 .UseContentRoot(_contentRoot)
+                .UseEnvironment("Testing")
                 .UseStartup<Startup>();
 
             var server = new TestServer(builder);
-            var client = server.CreateClient();
 
-            return client;
+            // seed data
+            using (var scope = server.Host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+                var catalogContext = services.GetRequiredService<CatalogContext>();
+                CatalogContextSeed.SeedAsync(catalogContext, loggerFactory)
+        .Wait();
+
+                var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+                AppIdentityDbContextSeed.SeedAsync(userManager).Wait();
+            }
+
+            return server.CreateClient();
         }
 
         /// <summary>

@@ -30,29 +30,54 @@ namespace Microsoft.eShopWeb
 
         public IConfiguration Configuration { get; }
 
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureDevelopmentServices(IServiceCollection services)
         {
+            // use in-memory database
+            ConfigureTestingServices(services);
+
+            // use real database
+            // ConfigureProductionServices(services);
+
+        }
+        public void ConfigureTestingServices(IServiceCollection services)
+        {
+            // use in-memory database
+            services.AddDbContext<CatalogContext>(c => 
+                c.UseInMemoryDatabase("Catalog"));
+
+            // Add Identity DbContext
+            services.AddDbContext<AppIdentityDbContext>(options =>
+                options.UseInMemoryDatabase("Identity"));
+
+            ConfigureServices(services);
+        }
+
+        public void ConfigureProductionServices(IServiceCollection services)
+        {
+            // use real database
             services.AddDbContext<CatalogContext>(c =>
             {
                 try
                 {
-                    //c.UseInMemoryDatabase("Catalog");
-
                     // Requires LocalDB which can be installed with SQL Server Express 2016
                     // https://www.microsoft.com/en-us/download/details.aspx?id=54284
                     c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection"));
                 }
-                catch (System.Exception ex )
+                catch (System.Exception ex)
                 {
                     var message = ex.Message;
-                }                
+                }
             });
 
             // Add Identity DbContext
             services.AddDbContext<AppIdentityDbContext>(options =>
-                //options.UseInMemoryDatabase("Identity"));
                 options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
 
+            ConfigureServices(services);
+        }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
                 .AddDefaultTokenProviders();
@@ -129,22 +154,5 @@ namespace Microsoft.eShopWeb
                 await context.Response.WriteAsync(sb.ToString());
             }));
         }
-
-        // moved to Program.cs
-        //public void ConfigureDevelopment(IApplicationBuilder app,
-        //                                IHostingEnvironment env,
-        //                                ILoggerFactory loggerFactory,
-        //                                UserManager<ApplicationUser> userManager,
-        //                                CatalogContext catalogContext)
-        //{
-        //    Configure(app, env);
-
-        //    //Seed Data
-        //    CatalogContextSeed.SeedAsync(app, catalogContext, loggerFactory)
-        //    .Wait();
-
-        //    var defaultUser = new ApplicationUser { UserName = "demouser@microsoft.com", Email = "demouser@microsoft.com" };
-        //    userManager.CreateAsync(defaultUser, "Pass@word1").Wait();
-        //}
     }
 }
