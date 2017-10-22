@@ -1,41 +1,39 @@
 @page
-@using System.Collections.Generic
-@using Microsoft.AspNetCore.Http
-@using Microsoft.AspNetCore.Http.Authentication
-@model RegisterViewModel
+@model RegisterModel
 @{
     ViewData["Title"] = "Register";
 }
     <div class="brand-header-block">
         <ul class="container">
-            <li class="active" style="margin-right: 65px;">Already have an account? <a asp-action="Signin">LOGIN</a></li>
+            <li class="active" style="margin-right: 65px;">Already have an account? 
+            <a asp-page="/Account/Signin">LOGIN</a></li>
         </ul>
     </div>
     <div class="container account-login-container">
         <div class="row">
             <div class="col-md-12">
                 <section>
-                    <form asp-controller="Account" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+                    <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
                         <div asp-validation-summary="All" class="text-danger"></div>
                         <div class="form-group">
-                            <label asp-for="Email" class="col-md-2 control-label"></label>
+                            <label asp-for="UserDetails.Email" class="col-md-2 control-label"></label>
                             <div class="col-md-10">
-                                <input asp-for="Email" class="form-control" />
-                                <span asp-validation-for="Email" class="text-danger"></span>
+                                <input asp-for="UserDetails.Email" class="form-control" />
+                                <span asp-validation-for="UserDetails.Email" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label asp-for="Password" class="col-md-2 control-label"></label>
+                            <label asp-for="UserDetails.Password" class="col-md-2 control-label"></label>
                             <div class="col-md-10">
-                                <input asp-for="Password" class="form-control" />
-                                <span asp-validation-for="Password" class="text-danger"></span>
+                                <input asp-for="UserDetails.Password" class="form-control" />
+                                <span asp-validation-for="UserDetails.Password" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label asp-for="ConfirmPassword" class="col-md-2 control-label"></label>
+                            <label asp-for="UserDetails.ConfirmPassword" class="col-md-2 control-label"></label>
                             <div class="col-md-10">
-                                <input asp-for="ConfirmPassword" class="form-control" />
-                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                <input asp-for="UserDetails.ConfirmPassword" class="form-control" />
+                                <span asp-validation-for="UserDetails.ConfirmPassword" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form-group">

@@ -13,7 +13,7 @@ namespace Microsoft.eShopWeb.RazorPages.Pages.Account
 {
     public class SigninModel : PageModel
     {
-                private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
 
         public SigninModel(SignInManager<ApplicationUser> signInManager)
@@ -27,14 +27,18 @@ namespace Microsoft.eShopWeb.RazorPages.Pages.Account
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             ViewData["ReturnUrl"] = returnUrl;
-            if (!String.IsNullOrEmpty(returnUrl) && 
+            if (!String.IsNullOrEmpty(returnUrl) &&
                 returnUrl.IndexOf("checkout", StringComparison.OrdinalIgnoreCase) >= 0)
             {
                 ViewData["ReturnUrl"] = "/Basket/Index";
             }
         }
+        public async Task OnPost()
+        {
 
-        public async Task OnGetSignout()
+        }
+
+        public async Task OnPostSignout()
         {
             await _signInManager.SignOutAsync();
 

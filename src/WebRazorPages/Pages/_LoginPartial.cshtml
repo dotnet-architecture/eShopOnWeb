@@ -4,18 +4,16 @@
 {
         <section class="col-lg-4 col-md-5 col-xs-12">
             <div class="esh-identity">
-                <form asp-area="" asp-page="Account/Signin?handler=signout" method="get" id="logoutForm" class="navbar-right">
+                <form asp-page="Account/Signin" asp-page-handler="signout" method="post" 
+                      id="logoutForm" class="navbar-right">
                     <section class="esh-identity-section">
-
                         @*<div class="esh-identity-name">@User.FindFirst(x => x.Type == "preferred_username").Value</div>*@
                         <img class="esh-identity-image" src="~/images/arrow-down.png">
                     </section>
 
                     <section class="esh-identity-drop">
-
                         <a class="esh-identity-item"
-                           asp-controller="Order"
-                           asp-action="Index">
+                           asp-page="Order/Index">
 
                             <div class="esh-identity-name esh-identity-name--upper">My orders</div>
                             <img class="esh-identity-image" src="~/images/my_orders.png">
@@ -23,7 +21,6 @@
 
                         <a class="esh-identity-item"
                            href="javascript:document.getElementById('logoutForm').submit()">
-
                             <div class="esh-identity-name esh-identity-name--upper">Log Out</div>
                             <img class="esh-identity-image" src="~/images/logout.png">
                         </a>
@@ -44,7 +41,7 @@ else
                 <section class="esh-identity-section">
                     <div class="esh-identity-item">
 
-                        <a asp-area="" asp-controller="Account" asp-action="SignIn" class="esh-identity-name esh-identity-name--upper">
+                        <a asp-area="" asp-page="Account/Signin" class="esh-identity-name esh-identity-name--upper">
                             Login
                         </a>
                     </div>
