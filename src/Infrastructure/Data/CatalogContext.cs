@@ -95,6 +95,10 @@ namespace Infrastructure.Data
 
         private void ConfigureOrder(EntityTypeBuilder<Order> builder)
         {
+            var navigation = builder.Metadata.FindNavigation(nameof(Order.OrderItems));
+
+            navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
+
             builder.OwnsOne(o => o.ShipToAddress);
         }
 
