@@ -11,6 +11,7 @@ using ApplicationCore.Interfaces;
 namespace Microsoft.eShopWeb.Controllers
 {
     [Route("[controller]/[action]")]
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
