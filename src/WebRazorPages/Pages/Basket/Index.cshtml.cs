@@ -65,16 +65,18 @@ namespace Microsoft.eShopWeb.RazorPages.Pages.Basket
 
             await SetBasketModelAsync();
         }
-        public async Task OnPostCheckout(Dictionary<string,int> items)
+
+        public async Task<IActionResult> OnPostCheckout(Dictionary<string,int> items)
         {
             await SetBasketModelAsync();
+
             await _basketService.SetQuantities(BasketModel.Id, items);
 
             await _orderService.CreateOrderAsync(BasketModel.Id, new Address("123 Main St.", "Kent", "OH", "United States", "44240"));
 
             await _basketService.DeleteBasketAsync(BasketModel.Id);
 
-            RedirectToPage("/Basket/Checkout");
+            return RedirectToPage("/Basket/CheckoutComplete");
         }
 
         private async Task SetBasketModelAsync()
