@@ -1,9 +1,8 @@
-﻿using System.IO;
-using Xunit;
-using System.Threading.Tasks;
+﻿using Microsoft.eShopWeb.ViewModels;
 using Newtonsoft.Json;
-using Microsoft.eShopWeb.ViewModels;
 using System.Linq;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace FunctionalTests.Web.Controllers
 {

@@ -9,57 +9,50 @@ using Infrastructure.Identity;
 using System;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
+using ApplicationCore.Entities.OrderAggregate;
 
 namespace Microsoft.eShopWeb.RazorPages.Pages.Basket
 {
-    public class IndexModel : PageModel
+    public class CheckoutModel : PageModel
     {
         private readonly IBasketService _basketService;
-        private const string _basketSessionKey = "basketId";
         private readonly IUriComposer _uriComposer;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IOrderService _orderService;
         private string _username = null;
         private readonly IBasketViewModelService _basketViewModelService;
 
-        public IndexModel(IBasketService basketService,
+        public CheckoutModel(IBasketService basketService,
             IBasketViewModelService basketViewModelService,
             IUriComposer uriComposer,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            IOrderService orderService)
         {
             _basketService = basketService;
             _uriComposer = uriComposer;
             _signInManager = signInManager;
+            _orderService = orderService;
             _basketViewModelService = basketViewModelService;
         }
 
         public BasketViewModel BasketModel { get; set; } = new BasketViewModel();
 
-        public async Task OnGet()
+        public void OnGet()
         {
-            await SetBasketModelAsync();
+
         }
 
-        public async Task<IActionResult> OnPost(CatalogItemViewModel productDetails)
-        {
-            if (productDetails?.Id == null)
-            {
-                return RedirectToPage("/Index");
-            }
-            await SetBasketModelAsync();
-
-            await _basketService.AddItemToBasket(BasketModel.Id, productDetails.Id, productDetails.Price, 1);
-
-            await SetBasketModelAsync();
-
-            return RedirectToPage();
-        }
-
-        public async Task OnPostUpdate(Dictionary<string,int> items)
+        public async Task<IActionResult> OnPost(Dictionary<string,int> items)
         {
             await SetBasketModelAsync();
+
             await _basketService.SetQuantities(BasketModel.Id, items);
 
-            await SetBasketModelAsync();
+            await _orderService.CreateOrderAsync(BasketModel.Id, new Address("123 Main St.", "Kent", "OH", "United States", "44240"));
+
+            await _basketService.DeleteBasketAsync(BasketModel.Id);
+
+            return RedirectToPage();
         }
 
         private async Task SetBasketModelAsync()

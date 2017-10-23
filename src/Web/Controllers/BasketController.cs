@@ -17,7 +17,6 @@ namespace Microsoft.eShopWeb.Controllers
     public class BasketController : Controller
     {
         private readonly IBasketService _basketService;
-        private const string _basketSessionKey = "basketId";
         private readonly IUriComposer _uriComposer;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IAppLogger<BasketController> _logger;

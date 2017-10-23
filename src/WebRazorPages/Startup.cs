@@ -108,6 +108,7 @@ namespace Microsoft.eShopWeb.RazorPages
                 .AddRazorPagesOptions(options =>
                 {
                     options.Conventions.AuthorizeFolder("/Order");
+                    options.Conventions.AuthorizePage("/Basket/Checkout");
                 });
 
             _services = services;
