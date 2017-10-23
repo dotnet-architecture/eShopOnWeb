@@ -1,8 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.eShopWeb.RazorPages.ViewModels;
 using ApplicationCore.Interfaces;
 using System.Linq;
+using System;
+using ApplicationCore.Entities.OrderAggregate;
+using System.Collections.Generic;
 
 namespace Microsoft.eShopWeb.RazorPages.Pages.Order
 {
@@ -17,6 +19,27 @@ namespace Microsoft.eShopWeb.RazorPages.Pages.Order
 
         public OrderViewModel OrderDetails { get; set; } = new OrderViewModel();
 
+        public class OrderViewModel
+        {
+            public int OrderNumber { get; set; }
+            public DateTimeOffset OrderDate { get; set; }
+            public decimal Total { get; set; }
+            public string Status { get; set; }
+
+            public Address ShippingAddress { get; set; }
+
+            public List<OrderItemViewModel> OrderItems { get; set; } = new List<OrderItemViewModel>();
+        }
+
+        public class OrderItemViewModel
+        {
+            public int ProductId { get; set; }
+            public string ProductName { get; set; }
+            public decimal UnitPrice { get; set; }
+            public decimal Discount { get; set; }
+            public int Units { get; set; }
+            public string PictureUrl { get; set; }
+        }
 
         public async Task OnGet(int orderId)
         {

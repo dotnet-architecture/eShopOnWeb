@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.eShopWeb.RazorPages.ViewModels;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Specifications;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace Microsoft.eShopWeb.RazorPages.Pages.Order
 {
@@ -17,28 +17,25 @@ namespace Microsoft.eShopWeb.RazorPages.Pages.Order
             _orderRepository = orderRepository;
         }
 
-        public List<OrderViewModel> Orders { get; set; } = new List<OrderViewModel>();
+        public List<OrderSummary> Orders { get; set; } = new List<OrderSummary>();
 
+        public class OrderSummary
+        {
+            public int OrderNumber { get; set; }
+            public DateTimeOffset OrderDate { get; set; }
+            public decimal Total { get; set; }
+            public string Status { get; set; }
+        }
 
         public async Task OnGet()
         {
             var orders = await _orderRepository.ListAsync(new CustomerOrdersWithItemsSpecification(User.Identity.Name));
 
             Orders = orders
-                .Select(o => new OrderViewModel()
+                .Select(o => new OrderSummary()
                 {
                     OrderDate = o.OrderDate,
-                    OrderItems = o.OrderItems?.Select(oi => new OrderItemViewModel()
-                    {
-                        Discount = 0,
-                        PictureUrl = oi.ItemOrdered.PictureUri,
-                        ProductId = oi.ItemOrdered.CatalogItemId,
-                        ProductName = oi.ItemOrdered.ProductName,
-                        UnitPrice = oi.UnitPrice,
-                        Units = oi.Units
-                    }).ToList(),
                     OrderNumber = o.Id,
-                    ShippingAddress = o.ShipToAddress,
                     Status = "Pending",
                     Total = o.Total()
 
