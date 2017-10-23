@@ -2,7 +2,7 @@
 @using System.Collections.Generic
 @using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Http.Authentication
-@model LoginViewModel
+@model SigninModel
 @{
     ViewData["Title"] = "Log in";
 }
@@ -20,20 +20,20 @@
                         <h4>ARE YOU REGISTERED?</h4>
                         <div asp-validation-summary="All" class="text-danger"></div>
                         <div class="form-group">
-                            <label asp-for="Email" class="control-label form-label"></label>
-                            <input asp-for="Email" class="form-control form-input form-input-center" />
-                            <span asp-validation-for="Email" class="text-danger"></span>
+                            <label asp-for="LoginDetails.Email" class="control-label form-label"></label>
+                            <input asp-for="LoginDetails.Email" class="form-control form-input form-input-center" />
+                            <span asp-validation-for="LoginDetails.Email" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label asp-for="Password" class="control-label form-label"></label>
-                            <input asp-for="Password" class="form-control form-input form-input-center" />
-                            <span asp-validation-for="Password" class="text-danger"></span>
+                            <label asp-for="LoginDetails.Password" class="control-label form-label"></label>
+                            <input asp-for="LoginDetails.Password" class="form-control form-input form-input-center" />
+                            <span asp-validation-for="LoginDetails.Password" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <div class="checkbox">
-                                <label asp-for="RememberMe">
-                                    <input asp-for="RememberMe" />
-                                    @Html.DisplayNameFor(m => m.RememberMe)
+                                <label asp-for="LoginDetails.RememberMe">
+                                    <input asp-for="LoginDetails.RememberMe" />
+                                    @Html.DisplayNameFor(m => m.LoginDetails.RememberMe)
                                 </label>
                             </div>
                         </div>
@@ -41,7 +41,8 @@
                             <button type="submit" class="btn btn-default btn-brand btn-brand-big">&nbsp;LOG IN&nbsp;</button>
                         </div>
                         <p>
-                            <a asp-page="/Account/Register" asp-route-returnurl="@ViewData["ReturnUrl"]" class="text">Register as a new user?</a>
+                            <a asp-page="/Account/Register" 
+                               asp-route-returnurl="@ViewData["ReturnUrl"]" class="text">Register as a new user?</a>
                         </p>
                         <p>
                             Note that for demo purposes you don't need to register and can login with these credentials:
