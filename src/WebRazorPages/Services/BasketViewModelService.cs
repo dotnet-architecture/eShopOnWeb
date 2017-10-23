@@ -1,29 +1,26 @@
 ﻿using ApplicationCore.Interfaces;
-using ApplicationCore.Specifications;
-using Microsoft.eShopWeb.ApplicationCore.Entities;
-using Microsoft.eShopWeb.Interfaces;
-using Microsoft.eShopWeb.ViewModels;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.eShopWeb.ApplicationCore.Entities;
+using System.Linq;
+using System.Collections.Generic;
+using ApplicationCore.Specifications;
+using Microsoft.eShopWeb.RazorPages.Interfaces;
+using Microsoft.eShopWeb.RazorPages.ViewModels;
 
-namespace Microsoft.eShopWeb.Services
+namespace Microsoft.eShopWeb.RazorPages.Services
 {
-    public class BasketService : IBasketService
+    public class BasketViewModelService : IBasketViewModelService
     {
         private readonly IAsyncRepository<Basket> _basketRepository;
         private readonly IUriComposer _uriComposer;
-        private readonly IAppLogger<BasketService> _logger;
         private readonly IRepository<CatalogItem> _itemRepository;
 
-        public BasketService(IAsyncRepository<Basket> basketRepository,
+        public BasketViewModelService(IAsyncRepository<Basket> basketRepository,
             IRepository<CatalogItem> itemRepository,
-            IUriComposer uriComposer,
-            IAppLogger<BasketService> logger)
+            IUriComposer uriComposer)
         {
             _basketRepository = basketRepository;
             _uriComposer = uriComposer;
-            this._logger = logger;
             _itemRepository = itemRepository;
         }
 
@@ -32,7 +29,7 @@ namespace Microsoft.eShopWeb.Services
             var basketSpec = new BasketWithItemsSpecification(userName);
             var basket = (await _basketRepository.ListAsync(basketSpec)).FirstOrDefault();
 
-            if(basket == null)
+            if (basket == null)
             {
                 return await CreateBasketForUser(userName);
             }
@@ -63,7 +60,7 @@ namespace Microsoft.eShopWeb.Services
             return viewModel;
         }
 
-        public async Task<BasketViewModel> CreateBasketForUser(string userId)
+        private async Task<BasketViewModel> CreateBasketForUser(string userId)
         {
             var basket = new Basket() { BuyerId = userId };
             await _basketRepository.AddAsync(basket);
@@ -74,45 +71,6 @@ namespace Microsoft.eShopWeb.Services
                 Id = basket.Id,
                 Items = new List<BasketItemViewModel>()
             };
-        }
-
-        public async Task AddItemToBasket(int basketId, int catalogItemId, decimal price, int quantity)
-        {
-            var basket = await _basketRepository.GetByIdAsync(basketId);
-
-            basket.AddItem(catalogItemId, price, quantity);
-
-            await _basketRepository.UpdateAsync(basket);
-        }
-
-        public async Task SetQuantities(int basketId, Dictionary<string,int> quantities)
-        {
-            var basket = await _basketRepository.GetByIdAsync(basketId);
-            foreach (var item in basket.Items)
-            {
-                if (quantities.TryGetValue(item.Id.ToString(), out var quantity))
-                {
-                    _logger.LogWarning($"Updating quantity of item ID:{item.Id} to {quantity}.");
-                    item.Quantity = quantity;
-                }
-            }
-            await _basketRepository.UpdateAsync(basket);
-        }
-
-        public async Task DeleteBasketAsync(int basketId)
-        {
-            var basket = await _basketRepository.GetByIdAsync(basketId);
-            
-            await _basketRepository.DeleteAsync(basket);
-        }
-
-        public async Task TransferBasketAsync(string anonymousId, string userName)
-        {
-            var basketSpec = new BasketWithItemsSpecification(anonymousId);
-            var basket = (await _basketRepository.ListAsync(basketSpec)).FirstOrDefault();
-            if (basket == null) return;
-            basket.BuyerId = userName;
-            await _basketRepository.UpdateAsync(basket);
         }
     }
 }

@@ -22,8 +22,10 @@ namespace Microsoft.eShopWeb.RazorPages.Pages.Basket
         private readonly IAppLogger<IndexModel> _logger;
         private readonly IOrderService _orderService;
         private string _username = null;
+        private readonly IBasketViewModelService _basketViewModelService;
 
         public IndexModel(IBasketService basketService,
+            IBasketViewModelService basketViewModelService,
             IUriComposer uriComposer,
             SignInManager<ApplicationUser> signInManager,
             IAppLogger<IndexModel> logger,
@@ -34,6 +36,7 @@ namespace Microsoft.eShopWeb.RazorPages.Pages.Basket
             _signInManager = signInManager;
             _logger = logger;
             _orderService = orderService;
+            _basketViewModelService = basketViewModelService;
         }
 
         public BasketViewModel BasketModel { get; set; } = new BasketViewModel();
@@ -83,12 +86,12 @@ namespace Microsoft.eShopWeb.RazorPages.Pages.Basket
         {
             if (_signInManager.IsSignedIn(HttpContext.User))
             {
-                BasketModel = await _basketService.GetOrCreateBasketForUser(User.Identity.Name);
+                BasketModel = await _basketViewModelService.GetOrCreateBasketForUser(User.Identity.Name);
             }
             else
             {
                 GetOrSetBasketCookieAndUserName();
-                BasketModel = await _basketService.GetOrCreateBasketForUser(_username);
+                BasketModel = await _basketViewModelService.GetOrCreateBasketForUser(_username);
             }
         }
 

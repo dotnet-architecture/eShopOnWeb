@@ -5,9 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Infrastructure.Identity;
 using System;
-using Web;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.eShopWeb.Interfaces;
+using ApplicationCore.Interfaces;
 
 namespace Microsoft.eShopWeb.Controllers
 {

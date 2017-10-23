@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using System.Collections.Generic;
 
-namespace Infrastructure.Services
+namespace ApplicationCore.Services
 {
     public class OrderService : IOrderService
     {

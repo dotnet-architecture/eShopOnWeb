@@ -1,10 +1,8 @@
-﻿using Infrastructure.Identity;
+﻿using ApplicationCore.Interfaces;
+using Infrastructure.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.eShopWeb.RazorPages.Interfaces;
-using Microsoft.eShopWeb.RazorPages.ViewModels;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.RazorPages.ViewComponents
@@ -25,7 +23,7 @@ namespace Microsoft.eShopWeb.RazorPages.ViewComponents
         {
             var vm = new BasketComponentViewModel();
             string userName = GetUsername();
-            vm.ItemsCount = (await _basketService.GetBasketItemCount(userName));
+            vm.ItemsCount = (await _basketService.GetBasketItemCountAsync(userName));
             return View(vm);
         }
 
