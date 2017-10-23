@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ApplicationCore.Entities.OrderAggregate;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
-using ApplicationCore.Entities.OrderAggregate;
 
 namespace Infrastructure.Data
 {
@@ -11,10 +11,7 @@ namespace Infrastructure.Data
         public CatalogContext(DbContextOptions<CatalogContext> options) : base(options)
         {
         }
-        //public CatalogContext()
-        //{
-        //    // required by migrations
-        //}
+
         public DbSet<Basket> Baskets { get; set; }
         public DbSet<CatalogItem> CatalogItems { get; set; }
         public DbSet<CatalogBrand> CatalogBrands { get; set; }
@@ -95,10 +92,12 @@ namespace Infrastructure.Data
                 .IsRequired()
                 .HasMaxLength(100);
         }
+
         private void ConfigureOrder(EntityTypeBuilder<Order> builder)
         {
             builder.OwnsOne(o => o.ShipToAddress);
         }
+
         private void ConfigureOrderItem(EntityTypeBuilder<OrderItem> builder)
         {
             builder.OwnsOne(i => i.ItemOrdered);
