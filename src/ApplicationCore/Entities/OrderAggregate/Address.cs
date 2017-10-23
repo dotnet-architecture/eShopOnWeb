@@ -25,15 +25,5 @@ namespace ApplicationCore.Entities.OrderAggregate
             Country = country;
             ZipCode = zipcode;
         }
-
-        //protected override IEnumerable<object> GetAtomicValues()
-        //{
-        //    yield return Street;
-        //    yield return City;
-        //    yield return State;
-        //    yield return Country;
-        //    yield return ZipCode;
-        //}
-
     }
 }
