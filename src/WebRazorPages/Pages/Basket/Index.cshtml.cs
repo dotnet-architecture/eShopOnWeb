@@ -21,6 +21,7 @@ namespace Microsoft.eShopWeb.RazorPages.Pages.Basket
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IAppLogger<IndexModel> _logger;
         private readonly IOrderService _orderService;
+        private string _username = null;
 
         public IndexModel(IBasketService basketService,
             IUriComposer uriComposer,
@@ -54,7 +55,7 @@ namespace Microsoft.eShopWeb.RazorPages.Pages.Basket
 
             await SetBasketModelAsync();
 
-            return Page();
+            return RedirectToPage();
         }
 
         public async Task OnPostUpdate(Dictionary<string,int> items)
@@ -84,23 +85,23 @@ namespace Microsoft.eShopWeb.RazorPages.Pages.Basket
             }
             else
             {
-                string anonymousId = GetOrSetBasketCookie();
-                BasketModel = await _basketService.GetOrCreateBasketForUser(anonymousId);
+                GetOrSetBasketCookieAndUserName();
+                BasketModel = await _basketService.GetOrCreateBasketForUser(_username);
             }
         }
 
-        private string GetOrSetBasketCookie()
+        private void GetOrSetBasketCookieAndUserName()
         {
             if (Request.Cookies.ContainsKey(Constants.BASKET_COOKIENAME))
             {
-                return Request.Cookies[Constants.BASKET_COOKIENAME];
+                _username = Request.Cookies[Constants.BASKET_COOKIENAME];
             }
-            string anonymousId = Guid.NewGuid().ToString();
+            if (_username != null) return;
+
+            _username = Guid.NewGuid().ToString();
             var cookieOptions = new CookieOptions();
             cookieOptions.Expires = DateTime.Today.AddYears(10);
-            Response.Cookies.Append(Constants.BASKET_COOKIENAME, anonymousId, cookieOptions);
-            return anonymousId;
+            Response.Cookies.Append(Constants.BASKET_COOKIENAME, _username, cookieOptions);
         }
-
     }
 }

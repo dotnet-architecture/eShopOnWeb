@@ -33,16 +33,9 @@ namespace Microsoft.eShopWeb.RazorPages.Pages.Account
                 ViewData["ReturnUrl"] = "/Basket/Index";
             }
         }
-        public async Task OnPost()
+        public async Task<IActionResult> OnPost(string returnUrl = null)
         {
 
-        }
-
-        public async Task OnPostSignout()
-        {
-            await _signInManager.SignOutAsync();
-
-            RedirectToPage("/Index");
         }
     }
 }
