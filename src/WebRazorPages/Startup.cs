@@ -104,7 +104,11 @@ namespace Microsoft.eShopWeb.RazorPages
             // Add memory cache services
             services.AddMemoryCache();
 
-            services.AddMvc();
+            services.AddMvc()
+                .AddRazorPagesOptions(options =>
+                {
+                    options.Conventions.AuthorizeFolder("/Order");
+                });
 
             _services = services;
         }
