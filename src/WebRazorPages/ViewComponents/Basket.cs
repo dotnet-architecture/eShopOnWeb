@@ -21,22 +21,26 @@ namespace Microsoft.eShopWeb.RazorPages.ViewComponents
             _signInManager = signInManager;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(string userName)
+        public async Task<IViewComponentResult> InvokeAsync()
         {
             var vm = new BasketComponentViewModel();
-            vm.ItemsCount = (await GetBasketViewModelAsync()).Items.Sum(i => i.Quantity);
+            string userName = GetUsername();
+            vm.ItemsCount = (await _basketService.GetBasketItemCount(userName));
             return View(vm);
         }
 
-        private async Task<BasketViewModel> GetBasketViewModelAsync()
+        public class BasketComponentViewModel
+        {
+            public int ItemsCount { get; set; }
+        }
+
+        private string GetUsername()
         {
             if (_signInManager.IsSignedIn(HttpContext.User))
             {
-                return await _basketService.GetOrCreateBasketForUser(User.Identity.Name);
+                return User.Identity.Name;
             }
-            string anonymousId = GetBasketIdFromCookie();
-            if (anonymousId == null) return new BasketViewModel();
-            return await _basketService.GetOrCreateBasketForUser(anonymousId);
+            return GetBasketIdFromCookie();
         }
 
         private string GetBasketIdFromCookie()

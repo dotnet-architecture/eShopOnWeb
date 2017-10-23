@@ -7,6 +7,7 @@ namespace Microsoft.eShopWeb.RazorPages.Interfaces
     public interface IBasketService
     {
         Task<BasketViewModel> GetOrCreateBasketForUser(string userName);
+        Task<int> GetBasketItemCount(string userName);
         Task TransferBasketAsync(string anonymousId, string userName);
         Task AddItemToBasket(int basketId, int catalogItemId, decimal price, int quantity);
         Task SetQuantities(int basketId, Dictionary<string, int> quantities);

@@ -39,6 +39,11 @@ namespace Microsoft.eShopWeb.RazorPages.Services
             return CreateViewModelFromBasket(basket);
         }
 
+        public async Task<int> GetBasketItemCount(string userName)
+        {
+            return (await GetOrCreateBasketForUser(userName)).Items.Count;
+        }
+
         private BasketViewModel CreateViewModelFromBasket(Basket basket)
         {
             var viewModel = new BasketViewModel();
