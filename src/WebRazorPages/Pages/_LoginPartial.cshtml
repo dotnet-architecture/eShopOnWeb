@@ -4,7 +4,7 @@
 {
         <section class="col-lg-4 col-md-5 col-xs-12">
             <div class="esh-identity">
-                <form asp-page="Account/Signout" method="post" 
+                <form asp-page="/Account/Signout" method="post" 
                       id="logoutForm" class="navbar-right">
                     <section class="esh-identity-section">
                         @*<div class="esh-identity-name">@User.FindFirst(x => x.Type == "preferred_username").Value</div>*@
@@ -13,7 +13,7 @@
 
                     <section class="esh-identity-drop">
                         <a class="esh-identity-item"
-                           asp-page="Order/Index">
+                           asp-page="/Order/Index">
 
                             <div class="esh-identity-name esh-identity-name--upper">My orders</div>
                             <img class="esh-identity-image" src="~/images/my_orders.png">
@@ -41,7 +41,7 @@ else
                 <section class="esh-identity-section">
                     <div class="esh-identity-item">
 
-                        <a asp-page="Account/Signin" class="esh-identity-name esh-identity-name--upper">
+                        <a asp-page="/Account/Signin" class="esh-identity-name esh-identity-name--upper">
                             Login
                         </a>
                     </div>
