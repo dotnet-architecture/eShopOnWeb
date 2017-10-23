@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Infrastructure.Identity;
 using System;
-using ApplicationCore.Interfaces;
 using Web;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.eShopWeb.Interfaces;
 
 namespace Microsoft.eShopWeb.Controllers
 {
@@ -37,7 +37,7 @@ namespace Microsoft.eShopWeb.Controllers
 
             ViewData["ReturnUrl"] = returnUrl;
             if (!String.IsNullOrEmpty(returnUrl) && 
-                returnUrl.ToLower().Contains("checkout"))
+                returnUrl.IndexOf("checkout", StringComparison.OrdinalIgnoreCase) >= 0)
             {
                 ViewData["ReturnUrl"] = "/Basket/Index";
             }

@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Microsoft.eShopWeb.ViewModels
 {
-
     public class OrderItemViewModel
     {
         public int ProductId { get; set; }
@@ -19,5 +18,4 @@ namespace Microsoft.eShopWeb.ViewModels
 
         public string PictureUrl { get; set; }
     }
-
 }

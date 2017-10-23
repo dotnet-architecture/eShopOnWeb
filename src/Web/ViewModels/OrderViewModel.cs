@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 namespace Microsoft.eShopWeb.ViewModels
 {
-
     public class OrderViewModel
     {
         public int OrderNumber { get; set; }

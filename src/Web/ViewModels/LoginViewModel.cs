@@ -2,7 +2,6 @@
 
 namespace Microsoft.eShopWeb.ViewModels
 {
-
     public class LoginViewModel
     {
         [Required]

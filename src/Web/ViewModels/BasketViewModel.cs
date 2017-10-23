@@ -4,7 +4,6 @@ using System.Linq;
 
 namespace Microsoft.eShopWeb.ViewModels
 {
-
     public class BasketViewModel
     {
         public int Id { get; set; }

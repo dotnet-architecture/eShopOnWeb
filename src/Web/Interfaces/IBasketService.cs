@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ApplicationCore.Interfaces
+namespace Microsoft.eShopWeb.Interfaces
 {
     public interface IBasketService
     {

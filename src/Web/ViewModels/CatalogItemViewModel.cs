@@ -1,9 +1,5 @@
-﻿using Microsoft.eShopWeb.ApplicationCore.Entities;
-using System.Collections.Generic;
-
-namespace Microsoft.eShopWeb.ViewModels
+﻿namespace Microsoft.eShopWeb.ViewModels
 {
-
     public class CatalogItemViewModel
     {
         public int Id { get; set; }

@@ -1,6 +1,5 @@
 ﻿namespace Microsoft.eShopWeb.ViewModels
 {
-
     public class BasketItemViewModel
     {
         public int Id { get; set; }
