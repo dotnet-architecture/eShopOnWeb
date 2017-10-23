@@ -1,10 +1,8 @@
-﻿using Infrastructure.Identity;
+﻿using ApplicationCore.Interfaces;
+using Infrastructure.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.eShopWeb.RazorPages.Interfaces;
-using Microsoft.eShopWeb.RazorPages.ViewModels;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.RazorPages.ViewComponents
@@ -21,22 +19,26 @@ namespace Microsoft.eShopWeb.RazorPages.ViewComponents
             _signInManager = signInManager;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(string userName)
+        public async Task<IViewComponentResult> InvokeAsync()
         {
             var vm = new BasketComponentViewModel();
-            vm.ItemsCount = (await GetBasketViewModelAsync()).Items.Sum(i => i.Quantity);
+            string userName = GetUsername();
+            vm.ItemsCount = (await _basketService.GetBasketItemCountAsync(userName));
             return View(vm);
         }
 
-        private async Task<BasketViewModel> GetBasketViewModelAsync()
+        public class BasketComponentViewModel
+        {
+            public int ItemsCount { get; set; }
+        }
+
+        private string GetUsername()
         {
             if (_signInManager.IsSignedIn(HttpContext.User))
             {
-                return await _basketService.GetOrCreateBasketForUser(User.Identity.Name);
+                return User.Identity.Name;
             }
-            string anonymousId = GetBasketIdFromCookie();
-            if (anonymousId == null) return new BasketViewModel();
-            return await _basketService.GetOrCreateBasketForUser(anonymousId);
+            return GetBasketIdFromCookie();
         }
 
         private string GetBasketIdFromCookie()

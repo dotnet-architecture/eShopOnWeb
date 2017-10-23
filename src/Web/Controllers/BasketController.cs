@@ -22,8 +22,10 @@ namespace Microsoft.eShopWeb.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IAppLogger<BasketController> _logger;
         private readonly IOrderService _orderService;
+        private readonly IBasketViewModelService _basketViewModelService;
 
         public BasketController(IBasketService basketService,
+            IBasketViewModelService basketViewModelService,
             IOrderService orderService,
             IUriComposer uriComposer,
             SignInManager<ApplicationUser> signInManager,
@@ -34,6 +36,7 @@ namespace Microsoft.eShopWeb.Controllers
             _signInManager = signInManager;
             _logger = logger;
             _orderService = orderService;
+            _basketViewModelService = basketViewModelService;
         }
 
         [HttpGet]
@@ -87,10 +90,10 @@ namespace Microsoft.eShopWeb.Controllers
         {
             if (_signInManager.IsSignedIn(HttpContext.User))
             {
-                return await _basketService.GetOrCreateBasketForUser(User.Identity.Name);
+                return await _basketViewModelService.GetOrCreateBasketForUser(User.Identity.Name);
             }
             string anonymousId = GetOrSetBasketCookie();
-            return await _basketService.GetOrCreateBasketForUser(anonymousId);
+            return await _basketViewModelService.GetOrCreateBasketForUser(anonymousId);
         }
 
         private string GetOrSetBasketCookie()

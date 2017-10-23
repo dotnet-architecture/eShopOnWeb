@@ -12,10 +12,10 @@ namespace Web.ViewComponents
 {
     public class Basket : ViewComponent
     {
-        private readonly IBasketService _basketService;
+        private readonly IBasketViewModelService _basketService;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public Basket(IBasketService basketService,
+        public Basket(IBasketViewModelService basketService,
                         SignInManager<ApplicationUser> signInManager)
         {
             _basketService = basketService;

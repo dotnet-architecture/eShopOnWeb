@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.eShopWeb.RazorPages.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Infrastructure.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace Microsoft.eShopWeb.RazorPages.Pages.Account
 {
@@ -23,6 +24,24 @@ namespace Microsoft.eShopWeb.RazorPages.Pages.Account
         [BindProperty]
         public RegisterViewModel UserDetails { get; set; }
 
+        public class RegisterViewModel
+        {
+            [Required]
+            [EmailAddress]
+            [Display(Name = "Email")]
+            public string Email { get; set; }
+
+            [Required]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+            [DataType(DataType.Password)]
+            [Display(Name = "Password")]
+            public string Password { get; set; }
+
+            [DataType(DataType.Password)]
+            [Display(Name = "Confirm password")]
+            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            public string ConfirmPassword { get; set; }
+        }
 
         public async Task<IActionResult> OnPost(string returnUrl = "/Index")
         {
@@ -38,7 +57,6 @@ namespace Microsoft.eShopWeb.RazorPages.Pages.Account
                 AddErrors(result);
             }
             return Page();
-
         }
 
         private void AddErrors(IdentityResult result)
@@ -48,6 +66,5 @@ namespace Microsoft.eShopWeb.RazorPages.Pages.Account
                 ModelState.AddModelError("", error.Description);
             }
         }
-
     }
 }

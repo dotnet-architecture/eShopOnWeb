@@ -1,7 +1,8 @@
-﻿using Microsoft.eShopWeb.ViewModels;
+﻿using Microsoft.eShopWeb.RazorPages.ViewModels;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Microsoft.eShopWeb.Interfaces
+namespace Microsoft.eShopWeb.RazorPages.Interfaces
 {
     public interface IBasketViewModelService
     {

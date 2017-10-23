@@ -1,14 +1,12 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.eShopWeb.RazorPages.ViewModels;
-using Microsoft.eShopWeb.RazorPages.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authentication;
 using System;
 using System.ComponentModel.DataAnnotations;
+using ApplicationCore.Interfaces;
 
 namespace Microsoft.eShopWeb.RazorPages.Pages.Account
 {
