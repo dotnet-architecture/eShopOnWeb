@@ -71,6 +71,10 @@ namespace Microsoft.eShopWeb.RazorPages.Pages.Account
                 }
                 return RedirectToPage(returnUrl ?? "/Index");
             }
+            if (result.RequiresTwoFactor)
+            {
+                return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = LoginDetails.RememberMe });
+            }
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             return Page();
         }
