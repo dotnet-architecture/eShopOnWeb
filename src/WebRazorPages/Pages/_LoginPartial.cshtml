@@ -4,7 +4,7 @@
 {
         <section class="col-lg-4 col-md-5 col-xs-12">
             <div class="esh-identity">
-                <form asp-page="/Account/Signout" method="post" 
+                <form asp-controller="Account" asp-action="Logout" method="post" 
                       id="logoutForm" class="navbar-right">
                     <section class="esh-identity-section">
                         @*<div class="esh-identity-name">@User.FindFirst(x => x.Type == "preferred_username").Value</div>*@
