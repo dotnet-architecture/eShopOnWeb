@@ -3,6 +3,7 @@ using ApplicationCore.Services;
 using Infrastructure.Data;
 using Infrastructure.Identity;
 using Infrastructure.Logging;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -100,6 +101,7 @@ namespace Microsoft.eShopWeb.RazorPages
             services.AddSingleton<IUriComposer>(new UriComposer(Configuration.Get<CatalogSettings>()));
 
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
+            services.AddTransient<IEmailSender, EmailSender>();
 
             // Add memory cache services
             services.AddMemoryCache();
