@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using ApplicationCore.Specifications;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using System.Linq;
+using Ardalis.GuardClauses;
 
 namespace ApplicationCore.Services
 {
@@ -43,6 +44,7 @@ namespace ApplicationCore.Services
 
         public async Task<int> GetBasketItemCountAsync(string userName)
         {
+            Guard.Against.NullOrEmpty(userName, nameof(userName));
             var basketSpec = new BasketWithItemsSpecification(userName);
             var basket = (await _basketRepository.ListAsync(basketSpec)).FirstOrDefault();
             if (basket == null)
@@ -57,7 +59,9 @@ namespace ApplicationCore.Services
 
         public async Task SetQuantities(int basketId, Dictionary<string, int> quantities)
         {
+            Guard.Against.Null(quantities, nameof(quantities));
             var basket = await _basketRepository.GetByIdAsync(basketId);
+            Guard.Against.NullBasket(basketId, basket);
             foreach (var item in basket.Items)
             {
                 if (quantities.TryGetValue(item.Id.ToString(), out var quantity))
@@ -71,6 +75,8 @@ namespace ApplicationCore.Services
 
         public async Task TransferBasketAsync(string anonymousId, string userName)
         {
+            Guard.Against.NullOrEmpty(anonymousId, nameof(anonymousId));
+            Guard.Against.NullOrEmpty(userName, nameof(userName));
             var basketSpec = new BasketWithItemsSpecification(anonymousId);
             var basket = (await _basketRepository.ListAsync(basketSpec)).FirstOrDefault();
             if (basket == null) return;
