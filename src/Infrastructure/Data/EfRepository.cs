@@ -26,6 +26,12 @@ namespace Infrastructure.Data
             return _dbContext.Set<T>().Find(id);
         }
 
+        public T GetSingleBySpec(ISpecification<T> spec)
+        {
+            return List(spec).FirstOrDefault();
+        }
+
+
         public virtual async Task<T> GetByIdAsync(int id)
         {
             return await _dbContext.Set<T>().FindAsync(id);
