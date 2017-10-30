@@ -3,6 +3,7 @@ using ApplicationCore.Entities.OrderAggregate;
 using System.Threading.Tasks;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using System.Collections.Generic;
+using Ardalis.GuardClauses;
 
 namespace ApplicationCore.Services
 {
@@ -24,6 +25,7 @@ namespace ApplicationCore.Services
         public async Task CreateOrderAsync(int basketId, Address shippingAddress)
         {
             var basket = await _basketRepository.GetByIdAsync(basketId);
+            Guard.Against.NullBasket(basketId, basket);
             var items = new List<OrderItem>();
             foreach (var item in basket.Items)
             {
