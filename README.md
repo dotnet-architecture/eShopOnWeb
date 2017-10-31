@@ -31,39 +31,20 @@ If you wish to use the sample with a persistent database, you will need to run i
 
 ### Configuring the sample to use SQL Server
 
-1. Update `Startup.cs`'s `ConfigureServices` method as follows:
+1. Update `Startup.cs`'s `ConfigureDevelopmentServices` method as follows:
 
 ```
-public void ConfigureServices(IServiceCollection services)
-{
-    // Requires LocalDB which can be installed with SQL Server Express 2016
-    // https://www.microsoft.com/en-us/download/details.aspx?id=54284
-    services.AddDbContext<CatalogContext>(c =>
-    {
-        try
+        public void ConfigureDevelopmentServices(IServiceCollection services)
         {
-            //c.UseInMemoryDatabase("Catalog");
-            c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection"));
-            c.ConfigureWarnings(wb =>
-            {
-                //By default, in this application, we don't want to have client evaluations
-                wb.Log(RelationalEventId.QueryClientEvaluationWarning);
-            });
+            // use in-memory database
+            //ConfigureTestingServices(services);
+
+            // use real database
+            ConfigureProductionServices(services);
+
         }
-        catch (System.Exception ex )
-        {
-            var message = ex.Message;
-        }                
-    });
-
-    // Add Identity DbContext
-    services.AddDbContext<AppIdentityDbContext>(options =>
-        //options.UseInMemoryDatabase("Identity"));
-        options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
-
-
-// leave the rest of the method as-is
 ```
+
 1. Ensure your connection strings in `appsettings.json` point to a local SQL Server instance.
 
 2. Open a command prompt in the Web folder and execute the following commands:
