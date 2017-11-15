@@ -2,6 +2,8 @@
 
 Sample ASP.NET Core reference application, powered by Microsoft, demonstrating a single-process (monolithic) application architecture and deployment model. This reference application is meant to support the [Architecting Modern Web Applications with ASP.NET Core and Azure eBook](https://aka.ms/webappebook)
 
+![image](https://user-images.githubusercontent.com/1712635/32811862-c998c6c8-c956-11e7-85bc-5a86e0659656.png)
+
 The **eShopOnWeb** sample is related to the [eShopOnContainers](https://github.com/dotnet/eShopOnContainers) sample application which, in that case, focuses on a microservices/containers-based application architecture. However, **eShopOnWeb** is much simpler in regards to its current functionality and focuses on traditional Web Application Development with a single deployment.
 
 The goal for this sample is to demonstrate some of the principles and patterns described in the [eBook](https://aka.ms/webappebook). It is not meant to be an eCommerce reference application, and as such it does not implement many features that would be obvious and/or essential to a real eCommerce application.
