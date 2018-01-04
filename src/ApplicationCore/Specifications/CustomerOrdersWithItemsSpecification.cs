@@ -8,7 +8,8 @@ namespace ApplicationCore.Specifications
             : base(o => o.BuyerId == buyerId)
         {
             AddInclude(o => o.OrderItems);
-            AddInclude("OrderItems.ItemOrdered");
+            //AddInclude("OrderItems.ItemOrdered");
+            AddInclude($"{nameof(Order.OrderItems)}.{nameof(OrderItem.ItemOrdered)}");
         }
     }
 }
