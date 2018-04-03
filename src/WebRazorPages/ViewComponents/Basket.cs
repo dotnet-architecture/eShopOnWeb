@@ -38,7 +38,7 @@ namespace Microsoft.eShopWeb.RazorPages.ViewComponents
             {
                 return User.Identity.Name;
             }
-            return GetBasketIdFromCookie();
+            return GetBasketIdFromCookie() ?? Constants.DEFAULT_USERNAME;
         }
 
         private string GetBasketIdFromCookie()
