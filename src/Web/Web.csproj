@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -10,9 +10,9 @@
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="1.50.5" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.3" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.4" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.0-rc1-final" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.0-rc1-final" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.0-rc1-final" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Catalog\" />
