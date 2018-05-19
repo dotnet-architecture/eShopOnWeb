@@ -13,7 +13,8 @@ namespace Microsoft.eShopWeb.RazorPages
     {
         public static void Main(string[] args)
         {
-            var host = BuildWebHost(args);
+            var host = CreateWebHostBuilder(args)
+                        .Build();
 
             using (var scope = host.Services.CreateScope())
             {
@@ -38,10 +39,9 @@ namespace Microsoft.eShopWeb.RazorPages
             host.Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseUrls("http://0.0.0.0:5106")
-                .UseStartup<Startup>()
-                .Build();
+                .UseStartup<Startup>();
     }
 }
