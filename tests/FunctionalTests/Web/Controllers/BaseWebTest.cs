@@ -2,7 +2,6 @@
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
-using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.eShopWeb;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
@@ -66,7 +65,7 @@ namespace FunctionalTests.Web.Controllers
             var projectName = startupAssembly.GetName().Name;
 
             // Get currently executing test project path
-            var applicationBasePath = PlatformServices.Default.Application.ApplicationBasePath;
+            var applicationBasePath = AppContext.BaseDirectory;
 
             // Find the folder which contains the solution file. We then use this information to find the target
             // project which we want to test.
