@@ -8,8 +8,10 @@ The **eShopOnWeb** sample is related to the [eShopOnContainers](https://github.c
 
 The goal for this sample is to demonstrate some of the principles and patterns described in the [eBook](https://aka.ms/webappebook). It is not meant to be an eCommerce reference application, and as such it does not implement many features that would be obvious and/or essential to a real eCommerce application.
 
-> ### DISCLAIMER
-> **IMPORTANT:** The current state of this sample application is 1.0. It remains open to community feedback and contributions. Work on updating the sample to ASP.NET Core 2.0 and EF Core 2.0 is taking place in its own branch. **Feedback with improvements and pull requests from the community are highly appreciated will be accepted if possible.**
+> ### VERSIONS
+> #### The `master` branch is currently running ASP.NET Core 2.0.
+> #### The `netcore2.1` branch is **beta** and is targeting ASP.NET Core 2.1 RC1.
+
 
 ## Topics (eBook TOC)
 
