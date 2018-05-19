@@ -1,10 +1,10 @@
-﻿{
+{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
       "applicationUrl": "http://localhost:5106/",
-      "sslPort": 0
+      "sslPort": 44316
     }
   },
   "profiles": {
@@ -16,7 +16,7 @@
       }
     },
     "eShopWeb": {
-      "commandName": "Project",
+      "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

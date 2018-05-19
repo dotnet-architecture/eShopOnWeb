@@ -6,7 +6,6 @@
   
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.0-rc1-final" />
-
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0-preview-20180510-03" />
     <PackageReference Include="Moq" Version="4.8.2" />
     <PackageReference Include="xunit" Version="2.4.0-beta.1.build3958" />

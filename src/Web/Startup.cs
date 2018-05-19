@@ -106,7 +106,8 @@ namespace Microsoft.eShopWeb
             // Add memory cache services
             services.AddMemoryCache();
 
-            services.AddMvc();
+            services.AddMvc()
+                .SetCompatibilityVersion(AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
 
             _services = services;
         }
@@ -125,8 +126,10 @@ namespace Microsoft.eShopWeb
             else
             {
                 app.UseExceptionHandler("/Catalog/Error");
+                app.UseHsts();
             }
 
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseAuthentication();
 
