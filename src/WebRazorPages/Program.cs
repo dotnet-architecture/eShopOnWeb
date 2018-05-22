@@ -41,7 +41,7 @@ namespace Microsoft.eShopWeb.RazorPages
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseUrls("http://0.0.0.0:5106")
+                .UseUrls("http://0.0.0.0:5107")
                 .UseStartup<Startup>();
     }
 }
