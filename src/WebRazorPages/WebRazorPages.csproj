@@ -3,10 +3,11 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <RootNamespace>Microsoft.eShopWeb.RazorPages</RootNamespace>
     <AssemblyName>Microsoft.eShopWeb.RazorPages</AssemblyName>
+    <DockerTargetOS>Linux</DockerTargetOS>
+    <UserSecretsId>231ddc1b-6787-4704-a0c0-18df6a022660</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.0-rc1-final" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.1.0-preview1-final" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ApplicationCore\ApplicationCore.csproj" />

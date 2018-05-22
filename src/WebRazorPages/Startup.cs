@@ -124,7 +124,6 @@ namespace Microsoft.eShopWeb.RazorPages
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
                 ListAllRegisteredServices(app);
                 app.UseDatabaseErrorPage();
             }

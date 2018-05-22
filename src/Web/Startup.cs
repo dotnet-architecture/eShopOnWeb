@@ -119,7 +119,6 @@ namespace Microsoft.eShopWeb
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
                 ListAllRegisteredServices(app);
                 app.UseDatabaseErrorPage();
             }
