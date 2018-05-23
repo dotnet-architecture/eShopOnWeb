@@ -2,7 +2,7 @@
 
 namespace ApplicationCore.Specifications
 {
-    public class BasketWithItemsSpecification : BaseSpecification<Basket>
+    public sealed class BasketWithItemsSpecification : BaseSpecification<Basket>
     {
         public BasketWithItemsSpecification(int basketId)
             :base(b => b.Id == basketId)
