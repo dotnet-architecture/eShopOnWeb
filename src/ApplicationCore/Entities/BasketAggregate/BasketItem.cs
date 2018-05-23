@@ -1,4 +1,4 @@
-﻿namespace Microsoft.eShopWeb.ApplicationCore.Entities
+﻿namespace Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate
 {
     public class BasketItem : BaseEntity
     {
