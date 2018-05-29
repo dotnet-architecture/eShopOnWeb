@@ -19,7 +19,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "tests\I
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunctionalTests", "tests\FunctionalTests\FunctionalTests.csproj", "{7EFB5482-F942-4C3D-94B0-9B70596E6D0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebRazorPages", "src\WebRazorPages\WebRazorPages.csproj", "{3CA62E98-218E-4A74-BF79-1098900BD421}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebRazorPages", "src\WebRazorPages\WebRazorPages.csproj", "{3CA62E98-218E-4A74-BF79-1098900BD421}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0BD72BEA-EF42-4B72-8B69-12A39EC76FBA}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
