@@ -1,9 +1,10 @@
 ﻿using ApplicationCore.Exceptions;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
+using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
 
 namespace Ardalis.GuardClauses
 {
-    public static class FooGuard
+    public static class BasketGuards
     {
         public static void NullBasket(this IGuardClause guardClause, int basketId, Basket basket)
         {
