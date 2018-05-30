@@ -61,9 +61,9 @@ namespace Microsoft.eShopWeb
                     // https://www.microsoft.com/en-us/download/details.aspx?id=54284
                     c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection"));
                 }
-                catch (System.Exception ex)
+                catch (Exception ex)
                 {
-                    var message = ex.Message;
+                    //TODO: log the exception details
                 }
             });
 
