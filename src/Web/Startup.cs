@@ -31,13 +31,15 @@ namespace Microsoft.eShopWeb
         public void ConfigureDevelopmentServices(IServiceCollection services)
         {
             // use in-memory database
-            ConfigureTestingServices(services);
+            ConfigureInMemoryDatabases(services);
 
             // use real database
             // ConfigureProductionServices(services);
 
+            ConfigureServices(services);
         }
-        public void ConfigureTestingServices(IServiceCollection services)
+
+        private void ConfigureInMemoryDatabases(IServiceCollection services)
         {
             // use in-memory database
             services.AddDbContext<CatalogContext>(c => 
@@ -46,8 +48,6 @@ namespace Microsoft.eShopWeb
             // Add Identity DbContext
             services.AddDbContext<AppIdentityDbContext>(options =>
                 options.UseInMemoryDatabase("Identity"));
-
-            ConfigureServices(services);
         }
 
         public void ConfigureProductionServices(IServiceCollection services)
@@ -86,6 +86,10 @@ namespace Microsoft.eShopWeb
                 options.ExpireTimeSpan = TimeSpan.FromHours(1);
                 options.LoginPath = "/Account/Signin";
                 options.LogoutPath = "/Account/Signout";
+                options.Cookie = new CookieBuilder
+                {
+                    IsEssential = true // required for auth to work without explicit user consent; adjust to suit your privacy policy
+                };
             });
 
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
