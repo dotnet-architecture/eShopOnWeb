@@ -1,7 +1,5 @@
 ﻿using ApplicationCore.Entities.OrderAggregate;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace UnitTests.Builders
 {
@@ -32,6 +30,18 @@ namespace UnitTests.Builders
             var orderItem = new OrderItem(TestCatalogItemOrdered, TestUnitPrice, TestUnits);
             var itemList = new List<OrderItem>() { orderItem };
             _order = new Order(TestBuyerId, new AddressBuilder().WithDefaultValues(), itemList);
+            return _order;
+        }
+
+        public Order WithNoItems()
+        {
+            _order = new Order(TestBuyerId, new AddressBuilder().WithDefaultValues(), new List<OrderItem>());
+            return _order;
+        }
+
+        public Order WithItems(List<OrderItem> items)
+        {
+            _order = new Order(TestBuyerId, new AddressBuilder().WithDefaultValues(), items);
             return _order;
         }
     }

@@ -69,28 +69,5 @@ namespace Microsoft.eShopWeb.Controllers
             };
             return View(viewModel);
         }
-
-        private OrderViewModel GetOrder()
-        {
-            var order = new OrderViewModel()
-            {
-                OrderDate = DateTimeOffset.Now.AddDays(-1),
-                OrderNumber = 12354,
-                Status = "Submitted",
-                Total = 123.45m,
-                ShippingAddress = new Address("123 Main St.", "Kent", "OH", "United States", "44240")
-            };
-
-            order.OrderItems.Add(new OrderItemViewModel()
-            {
-                ProductId = 1,
-                PictureUrl = "",
-                ProductName = "Something",
-                UnitPrice = 5.05m,
-                Units = 2
-            });
-
-            return order;
-        }
     }
 }

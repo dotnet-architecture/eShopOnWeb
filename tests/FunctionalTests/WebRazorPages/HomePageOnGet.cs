@@ -1,14 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.eShopWeb;
+﻿using Microsoft.eShopWeb.RazorPages;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace FunctionalTests.Web.Controllers
+namespace FunctionalTests.WebRazorPages
 {
-    public class CatalogControllerIndex : IClassFixture<CustomWebApplicationFactory<Startup>>
+    public class HomePageOnGet : IClassFixture<CustomWebRazorPagesApplicationFactory<Startup>>
     {
-        public CatalogControllerIndex(CustomWebApplicationFactory<Startup> factory)
+        public HomePageOnGet(CustomWebRazorPagesApplicationFactory<Startup> factory)
         {
             Client = factory.CreateClient();
         }

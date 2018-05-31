@@ -5,7 +5,7 @@ using Xunit;
 
 namespace UnitTests.ApplicationCore.Entities.BasketTests
 {
-    public class AddItem
+    public class Total
     {
         private int _testCatalogItemId = 123;
         private decimal _testUnitPrice = 1.23m;

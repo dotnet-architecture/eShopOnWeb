@@ -16,7 +16,7 @@ namespace Infrastructure.Data
         {
             return _dbContext.Orders
                 .Include(o => o.OrderItems)
-                .Include("OrderItems.ItemOrdered")
+                .Include($"{nameof(Order.OrderItems)}.{nameof(OrderItem.ItemOrdered)}")
                 .FirstOrDefault();
         }
 
@@ -24,7 +24,7 @@ namespace Infrastructure.Data
         {
             return _dbContext.Orders
                 .Include(o => o.OrderItems)
-                .Include("OrderItems.ItemOrdered")
+                .Include($"{nameof(Order.OrderItems)}.{nameof(OrderItem.ItemOrdered)}")
                 .FirstOrDefaultAsync();
         }
     }

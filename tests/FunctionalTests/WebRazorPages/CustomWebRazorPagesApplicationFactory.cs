@@ -8,9 +8,9 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.Identity;
 
-namespace FunctionalTests.Web.Controllers
+namespace FunctionalTests.WebRazorPages
 {
-    public class CustomWebApplicationFactory<TStartup>
+    public class CustomWebRazorPagesApplicationFactory<TStartup>
     : WebApplicationFactory<Startup>
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -48,7 +48,7 @@ namespace FunctionalTests.Web.Controllers
                     var loggerFactory = scopedServices.GetRequiredService<ILoggerFactory>();
 
                     var logger = scopedServices
-                        .GetRequiredService<ILogger<CustomWebApplicationFactory<TStartup>>>();
+                        .GetRequiredService<ILogger<CustomWebRazorPagesApplicationFactory<TStartup>>>();
 
                     // Ensure the database is created.
                     db.Database.EnsureCreated();
