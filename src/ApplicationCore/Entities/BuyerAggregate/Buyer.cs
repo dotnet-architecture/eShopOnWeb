@@ -1,8 +1,7 @@
 ﻿using ApplicationCore.Interfaces;
+using Ardalis.GuardClauses;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ApplicationCore.Entities.BuyerAggregate
 {
@@ -14,13 +13,15 @@ namespace ApplicationCore.Entities.BuyerAggregate
 
         public IEnumerable<PaymentMethod> PaymentMethods => _paymentMethods.AsReadOnly();
 
-        protected Buyer()
+        private Buyer()
         {
+            // required by EF
         }
 
         public Buyer(string identity) : this()
         {
-            IdentityGuid = !string.IsNullOrWhiteSpace(identity) ? identity : throw new ArgumentNullException(nameof(identity));
+            Guard.Against.NullOrEmpty(identity, nameof(identity));
+            IdentityGuid = identity;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Interfaces;
+using Ardalis.GuardClauses;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using System;
 using System.Collections.Generic;
@@ -9,13 +10,18 @@ namespace ApplicationCore.Entities.OrderAggregate
     {
         private Order()
         {
+            // required by EF
         }
 
         public Order(string buyerId, Address shipToAddress, List<OrderItem> items)
         {
+            Guard.Against.NullOrEmpty(buyerId, nameof(buyerId));
+            Guard.Against.Null(shipToAddress, nameof(shipToAddress));
+            Guard.Against.Null(items, nameof(items));
+
+            BuyerId = buyerId;
             ShipToAddress = shipToAddress;
             _orderItems = items;
-            BuyerId = buyerId;
         }
         public string BuyerId { get; private set; }
 
@@ -43,6 +49,5 @@ namespace ApplicationCore.Entities.OrderAggregate
             }
             return total;
         }
-
     }
 }

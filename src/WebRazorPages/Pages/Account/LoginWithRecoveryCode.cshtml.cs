@@ -7,7 +7,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
-namespace Microsoft.eShopWeb.RazorPages.Pages.Account.Manage
+namespace Microsoft.eShopWeb.RazorPages.Pages.Account
 {
     public class LoginWithRecoveryCodeModel : PageModel
     {

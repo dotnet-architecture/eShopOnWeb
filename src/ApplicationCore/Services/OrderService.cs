@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using System.Collections.Generic;
 using Ardalis.GuardClauses;
+using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
 
 namespace ApplicationCore.Services
 {

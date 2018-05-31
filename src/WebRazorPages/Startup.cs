@@ -107,6 +107,7 @@ namespace Microsoft.eShopWeb.RazorPages
             services.AddMemoryCache();
 
             services.AddMvc()
+                .SetCompatibilityVersion(AspNetCore.Mvc.CompatibilityVersion.Version_2_1)
                 .AddRazorPagesOptions(options =>
                 {
                     options.Conventions.AuthorizeFolder("/Order");
@@ -123,15 +124,16 @@ namespace Microsoft.eShopWeb.RazorPages
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
                 ListAllRegisteredServices(app);
                 app.UseDatabaseErrorPage();
             }
             else
             {
                 app.UseExceptionHandler("/Catalog/Error");
+                app.UseHsts();
             }
 
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseAuthentication();
 
