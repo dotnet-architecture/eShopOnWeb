@@ -1,7 +1,7 @@
-﻿using ApplicationCore.Interfaces;
+﻿using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.Extensions.Logging;
 
-namespace Infrastructure.Logging
+namespace Microsoft.eShopWeb.Infrastructure.Logging
 {
     public class LoggerAdapter<T> : IAppLogger<T>
     {

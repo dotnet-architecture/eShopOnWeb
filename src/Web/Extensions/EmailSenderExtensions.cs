@@ -1,8 +1,8 @@
-﻿using ApplicationCore.Interfaces;
+﻿using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
-namespace Microsoft.eShopWeb.Services
+namespace Microsoft.eShopWeb.Web.Services
 {
     public static class EmailSenderExtensions
     {

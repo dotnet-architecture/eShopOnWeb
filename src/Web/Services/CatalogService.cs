@@ -2,14 +2,14 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.eShopWeb.ViewModels;
+using Microsoft.eShopWeb.Web.ViewModels;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.Extensions.Logging;
-using ApplicationCore.Interfaces;
+using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using System;
-using ApplicationCore.Specifications;
+using Microsoft.eShopWeb.ApplicationCore.Specifications;
 
-namespace Microsoft.eShopWeb.Services
+namespace Microsoft.eShopWeb.Web.Services
 {
     /// <summary>
     /// This is a UI-specific service so belongs in UI project. It does not contain any business logic and works

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Microsoft.eShopWeb.ViewModels.Manage
+namespace Microsoft.eShopWeb.Web.ViewModels.Manage
 {
     public class SetPasswordViewModel
     {

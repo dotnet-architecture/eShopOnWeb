@@ -1,4 +1,4 @@
-﻿using ApplicationCore.Exceptions;
+﻿using Microsoft.eShopWeb.ApplicationCore.Exceptions;
 using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
 
 namespace Ardalis.GuardClauses

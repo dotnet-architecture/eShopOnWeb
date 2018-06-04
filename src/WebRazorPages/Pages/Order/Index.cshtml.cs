@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using ApplicationCore.Interfaces;
-using ApplicationCore.Specifications;
+using Microsoft.eShopWeb.ApplicationCore.Interfaces;
+using Microsoft.eShopWeb.ApplicationCore.Specifications;
 using System.Collections.Generic;
 using System.Linq;
 using System;

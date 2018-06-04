@@ -1,5 +1,5 @@
-﻿using ApplicationCore.Interfaces;
-using Infrastructure.Identity;
+﻿using Microsoft.eShopWeb.ApplicationCore.Interfaces;
+using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;

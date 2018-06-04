@@ -1,14 +1,14 @@
-﻿using ApplicationCore.Interfaces;
-using ApplicationCore.Specifications;
+﻿using Microsoft.eShopWeb.ApplicationCore.Interfaces;
+using Microsoft.eShopWeb.ApplicationCore.Specifications;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
-using Microsoft.eShopWeb.Interfaces;
-using Microsoft.eShopWeb.ViewModels;
+using Microsoft.eShopWeb.Web.Interfaces;
+using Microsoft.eShopWeb.Web.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Microsoft.eShopWeb.Services
+namespace Microsoft.eShopWeb.Web.Services
 {
     public class BasketViewModelService : IBasketViewModelService
     {

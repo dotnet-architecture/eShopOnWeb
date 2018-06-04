@@ -1,13 +1,13 @@
-﻿using ApplicationCore.Interfaces;
+﻿using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using ApplicationCore.Specifications;
+using Microsoft.eShopWeb.ApplicationCore.Specifications;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using System.Linq;
 using Ardalis.GuardClauses;
 using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
 
-namespace ApplicationCore.Services
+namespace Microsoft.eShopWeb.ApplicationCore.Services
 {
     public class BasketService : IBasketService
     {

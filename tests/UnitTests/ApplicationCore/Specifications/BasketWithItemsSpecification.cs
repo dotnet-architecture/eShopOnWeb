@@ -1,11 +1,11 @@
-﻿using ApplicationCore.Specifications;
+﻿using Microsoft.eShopWeb.ApplicationCore.Specifications;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace UnitTests
+namespace Microsoft.eShopWeb.UnitTests
 {
     public class BasketWithItems
     {

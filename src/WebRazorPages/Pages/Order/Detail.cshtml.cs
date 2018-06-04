@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using ApplicationCore.Interfaces;
+using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using System.Linq;
 using System;
-using ApplicationCore.Entities.OrderAggregate;
+using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 using System.Collections.Generic;
 
 namespace Microsoft.eShopWeb.RazorPages.Pages.Order

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Data
+namespace Microsoft.eShopWeb.Infrastructure.Data
 {
     public class CatalogContextSeed
     {

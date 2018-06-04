@@ -1,7 +1,7 @@
-﻿using ApplicationCore.Entities.OrderAggregate;
+﻿using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 using System.Collections.Generic;
 
-namespace UnitTests.Builders
+namespace Microsoft.eShopWeb.UnitTests.Builders
 {
     public class OrderBuilder
     {

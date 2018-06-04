@@ -1,18 +1,18 @@
-﻿using ApplicationCore.Interfaces;
-using Infrastructure.Identity;
+﻿using Microsoft.eShopWeb.ApplicationCore.Interfaces;
+using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.eShopWeb.ViewModels.Manage;
-using Microsoft.eShopWeb.Services;
+using Microsoft.eShopWeb.Web.ViewModels.Manage;
+using Microsoft.eShopWeb.Web.Services;
 using System;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
-namespace Microsoft.eShopWeb.Controllers
+namespace Microsoft.eShopWeb.Web.Controllers
 {
     [Authorize]
     [Route("[controller]/[action]")]

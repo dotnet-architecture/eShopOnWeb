@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.eShopWeb.ViewModels;
+using Microsoft.eShopWeb.Web.ViewModels;
 using System;
-using ApplicationCore.Entities.OrderAggregate;
-using ApplicationCore.Interfaces;
+using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
+using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using System.Linq;
-using ApplicationCore.Specifications;
+using Microsoft.eShopWeb.ApplicationCore.Specifications;
 
-namespace Microsoft.eShopWeb.Controllers
+namespace Microsoft.eShopWeb.Web.Controllers
 {
     [Authorize]
     [Route("[controller]/[action]")]

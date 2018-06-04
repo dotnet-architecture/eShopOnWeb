@@ -1,7 +1,7 @@
-﻿using ApplicationCore.Interfaces;
+﻿using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb;
 
-namespace ApplicationCore.Services
+namespace Microsoft.eShopWeb.ApplicationCore.Services
 {
     public class UriComposer : IUriComposer
     {

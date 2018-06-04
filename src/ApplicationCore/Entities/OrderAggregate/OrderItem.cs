@@ -1,6 +1,6 @@
 ﻿using Microsoft.eShopWeb.ApplicationCore.Entities;
 
-namespace ApplicationCore.Entities.OrderAggregate
+namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate
 {
 
     public class OrderItem : BaseEntity

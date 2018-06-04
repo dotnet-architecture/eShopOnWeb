@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ApplicationCore.Entities.OrderAggregate
+namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate
 {
     public class Address // ValueObject
     {

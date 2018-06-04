@@ -1,7 +1,7 @@
-﻿using ApplicationCore.Interfaces;
+﻿using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Services
+namespace Microsoft.eShopWeb.Infrastructure.Services
 {
     // This class is used by the application to send email for account confirmation and password reset.
     // For more details see https://go.microsoft.com/fwlink/?LinkID=532713

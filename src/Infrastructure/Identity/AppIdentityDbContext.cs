@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 
 
-namespace Infrastructure.Identity
+namespace Microsoft.eShopWeb.Infrastructure.Identity
 {
     public class AppIdentityDbContext : IdentityDbContext<ApplicationUser>
     {
