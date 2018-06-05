@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using ApplicationCore.Interfaces;
+using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.AspNetCore.Http;
-using Microsoft.eShopWeb.ViewModels;
+using Microsoft.eShopWeb.Web.ViewModels;
 using Microsoft.AspNetCore.Identity;
-using Infrastructure.Identity;
+using Microsoft.eShopWeb.Infrastructure.Identity;
 using System;
 using System.Collections.Generic;
-using ApplicationCore.Entities.OrderAggregate;
+using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.eShopWeb.Interfaces;
+using Microsoft.eShopWeb.Web.Interfaces;
 
-namespace Microsoft.eShopWeb.Controllers
+namespace Microsoft.eShopWeb.Web.Controllers
 {
     [Route("[controller]/[action]")]
     public class BasketController : Controller

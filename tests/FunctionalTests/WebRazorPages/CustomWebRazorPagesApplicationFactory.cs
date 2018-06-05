@@ -1,14 +1,14 @@
-﻿using Infrastructure.Data;
+﻿using Microsoft.eShopWeb.Infrastructure.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.eShopWeb;
+using Microsoft.eShopWeb.Web;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using Microsoft.EntityFrameworkCore;
-using Infrastructure.Identity;
+using Microsoft.eShopWeb.Infrastructure.Identity;
 
-namespace FunctionalTests.WebRazorPages
+namespace Microsoft.eShopWeb.FunctionalTests.WebRazorPages
 {
     public class CustomWebRazorPagesApplicationFactory<TStartup>
     : WebApplicationFactory<Startup>

@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
-using Infrastructure.Data;
+using Microsoft.eShopWeb.Infrastructure.Data;
 using System;
 using Microsoft.Extensions.Logging;
-using Infrastructure.Identity;
+using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 
-namespace Microsoft.eShopWeb
+namespace Microsoft.eShopWeb.Web
 {
     public class Program
     {

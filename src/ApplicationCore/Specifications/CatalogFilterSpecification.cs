@@ -1,6 +1,6 @@
 ﻿using Microsoft.eShopWeb.ApplicationCore.Entities;
 
-namespace ApplicationCore.Specifications
+namespace Microsoft.eShopWeb.ApplicationCore.Specifications
 {
 
     public class CatalogFilterSpecification : BaseSpecification<CatalogItem>

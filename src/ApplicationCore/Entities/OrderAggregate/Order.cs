@@ -1,10 +1,10 @@
-﻿using ApplicationCore.Interfaces;
+﻿using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Ardalis.GuardClauses;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using System;
 using System.Collections.Generic;
 
-namespace ApplicationCore.Entities.OrderAggregate
+namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate
 {
     public class Order : BaseEntity, IAggregateRoot
     {

@@ -1,22 +1,22 @@
-﻿using ApplicationCore.Interfaces;
-using ApplicationCore.Services;
-using Infrastructure.Data;
-using Infrastructure.Identity;
-using Infrastructure.Logging;
-using Infrastructure.Services;
+﻿using Microsoft.eShopWeb.ApplicationCore.Interfaces;
+using Microsoft.eShopWeb.ApplicationCore.Services;
+using Microsoft.eShopWeb.Infrastructure.Data;
+using Microsoft.eShopWeb.Infrastructure.Identity;
+using Microsoft.eShopWeb.Infrastructure.Logging;
+using Microsoft.eShopWeb.Infrastructure.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.eShopWeb.Interfaces;
-using Microsoft.eShopWeb.Services;
+using Microsoft.eShopWeb.Web.Interfaces;
+using Microsoft.eShopWeb.Web.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Text;
 
-namespace Microsoft.eShopWeb
+namespace Microsoft.eShopWeb.Web
 {
     public class Startup
     {

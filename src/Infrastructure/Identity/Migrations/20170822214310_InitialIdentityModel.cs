@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Infrastructure.Identity.Migrations
+namespace Microsoft.eShopWeb.Infrastructure.Identity.Migrations
 {
     public partial class InitialIdentityModel : Migration
     {

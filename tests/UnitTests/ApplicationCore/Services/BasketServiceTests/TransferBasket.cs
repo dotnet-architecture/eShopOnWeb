@@ -1,8 +1,8 @@
-﻿using ApplicationCore.Services;
+﻿using Microsoft.eShopWeb.ApplicationCore.Services;
 using System;
 using Xunit;
 
-namespace UnitTests.ApplicationCore.Services.BasketServiceTests
+namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.BasketServiceTests
 {
     public class TransferBasket
     {
