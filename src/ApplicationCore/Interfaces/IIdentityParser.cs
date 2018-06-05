@@ -1,6 +1,6 @@
 ﻿using System.Security.Principal;
 
-namespace ApplicationCore.Interfaces
+namespace Microsoft.eShopWeb.ApplicationCore.Interfaces
 {
     public interface IIdentityParser<T>
     {

@@ -1,6 +1,6 @@
-﻿using ApplicationCore.Entities.OrderAggregate;
+﻿using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 
-namespace ApplicationCore.Specifications
+namespace Microsoft.eShopWeb.ApplicationCore.Specifications
 {
     public class CustomerOrdersWithItemsSpecification : BaseSpecification<Order>
     {

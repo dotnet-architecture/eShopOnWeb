@@ -1,14 +1,14 @@
-﻿using Infrastructure.Identity;
+﻿using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopWeb;
-using Microsoft.eShopWeb.Interfaces;
-using Microsoft.eShopWeb.ViewModels;
+using Microsoft.eShopWeb.Web.Interfaces;
+using Microsoft.eShopWeb.Web.ViewModels;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Web.ViewComponents
+namespace Microsoft.eShopWeb.Web.ViewComponents
 {
     public class Basket : ViewComponent
     {

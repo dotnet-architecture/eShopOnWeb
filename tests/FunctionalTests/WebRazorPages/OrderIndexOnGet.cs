@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.eShopWeb;
+using Microsoft.eShopWeb.Web;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace FunctionalTests.WebRazorPages
+namespace Microsoft.eShopWeb.FunctionalTests.WebRazorPages
 {
     public class OrderIndexOnGet : IClassFixture<CustomWebRazorPagesApplicationFactory<Startup>>
     {

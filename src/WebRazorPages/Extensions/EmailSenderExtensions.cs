@@ -1,4 +1,4 @@
-﻿using ApplicationCore.Interfaces;
+﻿using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 

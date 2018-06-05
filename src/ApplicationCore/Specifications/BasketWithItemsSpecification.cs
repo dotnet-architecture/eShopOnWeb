@@ -1,7 +1,7 @@
 ﻿using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
 
-namespace ApplicationCore.Specifications
+namespace Microsoft.eShopWeb.ApplicationCore.Specifications
 {
     public sealed class BasketWithItemsSpecification : BaseSpecification<Basket>
     {

@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.eShopWeb;
+using Microsoft.eShopWeb.Web;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace FunctionalTests.Web.Controllers
+namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
 {
     public class CatalogControllerIndex : IClassFixture<CustomWebApplicationFactory<Startup>>
     {

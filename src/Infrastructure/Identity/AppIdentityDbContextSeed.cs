@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Identity
+namespace Microsoft.eShopWeb.Infrastructure.Identity
 {
     public class AppIdentityDbContextSeed
     {

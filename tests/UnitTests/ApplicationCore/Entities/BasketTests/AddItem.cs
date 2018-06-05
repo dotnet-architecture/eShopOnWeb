@@ -3,7 +3,7 @@ using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
 using System.Linq;
 using Xunit;
 
-namespace UnitTests.ApplicationCore.Entities.BasketTests
+namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Entities.BasketTests
 {
     public class Total
     {

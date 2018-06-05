@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace FunctionalTests.WebRazorPages
+namespace Microsoft.eShopWeb.FunctionalTests.WebRazorPages
 {
     public class HomePageOnGet : IClassFixture<CustomWebRazorPagesApplicationFactory<Startup>>
     {

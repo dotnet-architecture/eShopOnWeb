@@ -1,7 +1,7 @@
-﻿using Microsoft.eShopWeb.ViewModels;
+﻿using Microsoft.eShopWeb.Web.ViewModels;
 using System.Threading.Tasks;
 
-namespace Microsoft.eShopWeb.Interfaces
+namespace Microsoft.eShopWeb.Web.Interfaces
 {
     public interface IBasketViewModelService
     {

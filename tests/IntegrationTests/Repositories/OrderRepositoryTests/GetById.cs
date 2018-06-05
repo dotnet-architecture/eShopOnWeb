@@ -1,11 +1,11 @@
-﻿using Infrastructure.Data;
+﻿using Microsoft.eShopWeb.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using UnitTests.Builders;
+using Microsoft.eShopWeb.UnitTests.Builders;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace IntegrationTests.Repositories.OrderRepositoryTests
+namespace Microsoft.eShopWeb.IntegrationTests.Repositories.OrderRepositoryTests
 {
     public class GetById
     {

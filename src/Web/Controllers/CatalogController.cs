@@ -1,8 +1,8 @@
-﻿using Microsoft.eShopWeb.Services;
+﻿using Microsoft.eShopWeb.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace Microsoft.eShopWeb.Controllers
+namespace Microsoft.eShopWeb.Web.Controllers
 {
     [Route("")]
     public class CatalogController : Controller

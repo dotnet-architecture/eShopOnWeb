@@ -1,10 +1,10 @@
-﻿using ApplicationCore.Specifications;
+﻿using Microsoft.eShopWeb.ApplicationCore.Specifications;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace UnitTests
+namespace Microsoft.eShopWeb.UnitTests
 {
     public class CatalogFilterSpecificationFilter
     {

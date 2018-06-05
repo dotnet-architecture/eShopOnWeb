@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.eShopWeb;
-using Microsoft.eShopWeb.ViewModels;
+using Microsoft.eShopWeb.Web;
+using Microsoft.eShopWeb.Web.ViewModels;
 using Newtonsoft.Json;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace FunctionalTests.Web.Controllers
+namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
 {
     public class ApiCatalogControllerList : IClassFixture<CustomWebApplicationFactory<Startup>>
     {

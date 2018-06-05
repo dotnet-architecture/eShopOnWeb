@@ -1,6 +1,6 @@
-﻿using ApplicationCore.Entities.OrderAggregate;
+﻿using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 
-namespace UnitTests.Builders
+namespace Microsoft.eShopWeb.UnitTests.Builders
 {
     public class AddressBuilder
     {
