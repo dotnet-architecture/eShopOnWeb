@@ -33,7 +33,9 @@ The goal for this sample is to demonstrate some of the principles and patterns d
 
 After cloning or downloading the sample you should be able to run it using an In Memory database immediately.
 
-If you wish to use the sample with a persistent database, you will need to run its Entity Framework Core migrations before you will be able to run the app, and update `ConfigureServices` method in `Startup.cs`.
+If you wish to use the sample with a persistent database, you will need to run its Entity Framework Core migrations before you will be able to run the app, and update the `ConfigureServices` method in `Startup.cs` (see below).
+
+You can also run the samples in Docker (see below).
 
 ### Configuring the sample to use SQL Server
 
@@ -73,3 +75,16 @@ dotnet ef migrations add InitialModel --context catalogcontext -p ../Infrastruct
 
 dotnet ef migrations add InitialIdentityModel --context appidentitydbcontext -p ../Infrastructure/Infrastructure.csproj -s Web.csproj -o Identity/Migrations
 ```
+
+## Running the sample using Docker
+
+You can run both the Web and WebRazorPages samples at the same time by running these commands from the root folder (where the .sln file is located):
+
+```
+    docker-compose build
+    docker-compose up
+```
+
+You should be able to make requests to localhost:5106 and localhost:5107 once these commands complete.
+
+You can run just the Web or WebRazorPages application by using the instructions located in their respective `Dockerfile` files in the root of the projects. Again, run these commands from the root of the solution (where the .sln file is located).
