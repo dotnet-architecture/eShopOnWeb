@@ -1,19 +1,27 @@
-FROM microsoft/dotnet:2.1-aspnetcore-runtime AS base
+# RUN BOTH CONTAINERS FROM ROOT (folder with .sln file):
+# docker-compose build
+# docker-compose up
+#
+# RUN JUST THIS CONTAINER FROM ROOT (folder with .sln file):
+# docker build --pull -t web -f src/Web/Dockerfile .
+#
+# RUN COMMAND
+#  docker run --name eshopweb --rm -it -p 8000:5106 web
+FROM microsoft/dotnet:2.1-sdk AS build
 WORKDIR /app
-EXPOSE 80
 
-FROM microsoft/aspnetcore-build:2.1.300-preview1 AS build
-RUN npm install -g bower@1.8.4
-WORKDIR /src
+COPY *.sln .
 COPY . .
-WORKDIR /src/src/Web
-RUN dotnet restore -nowarn:msb3202,nu1503
-RUN dotnet build --no-restore -c Release -o /app
+WORKDIR /app/src/Web
+RUN dotnet restore
 
-FROM build AS publish
-RUN dotnet publish --no-restore -c Release -o /app
+RUN dotnet publish -c Release -o out
 
-FROM base AS final
+FROM microsoft/dotnet:2.1-aspnetcore-runtime AS runtime
 WORKDIR /app
-COPY --from=publish /app .
+COPY --from=build /app/src/Web/out ./
+
+# Optional: Set this here if not setting it from docker-compose.yml
+# ENV ASPNETCORE_ENVIRONMENT Development
+
 ENTRYPOINT ["dotnet", "Web.dll"]

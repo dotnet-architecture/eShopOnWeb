@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.Web.Controllers
 {
-
     [Route("[controller]/[action]")]
     [Authorize]
     public class AccountController : Controller
@@ -40,7 +39,7 @@ namespace Microsoft.eShopWeb.Web.Controllers
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             ViewData["ReturnUrl"] = returnUrl;
-            if (!String.IsNullOrEmpty(returnUrl) && 
+            if (!String.IsNullOrEmpty(returnUrl) &&
                 returnUrl.IndexOf("checkout", StringComparison.OrdinalIgnoreCase) >= 0)
             {
                 ViewData["ReturnUrl"] = "/Basket/Index";
