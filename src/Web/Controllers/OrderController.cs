@@ -49,7 +49,12 @@ namespace Microsoft.eShopWeb.Web.Controllers
         [HttpGet("{orderId}")]
         public async Task<IActionResult> Detail(int orderId)
         {
-            var order = await _orderRepository.GetByIdWithItemsAsync(orderId);
+            var customerOrders = await _orderRepository.ListAsync(new CustomerOrdersWithItemsSpecification(User.Identity.Name));
+            var order = customerOrders.FirstOrDefault(o => o.Id == orderId);
+            if (order == null)
+            {
+                return BadRequest("No such order found for this user.");
+            }
             var viewModel = new OrderViewModel()
             {
                 OrderDate = order.OrderDate,
