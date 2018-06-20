@@ -12,5 +12,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Interfaces
         Task<T> AddAsync(T entity);
         Task UpdateAsync(T entity);
         Task DeleteAsync(T entity);
+        Task<(List<T> Items, int TotalItems, int ItemsPerPage, int ActualPage, int TotalPages)> PaginatedListAllAsync(int pageIndex, int itemsPage);
+        Task<(List<T> Items, int TotalItems, int ItemsPerPage, int ActualPage, int TotalPages)> PaginatedListAsync(int pageIndex, int itemsPage, ISpecification<T> spec);
     }
 }

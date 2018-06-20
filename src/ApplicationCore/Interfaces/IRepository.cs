@@ -12,5 +12,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Interfaces
         T Add(T entity);
         void Update(T entity);
         void Delete(T entity);
+        (IEnumerable<T> Items, int TotalItems, int ItemsPerPage, int ActualPage, int TotalPages) PaginatedListAll(int pageIndex, int itemsPage);
+        (IEnumerable<T> Items, int TotalItems, int ItemsPerPage, int ActualPage, int TotalPages) PaginatedList(int pageIndex, int itemsPage, ISpecification<T> spec);
     }
 }

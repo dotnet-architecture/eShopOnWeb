@@ -4,6 +4,7 @@ using Microsoft.eShopWeb.ApplicationCore.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 namespace Microsoft.eShopWeb.Infrastructure.Data
 {
@@ -47,6 +48,33 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
             return await _dbContext.Set<T>().ToListAsync();
         }
 
+        public (IEnumerable<T> Items, int TotalItems, int ItemsPerPage, int ActualPage, int TotalPages) PaginatedListAll(int pageIndex, int itemsPage)
+        {
+            var root = _dbContext.Set<T>();
+
+            int totalItems = root.Count();
+
+            var itemsOnPage = root
+                .Skip(itemsPage * pageIndex)
+                .Take(itemsPage)
+                .AsEnumerable();
+
+            return (itemsOnPage, totalItems, itemsOnPage.Count(), pageIndex, CalcTotalPage(totalItems, itemsPage));
+        }
+        public async Task<(List<T> Items, int TotalItems, int ItemsPerPage, int ActualPage, int TotalPages)> PaginatedListAllAsync(int pageIndex, int itemsPage)
+        {
+            var root = _dbContext.Set<T>();
+
+            int totalItems = root.Count();
+
+            var itemsOnPage = await root
+                .Skip(itemsPage * pageIndex)
+                .Take(itemsPage)
+                .ToListAsync();
+
+            return (itemsOnPage, totalItems, itemsOnPage.Count(), pageIndex, CalcTotalPage(totalItems, itemsPage));
+        }
+
         public IEnumerable<T> List(ISpecification<T> spec)
         {
             // fetch a Queryable that includes all expression-based includes
@@ -64,6 +92,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
                             .Where(spec.Criteria)
                             .AsEnumerable();
         }
+
         public async Task<List<T>> ListAsync(ISpecification<T> spec)
         {
             // fetch a Queryable that includes all expression-based includes
@@ -80,6 +109,55 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
             return await secondaryResult
                             .Where(spec.Criteria)
                             .ToListAsync();
+        }
+
+        public (IEnumerable<T> Items, int TotalItems, int ItemsPerPage, int ActualPage, int TotalPages) PaginatedList(int pageIndex, int itemsPage, ISpecification<T> spec)
+        {
+            var queryableResultWithIncludes = spec.Includes
+                .Aggregate(_dbContext.Set<T>().AsQueryable(),
+                    (current, include) => current.Include(include));
+
+            var secondaryResult = spec.IncludeStrings
+                .Aggregate(queryableResultWithIncludes,
+                    (current, include) => current.Include(include));
+
+            var root = secondaryResult.Where(spec.Criteria);
+
+            int totalItems = root.Count();
+
+            var itemsOnPage = root
+                .Skip(itemsPage * pageIndex)
+                .Take(itemsPage)
+                .AsEnumerable();
+
+            return (itemsOnPage, totalItems, itemsOnPage.Count(), pageIndex, CalcTotalPage(totalItems, itemsPage));
+        }
+
+        public async Task<(List<T> Items, int TotalItems, int ItemsPerPage, int ActualPage, int TotalPages)> PaginatedListAsync(int pageIndex, int itemsPage, ISpecification<T> spec)
+        {
+            var queryableResultWithIncludes = spec.Includes
+                .Aggregate(_dbContext.Set<T>().AsQueryable(),
+                    (current, include) => current.Include(include));
+
+            var secondaryResult = spec.IncludeStrings
+                .Aggregate(queryableResultWithIncludes,
+                    (current, include) => current.Include(include));
+
+            var root = secondaryResult.Where(spec.Criteria);
+
+            int totalItems = root.Count();
+
+            var itemsOnPage = await root
+                .Skip(itemsPage * pageIndex)
+                .Take(itemsPage)
+                .ToListAsync();
+
+            return (itemsOnPage, totalItems, itemsOnPage.Count(), pageIndex, CalcTotalPage(totalItems, itemsPage));
+        }
+
+        protected int CalcTotalPage(int totalItems, int itemsPage)
+        {
+            return int.Parse(Math.Ceiling(((decimal)totalItems / itemsPage)).ToString());
         }
 
         public T Add(T entity)
