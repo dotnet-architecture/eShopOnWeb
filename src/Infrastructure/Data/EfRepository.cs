@@ -32,9 +32,9 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
         }
 
 
-        public virtual async Task<T> GetByIdAsync(int id)
+        public virtual Task<T> GetByIdAsync(int id)
         {
-            return await _dbContext.Set<T>().FindAsync(id);
+            return _dbContext.Set<T>().FindAsync(id);
         }
 
         public IEnumerable<T> ListAll()
@@ -42,9 +42,9 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
             return _dbContext.Set<T>().AsEnumerable();
         }
 
-        public async Task<List<T>> ListAllAsync()
+        public Task<List<T>> ListAllAsync()
         {
-            return await _dbContext.Set<T>().ToListAsync();
+            return _dbContext.Set<T>().ToListAsync();
         }
 
         public IEnumerable<T> List(ISpecification<T> spec)
@@ -64,7 +64,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
                             .Where(spec.Criteria)
                             .AsEnumerable();
         }
-        public async Task<List<T>> ListAsync(ISpecification<T> spec)
+        public Task<List<T>> ListAsync(ISpecification<T> spec)
         {
             // fetch a Queryable that includes all expression-based includes
             var queryableResultWithIncludes = spec.Includes
@@ -77,7 +77,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
                     (current, include) => current.Include(include));
 
             // return the result of the query using the specification's criteria expression
-            return await secondaryResult
+            return secondaryResult
                             .Where(spec.Criteria)
                             .ToListAsync();
         }
@@ -90,12 +90,15 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
             return entity;
         }
 
-        public async Task<T> AddAsync(T entity)
+        public Task<T> AddAsync(T entity)
         {
-            _dbContext.Set<T>().Add(entity);
-            await _dbContext.SaveChangesAsync();
-
-            return entity;
+            return _dbContext.Set<T>()
+                .AddAsync(entity)
+                .ContinueWith(addTask =>
+                {
+                    _dbContext.SaveChangesAsync();
+                    return addTask.Result.Entity;
+                });
         }
 
         public void Update(T entity)
@@ -103,10 +106,10 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
             _dbContext.Entry(entity).State = EntityState.Modified;
             _dbContext.SaveChanges();
         }
-        public async Task UpdateAsync(T entity)
+        public Task UpdateAsync(T entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
-            await _dbContext.SaveChangesAsync();
+            return _dbContext.SaveChangesAsync();
         }
 
         public void Delete(T entity)
@@ -114,10 +117,10 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
             _dbContext.Set<T>().Remove(entity);
             _dbContext.SaveChanges();
         }
-        public async Task DeleteAsync(T entity)
+        public Task DeleteAsync(T entity)
         {
             _dbContext.Set<T>().Remove(entity);
-            await _dbContext.SaveChangesAsync();
+            return _dbContext.SaveChangesAsync();
         }
     }
 }
