@@ -4,7 +4,7 @@ Sample ASP.NET Core reference application, powered by Microsoft, demonstrating a
 
 Read the book online in the .NET docs here: https://docs.microsoft.com/en-us/dotnet/standard/modern-web-apps-azure-architecture/
 
-![image](https://user-images.githubusercontent.com/1712635/32811862-c998c6c8-c956-11e7-85bc-5a86e0659656.png)
+![image](https://user-images.githubusercontent.com/1712635/42467632-449688c2-8367-11e8-9323-81ab50a66006.png)
 
 The **eShopOnWeb** sample is related to the [eShopOnContainers](https://github.com/dotnet/eShopOnContainers) sample application which, in that case, focuses on a microservices/containers-based application architecture. However, **eShopOnWeb** is much simpler in regards to its current functionality and focuses on traditional Web Application Development with a single deployment.
 
