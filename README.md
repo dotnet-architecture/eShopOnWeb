@@ -1,8 +1,11 @@
 # eShopOnWeb
 
-Sample ASP.NET Core reference application, powered by Microsoft, demonstrating a single-process (monolithic) application architecture and deployment model. This reference application is meant to support the [Architecting Modern Web Applications with ASP.NET Core and Azure eBook](https://aka.ms/webappebook), updated to **ASP.NET Core 2.1**.
+Sample ASP.NET Core reference application, powered by Microsoft, demonstrating a single-process (monolithic) application architecture and deployment model. 
 
-Read the book online in the .NET docs here: https://docs.microsoft.com/en-us/dotnet/standard/modern-web-apps-azure-architecture/
+This reference application is meant to support the free .PDF download ebook: [Architecting Modern Web Applications with ASP.NET Core and Azure](https://aka.ms/webappebook), updated to **ASP.NET Core 2.1**.
+
+You can also read the book in online pages at the .NET docs here: 
+https://docs.microsoft.com/en-us/dotnet/standard/modern-web-apps-azure-architecture/
 
 ![image](https://user-images.githubusercontent.com/1712635/42467632-449688c2-8367-11e8-9323-81ab50a66006.png)
 
