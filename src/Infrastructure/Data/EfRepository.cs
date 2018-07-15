@@ -90,15 +90,11 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
             return entity;
         }
 
-        public Task<T> AddAsync(T entity)
+        public async Task<T> AddAsync(T entity)
         {
-            return _dbContext.Set<T>()
-                .AddAsync(entity)
-                .ContinueWith(addTask =>
-                {
-                    _dbContext.SaveChangesAsync();
-                    return addTask.Result.Entity;
-                });
+            await _dbContext.Set<T>().AddAsync(entity);
+            await _dbContext.SaveChangesAsync();
+            return entity;
         }
 
         public void Update(T entity)
