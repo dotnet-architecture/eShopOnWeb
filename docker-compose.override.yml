@@ -1,0 +1,29 @@
+version: '3.4'
+
+services:
+  eshopwebrazor:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://*:5107;http://0.0.0.0:5107
+      - ConnectionStrings:CatalogConnection=Server=sql-db;Database=Microsoft.eShopOnWeb.CatalogDb;User Id=sa;Password=Pass@word
+      - ConnectionStrings:IdentityConnection=Server=sql-db;Database=Microsoft.eShopOnWeb.Identity;User Id=sa;Password=Pass@word
+      - UseDb=true
+    ports:
+      - "5107:5107"
+
+  eshopwebmvc:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://*:5106;http://0.0.0.0:5106
+      - ConnectionStrings:CatalogConnection=Server=sql-db;Database=Microsoft.eShopOnWeb.CatalogDb;User Id=sa;Password=Pass@word
+      - ConnectionStrings:IdentityConnection=Server=sql-db;Database=Microsoft.eShopOnWeb.Identity;User Id=sa;Password=Pass@word
+      - UseDb=true
+    ports:
+      - "5106:5106"
+
+  sql-db:
+    ports:
+    - "5453:1433"
+    environment:
+    - SA_PASSWORD=Pass@word
+    - ACCEPT_EULA=Y

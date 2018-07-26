@@ -1,23 +1,30 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.eShopWeb.ApplicationCore.Entities;
-using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.eShopWeb.ApplicationCore.Entities;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace Microsoft.eShopWeb.Infrastructure.Data
 {
     public class CatalogContextSeed
     {
         public static async Task SeedAsync(CatalogContext catalogContext,
-            ILoggerFactory loggerFactory, int? retry = 0)
+            ILoggerFactory loggerFactory,
+            IConfiguration configuration,
+            int? retry = 0)
         {
             int retryForAvailability = retry.Value;
             try
             {
-                // TODO: Only run this if using a real database
-                // context.Database.Migrate();
+                bool.TryParse(configuration.GetSection("UseDb")?.Value, out bool isDb);
+
+                if (isDb)
+                {
+                    catalogContext.Database.Migrate();
+                }
 
                 if (!catalogContext.CatalogBrands.Any())
                 {
@@ -50,7 +57,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
                     retryForAvailability++;
                     var log = loggerFactory.CreateLogger<CatalogContextSeed>();
                     log.LogError(ex.Message);
-                    await SeedAsync(catalogContext, loggerFactory, retryForAvailability);
+                    await SeedAsync(catalogContext, loggerFactory, configuration, retryForAvailability);
                 }
             }
         }

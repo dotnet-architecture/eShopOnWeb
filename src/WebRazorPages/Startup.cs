@@ -30,14 +30,21 @@ namespace Microsoft.eShopWeb.RazorPages
 
         public void ConfigureDevelopmentServices(IServiceCollection services)
         {
-            // use in-memory database
-            ConfigureTestingServices(services);
+            bool.TryParse(Configuration.GetSection("UseDb")?.Value, out bool isDb);
 
-            // use real database
-            // ConfigureProductionServices(services);
+            if (!isDb)
+            {
+                // use in-memory database
+                ConfigureInMemoryDatabases(services);
+            }
+            else
+            {
+                // use real database
+                ConfigureProductionServices(services);
+            }
 
         }
-        public void ConfigureTestingServices(IServiceCollection services)
+        public void ConfigureInMemoryDatabases(IServiceCollection services)
         {
             // use in-memory database
             services.AddDbContext<CatalogContext>(c =>

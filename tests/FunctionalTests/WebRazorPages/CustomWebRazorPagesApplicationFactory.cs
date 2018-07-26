@@ -1,12 +1,13 @@
-﻿using Microsoft.eShopWeb.Infrastructure.Data;
+﻿using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.eShopWeb.Infrastructure.Data;
+using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.eShopWeb.Web;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.eShopWeb.Infrastructure.Identity;
 
 namespace Microsoft.eShopWeb.FunctionalTests.WebRazorPages
 {
@@ -46,6 +47,7 @@ namespace Microsoft.eShopWeb.FunctionalTests.WebRazorPages
                     var scopedServices = scope.ServiceProvider;
                     var db = scopedServices.GetRequiredService<CatalogContext>();
                     var loggerFactory = scopedServices.GetRequiredService<ILoggerFactory>();
+                    var config = scopedServices.GetRequiredService<IConfiguration>();
 
                     var logger = scopedServices
                         .GetRequiredService<ILogger<CustomWebRazorPagesApplicationFactory<TStartup>>>();
@@ -56,7 +58,7 @@ namespace Microsoft.eShopWeb.FunctionalTests.WebRazorPages
                     try
                     {
                         // Seed the database with test data.
-                        CatalogContextSeed.SeedAsync(db, loggerFactory).Wait();
+                        CatalogContextSeed.SeedAsync(db, loggerFactory, config).Wait();
                     }
                     catch (Exception ex)
                     {

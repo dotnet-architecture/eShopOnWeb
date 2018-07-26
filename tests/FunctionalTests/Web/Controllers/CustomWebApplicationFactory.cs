@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopWeb.Infrastructure.Identity;
+using Microsoft.Extensions.Configuration;
 
 namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
 {
@@ -50,13 +51,15 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
                     var logger = scopedServices
                         .GetRequiredService<ILogger<CustomWebApplicationFactory<TStartup>>>();
 
+                    var config = scopedServices.GetRequiredService<IConfiguration>();
+
                     // Ensure the database is created.
                     db.Database.EnsureCreated();
 
                     try
                     {
                         // Seed the database with test data.
-                        CatalogContextSeed.SeedAsync(db, loggerFactory).Wait();
+                        CatalogContextSeed.SeedAsync(db, loggerFactory, config).Wait();
                     }
                     catch (Exception ex)
                     {

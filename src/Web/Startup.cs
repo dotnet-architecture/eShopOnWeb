@@ -30,11 +30,19 @@ namespace Microsoft.eShopWeb.Web
 
         public void ConfigureDevelopmentServices(IServiceCollection services)
         {
-            // use in-memory database
-            ConfigureInMemoryDatabases(services);
+            bool.TryParse(Configuration.GetSection("UseDb")?.Value, out bool isDb);
 
-            // use real database
-            // ConfigureProductionServices(services);
+            if (!isDb)
+            {
+                // use in-memory database
+                ConfigureInMemoryDatabases(services);
+            }
+            else
+            {
+                // use real database
+                ConfigureProductionServices(services);
+            }
+
         }
 
         private void ConfigureInMemoryDatabases(IServiceCollection services)

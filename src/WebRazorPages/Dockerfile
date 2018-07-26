@@ -7,19 +7,23 @@
 #
 # RUN COMMAND
 # docker run --name eshopweb --rm -it -p 5107:5107 webrazor
+FROM microsoft/dotnet:2.1-aspnetcore-runtime AS base
+WORKDIR /app
+EXPOSE 5107
+
 FROM microsoft/dotnet:2.1-sdk AS build
-WORKDIR /app
-
-COPY *.sln .
+WORKDIR /src
 COPY . .
-WORKDIR /app/src/WebRazorPages
-RUN dotnet restore
+WORKDIR /src/src/WebRazorPages
+RUN dotnet restore -nowarn:msb3202,nu1503
+RUN dotnet build --no-restore -c Release -o /app
 
-RUN dotnet publish -c Release -o out
+FROM build as publish
+RUN dotnet publish --no-restore -c Release -o /app
 
-FROM microsoft/dotnet:2.1-aspnetcore-runtime AS runtime
+FROM base AS runtime
 WORKDIR /app
-COPY --from=build /app/src/WebRazorPages/out ./
+COPY --from=publish /app ./
 
 # Optional: Set this here if not setting it from docker-compose.yml
 # ENV ASPNETCORE_ENVIRONMENT Development

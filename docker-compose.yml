@@ -1,27 +1,31 @@
-version: '3'
+version: '3.4'
 
 services:
   eshopwebrazor:
-    image: eshopwebrazor
+    image: eshopwebrazor-latest
     build:
       context: .
       dockerfile: src/WebRazorPages/Dockerfile
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - "5107:5107"
+    networks:
+     - eshop-network
+    depends_on:
+     - sql-db
 
   eshopwebmvc:
-    image: eshopwebmvc
+    image: eshopwebmvc-latest
     build:
       context: .
       dockerfile: src/Web/Dockerfile
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - "5106:5106"
+    networks:
+     - eshop-network
+    depends_on:
+     - sql-db
+  
+  sql-db:
+    image: microsoft/mssql-server-linux:2017-latest
+    networks:
+     - eshop-network
 
 networks:
-  default:
-    external:
-      name: nat
+ eshop-network:
+  driver: bridge

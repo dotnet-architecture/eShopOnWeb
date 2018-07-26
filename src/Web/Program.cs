@@ -6,6 +6,7 @@ using System;
 using Microsoft.Extensions.Logging;
 using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 
 namespace Microsoft.eShopWeb.Web
 {
@@ -20,10 +21,11 @@ namespace Microsoft.eShopWeb.Web
             {
                 var services = scope.ServiceProvider;
                 var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+                var config = services.GetRequiredService<IConfiguration>();
                 try
                 {
                     var catalogContext = services.GetRequiredService<CatalogContext>();
-                    CatalogContextSeed.SeedAsync(catalogContext, loggerFactory)
+                    CatalogContextSeed.SeedAsync(catalogContext, loggerFactory, config)
             .Wait();
 
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
