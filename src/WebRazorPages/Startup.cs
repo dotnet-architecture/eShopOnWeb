@@ -21,6 +21,8 @@ namespace Microsoft.eShopWeb.RazorPages
     public class Startup
     {
         private IServiceCollection _services;
+        private bool _UseDb = false;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -30,9 +32,10 @@ namespace Microsoft.eShopWeb.RazorPages
 
         public void ConfigureDevelopmentServices(IServiceCollection services)
         {
-            bool.TryParse(Configuration.GetSection("UseDb")?.Value, out bool isDb);
+            bool.TryParse(Configuration.GetSection("UseDb")?.Value, out bool UseDb);
+            _UseDb = UseDb;
 
-            if (!isDb)
+            if (!_UseDb)
             {
                 // use in-memory database
                 ConfigureInMemoryDatabases(services);
@@ -126,7 +129,9 @@ namespace Microsoft.eShopWeb.RazorPages
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app,
-            IHostingEnvironment env)
+            IHostingEnvironment env,
+            IServiceProvider services,
+            AppIdentityDbContext appIdentityDb)
         {
             if (env.IsDevelopment())
             {
@@ -145,6 +150,16 @@ namespace Microsoft.eShopWeb.RazorPages
             app.UseAuthentication();
 
             app.UseMvc();
+
+            if (_UseDb)
+            {
+                // creates identity database
+                appIdentityDb.Database.EnsureCreated();
+
+                // seed database
+                var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+                AppIdentityDbContextSeed.SeedAsync(userManager).Wait();
+            }
         }
 
         private void ListAllRegisteredServices(IApplicationBuilder app)

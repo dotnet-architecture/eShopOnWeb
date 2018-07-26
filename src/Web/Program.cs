@@ -25,9 +25,9 @@ namespace Microsoft.eShopWeb.Web
                 try
                 {
                     var catalogContext = services.GetRequiredService<CatalogContext>();
-                    CatalogContextSeed.SeedAsync(catalogContext, loggerFactory, config)
-            .Wait();
+                    CatalogContextSeed.SeedAsync(catalogContext, loggerFactory, config, 3).Wait();
 
+                    // seeding will only be successful if database was already created.
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                     AppIdentityDbContextSeed.SeedAsync(userManager).Wait();
                 }

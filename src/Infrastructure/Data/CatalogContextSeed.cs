@@ -54,6 +54,8 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
             {
                 if (retryForAvailability < 10)
                 {
+                    await Task.Delay(TimeSpan.FromSeconds(Math.Pow(2, retry.Value)));
+
                     retryForAvailability++;
                     var log = loggerFactory.CreateLogger<CatalogContextSeed>();
                     log.LogError(ex.Message);

@@ -14,7 +14,8 @@ services:
       - UseDb=true
     ports:
       - "5107:5107"
-
+    depends_on: 
+     - sql-db
   eshopwebmvc:
     image: eshopwebmvc
     build:
@@ -28,6 +29,8 @@ services:
       - UseDb=true
     ports:
       - "5106:5106"
+    depends_on: 
+     - sql-db
   
   sql-db:
     image: microsoft/mssql-server-linux:2017-latest
