@@ -83,6 +83,12 @@ namespace Microsoft.eShopWeb.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            // https://github.com/dotnet-architecture/eShopOnContainers/issues/145#issuecomment-306821018
+            services.AddDataProtection(opt =>
+            {
+                opt.ApplicationDiscriminator = "eshoponwebmvc.identity";
+            });
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
                 .AddDefaultTokenProviders();

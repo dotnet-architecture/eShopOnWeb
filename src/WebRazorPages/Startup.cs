@@ -90,6 +90,12 @@ namespace Microsoft.eShopWeb.RazorPages
 
         public void ConfigureServices(IServiceCollection services)
         {
+            // https://github.com/dotnet-architecture/eShopOnContainers/issues/145#issuecomment-306821018
+            services.AddDataProtection(opt =>
+            {
+                opt.ApplicationDiscriminator = "eshoponwerazor.identity";
+            });
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
                 .AddDefaultTokenProviders();
