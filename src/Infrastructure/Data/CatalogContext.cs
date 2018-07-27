@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
@@ -28,6 +29,32 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
             builder.Entity<CatalogItem>(ConfigureCatalogItem);
             builder.Entity<Order>(ConfigureOrder);
             builder.Entity<OrderItem>(ConfigureOrderItem);
+            builder.Entity<Address>(ConfigureAddress);
+            builder.Entity<CatalogItemOrdered>(ConfigureItemOrdered);
+        }
+
+        private void ConfigureItemOrdered(EntityTypeBuilder<CatalogItemOrdered> builder)
+        {
+            //https://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers/417184#417184
+            builder.Property(ci => ci.PictureUri)
+                   .HasMaxLength(2083);
+            builder.Property(ci => ci.ProductName)
+                  .HasMaxLength(50);
+        }
+
+        private void ConfigureAddress(EntityTypeBuilder<Address> builder)
+        {
+            //https://ss64.com/sql/syntax-field-sizes.html
+            builder.Property(ci => ci.City)
+                .HasMaxLength(35);
+            builder.Property(ci => ci.Country)
+                .HasMaxLength(70);
+            builder.Property(ci => ci.State)
+                .HasMaxLength(35);
+            builder.Property(ci => ci.Street)
+                    .HasMaxLength(35);
+            builder.Property(ci => ci.ZipCode)
+                   .HasMaxLength(9);
         }
 
         private void ConfigureBasket(EntityTypeBuilder<Basket> builder)
@@ -45,6 +72,10 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
                 .ForSqlServerUseSequenceHiLo("catalog_hilo")
                 .IsRequired();
 
+            builder.Property(ci => ci.Description)
+                // Description should not be large.
+                .HasMaxLength(250);
+
             builder.Property(ci => ci.Name)
                 .IsRequired(true)
                 .HasMaxLength(50);
@@ -53,6 +84,8 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
                 .IsRequired(true);
 
             builder.Property(ci => ci.PictureUri)
+                //https://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers/417184#417184
+                .HasMaxLength(2083)
                 .IsRequired(false);
 
             builder.HasOne(ci => ci.CatalogBrand)
@@ -106,6 +139,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
         private void ConfigureOrderItem(EntityTypeBuilder<OrderItem> builder)
         {
             builder.OwnsOne(i => i.ItemOrdered);
+
         }
     }
 }
