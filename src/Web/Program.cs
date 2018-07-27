@@ -14,7 +14,25 @@ namespace Microsoft.eShopWeb.Web
     {
         public static void Main(string[] args)
         {
+            // logging at the host level
+            // https://ardalis.com/logging-and-using-services-in-startup-in-aspnet-core-apps
             var host = CreateWebHostBuilder(args)
+                         .ConfigureAppConfiguration((context, configApp) =>
+                         {
+                             configApp.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                             configApp.AddJsonFile(
+                                 $"appsettings.{context.HostingEnvironment.EnvironmentName}.json",
+                                 optional: true);
+                             configApp.AddEnvironmentVariables();
+                             configApp.AddCommandLine(args);
+                         })
+                         .ConfigureLogging((context, logging) =>
+                         {
+                             logging.AddConfiguration(context.Configuration.GetSection("Logging"));
+
+                             logging.AddConsole();
+                             logging.AddDebug();
+                         })
                         .Build();
 
             using (var scope = host.Services.CreateScope())
@@ -33,7 +51,7 @@ namespace Microsoft.eShopWeb.Web
                 }
                 catch (Exception ex)
                 {
-                    var logger = loggerFactory.CreateLogger<Program>();
+                    var logger = services.GetRequiredService<ILogger<Program>>();
                     logger.LogError(ex, "An error occurred seeding the DB.");
                 }
             }

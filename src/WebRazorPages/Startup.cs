@@ -15,20 +15,24 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Text;
+using Microsoft.Extensions.Logging;
 
 namespace Microsoft.eShopWeb.RazorPages
 {
     public class Startup
     {
         private IServiceCollection _services;
+        private readonly ILogger<Startup> _logger;
         private bool _UseDb = false;
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, ILogger<Startup> logger)
         {
             Configuration = configuration;
+            _logger = logger;
         }
 
         public IConfiguration Configuration { get; }
+
 
         public void ConfigureDevelopmentServices(IServiceCollection services)
         {
@@ -153,12 +157,19 @@ namespace Microsoft.eShopWeb.RazorPages
 
             if (_UseDb)
             {
-                // creates identity database
-                appIdentityDb.Database.EnsureCreated();
+                try
+                {
+                    // creates identity database
+                    appIdentityDb.Database.EnsureCreated();
 
-                // seed database
-                var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                AppIdentityDbContextSeed.SeedAsync(userManager).Wait();
+                    // seed database
+                    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+                    AppIdentityDbContextSeed.SeedAsync(userManager).Wait();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"{nameof(AppIdentityDbContext)} failed seeding database with: {ex.Message}");
+                }
             }
         }
 
