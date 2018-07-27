@@ -84,13 +84,20 @@ dotnet ef migrations add InitialIdentityModel --context appidentitydbcontext -p 
 You can run both the Web and WebRazorPages samples at the same time by running these commands from the root folder (where the .sln file is located):
 
 ```
-    docker-compose -f docker-compose.project.yml build
-    docker-compose -f docker-compose.project.yml up
+    docker-compose -f docker-compose.dev.yml build
+    docker-compose -f docker-compose.dev.yml up
+```
+Once the containers are created the MS SQL database is also created and hosted inside of the container.
+To access the database instance please use the following:
+```
+host: localhost,5453
+user name: sa
+password: Pass@word
 ```
 
 To remove running Docker containers
 ```
-    docker-compose -f docker-compose.project.yml down
+    docker-compose -f docker-compose.dev.yml down
 ```
 
 You should be able to make requests to localhost:5106 and localhost:5107 once these commands complete.
