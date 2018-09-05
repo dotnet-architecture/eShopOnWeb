@@ -1,10 +1,10 @@
 # eShopOnWeb
 
-Sample ASP.NET Core reference application, powered by Microsoft, demonstrating a single-process (monolithic) application architecture and deployment model. 
+Sample ASP.NET Core reference application, powered by Microsoft, demonstrating a single-process (monolithic) application architecture and deployment model.
 
 This reference application is meant to support the free .PDF download ebook: [Architecting Modern Web Applications with ASP.NET Core and Azure](https://aka.ms/webappebook), updated to **ASP.NET Core 2.1**.
 
-You can also read the book in online pages at the .NET docs here: 
+You can also read the book in online pages at the .NET docs here:
 https://docs.microsoft.com/en-us/dotnet/standard/modern-web-apps-azure-architecture/
 
 ![image](https://user-images.githubusercontent.com/1712635/42467632-449688c2-8367-11e8-9323-81ab50a66006.png)
@@ -88,6 +88,6 @@ You can run both the Web and WebRazorPages samples at the same time by running t
     docker-compose up
 ```
 
-You should be able to make requests to localhost:5106 and localhost:5107 once these commands complete.
+You should be able to make requests to http://localhost:5106 & http://localhost:5107 and https://localhost:44388 & https://localhost:44389 once these commands complete.
 
 You can run just the Web or WebRazorPages application by using the instructions located in their respective `Dockerfile` files in the root of the projects. Again, run these commands from the root of the solution (where the .sln file is located).
