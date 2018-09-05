@@ -6,6 +6,7 @@ using System;
 using Microsoft.Extensions.Logging;
 using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
+using System.IO;
 
 namespace Microsoft.eShopWeb.Web
 {
@@ -39,9 +40,19 @@ namespace Microsoft.eShopWeb.Web
             host.Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseUrls("http://0.0.0.0:5106")
-                .UseStartup<Startup>();
+		public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+		    WebHost
+				.CreateDefaultBuilder(args)
+				.UseKestrel(opts =>
+				{
+					opts.ListenLocalhost(5106);
+					opts.ListenLocalhost(44388, lo =>
+					{
+						lo.UseHttps($@"{Directory.GetCurrentDirectory()}\\Certificates\\eShop.pfx", "D0tNet@");
+					});
+				})
+				.UseUrls("http://0.0.0.0:5106", "https://0.0.0.0:44388")
+				.UseIISIntegration()
+				.UseStartup<Startup>();
     }
 }

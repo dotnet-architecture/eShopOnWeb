@@ -6,6 +6,7 @@ using Microsoft.eShopWeb.Infrastructure.Data;
 using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity;
+using System.IO;
 
 namespace Microsoft.eShopWeb.RazorPages
 {
@@ -41,7 +42,16 @@ namespace Microsoft.eShopWeb.RazorPages
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseUrls("http://0.0.0.0:5107")
-                .UseStartup<Startup>();
+				.UseKestrel(opts =>
+				{
+					opts.ListenLocalhost(5107);
+					opts.ListenLocalhost(44389, lo =>
+					{
+						lo.UseHttps($@"{Directory.GetCurrentDirectory()}\\Certificates\\eShop.pfx", "D0tNet@");
+					});
+				})
+				.UseUrls("http://0.0.0.0:5107", "https://0.0.0.0:44389")
+				.UseIISIntegration()
+			 .UseStartup<Startup>();
     }
 }
