@@ -7,9 +7,6 @@
 		<UserSecretsId>231ddc1b-6787-4704-a0c0-18df6a022660</UserSecretsId>
 	</PropertyGroup>
 	<ItemGroup>
-		<None Remove="Certificates\eShop.pfx" />
-	</ItemGroup>
-	<ItemGroup>
 		<EmbeddedResource Include="Certificates\eShop.pfx">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</EmbeddedResource>
