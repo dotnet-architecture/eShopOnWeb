@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TItiCertData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SubjectName>CN=*.eshop.ms, O=Microsoft, OU=OSS, C=US, E=eshop@microsoft.com, G=eShop</SubjectName>
+  <DateFrom>2018-08-31T12:00:00+06:00</DateFrom>
+  <DateTo>2990-12-31T12:00:00</DateTo>
+  <SignatureHashAlgorithm>SHA256</SignatureHashAlgorithm>
+  <KeyStoreContextIsMachine>false</KeyStoreContextIsMachine>
+  <KeyCryptoProvider>Microsoft Enhanced Cryptographic Provider v1.0</KeyCryptoProvider>
+  <KeyLength>2048</KeyLength>
+  <KeyPassword>D0tNet@</KeyPassword>
+  <SmimeCapabilities>false</SmimeCapabilities>
+  <SerialNumberHexString />
+  <BasicConstEnabled>true</BasicConstEnabled>
+  <BasicConstIsCA>false</BasicConstIsCA>
+  <BasicConstPathLength>0</BasicConstPathLength>
+  <BasicConstIsCritical>false</BasicConstIsCritical>
+  <CAVersionEnabled>false</CAVersionEnabled>
+  <CAVersionMaj>1</CAVersionMaj>
+  <CAVersionMin>0</CAVersionMin>
+  <SignerCertificatePath>STORE://LocalMachine/My/586FFF6FD0359371423442D6171135EE5406ED96</SignerCertificatePath>
+  <KeyUsageFlagList>
+    <X509KeyUsageFlags>XCN_CERT_DIGITAL_SIGNATURE_KEY_USAGE</X509KeyUsageFlags>
+    <X509KeyUsageFlags>XCN_CERT_KEY_ENCIPHERMENT_KEY_USAGE</X509KeyUsageFlags>
+  </KeyUsageFlagList>
+  <KeyUsageIsCritical>false</KeyUsageIsCritical>
+  <ExtendedKeyUsageList>
+    <string>1.3.6.1.5.5.7.3.1</string>
+    <string>1.3.6.1.5.5.7.3.2</string>
+  </ExtendedKeyUsageList>
+  <ExtendedKeyUsageIsCritical>false</ExtendedKeyUsageIsCritical>
+  <SubjAltNameColl>
+    <item>
+      <key>
+        <string>webmarketingapigw  (DNS Name)</string>
+      </key>
+      <val>
+        <TItiCertData_SubjAltName>
+          <SubjAltNameType>XCN_CERT_ALT_NAME_DNS_NAME</SubjAltNameType>
+          <SubjAltNameData>webmarketingapigw</SubjAltNameData>
+          <SubjAltNameDisplayText>webmarketingapigw  (DNS Name)</SubjAltNameDisplayText>
+        </TItiCertData_SubjAltName>
+      </val>
+    </item>
+    <item>
+      <key>
+        <string>webshoppingapigw  (DNS Name)</string>
+      </key>
+      <val>
+        <TItiCertData_SubjAltName>
+          <SubjAltNameType>XCN_CERT_ALT_NAME_DNS_NAME</SubjAltNameType>
+          <SubjAltNameData>webshoppingapigw</SubjAltNameData>
+          <SubjAltNameDisplayText>webshoppingapigw  (DNS Name)</SubjAltNameDisplayText>
+        </TItiCertData_SubjAltName>
+      </val>
+    </item>
+    <item>
+      <key>
+        <string>mobilemarketingapigw  (DNS Name)</string>
+      </key>
+      <val>
+        <TItiCertData_SubjAltName>
+          <SubjAltNameType>XCN_CERT_ALT_NAME_DNS_NAME</SubjAltNameType>
+          <SubjAltNameData>mobilemarketingapigw</SubjAltNameData>
+          <SubjAltNameDisplayText>mobilemarketingapigw  (DNS Name)</SubjAltNameDisplayText>
+        </TItiCertData_SubjAltName>
+      </val>
+    </item>
+    <item>
+      <key>
+        <string>mobileshoppingapigw  (DNS Name)</string>
+      </key>
+      <val>
+        <TItiCertData_SubjAltName>
+          <SubjAltNameType>XCN_CERT_ALT_NAME_DNS_NAME</SubjAltNameType>
+          <SubjAltNameData>mobileshoppingapigw</SubjAltNameData>
+          <SubjAltNameDisplayText>mobileshoppingapigw  (DNS Name)</SubjAltNameDisplayText>
+        </TItiCertData_SubjAltName>
+      </val>
+    </item>
+    <item>
+      <key>
+        <string>locations.api  (DNS Name)</string>
+      </key>
+      <val>
+        <TItiCertData_SubjAltName>
+          <SubjAltNameType>XCN_CERT_ALT_NAME_DNS_NAME</SubjAltNameType>
+          <SubjAltNameData>locations.api</SubjAltNameData>
+          <SubjAltNameDisplayText>locations.api  (DNS Name)</SubjAltNameDisplayText>
+        </TItiCertData_SubjAltName>
+      </val>
+    </item>
+    <item>
+      <key>
+        <string>payment.api  (DNS Name)</string>
+      </key>
+      <val>
+        <TItiCertData_SubjAltName>
+          <SubjAltNameType>XCN_CERT_ALT_NAME_DNS_NAME</SubjAltNameType>
+          <SubjAltNameData>payment.api</SubjAltNameData>
+          <SubjAltNameDisplayText>payment.api  (DNS Name)</SubjAltNameDisplayText>
+        </TItiCertData_SubjAltName>
+      </val>
+    </item>
+    <item>
+      <key>
+        <string>marketing.api  (DNS Name)</string>
+      </key>
+      <val>
+        <TItiCertData_SubjAltName>
+          <SubjAltNameType>XCN_CERT_ALT_NAME_DNS_NAME</SubjAltNameType>
+          <SubjAltNameData>marketing.api</SubjAltNameData>
+          <SubjAltNameDisplayText>marketing.api  (DNS Name)</SubjAltNameDisplayText>
+        </TItiCertData_SubjAltName>
+      </val>
+    </item>
+    <item>
+      <key>
+        <string>ordering.backgroundtasks  (DNS Name)</string>
+      </key>
+      <val>
+        <TItiCertData_SubjAltName>
+          <SubjAltNameType>XCN_CERT_ALT_NAME_DNS_NAME</SubjAltNameType>
+          <SubjAltNameData>ordering.backgroundtasks</SubjAltNameData>
+          <SubjAltNameDisplayText>ordering.backgroundtasks  (DNS Name)</SubjAltNameDisplayText>
+        </TItiCertData_SubjAltName>
+      </val>
+    </item>
+    <item>
+      <key>
+        <string>webshoppingagg  (DNS Name)</string>
+      </key>
+      <val>
+        <TItiCertData_SubjAltName>
+          <SubjAltNameType>XCN_CERT_ALT_NAME_DNS_NAME</SubjAltNameType>
+          <SubjAltNameData>webshoppingagg</SubjAltNameData>
+          <SubjAltNameDisplayText>webshoppingagg  (DNS Name)</SubjAltNameDisplayText>
+        </TItiCertData_SubjAltName>
+      </val>
+    </item>
+    <item>
+      <key>
+        <string>mobileshoppingagg  (DNS Name)</string>
+      </key>
+      <val>
+        <TItiCertData_SubjAltName>
+          <SubjAltNameType>XCN_CERT_ALT_NAME_DNS_NAME</SubjAltNameType>
+          <SubjAltNameData>mobileshoppingagg</SubjAltNameData>
+          <SubjAltNameDisplayText>mobileshoppingagg  (DNS Name)</SubjAltNameDisplayText>
+        </TItiCertData_SubjAltName>
+      </val>
+    </item>
+    <item>
+      <key>
+        <string>ordering.api  (DNS Name)</string>
+      </key>
+      <val>
+        <TItiCertData_SubjAltName>
+          <SubjAltNameType>XCN_CERT_ALT_NAME_DNS_NAME</SubjAltNameType>
+          <SubjAltNameData>ordering.api</SubjAltNameData>
+          <SubjAltNameDisplayText>ordering.api  (DNS Name)</SubjAltNameDisplayText>
+        </TItiCertData_SubjAltName>
+      </val>
+    </item>
+    <item>
+      <key>
+        <string>catalog.api  (DNS Name)</string>
+      </key>
+      <val>
+        <TItiCertData_SubjAltName>
+          <SubjAltNameType>XCN_CERT_ALT_NAME_DNS_NAME</SubjAltNameType>
+          <SubjAltNameData>catalog.api</SubjAltNameData>
+          <SubjAltNameDisplayText>catalog.api  (DNS Name)</SubjAltNameDisplayText>
+        </TItiCertData_SubjAltName>
+      </val>
+    </item>
+    <item>
+      <key>
+        <string>ordering.signalrhub  (DNS Name)</string>
+      </key>
+      <val>
+        <TItiCertData_SubjAltName>
+          <SubjAltNameType>XCN_CERT_ALT_NAME_DNS_NAME</SubjAltNameType>
+          <SubjAltNameData>ordering.signalrhub</SubjAltNameData>
+          <SubjAltNameDisplayText>ordering.signalrhub  (DNS Name)</SubjAltNameDisplayText>
+        </TItiCertData_SubjAltName>
+      </val>
+    </item>
+    <item>
+      <key>
+        <string>basket.api  (DNS Name)</string>
+      </key>
+      <val>
+        <TItiCertData_SubjAltName>
+          <SubjAltNameType>XCN_CERT_ALT_NAME_DNS_NAME</SubjAltNameType>
+          <SubjAltNameData>basket.api</SubjAltNameData>
+          <SubjAltNameDisplayText>basket.api  (DNS Name)</SubjAltNameDisplayText>
+        </TItiCertData_SubjAltName>
+      </val>
+    </item>
+    <item>
+      <key>
+        <string>identity.api  (DNS Name)</string>
+      </key>
+      <val>
+        <TItiCertData_SubjAltName>
+          <SubjAltNameType>XCN_CERT_ALT_NAME_DNS_NAME</SubjAltNameType>
+          <SubjAltNameData>identity.api</SubjAltNameData>
+          <SubjAltNameDisplayText>identity.api  (DNS Name)</SubjAltNameDisplayText>
+        </TItiCertData_SubjAltName>
+      </val>
+    </item>
+    <item>
+      <key>
+        <string>10.0.75.1  (IP Address)</string>
+      </key>
+      <val>
+        <TItiCertData_SubjAltName>
+          <SubjAltNameType>XCN_CERT_ALT_NAME_IP_ADDRESS</SubjAltNameType>
+          <SubjAltNameData>10.0.75.1</SubjAltNameData>
+          <SubjAltNameDisplayText>10.0.75.1  (IP Address)</SubjAltNameDisplayText>
+        </TItiCertData_SubjAltName>
+      </val>
+    </item>
+    <item>
+      <key>
+        <string>webstatus  (DNS Name)</string>
+      </key>
+      <val>
+        <TItiCertData_SubjAltName>
+          <SubjAltNameType>XCN_CERT_ALT_NAME_DNS_NAME</SubjAltNameType>
+          <SubjAltNameData>webstatus</SubjAltNameData>
+          <SubjAltNameDisplayText>webstatus  (DNS Name)</SubjAltNameDisplayText>
+        </TItiCertData_SubjAltName>
+      </val>
+    </item>
+    <item>
+      <key>
+        <string>127.0.0.1  (IP Address)</string>
+      </key>
+      <val>
+        <TItiCertData_SubjAltName>
+          <SubjAltNameType>XCN_CERT_ALT_NAME_IP_ADDRESS</SubjAltNameType>
+          <SubjAltNameData>127.0.0.1</SubjAltNameData>
+          <SubjAltNameDisplayText>127.0.0.1  (IP Address)</SubjAltNameDisplayText>
+        </TItiCertData_SubjAltName>
+      </val>
+    </item>
+    <item>
+      <key>
+        <string>*.eshop.ms  (DNS Name)</string>
+      </key>
+      <val>
+        <TItiCertData_SubjAltName>
+          <SubjAltNameType>XCN_CERT_ALT_NAME_DNS_NAME</SubjAltNameType>
+          <SubjAltNameData>*.eshop.ms</SubjAltNameData>
+          <SubjAltNameDisplayText>*.eshop.ms  (DNS Name)</SubjAltNameDisplayText>
+        </TItiCertData_SubjAltName>
+      </val>
+    </item>
+    <item>
+      <key>
+        <string>localhost  (DNS Name)</string>
+      </key>
+      <val>
+        <TItiCertData_SubjAltName>
+          <SubjAltNameType>XCN_CERT_ALT_NAME_DNS_NAME</SubjAltNameType>
+          <SubjAltNameData>localhost</SubjAltNameData>
+          <SubjAltNameDisplayText>localhost  (DNS Name)</SubjAltNameDisplayText>
+        </TItiCertData_SubjAltName>
+      </val>
+    </item>
+    <item>
+      <key>
+        <string>webspa  (DNS Name)</string>
+      </key>
+      <val>
+        <TItiCertData_SubjAltName>
+          <SubjAltNameType>XCN_CERT_ALT_NAME_DNS_NAME</SubjAltNameType>
+          <SubjAltNameData>webspa</SubjAltNameData>
+          <SubjAltNameDisplayText>webspa  (DNS Name)</SubjAltNameDisplayText>
+        </TItiCertData_SubjAltName>
+      </val>
+    </item>
+    <item>
+      <key>
+        <string>webmvc  (DNS Name)</string>
+      </key>
+      <val>
+        <TItiCertData_SubjAltName>
+          <SubjAltNameType>XCN_CERT_ALT_NAME_DNS_NAME</SubjAltNameType>
+          <SubjAltNameData>webmvc</SubjAltNameData>
+          <SubjAltNameDisplayText>webmvc  (DNS Name)</SubjAltNameDisplayText>
+        </TItiCertData_SubjAltName>
+      </val>
+    </item>
+    <item>
+      <key>
+        <string>eshopxamarin  (DNS Name)</string>
+      </key>
+      <val>
+        <TItiCertData_SubjAltName>
+          <SubjAltNameType>XCN_CERT_ALT_NAME_DNS_NAME</SubjAltNameType>
+          <SubjAltNameData>eshopxamarin</SubjAltNameData>
+          <SubjAltNameDisplayText>eshopxamarin  (DNS Name)</SubjAltNameDisplayText>
+        </TItiCertData_SubjAltName>
+      </val>
+    </item>
+  </SubjAltNameColl>
+  <SubjAltNameIsCritical>false</SubjAltNameIsCritical>
+  <CustExtColl />
+  <CertPolColl />
+  <CertPolIsCritical>false</CertPolIsCritical>
+  <IssuerStatement_PEN />
+  <IssuerStatement_UseAllIssuancePol>false</IssuerStatement_UseAllIssuancePol>
+  <IssuerStatement_UserNotice />
+  <IssuerStatement_CPSPointer />
+  <AppPolColl />
+  <AppPolIsCritical>false</AppPolIsCritical>
+  <FriendlyName>eShop</FriendlyName>
+  <ExportToFileEnabled>true</ExportToFileEnabled>
+  <ExportToFilePathName>D:\Rafsan\OneDrive\Desktop\SSL\eShop.pfx</ExportToFilePathName>
+  <CopyToStoreEnabled>false</CopyToStoreEnabled>
+  <CopyToStoreStoreLocation>CurrentUser</CopyToStoreStoreLocation>
+  <CopyToStoreStoreName>Root</CopyToStoreStoreName>
+  <AfterCreateShowCert>true</AfterCreateShowCert>
+  <AfterExportDelFromStore>false</AfterExportDelFromStore>
+</TItiCertData>
