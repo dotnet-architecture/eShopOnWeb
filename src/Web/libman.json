@@ -1,0 +1,56 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "jquery@2.2.0",
+      "destination": "wwwroot/lib/jquery/",
+      "files": [
+        "jquery.min.js",
+        "jquery.js",
+        "jquery.min.map"
+      ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "bootstrap@3.3.7",
+      "destination": "wwwroot/lib/bootstrap/",
+      "files": [
+        "dist/css/bootstrap-theme.css",
+        "dist/css/bootstrap-theme.css.map",
+        "dist/css/bootstrap-theme.min.css",
+        "dist/css/bootstrap-theme.min.css.map",
+        "dist/css/bootstrap.css",
+        "dist/css/bootstrap.css.map",
+        "dist/css/bootstrap.min.css",
+        "dist/css/bootstrap.min.css.map",
+        "dist/fonts/glyphicons-halflings-regular.eot",
+        "dist/fonts/glyphicons-halflings-regular.svg",
+        "dist/fonts/glyphicons-halflings-regular.ttf",
+        "dist/fonts/glyphicons-halflings-regular.woff",
+        "dist/fonts/glyphicons-halflings-regular.woff2",
+        "dist/js/bootstrap.js",
+        "dist/js/bootstrap.min.js",
+        "dist/js/npm.js"
+      ]
+    },
+    {
+      "library": "jquery-validate@1.14.0",
+      "destination": "wwwroot/lib/jquery-validation/",
+      "files": [
+        "jquery.validate.min.js",
+        "additional-methods.js",
+        "additional-methods.min.js",
+        "jquery.validate.js"
+      ]
+    },
+    {
+      "library": "jquery-validation-unobtrusive@3.2.6",
+      "destination": "wwwroot/jquery-validation-unobtrusive/",
+      "files": [
+        "jquery.validate.unobtrusive.min.js",
+        "jquery.validate.unobtrusive.js"
+      ]
+    }
+  ]
+}
