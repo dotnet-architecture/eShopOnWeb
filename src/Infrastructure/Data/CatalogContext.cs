@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
@@ -107,5 +108,5 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
         {
             builder.OwnsOne(i => i.ItemOrdered);
         }
-    }
+    }    
 }

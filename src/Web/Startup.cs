@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.eShopWeb.Web.Interfaces;
 using Microsoft.eShopWeb.Web.Services;
 using Microsoft.Extensions.Configuration;
@@ -47,7 +48,7 @@ namespace Microsoft.eShopWeb.Web
             services.AddDbContext<AppIdentityDbContext>(options =>
                 options.UseInMemoryDatabase("Identity"));
 
-            ConfigureServices(services);
+            //ConfigureServices(services);
         }
 
         public void ConfigureProductionServices(IServiceCollection services)
@@ -56,17 +57,19 @@ namespace Microsoft.eShopWeb.Web
             // Requires LocalDB which can be installed with SQL Server Express 2016
             // https://www.microsoft.com/en-us/download/details.aspx?id=54284
             services.AddDbContext<CatalogContext>(c =>
-                c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection")));
+                c.UseSqlServer(connectionString: Configuration.GetConnectionString("CatalogConnection")));
 
             // Add Identity DbContext
-            services.AddDbContext<AppIdentityDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
+            services.AddDbContext<AppIdentityDbContext>(c =>
+                c.UseSqlServer(connectionString: Configuration.GetConnectionString("IdentityConnection")));
 
-            ConfigureServices(services);
+            //ConfigureServices(services);
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
+            ConfigureInMemoryDatabases(services);
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
                 .AddDefaultTokenProviders();
