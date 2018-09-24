@@ -10,6 +10,8 @@
 		<PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.0" PrivateAssets="All" />
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.0" PrivateAssets="All" />
+		<PackageReference Include="Pivotal.Discovery.ClientCore" Version="2.1.0" />
+		<PackageReference Include="SteelToe.Extensions.Configuration.CLoudFoundryCore" Version="2.1.0" />
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="Views\Catalog\" />

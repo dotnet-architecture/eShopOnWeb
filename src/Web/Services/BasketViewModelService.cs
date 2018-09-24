@@ -14,10 +14,10 @@ namespace Microsoft.eShopWeb.Web.Services
     {
         private readonly IAsyncRepository<Basket> _basketRepository;
         private readonly IUriComposer _uriComposer;
-        private readonly IRepository<CatalogItem> _itemRepository;
+        private readonly IRepository<ApplicationCore.Entities.CatalogItem> _itemRepository;
 
         public BasketViewModelService(IAsyncRepository<Basket> basketRepository,
-            IRepository<CatalogItem> itemRepository,
+            IRepository<ApplicationCore.Entities.CatalogItem> itemRepository,
             IUriComposer uriComposer)
         {
             _basketRepository = basketRepository;

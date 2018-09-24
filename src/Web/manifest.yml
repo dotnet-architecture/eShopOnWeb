@@ -1,0 +1,7 @@
+---
+applications:
+- name: eshop-web-mono
+  instances: 1
+  path: bin/Debug/netcoreapp2.1/publish
+  services:
+  - Eureka

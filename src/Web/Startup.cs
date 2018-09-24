@@ -9,19 +9,24 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.eShopWeb.Web.Interfaces;
 using Microsoft.eShopWeb.Web.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Text;
+using Microsoft.eShopWeb.Comm;
+using Pivotal.Discovery.Client;
+using Steeltoe.Common.Discovery;
+using System.Net.Http;
+using Microsoft.Extensions.Logging;
 
 namespace Microsoft.eShopWeb.Web
 {
     public class Startup
     {
         private IServiceCollection _services;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -29,47 +34,45 @@ namespace Microsoft.eShopWeb.Web
 
         public IConfiguration Configuration { get; }
 
-        public void ConfigureDevelopmentServices(IServiceCollection services)
-        {
-            // use in-memory database
-            ConfigureInMemoryDatabases(services);
+        // public void ConfigureDevelopmentServices(IServiceCollection services)
+        // {
+        //     // use in-memory database
+        //     ConfigureInMemoryDatabases(services);
 
-            // use real database
-            // ConfigureProductionServices(services);
-        }
+        //     // use real database
+        //     // ConfigureProductionServices(services);
+        // }
 
-        private void ConfigureInMemoryDatabases(IServiceCollection services)
-        {
-            // use in-memory database
-            services.AddDbContext<CatalogContext>(c =>
-                c.UseInMemoryDatabase("Catalog"));
+        // private void ConfigureInMemoryDatabases(IServiceCollection services)
+        // {
+        //     // use in-memory database
+        //     services.AddDbContext<CatalogContext>(c =>
+        //         c.UseInMemoryDatabase("Catalog"));
 
-            // Add Identity DbContext
-            services.AddDbContext<AppIdentityDbContext>(options =>
-                options.UseInMemoryDatabase("Identity"));
+        //     // Add Identity DbContext
+        //     services.AddDbContext<AppIdentityDbContext>(options =>
+        //         options.UseInMemoryDatabase("Identity"));
 
-            //ConfigureServices(services);
-        }
+        //     //ConfigureServices(services);
+        // }
 
-        public void ConfigureProductionServices(IServiceCollection services)
-        {
-            // use real database
-            // Requires LocalDB which can be installed with SQL Server Express 2016
-            // https://www.microsoft.com/en-us/download/details.aspx?id=54284
-            services.AddDbContext<CatalogContext>(c =>
-                c.UseSqlServer(connectionString: Configuration.GetConnectionString("CatalogConnection")));
+        // public void ConfigureProductionServices(IServiceCollection services)
+        // {
+        //     // use real database
+        //     // Requires LocalDB which can be installed with SQL Server Express 2016
+        //     // https://www.microsoft.com/en-us/download/details.aspx?id=54284
+        //     services.AddDbContext<CatalogContext>(c =>
+        //         c.UseSqlServer(connectionString: Configuration.GetConnectionString("CatalogConnection")));
 
-            // Add Identity DbContext
-            services.AddDbContext<AppIdentityDbContext>(c =>
-                c.UseSqlServer(connectionString: Configuration.GetConnectionString("IdentityConnection")));
+        //     // Add Identity DbContext
+        //     services.AddDbContext<AppIdentityDbContext>(c =>
+        //         c.UseSqlServer(connectionString: Configuration.GetConnectionString("IdentityConnection")));
 
-            //ConfigureServices(services);
-        }
+        //     //ConfigureServices(services);
+        // }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            ConfigureInMemoryDatabases(services);
-
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
                 .AddDefaultTokenProviders();
@@ -85,6 +88,9 @@ namespace Microsoft.eShopWeb.Web
                     IsEssential = true // required for auth to work without explicit user consent; adjust to suit your privacy policy
                 };
             });
+
+            services.AddDbContext<CatalogContext>(c => c.UseInMemoryDatabase("Catalog"));
+            services.AddDbContext<AppIdentityDbContext>(c => c.UseInMemoryDatabase("Identity"));
 
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
@@ -104,15 +110,42 @@ namespace Microsoft.eShopWeb.Web
             // Add memory cache services
             services.AddMemoryCache();
 
-            services.AddMvc()
-                .SetCompatibilityVersion(AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
+            services.AddOptions();
+            services.Configure<AppSettings>(Configuration);
+            
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            //register delegating handlers
+            services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
+            services.AddTransient<HttpClientRequestIdDelegatingHandler>();
+
+            //set 5 min as the lifetime for each HttpMessageHandler int the pool
+            services.AddHttpClient("extendedhandlerlifetime").SetHandlerLifetime(TimeSpan.FromMinutes(5));
+
+            //add http client services
+
+            services.AddHttpClient<ICatalogService, CatalogService>();
+
+            services.AddMvc();
+
+            services.AddDiscoveryClient(Configuration);
+
+            services.AddSingleton<ICatalogService>(sp =>
+            {
+                var handler = new DiscoveryHttpClientHandler(sp.GetService<IDiscoveryClient>());
+                var httpClient = new HttpClient(handler, false)
+                {
+                    BaseAddress = new Uri(Configuration.GetValue<string>("CatalogBaseUrl"))
+                };
+                var logger = sp.GetService<ILogger<CatalogService>>();
+                return new CatalogService(httpClient, logger);
+            });
 
             _services = services;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app,
-            IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -131,6 +164,7 @@ namespace Microsoft.eShopWeb.Web
             app.UseAuthentication();
 
             app.UseMvc();
+            app.UseDiscoveryClient();
         }
 
         private void ListAllRegisteredServices(IApplicationBuilder app)
