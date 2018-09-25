@@ -1,10 +1,8 @@
-﻿using Microsoft.eShopWeb.Web.Services;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Microsoft.eShopWeb.Web.Controllers.Api
 {
-    [Route("api/[controller]/[action]")]
-    public class BaseApiController : Controller
-    { }
+	[Route("api/[controller]/[action]")]
+	public class BaseApiController : Controller
+	{ }
 }

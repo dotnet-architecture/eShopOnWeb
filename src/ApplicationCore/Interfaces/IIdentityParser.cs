@@ -2,8 +2,8 @@
 
 namespace Microsoft.eShopWeb.ApplicationCore.Interfaces
 {
-    public interface IIdentityParser<T>
-    {
-        T Parse(IPrincipal principal);
-    }
+	public interface IIdentityParser<T>
+	{
+		T Parse(IPrincipal principal);
+	}
 }
