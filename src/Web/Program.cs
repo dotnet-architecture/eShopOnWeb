@@ -13,8 +13,7 @@ namespace Microsoft.eShopWeb.Web
 	{
 		public static void Main(string[] args)
 		{
-			var host = CreateWebHostBuilder(args)
-									.Build();
+			var host = CreateWebHostBuilder(args).Build();
 
 			using (var scope = host.Services.CreateScope())
 			{
@@ -23,8 +22,7 @@ namespace Microsoft.eShopWeb.Web
 				try
 				{
 					var catalogContext = services.GetRequiredService<CatalogContext>();
-					CatalogContextSeed.SeedAsync(catalogContext, loggerFactory)
-	.Wait();
+					CatalogContextSeed.SeedAsync(catalogContext, loggerFactory).Wait();
 
 					var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
 					AppIdentityDbContextSeed.SeedAsync(userManager).Wait();
