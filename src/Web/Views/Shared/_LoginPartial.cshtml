@@ -5,19 +5,19 @@
 	<section class="col-lg-4 col-md-5 col-xs-12">
 		<div class="esh-identity">
 			<form asp-area="" asp-controller="Account" asp-action="SignOut" method="post" id="logoutForm" class="navbar-right">
-				<section class="esh-identity-section">
+				<section class="esh-identity-section menu-item">
 
 					@*<div class="esh-identity-name">@User.FindFirst(x => x.Type == "preferred_username").Value</div>*@
 					<img class="esh-identity-image" src="~/images/arrow-down.png">
 				</section>
 
-				<section class="esh-identity-drop">
+				<section class="esh-identity-drop menu-item">
 
 					<a class="esh-identity-item"
 						 asp-controller="Order"
 						 asp-action="Index">
 
-						<div class="esh-identity-name esh-identity-name--upper">My orders</div>
+						<div class="esh-identity-name esh-identity-name--upper menu-item">My orders</div>
 						<img class="esh-identity-image" src="~/images/my_orders.png">
 					</a>
 
@@ -25,14 +25,14 @@
 						 asp-controller="Manage"
 						 asp-action="Index">
 
-						<div class="esh-identity-name esh-identity-name--upper">My account</div>
+						<div class="esh-identity-name esh-identity-name--upper menu-item">My account</div>
 						<img class="esh-identity-image" src="~/images/my_orders.png">
 					</a>
 
 					<a class="esh-identity-item"
 						 href="javascript:document.getElementById('logoutForm').submit()">
 
-						<div class="esh-identity-name esh-identity-name--upper">Log Out</div>
+						<div class="esh-identity-name esh-identity-name--upper menu-item">Log Out</div>
 						<img class="esh-identity-image" src="~/images/logout.png">
 					</a>
 				</section>
