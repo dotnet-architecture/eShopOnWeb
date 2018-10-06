@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.eShopWeb.Web;
+﻿using Microsoft.eShopWeb.Web;
 using Microsoft.eShopWeb.Web.ViewModels;
 using Newtonsoft.Json;
 using System.Linq;

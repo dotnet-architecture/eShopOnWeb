@@ -2,8 +2,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.eShopWeb.Web.ViewModels;
-using System;
-using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using System.Linq;
 using Microsoft.eShopWeb.ApplicationCore.Specifications;
