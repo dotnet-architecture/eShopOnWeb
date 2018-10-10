@@ -40,14 +40,26 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate
 		// It's much cheaper than .ToList() because it will not have to copy all items in a new collection. (Just one heap alloc for the wrapper instance)
 		//https://msdn.microsoft.com/en-us/library/e78dcd75(v=vs.110).aspx
 
-		public decimal Total()
+		public decimal SubTotal()
 		{
 			var total = 0m;
 			foreach (var item in _orderItems)
 			{
 				total += item.UnitPrice * item.Units;
 			}
-			return total;
+
+			return Math.Round(total, 2);
+		}
+
+		public decimal TaxAmount()
+		{
+			var subTotal = SubTotal();
+			return Math.Round(subTotal * 0.15m, 2);
+		}
+
+		public decimal Total()
+		{
+			return SubTotal() + TaxAmount();
 		}
 	}
 }

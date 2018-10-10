@@ -47,6 +47,27 @@
 						</div>*@
 
 					<div class="container">
+
+						<article class="esh-basket-titles esh-basket-titles--clean row">
+							<section class="esh-basket-title col-xs-10"></section>
+							<section class="esh-basket-title col-xs-2">Sub Total</section>
+						</article>
+
+						<article class="esh-basket-items row">
+							<section class="esh-basket-item col-xs-10"></section>
+							<section class="esh-basket-item esh-basket-item--mark col-xs-2">$ @Model.SubTotal().ToString("N2")</section>
+						</article>
+
+						<article class="esh-basket-titles esh-basket-titles--clean row">
+							<section class="esh-basket-title col-xs-10"></section>
+							<section class="esh-basket-title col-xs-2">Tax Amount</section>
+						</article>
+
+						<article class="esh-basket-items row">
+							<section class="esh-basket-item col-xs-10"></section>
+							<section class="esh-basket-item esh-basket-item--mark col-xs-2">$ @Model.TaxAmount().ToString("N2")</section>
+						</article>
+
 						<article class="esh-basket-titles esh-basket-titles--clean row">
 							<section class="esh-basket-title col-xs-10"></section>
 							<section class="esh-basket-title col-xs-2">Total</section>
@@ -54,7 +75,7 @@
 
 						<article class="esh-basket-items row">
 							<section class="esh-basket-item col-xs-10"></section>
-							<section class="esh-basket-item esh-basket-item--mark col-xs-2">$ @Model.Total()</section>
+							<section class="esh-basket-item esh-basket-item--mark col-xs-2">$ @Model.Total().ToString("N2")</section>
 						</article>
 
 						<article class="esh-basket-items row">

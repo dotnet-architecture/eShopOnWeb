@@ -13,10 +13,12 @@ namespace Microsoft.eShopWeb.Web.Controllers
 	public class OrderController : Controller
 	{
 		private readonly IOrderRepository _orderRepository;
+		private readonly IUriComposer _uriComposer;
 
-		public OrderController(IOrderRepository orderRepository)
+		public OrderController(IOrderRepository orderRepository, IUriComposer uriComposer)
 		{
 			_orderRepository = orderRepository;
+			_uriComposer = uriComposer;
 		}
 
 		public async Task<IActionResult> Index()
@@ -30,7 +32,7 @@ namespace Microsoft.eShopWeb.Web.Controllers
 						OrderItems = o.OrderItems?.Select(oi => new OrderItemViewModel()
 						{
 							Discount = 0,
-							PictureUrl = oi.ItemOrdered.PictureUri,
+							PictureUrl = _uriComposer.ComposePicUri(oi.ItemOrdered.PictureUri),
 							ProductId = oi.ItemOrdered.CatalogItemId,
 							ProductName = oi.ItemOrdered.ProductName,
 							UnitPrice = oi.UnitPrice,
@@ -59,7 +61,7 @@ namespace Microsoft.eShopWeb.Web.Controllers
 				OrderItems = order.OrderItems.Select(oi => new OrderItemViewModel()
 				{
 					Discount = 0,
-					PictureUrl = oi.ItemOrdered.PictureUri,
+					PictureUrl = _uriComposer.ComposePicUri(oi.ItemOrdered.PictureUri),
 					ProductId = oi.ItemOrdered.CatalogItemId,
 					ProductName = oi.ItemOrdered.ProductName,
 					UnitPrice = oi.UnitPrice,
@@ -68,6 +70,8 @@ namespace Microsoft.eShopWeb.Web.Controllers
 				OrderNumber = order.Id,
 				ShippingAddress = order.ShipToAddress,
 				Status = "Pending",
+				SubTotal = order.SubTotal(),
+				TaxAmount = order.TaxAmount(),
 				Total = order.Total()
 			};
 			return View(viewModel);
