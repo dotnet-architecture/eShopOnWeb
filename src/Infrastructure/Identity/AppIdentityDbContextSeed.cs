@@ -7,7 +7,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Identity
 	{
 		public static async Task SeedAsync(UserManager<ApplicationUser> userManager)
 		{
-			var defaultUser = new ApplicationUser { UserName = "demouser@microsoft.com", Email = "demouser@microsoft.com" };
+			var defaultUser = new ApplicationUser { UserName = "yveilleux@nwaretech.com", Email = "yveilleux@nwaretech.com" };
 			await userManager.CreateAsync(defaultUser, "Pass@word1");
 		}
 	}
