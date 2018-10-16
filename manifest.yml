@@ -1,0 +1,10 @@
+---
+applications:
+- name: eshop-web-mono
+  path: src\Web\bin\Debug\netcoreapp2.1\publish
+  random-route: false
+  memory: 256M
+  disk_quota: 512M
+  instances: 1
+  buildpacks: 
+    - dotnet_core_buildpack
