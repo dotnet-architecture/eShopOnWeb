@@ -75,12 +75,16 @@
 
 		<section class="esh-orders_detail-section esh-orders_detail-section--right">
 			<article class="esh-orders_detail-titles esh-basket-titles--clean row">
-				<section class="esh-orders_detail-title col-xs-9"></section>
+				<section class="esh-orders_detail-title col-xs-6"></section>
+				<section class="esh-orders_detail-title col-xs-2">SUB-TOTAL</section>
+				<section class="esh-orders_detail-title col-xs-2">TAXES(15%)</section>
 				<section class="esh-orders_detail-title col-xs-2">TOTAL</section>
 			</article>
 
 			<article class="esh-orders_detail-items row">
-				<section class="esh-orders_detail-item col-xs-9"></section>
+				<section class="esh-orders_detail-item col-xs-6"></section>
+				<section class="esh-orders_detail-item esh-orders_detail-item--mark col-xs-2">$ @Model.SubTotal</section>
+				<section class="esh-orders_detail-item esh-orders_detail-item--mark col-xs-2">$ @Model.TaxAmount</section>
 				<section class="esh-orders_detail-item esh-orders_detail-item--mark col-xs-2">$ @Model.Total</section>
 			</article>
 		</section>

@@ -1,11 +1,11 @@
-﻿using Microsoft.eShopWeb.RazorPages;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.eShopWeb.Web;
 using Xunit;
 
 namespace Microsoft.eShopWeb.FunctionalTests.WebRazorPages
 {
-    public class HomePageOnGet : IClassFixture<CustomWebRazorPagesApplicationFactory<Startup>>
+	public class HomePageOnGet : IClassFixture<CustomWebRazorPagesApplicationFactory<Startup>>
     {
         public HomePageOnGet(CustomWebRazorPagesApplicationFactory<Startup> factory)
         {

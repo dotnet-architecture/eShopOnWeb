@@ -14,7 +14,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Entities.OrderTests
         {
             var order = new OrderBuilder().WithNoItems();
 
-            Assert.Equal(0, order.Total());
+            Assert.Equal(0, order.SubTotal());
         }
 
         [Fact]
@@ -26,7 +26,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Entities.OrderTests
                 new OrderItem(builder.TestCatalogItemOrdered, _testUnitPrice, 1)
             };
             var order = new OrderBuilder().WithItems(items);
-            Assert.Equal(_testUnitPrice, order.Total());
+            Assert.Equal(_testUnitPrice, order.SubTotal());
         }
 
         [Fact]
@@ -35,7 +35,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Entities.OrderTests
             var builder = new OrderBuilder();
             var order = builder.WithDefaultValues();
 
-            Assert.Equal(builder.TestUnitPrice * builder.TestUnits, order.Total());
+            Assert.Equal(builder.TestUnitPrice * builder.TestUnits, order.SubTotal());
         }
     }
 }
