@@ -42,7 +42,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
             return _dbContext.Set<T>().AsEnumerable();
         }
 
-        public async Task<List<T>> ListAllAsync()
+        public async Task<IReadOnlyList<T>> ListAllAsync()
         {
             return await _dbContext.Set<T>().ToListAsync();
         }
@@ -77,7 +77,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
         {
             return ApplySpecification(spec).AsEnumerable();
         }
-        public async Task<List<T>> ListAsync(ISpecification<T> spec)
+        public async Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec)
         {
             return await ApplySpecification(spec).ToListAsync();
         }
