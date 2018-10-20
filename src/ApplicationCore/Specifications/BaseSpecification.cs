@@ -15,6 +15,16 @@ namespace Microsoft.eShopWeb.ApplicationCore.Specifications
         public List<Expression<Func<T, object>>> Includes { get; } = new List<Expression<Func<T, object>>>();
         public List<string> IncludeStrings { get; } = new List<string>();
 
+        public int Take { get; private set; }
+        public int Skip { get; private set; }
+        public bool isPagingEnabled { get; private set; } = false;
+        protected virtual void ApplyPaging(int skip, int take)
+        {
+            Skip = skip;
+            Take = take;
+            isPagingEnabled = true;
+        }
+
         protected virtual void AddInclude(Expression<Func<T, object>> includeExpression)
         {
             Includes.Add(includeExpression);

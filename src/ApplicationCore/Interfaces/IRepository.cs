@@ -12,5 +12,6 @@ namespace Microsoft.eShopWeb.ApplicationCore.Interfaces
         T Add(T entity);
         void Update(T entity);
         void Delete(T entity);
+        int Count(ISpecification<T> spec);
     }
 }

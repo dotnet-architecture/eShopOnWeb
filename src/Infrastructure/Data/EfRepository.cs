@@ -47,7 +47,8 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
             return await _dbContext.Set<T>().ToListAsync();
         }
 
-        public IEnumerable<T> List(ISpecification<T> spec)
+        // Avoid duplication. Use it for sync and async methods.
+        private IQueryable<T> ApplySpecification(ISpecification<T> spec)
         {
             // fetch a Queryable that includes all expression-based includes
             var queryableResultWithIncludes = spec.Includes
@@ -59,27 +60,34 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
                 .Aggregate(queryableResultWithIncludes,
                     (current, include) => current.Include(include));
 
-            // return the result of the query using the specification's criteria expression
-            return secondaryResult
-                            .Where(spec.Criteria)
-                            .AsEnumerable();
+            // modify the IQueryable using the specification's criteria expression
+            var finalResult = secondaryResult.Where(spec.Criteria);
+
+            // apply paging if enabled
+            if (spec.isPagingEnabled)
+            {
+                finalResult = finalResult
+                                    .Skip(spec.Skip)
+                                    .Take(spec.Take);
+            }
+
+            return finalResult;
+        }
+        public IEnumerable<T> List(ISpecification<T> spec)
+        {
+            return ApplySpecification(spec).AsEnumerable();
         }
         public async Task<List<T>> ListAsync(ISpecification<T> spec)
         {
-            // fetch a Queryable that includes all expression-based includes
-            var queryableResultWithIncludes = spec.Includes
-                .Aggregate(_dbContext.Set<T>().AsQueryable(),
-                    (current, include) => current.Include(include));
-
-            // modify the IQueryable to include any string-based include statements
-            var secondaryResult = spec.IncludeStrings
-                .Aggregate(queryableResultWithIncludes,
-                    (current, include) => current.Include(include));
-
-            // return the result of the query using the specification's criteria expression
-            return await secondaryResult
-                            .Where(spec.Criteria)
-                            .ToListAsync();
+            return await ApplySpecification(spec).ToListAsync();
+        }
+        public int Count(ISpecification<T> spec)
+        {
+            return ApplySpecification(spec).Count();
+        }
+        public async Task<int> CountAsync(ISpecification<T> spec)
+        {
+            return await ApplySpecification(spec).CountAsync();
         }
 
         public T Add(T entity)
