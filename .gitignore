@@ -258,3 +258,5 @@ pub/
 #Ignore marker-file used to know which docker files we have.
 .eshopdocker_*
 \.vscode/
+/src/Web/ServiceConfig/catalog-sqldb-service.json
+/src/Web/ServiceConfig/identity-sqldb-service.json

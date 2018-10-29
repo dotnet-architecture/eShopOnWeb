@@ -1,11 +1,19 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using System;
+
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.eShopWeb.Infrastructure.Data;
-using System;
-using Microsoft.Extensions.Logging;
-using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
+
+using Steeltoe.Extensions.Configuration.CloudFoundry;
+
+using Microsoft.eShopWeb.Infrastructure.Identity;
+using Microsoft.eShopWeb.Infrastructure.Data;
 
 namespace Microsoft.eShopWeb.Web
 {
@@ -18,21 +26,38 @@ namespace Microsoft.eShopWeb.Web
 
             using (var scope = host.Services.CreateScope())
             {
-                var services = scope.ServiceProvider;
-                var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+
+                var scopedServices = scope.ServiceProvider;
+
+                // Catalog
+                var catalogDB = scopedServices.GetRequiredService<CatalogContext>();                
+                catalogDB.Database.Migrate();
+
+                var loggerFactory = scopedServices.GetRequiredService<ILoggerFactory>();
+
                 try
                 {
-                    var catalogContext = services.GetRequiredService<CatalogContext>();
-                    CatalogContextSeed.SeedAsync(catalogContext, loggerFactory)
-            .Wait();
+                    CatalogContextSeed.SeedAsync(catalogDB, loggerFactory).Wait();
+                }
+                catch (Exception ex)
+                {
+                    var logger = scopedServices.GetRequiredService<ILogger<Startup>>();
+                    logger.LogError(ex, "An error occurred while migrating the database. Catalog");
+                }
 
-                    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+                // Identity
+                var identityDB = scopedServices.GetRequiredService<AppIdentityDbContext>();
+                identityDB.Database.Migrate();
+                
+                try
+                {                    
+                    var userManager = scopedServices.GetRequiredService<UserManager<ApplicationUser>>();
                     AppIdentityDbContextSeed.SeedAsync(userManager).Wait();
                 }
                 catch (Exception ex)
                 {
-                    var logger = loggerFactory.CreateLogger<Program>();
-                    logger.LogError(ex, "An error occurred seeding the DB.");
+                    var logger = scopedServices.GetRequiredService<ILogger<Startup>>();
+                    logger.LogError(ex, "An error occurred while migrating the database. Identity");
                 }
             }
 
@@ -41,7 +66,24 @@ namespace Microsoft.eShopWeb.Web
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                //.UseUrls("http://0.0.0.0:5106")
-                .UseStartup<Startup>();
+                .UseCloudFoundryHosting()
+                .UseConfiguration(new ConfigurationBuilder().AddCommandLine(args).Build())
+                .UseCloudFoundryHosting()
+                .AddCloudFoundry()
+                .UseStartup<Startup>()
+                .ConfigureAppConfiguration((builderContext, configBuilder) =>
+                {
+                    var env = builderContext.HostingEnvironment;
+                    configBuilder.SetBasePath(env.ContentRootPath)
+                        .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                        .AddEnvironmentVariables()
+                        .AddCloudFoundry();
+                })
+                .ConfigureLogging((context, builder) =>
+                {
+                    builder.AddConfiguration(context.Configuration.GetSection("Logging"));
+                    builder.AddConsole();
+                });
     }
 }

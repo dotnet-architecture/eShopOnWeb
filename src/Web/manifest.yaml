@@ -6,7 +6,7 @@ applications:
       stack:        cflinuxfs2
       instances:    1
       random-route: false
-      path:         src\Web\bin\Debug\netcoreapp2.1\publish
+      path:         bin\Debug\netcoreapp2.1\publish
       buildpacks: 
                     - dotnet_core_buildpack
       env:

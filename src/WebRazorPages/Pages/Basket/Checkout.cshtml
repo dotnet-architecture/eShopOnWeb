@@ -1,11 +1,15 @@
 ﻿@page
-    @model CheckoutModel
+@model CheckoutModel
 @{
     ViewData["Title"] = "Checkout Complete";
 }
+
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
 <section class="esh-catalog-hero">
     <div class="container">
-        <img class="esh-catalog-title" src="../images/main_banner_text.png" />
+        <img class="esh-catalog-title" src="@Configuration.GetSection("CatalogBaseUrl").Value/images/main_banner_text.png" />
     </div>
 </section>
 

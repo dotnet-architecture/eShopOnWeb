@@ -9,13 +9,17 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.eShopWeb.Web.Interfaces;
-using Microsoft.eShopWeb.Web.Services;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Text;
+
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
+using Microsoft.eShopWeb.Web.Interfaces;
+using Microsoft.eShopWeb.Web.Services;
+
+using Steeltoe.Extensions.Configuration.CloudFoundry;
+using Steeltoe.CloudFoundry.Connector.SqlServer.EFCore;
 
 namespace Microsoft.eShopWeb.Web
 {
@@ -29,11 +33,32 @@ namespace Microsoft.eShopWeb.Web
 
         public IConfiguration Configuration { get; }
 
+        public void ConfigureDevelopmentServices(IServiceCollection services)
+        {
+            ConfigureProductionServices(services);
+        }
+
+        public void ConfigureProductionServices(IServiceCollection services)
+        {
+            services.AddOptions();
+            services.ConfigureCloudFoundryOptions(Configuration);
+
+            services.Configure<CatalogSettings>(Configuration);
+            services.AddSingleton<IUriComposer>(new UriComposer(Configuration.Get<CatalogSettings>()));
+
+           
+            services.AddDbContext<CatalogContext>(options => options.UseSqlServer(Configuration, "catalog-sqldb-service"));
+            services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(Configuration, "identity-sqldb-service"));
+
+
+            ConfigureServices(services);
+        }
+
         public void ConfigureServices(IServiceCollection services)
-        {           
+        {            
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<AppIdentityDbContext>()
-                .AddDefaultTokenProviders();
+                    .AddEntityFrameworkStores<AppIdentityDbContext>()
+                    .AddDefaultTokenProviders();
 
             services.ConfigureApplicationCookie(options =>
             {
@@ -43,16 +68,14 @@ namespace Microsoft.eShopWeb.Web
                 options.LogoutPath = "/Account/Signout";
                 options.Cookie = new CookieBuilder
                 {
-                    IsEssential = true // required for auth to work without explicit user conclssent; adjust to suit your privacy policy
+                    IsEssential = true 
                 };
             });
 
-            services.AddDbContext<CatalogContext>(c => c.UseInMemoryDatabase("Catalog"));
-            services.AddDbContext<AppIdentityDbContext>(c => c.UseInMemoryDatabase("Identity"));
 
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
-
+            
             services.AddScoped<ICatalogService, CachedCatalogService>();
             services.AddScoped<IBasketService, BasketService>();
             services.AddScoped<IBasketViewModelService, BasketViewModelService>();
@@ -65,17 +88,13 @@ namespace Microsoft.eShopWeb.Web
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
             services.AddTransient<IEmailSender, EmailSender>();
 
-            // Add memory cache services
-            services.AddMemoryCache();
-
-            services.AddMvc();
+            services.AddMvc()
+                .SetCompatibilityVersion(AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
 
             _services = services;
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app,
-            IHostingEnvironment env)
+        
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -88,6 +107,8 @@ namespace Microsoft.eShopWeb.Web
                 app.UseExceptionHandler("/Catalog/Error");
                 app.UseHsts();
             }
+
+            app.UseMvcWithDefaultRoute();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

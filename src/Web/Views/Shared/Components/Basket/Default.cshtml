@@ -1,4 +1,6 @@
 ﻿@model BasketComponentViewModel
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 
 @{
     ViewData["Title"] = "My Basket";
@@ -8,10 +10,10 @@
    asp-area=""
    asp-controller="Basket"
    asp-action="Index">
-        <div class="esh-basketstatus-image">
-            <img src="~/images/cart.png" />
-        </div>
-        <div class="esh-basketstatus-badge">
-            @Model.ItemsCount
-        </div>
+    <div class="esh-basketstatus-image">
+        <img src="@Configuration.GetSection("CatalogBaseUrl").Value/images/cart.png" />
+    </div>
+    <div class="esh-basketstatus-badge">
+        @Model.ItemsCount
+    </div>
 </a>

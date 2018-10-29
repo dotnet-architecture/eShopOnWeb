@@ -3,9 +3,13 @@
 @{
     ViewData["Title"] = "Basket";
 }
+
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
 <section class="esh-catalog-hero">
     <div class="container">
-        <img class="esh-catalog-title" src="../images/main_banner_text.png" />
+        <img class="esh-catalog-title" src="@Configuration.GetSection("CatalogBaseUrl").Value/images/main_banner_text.png" />
     </div>
 </section>
 
@@ -23,7 +27,7 @@
                 <section class="esh-basket-title col-xs-2">Cost</section>
             </article>
             <div class="esh-catalog-items row">
-                @for (int i=0; i< Model.Items.Count; i++)
+                @for (int i = 0; i < Model.Items.Count; i++)
                 {
                     var item = Model.Items[i];
                     <article class="esh-basket-items row">
@@ -68,7 +72,9 @@
                 }
                 <section class="esh-basket-item col-xs-push-8 col-xs-4">
                     <button class="btn esh-basket-checkout" name="updatebutton" value="" type="submit"
-                            asp-action="Index">[ Update ]</button>
+                            asp-action="Index">
+                        [ Update ]
+                    </button>
                     <input type="submit" asp-action="Checkout"
                            class="btn esh-basket-checkout"
                            value="[ Checkout ]" name="action" />

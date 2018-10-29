@@ -6,10 +6,19 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="wwwroot\images\**" />
+	  <Content Remove="wwwroot\images\**" />
+	  <EmbeddedResource Remove="wwwroot\images\**" />
+	  <None Remove="wwwroot\images\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Dapper" Version="1.50.5" />
 		<PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.0" PrivateAssets="All" />
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.0" PrivateAssets="All" />
+		<PackageReference Include="Steeltoe.CloudFoundry.Connector.EFCore" Version="2.1.1" />
+		<PackageReference Include="Steeltoe.Extensions.Configuration.CloudFoundryCore" Version="2.1.1" />
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="Views\Catalog\" />
@@ -20,23 +29,14 @@
 		<ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-		<None Include="wwwroot\images\products\1.png" />
-		<None Include="wwwroot\images\products\10.png" />
-		<None Include="wwwroot\images\products\11.png" />
-		<None Include="wwwroot\images\products\12.png" />
-		<None Include="wwwroot\images\products\2.png" />
-		<None Include="wwwroot\images\products\3.png" />
-		<None Include="wwwroot\images\products\4.png" />
-		<None Include="wwwroot\images\products\5.png" />
-		<None Include="wwwroot\images\products\6.png" />
-		<None Include="wwwroot\images\products\7.png" />
-		<None Include="wwwroot\images\products\8.png" />
-		<None Include="wwwroot\images\products\9.png" />
-	</ItemGroup>
-	<ItemGroup>
 		<Content Update="appsettings.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
+	</ItemGroup>
+	<ItemGroup>
+	  <None Update="manifest.yaml">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 </Project>

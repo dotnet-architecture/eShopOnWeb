@@ -2,9 +2,13 @@
     ViewData["Title"] = "Catalog";
     @model CatalogIndexViewModel
 }
+
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
 <section class="esh-catalog-hero">
     <div class="container">
-        <img class="esh-catalog-title" src="../images/main_banner_text.png" />
+        <img class="esh-catalog-title" src="@Configuration.GetSection("CatalogBaseUrl").Value/images/main_banner_text.png" />
     </div>
 </section>
 
@@ -17,7 +21,7 @@
             <label class="esh-catalog-label" data-title="type">
                 <select asp-for="@Model.TypesFilterApplied" asp-items="@Model.Types" class="esh-catalog-filter"></select>
             </label>
-            <input class="esh-catalog-send" type="image" src="images/arrow-right.svg" />
+            <input class="esh-catalog-send" type="image" src="@Configuration.GetSection("CatalogBaseUrl").Value/images/arrow-right.svg" />
         </form>
     </div>
 </section>
