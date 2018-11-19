@@ -42,14 +42,12 @@ namespace Microsoft.eShopWeb.Web.Services
             _logger.LogInformation("GetCatalogItems called.");
 
             var filterSpecification = new CatalogFilterSpecification(brandId, typeId);
-            var root = _itemRepository.List(filterSpecification);
+            var filterPaginatedSpecification =
+                new CatalogFilterPaginatedSpecification(itemsPage * pageIndex, itemsPage, brandId, typeId);
 
-            var totalItems = root.Count();
-
-            var itemsOnPage = root
-                .Skip(itemsPage * pageIndex)
-                .Take(itemsPage)
-                .ToList();
+            // the implementation below using ForEach and Count. We need a List.
+            var itemsOnPage = _itemRepository.List(filterPaginatedSpecification).ToList();
+            var totalItems = _itemRepository.Count(filterSpecification);
 
             itemsOnPage.ForEach(x =>
             {
