@@ -28,9 +28,13 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
 
             // Apply ordering if expressions are set
             if (specification.OrderBy != null)
+            {
                 query = query.OrderBy(specification.OrderBy);
+            }
             else if (specification.OrderByDescending != null)
+            {
                 query = query.OrderByDescending(specification.OrderByDescending);
+            }
 
             // Apply paging if enabled
             if (specification.isPagingEnabled)
