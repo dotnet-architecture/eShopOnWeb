@@ -20,10 +20,6 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
         {
             _dbContext = dbContext;
         }
-        private IQueryable<T> ApplySpecification(ISpecification<T> spec)
-        {
-            return SpecificationEvaluator<T>.GetQuery(_dbContext.Set<T>().AsQueryable(), spec);
-        }
 
         public virtual T GetById(int id)
         {
@@ -34,7 +30,6 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
         {
             return List(spec).FirstOrDefault();
         }
-
 
         public virtual async Task<T> GetByIdAsync(int id)
         {
@@ -59,10 +54,12 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
         {
             return await ApplySpecification(spec).ToListAsync();
         }
+        
         public int Count(ISpecification<T> spec)
         {
             return ApplySpecification(spec).Count();
         }
+        
         public async Task<int> CountAsync(ISpecification<T> spec)
         {
             return await ApplySpecification(spec).CountAsync();
@@ -89,6 +86,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
             _dbContext.Entry(entity).State = EntityState.Modified;
             _dbContext.SaveChanges();
         }
+        
         public async Task UpdateAsync(T entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
@@ -100,10 +98,16 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
             _dbContext.Set<T>().Remove(entity);
             _dbContext.SaveChanges();
         }
+        
         public async Task DeleteAsync(T entity)
         {
             _dbContext.Set<T>().Remove(entity);
             await _dbContext.SaveChangesAsync();
         }
+        
+        private IQueryable<T> ApplySpecification(ISpecification<T> spec)
+        {
+            return SpecificationEvaluator<T>.GetQuery(_dbContext.Set<T>().AsQueryable(), spec);
+        }        
     }
 }
