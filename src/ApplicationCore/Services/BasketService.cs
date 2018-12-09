@@ -23,7 +23,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
         {
             _basketRepository = basketRepository;
             _uriComposer = uriComposer;
-            this._logger = logger;
+            _logger = logger;
             _itemRepository = itemRepository;
         }
 
