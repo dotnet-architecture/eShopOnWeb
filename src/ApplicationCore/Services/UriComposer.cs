@@ -1,5 +1,4 @@
 ﻿using Microsoft.eShopWeb.ApplicationCore.Interfaces;
-using Microsoft.eShopWeb;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Services
 {

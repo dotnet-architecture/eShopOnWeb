@@ -1,5 +1,4 @@
 ﻿using Microsoft.eShopWeb.ApplicationCore.Specifications;
-using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
 using System.Collections.Generic;
 using System.Linq;
