@@ -27,7 +27,7 @@ namespace Microsoft.eShopWeb.IntegrationTests.Repositories.OrderRepositoryTests
         }
 
         [Fact]
-        public async Task Get_Order_And_Items_By_OrderId_When_Multiple_Orders_Present()
+        public async Task GetOrderAndItemsByOrderId_When_MultipleOrdersPresent()
         {
             //Arrange
             var itemOneUnitPrice = 5.50m;
