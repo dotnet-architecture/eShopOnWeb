@@ -42,13 +42,13 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
         public async Task DeleteBasketAsync(int basketId)
         {
             var basket = await _basketRepository.GetByIdAsync(basketId);
-            
-            await _basketRepository.DeleteAsync(basket);
 
             foreach (var item in basket.Items)
             {
                 await _basketItemRepository.DeleteAsync(item);
             }
+
+            await _basketRepository.DeleteAsync(basket);
         }
 
         public async Task<int> GetBasketItemCountAsync(string userName)

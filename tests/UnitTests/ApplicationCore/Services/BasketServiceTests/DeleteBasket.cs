@@ -19,7 +19,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.BasketServiceTes
         }
 
         [Fact]
-        public async Task InvokeBasketRepoOnceAndBasketItemRepoTwice_Given_TwoItemsInBasket()
+        public async Task Should_InvokeBasketRepoOnceAndBasketItemRepoTwice_Given_TwoItemsInBasket()
         {
             var basket = new Basket();
             basket.AddItem(1, It.IsAny<decimal>(), It.IsAny<int>());
