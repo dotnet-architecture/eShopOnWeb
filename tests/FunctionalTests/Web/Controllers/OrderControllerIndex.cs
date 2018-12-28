@@ -26,7 +26,7 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
             var redirectLocation = response.Headers.Location.OriginalString;
 
             Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
-            Assert.Contains("Account/Signin", redirectLocation);
+            Assert.Contains("Account/Login", redirectLocation);
         }
     }
 }
