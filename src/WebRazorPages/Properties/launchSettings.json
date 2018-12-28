@@ -1,10 +1,10 @@
-{
+﻿{
   "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
+    "windowsAuthentication": false, 
+    "anonymousAuthentication": true, 
     "iisExpress": {
-      "applicationUrl": "http://localhost:5107/",
-      "sslPort": 44305
+      "applicationUrl": "http://localhost:17930",
+      "sslPort": 44394
     }
   },
   "profiles": {
@@ -18,15 +18,10 @@
     "WebRazorPages": {
       "commandName": "Project",
       "launchBrowser": true,
+      "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "http://localhost:5107/"
-    },
-    "Docker": {
-      "commandName": "Docker",
-      "launchBrowser": true,
-      "launchUrl": "{Scheme}://localhost:{ServicePort}"
+      }
     }
   }
 }

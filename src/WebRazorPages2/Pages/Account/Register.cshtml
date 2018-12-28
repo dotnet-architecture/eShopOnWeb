@@ -1,0 +1,54 @@
+@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+    <div class="brand-header-block">
+        <ul class="container">
+            <li class="active" style="margin-right: 65px;">Already have an account? 
+            <a asp-page="/Account/Signin">LOGIN</a></li>
+        </ul>
+    </div>
+    <div class="container account-login-container">
+        <div class="row">
+            <div class="col-md-12">
+                <section>
+                    <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="UserDetails.Email" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <input asp-for="UserDetails.Email" class="form-control" />
+                                <span asp-validation-for="UserDetails.Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="UserDetails.Password" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <input asp-for="UserDetails.Password" class="form-control" />
+                                <span asp-validation-for="UserDetails.Password" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="UserDetails.ConfirmPassword" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <input asp-for="UserDetails.ConfirmPassword" class="form-control" />
+                                <span asp-validation-for="UserDetails.ConfirmPassword" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-default btn-brand btn-brand-big">&nbsp;REGISTER&nbsp;</button>
+                        </div>
+                        <p>
+                            Note that for demo purposes you don't need to register! Use the credentials shown below the 
+                            <a asp-action="signin">login screen</a>.
+                        </p>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    @section Scripts {
+        @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    }

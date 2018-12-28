@@ -1,14 +1,14 @@
-﻿using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.eShopWeb.RazorPages.ViewModels;
-using Microsoft.eShopWeb.RazorPages.Interfaces;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.eShopWeb.Infrastructure.Identity;
+using Microsoft.eShopWeb.RazorPages.Interfaces;
+using Microsoft.eShopWeb.RazorPages.ViewModels;
 using System;
-using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.RazorPages.Pages.Basket
 {
@@ -54,7 +54,7 @@ namespace Microsoft.eShopWeb.RazorPages.Pages.Basket
             return RedirectToPage();
         }
 
-        public async Task OnPostUpdate(Dictionary<string,int> items)
+        public async Task OnPostUpdate(Dictionary<string, int> items)
         {
             await SetBasketModelAsync();
             await _basketService.SetQuantities(BasketModel.Id, items);
