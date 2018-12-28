@@ -1,23 +1,26 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.eShopWeb.Web.ViewModels;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
-using System.Linq;
 using Microsoft.eShopWeb.ApplicationCore.Specifications;
+using Microsoft.eShopWeb.Web.ViewModels;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.Web.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     [Authorize]
     [Route("[controller]/[action]")]
     public class OrderController : Controller
     {
         private readonly IOrderRepository _orderRepository;
 
-        public OrderController(IOrderRepository orderRepository) {
+        public OrderController(IOrderRepository orderRepository)
+        {
             _orderRepository = orderRepository;
         }
-        
+
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var orders = await _orderRepository.ListAsync(new CustomerOrdersWithItemsSpecification(User.Identity.Name));

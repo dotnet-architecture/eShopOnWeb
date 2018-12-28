@@ -1,16 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-	<PropertyGroup>
-		<TargetFramework>netcoreapp2.1</TargetFramework>
-		<RootNamespace>Microsoft.eShopWeb.RazorPages</RootNamespace>
-		<AssemblyName>Microsoft.eShopWeb.RazorPages</AssemblyName>
-		<DockerTargetOS>Linux</DockerTargetOS>
-		<UserSecretsId>231ddc1b-6787-4704-a0c0-18df6a022660</UserSecretsId>
-	</PropertyGroup>
-	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.3" />
-	</ItemGroup>
-	<ItemGroup>
-		<ProjectReference Include="..\ApplicationCore\ApplicationCore.csproj" />
-		<ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
-	</ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <RootNamespace>Microsoft.eShopWeb.RazorPages</RootNamespace>
+    <AssemblyName>Microsoft.eShopWeb.RazorPages</AssemblyName>
+    <DockerTargetOS>Linux</DockerTargetOS>
+    <UserSecretsId>aspnet-WebRazorPages-6B1EFE4D-B682-4543-93F5-69EE95000B1D</UserSecretsId>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ApplicationCore\ApplicationCore.csproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="Pages\Shared\_LoginPartial.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

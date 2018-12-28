@@ -1,11 +1,11 @@
-﻿using System;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.eShopWeb.Infrastructure.Data;
 using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+using System;
 
 namespace Microsoft.eShopWeb.RazorPages
 {
@@ -41,7 +41,6 @@ namespace Microsoft.eShopWeb.RazorPages
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseUrls("http://0.0.0.0:5107")
                 .UseStartup<Startup>();
     }
 }
