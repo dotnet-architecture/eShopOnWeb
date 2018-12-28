@@ -15,8 +15,8 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\ApplicationCore\ApplicationCore.csproj" />
-		<ProjectReference Include="..\..\src\WebRazorPages\WebRazorPages.csproj" />
-		<ProjectReference Include="..\..\src\Web\Web.csproj" />
+		<ProjectReference Include="..\..\src\Web2\Web.csproj" />
+		<ProjectReference Include="..\..\src\WebRazorPages2\WebRazorPages2.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

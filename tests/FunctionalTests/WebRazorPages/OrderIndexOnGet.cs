@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.eShopWeb.Web;
+using Microsoft.eShopWeb.RazorPages;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
