@@ -1,42 +1,164 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-	<PropertyGroup>
-		<TargetFramework>netcoreapp2.1</TargetFramework>
-		<RootNamespace>Microsoft.eShopWeb.Web</RootNamespace>
-	</PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <RootNamespace>Microsoft.eShopWeb.Web</RootNamespace>
+    <UserSecretsId>aspnet-Web2-1FA3F72E-E7E3-4360-9E49-1CCCD7FE85F7</UserSecretsId>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+  </PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Dapper" Version="1.50.5" />
-		<PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.3" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.2" PrivateAssets="All" />
-		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.3" PrivateAssets="All" />
-	</ItemGroup>
-	<ItemGroup>
-		<Folder Include="Views\Catalog\" />
-		<Folder Include="wwwroot\fonts\" />
-	</ItemGroup>
-	<ItemGroup>
-		<ProjectReference Include="..\ApplicationCore\ApplicationCore.csproj" />
-		<ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="wwwroot\images\products\1.png" />
-		<None Include="wwwroot\images\products\10.png" />
-		<None Include="wwwroot\images\products\11.png" />
-		<None Include="wwwroot\images\products\12.png" />
-		<None Include="wwwroot\images\products\2.png" />
-		<None Include="wwwroot\images\products\3.png" />
-		<None Include="wwwroot\images\products\4.png" />
-		<None Include="wwwroot\images\products\5.png" />
-		<None Include="wwwroot\images\products\6.png" />
-		<None Include="wwwroot\images\products\7.png" />
-		<None Include="wwwroot\images\products\8.png" />
-		<None Include="wwwroot\images\products\9.png" />
-	</ItemGroup>
-	<ItemGroup>
-		<Content Update="appsettings.json">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Catalog\" />
+    <Folder Include="wwwroot\fonts\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ApplicationCore\ApplicationCore.csproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\images\products\1.png" />
+    <None Include="wwwroot\images\products\10.png" />
+    <None Include="wwwroot\images\products\11.png" />
+    <None Include="wwwroot\images\products\12.png" />
+    <None Include="wwwroot\images\products\2.png" />
+    <None Include="wwwroot\images\products\3.png" />
+    <None Include="wwwroot\images\products\4.png" />
+    <None Include="wwwroot\images\products\5.png" />
+    <None Include="wwwroot\images\products\6.png" />
+    <None Include="wwwroot\images\products\7.png" />
+    <None Include="wwwroot\images\products\8.png" />
+    <None Include="wwwroot\images\products\9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Views\Shared\Error.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Shared\_Layout.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Shared\_LoginPartial.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Shared\_ValidationScriptsPartial.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\_ViewImports.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\_ViewStart.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Account\Lockout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Account\Lockout.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Account\LoginWith2fa.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Account\Register.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Account\Signin.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Basket\Checkout.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Basket\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Catalog\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Catalog\_pagination.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Catalog\_product.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Manage\ChangePassword.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Manage\Disable2fa.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Manage\EnableAuthenticator.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Manage\ExternalLogins.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Manage\GenerateRecoveryCodes.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Manage\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Manage\ResetAuthenticator.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Manage\SetPassword.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Manage\TwoFactorAuthentication.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Manage\_Layout.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Manage\_ManageNav.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Manage\_StatusMessage.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Manage\_ViewImports.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Order\Detail.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Order\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Shared\Components\Basket\Default.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Account\LoginWith2fa.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Account\Register.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Account\Signin.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Basket\Checkout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Basket\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Catalog\_pagination.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Catalog\_product.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Catalog\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Manage\_Layout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Manage\_ManageNav.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Manage\_StatusMessage.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Manage\_ViewImports.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Manage\ChangePassword.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Manage\Disable2fa.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Manage\EnableAuthenticator.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Manage\ExternalLogins.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Manage\GenerateRecoveryCodes.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Manage\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Manage\ResetAuthenticator.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Manage\SetPassword.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Manage\TwoFactorAuthentication.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Order\Detail.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Order\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Shared\Components\Basket\Default.cshtml" />
+  </ItemGroup>
 
 </Project>
