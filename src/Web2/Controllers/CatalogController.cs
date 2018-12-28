@@ -1,9 +1,10 @@
-﻿using Microsoft.eShopWeb.Web.Services;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.eShopWeb.Web.Services;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.Web.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     [Route("")]
     public class CatalogController : Controller
     {
@@ -15,7 +16,7 @@ namespace Microsoft.eShopWeb.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(int? brandFilterApplied, int? typesFilterApplied, int? page)
         {
-            var itemsPage = 10;           
+            var itemsPage = 10;
             var catalogModel = await _catalogService.GetCatalogItems(page ?? 0, itemsPage, brandFilterApplied, typesFilterApplied);
             return View(catalogModel);
         }

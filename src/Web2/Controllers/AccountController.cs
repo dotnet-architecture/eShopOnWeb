@@ -1,15 +1,16 @@
-﻿using Microsoft.eShopWeb.ApplicationCore.Interfaces;
-using Microsoft.eShopWeb.Infrastructure.Identity;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.eShopWeb.ApplicationCore.Interfaces;
+using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.eShopWeb.Web.ViewModels.Account;
 using System;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.Web.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     [Route("[controller]/[action]")]
     [Authorize]
     public class AccountController : Controller
@@ -153,6 +154,7 @@ namespace Microsoft.eShopWeb.Web.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet]
         public IActionResult Register()
         {
             return View();
