@@ -43,7 +43,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
         {
             var basket = await _basketRepository.GetByIdAsync(basketId);
 
-            foreach (var item in basket.Items)
+            foreach (var item in basket.Items.ToList())
             {
                 await _basketItemRepository.DeleteAsync(item);
             }
