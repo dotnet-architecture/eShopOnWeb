@@ -10,7 +10,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
         public OrderRepository(CatalogContext dbContext) : base(dbContext)
         {
         }
-        
+
         public Task<Order> GetByIdWithItemsAsync(int id)
         {
             return _dbContext.Orders
