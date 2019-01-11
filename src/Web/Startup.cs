@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.ApplicationCore.Services;
@@ -98,7 +99,22 @@ namespace Microsoft.eShopWeb.Web
             // Add memory cache services
             services.AddMemoryCache();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddRouting(options =>
+            {
+                // Replace the type and the name used to refer to it with your own
+                // IOutboundParameterTransformer implementation
+                options.ConstraintMap["slugify"] = typeof(SlugifyParameterTransformer);
+            });
+
+            services.AddMvc(options =>
+            {
+                options.Conventions.Add(new RouteTokenTransformerConvention(
+                         new SlugifyParameterTransformer()));
+            }
+            ).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
@@ -163,7 +179,7 @@ namespace Microsoft.eShopWeb.Web
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller:slugify=Home}/{action:slugify=Index}/{id?}");
             });
         }
 

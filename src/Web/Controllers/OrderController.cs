@@ -11,6 +11,7 @@ namespace Microsoft.eShopWeb.Web.Controllers
     [ApiExplorerSettings(IgnoreApi = true)]
     [Authorize]
     [Route("[controller]/[action]")]
+    // "{controller:slugify=Home}/{action:slugify=Index}/{id?}
     public class OrderController : Controller
     {
         private readonly IOrderRepository _orderRepository;
@@ -20,7 +21,7 @@ namespace Microsoft.eShopWeb.Web.Controllers
             _orderRepository = orderRepository;
         }
 
-        [HttpGet]
+        [HttpGet("/MyOrders")]
         public async Task<IActionResult> Index()
         {
             var orders = await _orderRepository.ListAsync(new CustomerOrdersWithItemsSpecification(User.Identity.Name));
