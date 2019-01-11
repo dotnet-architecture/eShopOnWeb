@@ -20,8 +20,8 @@ namespace Microsoft.eShopWeb.Web.Controllers
             _orderRepository = orderRepository;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Index()
+        [HttpGet()]
+        public async Task<IActionResult> MyOrders()
         {
             var orders = await _orderRepository.ListAsync(new CustomerOrdersWithItemsSpecification(User.Identity.Name));
 
