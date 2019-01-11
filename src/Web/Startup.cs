@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.ApplicationCore.Services;
@@ -144,12 +145,12 @@ namespace Microsoft.eShopWeb.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, LinkGenerator linkGenerator)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                ListAllRegisteredServices(app);
+                ListAllRegisteredServices(app, linkGenerator);
                 app.UseDatabaseErrorPage();
             }
             else
@@ -183,11 +184,19 @@ namespace Microsoft.eShopWeb.Web
             });
         }
 
-        private void ListAllRegisteredServices(IApplicationBuilder app)
+        private void ListAllRegisteredServices(IApplicationBuilder app, LinkGenerator linkGenerator)
         {
+            var homePageLink = linkGenerator.GetPathByAction("Index", "Catalog");
+            var loginLink = linkGenerator.GetPathByAction("SignIn", "Account");
             app.Map("/allservices", builder => builder.Run(async context =>
             {
                 var sb = new StringBuilder();
+                sb.Append("<a href=\"");
+                sb.Append(homePageLink);
+                sb.AppendLine("\">Return to site</a> | ");
+                sb.Append("<a href=\"");
+                sb.Append(loginLink);
+                sb.AppendLine("\">Login to site</a>");
                 sb.Append("<h1>All Services</h1>");
                 sb.Append("<table><thead>");
                 sb.Append("<tr><th>Type</th><th>Lifetime</th><th>Instance</th></tr>");
