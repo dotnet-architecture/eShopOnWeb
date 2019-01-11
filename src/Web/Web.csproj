@@ -76,7 +76,6 @@
     <_ContentIncludedByDefault Remove="Views\Manage\EnableAuthenticator.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Manage\ExternalLogins.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Manage\GenerateRecoveryCodes.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Manage\Index.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Manage\ResetAuthenticator.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Manage\SetPassword.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Manage\TwoFactorAuthentication.cshtml" />
@@ -85,7 +84,6 @@
     <_ContentIncludedByDefault Remove="Views\Manage\_StatusMessage.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Manage\_ViewImports.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Order\Detail.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Order\Index.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Shared\Components\Basket\Default.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -140,9 +138,6 @@
     <UpToDateCheckInput Remove="Views\Manage\GenerateRecoveryCodes.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Manage\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <UpToDateCheckInput Remove="Views\Manage\ResetAuthenticator.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -153,9 +148,6 @@
   </ItemGroup>
   <ItemGroup>
     <UpToDateCheckInput Remove="Views\Order\Detail.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Order\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <UpToDateCheckInput Remove="Views\Shared\Components\Basket\Default.cshtml" />
