@@ -84,7 +84,6 @@
     <_ContentIncludedByDefault Remove="Views\Manage\_StatusMessage.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Manage\_ViewImports.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Order\Detail.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Order\Index.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Shared\Components\Basket\Default.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -149,9 +148,6 @@
   </ItemGroup>
   <ItemGroup>
     <UpToDateCheckInput Remove="Views\Order\Detail.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Order\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <UpToDateCheckInput Remove="Views\Shared\Components\Basket\Default.cshtml" />
