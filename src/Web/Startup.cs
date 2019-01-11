@@ -13,6 +13,7 @@ using Microsoft.eShopWeb.Infrastructure.Data;
 using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.eShopWeb.Infrastructure.Logging;
 using Microsoft.eShopWeb.Infrastructure.Services;
+using Microsoft.eShopWeb.Web.HealthChecks;
 using Microsoft.eShopWeb.Web.Interfaces;
 using Microsoft.eShopWeb.Web.Services;
 using Microsoft.Extensions.Configuration;
@@ -113,13 +114,15 @@ namespace Microsoft.eShopWeb.Web
                          new SlugifyParameterTransformer()));
             }
             ).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
-
-
+            services.AddHttpContextAccessor();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
             });
+
+            services.AddHealthChecks()
+                .AddCheck<HomePageHealthCheck>("home_page_health_check");
+
             _services = services; // used to debug registered services
         }
 
@@ -147,6 +150,8 @@ namespace Microsoft.eShopWeb.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, LinkGenerator linkGenerator)
         {
+            //app.UseDeveloperExceptionPage();
+            app.UseHealthChecks("/health");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
