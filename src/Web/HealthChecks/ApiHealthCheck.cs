@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using System.Net.Http;
 using System.Threading;
@@ -6,13 +7,15 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.Web.HealthChecks
 {
-    public class HomePageHealthCheck : IHealthCheck
+    public class ApiHealthCheck : IHealthCheck
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly LinkGenerator _linkGenerator;
 
-        public HomePageHealthCheck(IHttpContextAccessor httpContextAccessor)
+        public ApiHealthCheck(IHttpContextAccessor httpContextAccessor, LinkGenerator linkGenerator)
         {
             _httpContextAccessor = httpContextAccessor;
+            _linkGenerator = linkGenerator;
         }
 
         public async Task<HealthCheckResult> CheckHealthAsync(
@@ -20,8 +23,9 @@ namespace Microsoft.eShopWeb.Web.HealthChecks
             CancellationToken cancellationToken = default(CancellationToken))
         {
             var request = _httpContextAccessor.HttpContext.Request;
-            string myUrl = request.Scheme + "://" + request.Host.ToString();
 
+            string apiLink = _linkGenerator.GetPathByAction("List", "Catalog");
+            string myUrl = request.Scheme + "://" + request.Host.ToString() + apiLink;
             var client = new HttpClient();
             var response = await client.GetAsync(myUrl);
             var pageContents = await response.Content.ReadAsStringAsync();
