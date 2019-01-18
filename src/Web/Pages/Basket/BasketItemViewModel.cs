@@ -1,4 +1,4 @@
-﻿namespace Microsoft.eShopWeb.Web.ViewModels
+﻿namespace Microsoft.eShopWeb.Web.Pages.Basket
 {
     public class BasketItemViewModel
     {

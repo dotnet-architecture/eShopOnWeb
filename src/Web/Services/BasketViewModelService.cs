@@ -1,9 +1,9 @@
-﻿using Microsoft.eShopWeb.ApplicationCore.Interfaces;
-using Microsoft.eShopWeb.ApplicationCore.Specifications;
-using Microsoft.eShopWeb.ApplicationCore.Entities;
+﻿using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
+using Microsoft.eShopWeb.ApplicationCore.Interfaces;
+using Microsoft.eShopWeb.ApplicationCore.Specifications;
 using Microsoft.eShopWeb.Web.Interfaces;
-using Microsoft.eShopWeb.Web.ViewModels;
+using Microsoft.eShopWeb.Web.Pages.Basket;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,7 +30,7 @@ namespace Microsoft.eShopWeb.Web.Services
             var basketSpec = new BasketWithItemsSpecification(userName);
             var basket = (await _basketRepository.ListAsync(basketSpec)).FirstOrDefault();
 
-            if(basket == null)
+            if (basket == null)
             {
                 return await CreateBasketForUser(userName);
             }
