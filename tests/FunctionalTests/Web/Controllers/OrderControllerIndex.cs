@@ -22,7 +22,7 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
         [Fact]
         public async Task ReturnsRedirectGivenAnonymousUser()
         {
-            var response = await Client.GetAsync("/Order/Index");
+            var response = await Client.GetAsync("/order/my-orders");
             var redirectLocation = response.Headers.Location.OriginalString;
 
             Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);

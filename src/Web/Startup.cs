@@ -118,7 +118,13 @@ namespace Microsoft.eShopWeb.Web
                 options.Conventions.Add(new RouteTokenTransformerConvention(
                          new SlugifyParameterTransformer()));
             }
-            ).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            )
+                .AddRazorPagesOptions(options =>
+                {
+                    options.Conventions.AuthorizePage("/Basket/Checkout");
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
             services.AddHttpContextAccessor();
             services.AddSwaggerGen(c =>
             {
@@ -184,7 +190,7 @@ namespace Microsoft.eShopWeb.Web
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
