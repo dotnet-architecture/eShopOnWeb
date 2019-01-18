@@ -6,7 +6,6 @@ using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.eShopWeb.Web.Interfaces;
-using Microsoft.eShopWeb.Web.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -39,7 +38,6 @@ namespace Microsoft.eShopWeb.Web.Pages.Basket
 
         public void OnGet()
         {
-
         }
 
         public async Task<IActionResult> OnPost(Dictionary<string, int> items)
