@@ -118,7 +118,13 @@ namespace Microsoft.eShopWeb.Web
                 options.Conventions.Add(new RouteTokenTransformerConvention(
                          new SlugifyParameterTransformer()));
             }
-            ).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            )
+                .AddRazorPagesOptions(options =>
+                {
+                    options.Conventions.AuthorizePage("/Basket/Checkout");
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
             services.AddHttpContextAccessor();
             services.AddSwaggerGen(c =>
             {

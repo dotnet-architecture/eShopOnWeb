@@ -12,7 +12,7 @@ namespace Microsoft.eShopWeb.Web.Controllers
 {
     [ApiExplorerSettings(IgnoreApi = true)]
     [Route("[controller]/[action]")]
-    [Authorize]
+    [Authorize] // Controllers that mainly require Authorization still use Controller/View; other pages use Pages
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
