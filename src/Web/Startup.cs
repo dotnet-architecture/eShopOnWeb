@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -18,8 +19,12 @@ using Microsoft.eShopWeb.Web.Interfaces;
 using Microsoft.eShopWeb.Web.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.Linq;
+using System.Net.Mime;
 using System.Text;
 
 namespace Microsoft.eShopWeb.Web
@@ -121,7 +126,8 @@ namespace Microsoft.eShopWeb.Web
             });
 
             services.AddHealthChecks()
-                .AddCheck<HomePageHealthCheck>("home_page_health_check");
+                .AddCheck<HomePageHealthCheck>("home_page_health_check")
+                .AddCheck<ApiHealthCheck>("api_health_check");
 
             _services = services; // used to debug registered services
         }
@@ -151,7 +157,25 @@ namespace Microsoft.eShopWeb.Web
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, LinkGenerator linkGenerator)
         {
             //app.UseDeveloperExceptionPage();
-            app.UseHealthChecks("/health");
+            app.UseHealthChecks("/health",
+                new HealthCheckOptions
+                {
+                    ResponseWriter = async (context, report) =>
+                    {
+                        var result = JsonConvert.SerializeObject(
+                            new
+                            {
+                                status = report.Status.ToString(),
+                                errors = report.Entries.Select(e => new
+                                {
+                                    key = e.Key,
+                                    value = Enum.GetName(typeof(HealthStatus), e.Value.Status)
+                                })
+                            });
+                        context.Response.ContentType = MediaTypeNames.Application.Json;
+                        await context.Response.WriteAsync(result);
+                    }
+                });
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
