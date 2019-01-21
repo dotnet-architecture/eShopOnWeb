@@ -9,7 +9,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
-      - "5107:5107"
+      - "5107:80"
 
   eshopwebmvc:
     image: eshopwebmvc
@@ -19,7 +19,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
-      - "5106:5106"
+      - "5106:80"
 
 networks:
   default:
