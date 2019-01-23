@@ -1,16 +1,6 @@
 version: '3'
 
 services:
-  eshopwebrazor:
-    image: eshopwebrazor
-    build:
-      context: .
-      dockerfile: src/WebRazorPages/Dockerfile
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - "5107:80"
-
   eshopwebmvc:
     image: eshopwebmvc
     build:
@@ -19,7 +9,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
-      - "5106:80"
+      - "5106:5106"
 
 networks:
   default:
