@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-namespace Microsoft.eShopWeb.Web.ViewModels
+﻿namespace Microsoft.eShopWeb.Web.ViewModels
 {
     public class OrderItemViewModel
     {

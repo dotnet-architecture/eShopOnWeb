@@ -56,9 +56,9 @@ You can also run the samples in Docker (see below).
         }
 ```
 
-1. Ensure your connection strings in `appsettings.json` point to a local SQL Server instance.
+2. Ensure your connection strings in `appsettings.json` point to a local SQL Server instance.
 
-2. Open a command prompt in the Web folder and execute the following commands:
+3. Open a command prompt in the Web folder and execute the following commands:
 
 ```
 dotnet restore
@@ -68,7 +68,7 @@ dotnet ef database update -c appidentitydbcontext -p ../Infrastructure/Infrastru
 
 These commands will create two separate databases, one for the store's catalog data and shopping cart information, and one for the app's user credentials and identity data.
 
-3. Run the application.
+4. Run the application.
 The first time you run the application, it will seed both databases with data such that you should see products in the store, and you should be able to log in using the demouser@microsoft.com account.
 
 Note: If you need to create migrations, you can use these commands:
