@@ -1,4 +1,4 @@
-# RUN BOTH CONTAINERS FROM ROOT (folder with .sln file):
+# RUN ALL CONTAINERS FROM ROOT (folder with .sln file):
 # docker-compose build
 # docker-compose up
 #
@@ -6,7 +6,7 @@
 # docker build --pull -t web -f src/Web/Dockerfile .
 #
 # RUN COMMAND
-#  docker run --name eshopweb --rm -it -p 8000:5106 web
+#  docker run --name eshopweb --rm -it -p 5106:5106 web
 FROM microsoft/dotnet:2.2-sdk AS build
 WORKDIR /app
 
