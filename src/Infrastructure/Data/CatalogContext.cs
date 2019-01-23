@@ -28,6 +28,37 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
             builder.Entity<CatalogItem>(ConfigureCatalogItem);
             builder.Entity<Order>(ConfigureOrder);
             builder.Entity<OrderItem>(ConfigureOrderItem);
+            builder.Entity<Address>(ConfigureAddress);
+            builder.Entity<CatalogItemOrdered>(ConfigurateCatalogItemOrdered);
+        }
+
+        private void ConfigurateCatalogItemOrdered(EntityTypeBuilder<CatalogItemOrdered> builder)
+        {
+            builder.Property(cio => cio.ProductName)
+                .HasMaxLength(50)
+                .IsRequired();
+        }
+
+        private void ConfigureAddress(EntityTypeBuilder<Address> builder)
+        {
+            builder.Property(a => a.ZipCode)
+                .HasMaxLength(18)
+                .IsRequired();
+
+            builder.Property(a => a.Street)
+                .HasMaxLength(180)
+                .IsRequired();
+
+            builder.Property(a => a.State)
+                .HasMaxLength(60);
+
+            builder.Property(a => a.Country)
+                .HasMaxLength(90)
+                .IsRequired();
+
+            builder.Property(a => a.City)
+                .HasMaxLength(100)
+                .IsRequired();
         }
 
         private void ConfigureBasket(EntityTypeBuilder<Basket> builder)
