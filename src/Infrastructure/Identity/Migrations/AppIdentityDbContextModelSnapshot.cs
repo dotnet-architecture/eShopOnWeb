@@ -2,8 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.eShopWeb.Infrastructure.Identity;
 
 namespace Microsoft.eShopWeb.Infrastructure.Identity.Migrations
 {

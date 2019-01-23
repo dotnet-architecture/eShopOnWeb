@@ -1,17 +1,18 @@
-﻿using Microsoft.eShopWeb.ApplicationCore.Interfaces;
-using Microsoft.eShopWeb.Infrastructure.Identity;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.eShopWeb.ApplicationCore.Interfaces;
+using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.eShopWeb.Web.ViewModels.Account;
 using System;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.Web.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     [Route("[controller]/[action]")]
-    [Authorize]
+    [Authorize] // Controllers that mainly require Authorization still use Controller/View; other pages use Pages
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -149,10 +150,11 @@ namespace Microsoft.eShopWeb.Web.Controllers
         {
             await _signInManager.SignOutAsync();
 
-            return RedirectToAction(nameof(CatalogController.Index), "Catalog");
+            return RedirectToPage("/Index");
         }
 
         [AllowAnonymous]
+        [HttpGet]
         public IActionResult Register()
         {
             return View();
@@ -184,7 +186,7 @@ namespace Microsoft.eShopWeb.Web.Controllers
         {
             if (userId == null || code == null)
             {
-                return RedirectToAction(nameof(CatalogController.Index), "Catalog");
+                return RedirectToPage("/Index");
             }
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
@@ -215,7 +217,7 @@ namespace Microsoft.eShopWeb.Web.Controllers
             }
             else
             {
-                return RedirectToAction(nameof(CatalogController.Index), "Catalog");
+                return RedirectToPage("/Index");
             }
         }
 

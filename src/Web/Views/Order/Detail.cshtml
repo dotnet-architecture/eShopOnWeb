@@ -1,5 +1,4 @@
-﻿@using Microsoft.eShopWeb.Web.ViewModels
-@model OrderViewModel
+﻿@model OrderViewModel
 @{
     ViewData["Title"] = "My Order History";
 }
@@ -26,14 +25,14 @@
         </section>
 
         @*<section class="esh-orders_detail-section">
-            <article class="esh-orders_detail-titles row">
-                <section class="esh-orders_detail-title col-xs-12">Description</section>
-            </article>
+                <article class="esh-orders_detail-titles row">
+                    <section class="esh-orders_detail-title col-xs-12">Description</section>
+                </article>
 
-            <article class="esh-orders_detail-items row">
-                <section class="esh-orders_detail-item col-xs-12">@Model.Description</section>
-            </article>
-        </section>*@
+                <article class="esh-orders_detail-items row">
+                    <section class="esh-orders_detail-item col-xs-12">@Model.Description</section>
+                </article>
+            </section>*@
 
         <section class="esh-orders_detail-section">
             <article class="esh-orders_detail-titles row">
@@ -81,7 +80,7 @@
 
             <article class="esh-orders_detail-items row">
                 <section class="esh-orders_detail-item col-xs-9"></section>
-                <section class="esh-orders_detail-item esh-orders_detail-item--mark col-xs-2">$ @Model.Total</section>
+                <section class="esh-orders_detail-item esh-orders_detail-item--mark col-xs-2">$ @Model.Total.ToString("N2")</section>
             </article>
         </section>
     </div>

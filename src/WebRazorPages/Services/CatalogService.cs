@@ -1,7 +1,7 @@
-﻿using Microsoft.eShopWeb.ApplicationCore.Interfaces;
-using Microsoft.eShopWeb.ApplicationCore.Specifications;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
+using Microsoft.eShopWeb.ApplicationCore.Interfaces;
+using Microsoft.eShopWeb.ApplicationCore.Specifications;
 using Microsoft.eShopWeb.RazorPages.Interfaces;
 using Microsoft.eShopWeb.RazorPages.ViewModels;
 using Microsoft.Extensions.Logging;
@@ -43,14 +43,12 @@ namespace Microsoft.eShopWeb.RazorPages.Services
             _logger.LogInformation("GetCatalogItems called.");
 
             var filterSpecification = new CatalogFilterSpecification(brandId, typeId);
-            var root = _itemRepository.List(filterSpecification);
+            var filterPaginatedSpecification =
+                new CatalogFilterPaginatedSpecification(itemsPage * pageIndex, itemsPage, brandId, typeId);
 
-            var totalItems = root.Count();
-
-            var itemsOnPage = root
-                .Skip(itemsPage * pageIndex)
-                .Take(itemsPage)
-                .ToList();
+            // the implementation below using ForEach and Count. We need a List.
+            var itemsOnPage = _itemRepository.List(filterPaginatedSpecification).ToList();
+            var totalItems = _itemRepository.Count(filterSpecification);
 
             itemsOnPage.ForEach(x =>
             {
