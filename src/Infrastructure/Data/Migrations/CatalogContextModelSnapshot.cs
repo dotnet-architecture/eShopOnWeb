@@ -3,8 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Microsoft.eShopWeb.Infrastructure.Data;
 
 namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
 {
@@ -182,7 +180,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
 
                             b1.Property<string>("City")
                                 .IsRequired()
-                                .HasMaxLength(189);
+                                .HasMaxLength(100);
 
                             b1.Property<string>("Country")
                                 .IsRequired()

@@ -57,7 +57,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
                 .IsRequired();
 
             builder.Property(a => a.City)
-                .HasMaxLength(189)
+                .HasMaxLength(100)
                 .IsRequired();
         }
 

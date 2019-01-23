@@ -2,7 +2,7 @@
 
 namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
 {
-    public partial class AddExtraConstrains : Migration
+    public partial class AddExtraConstraints : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -41,7 +41,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
             migrationBuilder.AlterColumn<string>(
                 name: "ShipToAddress_City",
                 table: "Orders",
-                maxLength: 189,
+                maxLength: 100,
                 nullable: false,
                 oldClrType: typeof(string),
                 oldNullable: true);
@@ -91,7 +91,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                 table: "Orders",
                 nullable: true,
                 oldClrType: typeof(string),
-                oldMaxLength: 189);
+                oldMaxLength: 100);
 
             migrationBuilder.AlterColumn<string>(
                 name: "ItemOrdered_ProductName",
