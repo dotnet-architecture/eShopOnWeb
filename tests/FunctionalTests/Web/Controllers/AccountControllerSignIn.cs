@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.eShopWeb.Web;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -53,7 +54,7 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
             var stringResponse = await response.Content.ReadAsStringAsync();
 
             Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
-            Assert.Equal(new System.Uri("/"), response.Headers.Location);
+            Assert.Equal(new System.Uri("/", UriKind.Relative), response.Headers.Location);
         }
     }
 }

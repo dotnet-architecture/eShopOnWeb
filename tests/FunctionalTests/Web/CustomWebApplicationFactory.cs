@@ -18,6 +18,8 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
         {
             builder.ConfigureServices(services =>
             {
+                 services.AddEntityFrameworkInMemoryDatabase();
+
                 // Create a new service provider.
                 var provider = services
                     .AddEntityFrameworkInMemoryDatabase()
@@ -36,6 +38,10 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
                     options.UseInMemoryDatabase("Identity");
                     options.UseInternalServiceProvider(provider);
                 });
+
+                services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppIdentityDbContext>()
+                                .AddDefaultTokenProviders();
 
                 // Build the service provider.
                 var sp = services.BuildServiceProvider();
