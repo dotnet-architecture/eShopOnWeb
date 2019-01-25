@@ -52,7 +52,7 @@ namespace Microsoft.eShopWeb.Web.Controllers
         // POST: /Account/SignIn
         [HttpPost]
         [AllowAnonymous]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SignIn(LoginViewModel model, string returnUrl = null)
         {
             if (!ModelState.IsValid)
