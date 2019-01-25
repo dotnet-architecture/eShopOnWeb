@@ -83,10 +83,7 @@ namespace Microsoft.eShopWeb.Web
         {
             ConfigureCookieSettings(services);
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<AppIdentityDbContext>()
-                                .AddDefaultTokenProviders();
+            CreateIdentityIfNotCreated(services);
 
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
@@ -136,6 +133,23 @@ namespace Microsoft.eShopWeb.Web
                 .AddCheck<ApiHealthCheck>("api_health_check");
 
             _services = services; // used to debug registered services
+        }
+
+        private static void CreateIdentityIfNotCreated(IServiceCollection services)
+        {
+            var sp = services.BuildServiceProvider();
+            using (var scope = sp.CreateScope())
+            {
+                var existingUserManager = scope.ServiceProvider
+                    .GetService<UserManager<ApplicationUser>>();
+                if(existingUserManager == null)
+                {
+                    services.AddIdentity<ApplicationUser, IdentityRole>()
+                        .AddDefaultUI(UIFramework.Bootstrap4)
+                        .AddEntityFrameworkStores<AppIdentityDbContext>()
+                                        .AddDefaultTokenProviders();
+                }
+            }
         }
 
         private static void ConfigureCookieSettings(IServiceCollection services)
