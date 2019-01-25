@@ -74,7 +74,6 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
             var stringResponse1 = await getResponse.Content.ReadAsStringAsync();
             string token = GetRequestVerificationToken(stringResponse1);
 
-
             var keyValues = new List<KeyValuePair<string, string>>();
             keyValues.Add(new KeyValuePair<string, string>("Email", "demouser@microsoft.com"));
             keyValues.Add(new KeyValuePair<string, string>("Password", "Pass@word1"));
