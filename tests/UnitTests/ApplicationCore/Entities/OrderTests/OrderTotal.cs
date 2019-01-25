@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Entities.OrderTests
 {
-    public class Total
+    public class OrderTotal
     {
         private decimal _testUnitPrice = 42m;
 
