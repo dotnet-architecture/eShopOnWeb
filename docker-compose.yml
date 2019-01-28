@@ -9,9 +9,4 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
-      - "5106:5106"
-
-networks:
-  default:
-    external:
-      name: nat
+      - "5106:80" # the aspnetcore container sets 80 as the default port
