@@ -1,4 +1,4 @@
-@import './variables';
+@import './_variables.scss';
 
 .esh-app {
     &-footer {
@@ -19,5 +19,9 @@
             width: 230px;
         }
 
+    }
+
+    &-header {
+        margin: 15px;
     }
 }
