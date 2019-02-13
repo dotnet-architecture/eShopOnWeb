@@ -7,7 +7,7 @@ This reference application is meant to support the free .PDF download ebook: [Ar
 You can also read the book in online pages at the .NET docs here: 
 https://docs.microsoft.com/en-us/dotnet/standard/modern-web-apps-azure-architecture/
 
-![image](https://user-images.githubusercontent.com/1712635/42467632-449688c2-8367-11e8-9323-81ab50a66006.png)
+[![image](https://user-images.githubusercontent.com/782127/52731698-5e910500-2f8c-11e9-80fa-5be7dee4888b.png)](https://dotnet.microsoft.com/learn/web/aspnet-architecture)
 
 The **eShopOnWeb** sample is related to the [eShopOnContainers](https://github.com/dotnet/eShopOnContainers) sample application which, in that case, focuses on a microservices/containers-based application architecture. However, **eShopOnWeb** is much simpler in regards to its current functionality and focuses on traditional Web Application Development with a single deployment.
 
