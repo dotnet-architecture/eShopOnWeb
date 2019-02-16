@@ -4,14 +4,10 @@
   margin-top: 2.5rem;
   padding-bottom: 2.5rem;
   padding-top: 2.5rem;
-  width: 100%;
-
-}
-.esh-app-footer-brand {
+  width: 100%; }
+  .esh-app-footer-brand {
     height: 50px;
-    width: 230px; 
-}
+    width: 230px; }
 
 .esh-app-header {
-    margin: 15px;
-}
+  margin: 15px; }
