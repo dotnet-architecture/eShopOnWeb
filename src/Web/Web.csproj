@@ -75,7 +75,6 @@
     <_ContentIncludedByDefault Remove="Views\Account\Lockout.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Account\LoginWith2fa.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Account\Register.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Account\Signin.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Manage\ChangePassword.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Manage\Disable2fa.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Manage\EnableAuthenticator.cshtml" />
@@ -96,9 +95,6 @@
   </ItemGroup>
   <ItemGroup>
     <UpToDateCheckInput Remove="Views\Account\Register.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Account\Signin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <UpToDateCheckInput Remove="Views\Manage\_Layout.cshtml" />
