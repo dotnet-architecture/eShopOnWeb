@@ -114,11 +114,13 @@ namespace Microsoft.eShopWeb.Web
             {
                 options.Conventions.Add(new RouteTokenTransformerConvention(
                          new SlugifyParameterTransformer()));
+                
             }
             )
                 .AddRazorPagesOptions(options =>
                 {
                     options.Conventions.AuthorizePage("/Basket/Checkout");
+                    options.AllowAreas = true;
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
@@ -164,7 +166,6 @@ namespace Microsoft.eShopWeb.Web
             {
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromHours(1);
-                options.LoginPath = "/Account/Signin";
                 options.LogoutPath = "/Account/Signout";
                 options.Cookie = new CookieBuilder
                 {
