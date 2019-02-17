@@ -11,17 +11,23 @@
         padding-bottom: $padding;
         padding-top: $padding;
         width: 100%;
-
+        bottom: 0;
         $height: 50px;
 
         &-brand {
             height: $height;
             width: 230px;
         }
-
     }
 
     &-header {
         margin: 15px;
+    }
+
+    &-wrapper {
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+        justify-content: space-between
     }
 }
