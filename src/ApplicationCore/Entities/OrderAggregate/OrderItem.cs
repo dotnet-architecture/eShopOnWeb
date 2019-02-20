@@ -1,6 +1,4 @@
-﻿using Microsoft.eShopWeb.ApplicationCore.Entities;
-
-namespace ApplicationCore.Entities.OrderAggregate
+﻿namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate
 {
 
     public class OrderItem : BaseEntity
@@ -9,9 +7,11 @@ namespace ApplicationCore.Entities.OrderAggregate
         public decimal UnitPrice { get; private set; }
         public int Units { get; private set; }
 
-        protected OrderItem()
+        private OrderItem()
         {
+            // required by EF
         }
+
         public OrderItem(CatalogItemOrdered itemOrdered, decimal unitPrice, int units)
         {
             ItemOrdered = itemOrdered;

@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  eshopwebmvc:
+    image: eshopwebmvc
+    build:
+      context: .
+      dockerfile: src/Web/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "5106:80" # the aspnetcore container sets 80 as the default port

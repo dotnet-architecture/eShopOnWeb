@@ -1,21 +1,26 @@
-﻿using ApplicationCore.Interfaces;
-using Microsoft.eShopWeb.ApplicationCore.Entities;
+﻿using Microsoft.eShopWeb.ApplicationCore.Interfaces;
+using Ardalis.GuardClauses;
 using System;
 using System.Collections.Generic;
 
-namespace ApplicationCore.Entities.OrderAggregate
+namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate
 {
     public class Order : BaseEntity, IAggregateRoot
     {
         private Order()
         {
+            // required by EF
         }
 
         public Order(string buyerId, Address shipToAddress, List<OrderItem> items)
         {
+            Guard.Against.NullOrEmpty(buyerId, nameof(buyerId));
+            Guard.Against.Null(shipToAddress, nameof(shipToAddress));
+            Guard.Against.Null(items, nameof(items));
+
+            BuyerId = buyerId;
             ShipToAddress = shipToAddress;
             _orderItems = items;
-            BuyerId = buyerId;
         }
         public string BuyerId { get; private set; }
 
@@ -28,7 +33,7 @@ namespace ApplicationCore.Entities.OrderAggregate
         // but only through the method Order.AddOrderItem() which includes behavior.
         private readonly List<OrderItem> _orderItems = new List<OrderItem>();
 
-        public IReadOnlyCollection<OrderItem> OrderItems => _orderItems;
+        public IReadOnlyCollection<OrderItem> OrderItems => _orderItems.AsReadOnly();
         // Using List<>.AsReadOnly() 
         // This will create a read only wrapper around the private list so is protected against "external updates".
         // It's much cheaper than .ToList() because it will not have to copy all items in a new collection. (Just one heap alloc for the wrapper instance)
@@ -43,6 +48,5 @@ namespace ApplicationCore.Entities.OrderAggregate
             }
             return total;
         }
-
     }
 }

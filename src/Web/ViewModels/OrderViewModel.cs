@@ -1,10 +1,9 @@
-﻿using ApplicationCore.Entities.OrderAggregate;
+﻿using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.eShopWeb.ViewModels
+namespace Microsoft.eShopWeb.Web.ViewModels
 {
-
     public class OrderViewModel
     {
         public int OrderNumber { get; set; }

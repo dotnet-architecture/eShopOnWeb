@@ -1,16 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.eShopWeb.ApplicationCore.Entities;
+using Microsoft.eShopWeb.ApplicationCore.Interfaces;
+using Microsoft.eShopWeb.ApplicationCore.Specifications;
+using Microsoft.eShopWeb.Web.ViewModels;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.eShopWeb.ViewModels;
-using Microsoft.eShopWeb.ApplicationCore.Entities;
-using Microsoft.Extensions.Logging;
-using ApplicationCore.Interfaces;
-using System;
-using ApplicationCore.Specifications;
 
-namespace Microsoft.eShopWeb.Services
+namespace Microsoft.eShopWeb.Web.Services
 {
+    /// <summary>
+    /// This is a UI-specific service so belongs in UI project. It does not contain any business logic and works
+    /// with UI-specific types (view models and SelectListItem types).
+    /// </summary>
     public class CatalogService : ICatalogService
     {
         private readonly ILogger<CatalogService> _logger;
@@ -38,14 +42,12 @@ namespace Microsoft.eShopWeb.Services
             _logger.LogInformation("GetCatalogItems called.");
 
             var filterSpecification = new CatalogFilterSpecification(brandId, typeId);
-            var root = _itemRepository.List(filterSpecification);
+            var filterPaginatedSpecification =
+                new CatalogFilterPaginatedSpecification(itemsPage * pageIndex, itemsPage, brandId, typeId);
 
-            var totalItems = root.Count();
-
-            var itemsOnPage = root
-                .Skip(itemsPage * pageIndex)
-                .Take(itemsPage)
-                .ToList();
+            // the implementation below using ForEach and Count. We need a List.
+            var itemsOnPage = _itemRepository.List(filterPaginatedSpecification).ToList();
+            var totalItems = _itemRepository.Count(filterSpecification);
 
             itemsOnPage.ForEach(x =>
             {

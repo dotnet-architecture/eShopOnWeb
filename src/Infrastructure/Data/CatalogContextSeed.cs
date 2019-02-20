@@ -1,17 +1,15 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.eShopWeb.ApplicationCore.Entities;
+﻿using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Data
+namespace Microsoft.eShopWeb.Infrastructure.Data
 {
     public class CatalogContextSeed
     {
-        public static async Task SeedAsync(IApplicationBuilder applicationBuilder, 
-            CatalogContext catalogContext,
+        public static async Task SeedAsync(CatalogContext catalogContext,
             ILoggerFactory loggerFactory, int? retry = 0)
         {
             int retryForAvailability = retry.Value;
@@ -51,7 +49,7 @@ namespace Infrastructure.Data
                     retryForAvailability++;
                     var log = loggerFactory.CreateLogger<CatalogContextSeed>();
                     log.LogError(ex.Message);
-                    await SeedAsync(applicationBuilder, catalogContext, loggerFactory, retryForAvailability);
+                    await SeedAsync(catalogContext, loggerFactory, retryForAvailability);
                 }
             }
         }

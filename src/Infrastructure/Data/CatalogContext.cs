@@ -1,11 +1,10 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
-using Microsoft.EntityFrameworkCore.Metadata;
-using ApplicationCore.Entities.OrderAggregate;
+using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
+using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 
-namespace Infrastructure.Data
+namespace Microsoft.eShopWeb.Infrastructure.Data
 {
 
     public class CatalogContext : DbContext
@@ -13,10 +12,7 @@ namespace Infrastructure.Data
         public CatalogContext(DbContextOptions<CatalogContext> options) : base(options)
         {
         }
-        //public CatalogContext()
-        //{
-        //    // required by migrations
-        //}
+
         public DbSet<Basket> Baskets { get; set; }
         public DbSet<CatalogItem> CatalogItems { get; set; }
         public DbSet<CatalogBrand> CatalogBrands { get; set; }
@@ -32,6 +28,37 @@ namespace Infrastructure.Data
             builder.Entity<CatalogItem>(ConfigureCatalogItem);
             builder.Entity<Order>(ConfigureOrder);
             builder.Entity<OrderItem>(ConfigureOrderItem);
+            builder.Entity<Address>(ConfigureAddress);
+            builder.Entity<CatalogItemOrdered>(ConfigurateCatalogItemOrdered);
+        }
+
+        private void ConfigurateCatalogItemOrdered(EntityTypeBuilder<CatalogItemOrdered> builder)
+        {
+            builder.Property(cio => cio.ProductName)
+                .HasMaxLength(50)
+                .IsRequired();
+        }
+
+        private void ConfigureAddress(EntityTypeBuilder<Address> builder)
+        {
+            builder.Property(a => a.ZipCode)
+                .HasMaxLength(18)
+                .IsRequired();
+
+            builder.Property(a => a.Street)
+                .HasMaxLength(180)
+                .IsRequired();
+
+            builder.Property(a => a.State)
+                .HasMaxLength(60);
+
+            builder.Property(a => a.Country)
+                .HasMaxLength(90)
+                .IsRequired();
+
+            builder.Property(a => a.City)
+                .HasMaxLength(100)
+                .IsRequired();
         }
 
         private void ConfigureBasket(EntityTypeBuilder<Basket> builder)
@@ -97,14 +124,19 @@ namespace Infrastructure.Data
                 .IsRequired()
                 .HasMaxLength(100);
         }
+
         private void ConfigureOrder(EntityTypeBuilder<Order> builder)
         {
+            var navigation = builder.Metadata.FindNavigation(nameof(Order.OrderItems));
+
+            navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
+
             builder.OwnsOne(o => o.ShipToAddress);
         }
+
         private void ConfigureOrderItem(EntityTypeBuilder<OrderItem> builder)
         {
             builder.OwnsOne(i => i.ItemOrdered);
         }
-
     }
 }

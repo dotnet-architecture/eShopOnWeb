@@ -1,10 +1,9 @@
-﻿using ApplicationCore.Entities.OrderAggregate;
-using ApplicationCore.Interfaces;
+﻿using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
+using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Data
+namespace Microsoft.eShopWeb.Infrastructure.Data
 {
     public class OrderRepository : EfRepository<Order>, IOrderRepository
     {
@@ -12,20 +11,12 @@ namespace Infrastructure.Data
         {
         }
 
-        public Order GetByIdWithItems(int id)
-        {
-            return _dbContext.Orders
-                .Include(o => o.OrderItems)
-                .Include("OrderItems.ItemOrdered")
-                .FirstOrDefault();
-        }
-
         public Task<Order> GetByIdWithItemsAsync(int id)
         {
             return _dbContext.Orders
                 .Include(o => o.OrderItems)
-                .Include("OrderItems.ItemOrdered")
-                .FirstOrDefaultAsync();
+                .Include($"{nameof(Order.OrderItems)}.{nameof(OrderItem.ItemOrdered)}")
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }

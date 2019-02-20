@@ -1,24 +1,33 @@
-﻿using ApplicationCore.Entities.OrderAggregate;
-using ApplicationCore.Interfaces;
-using ApplicationCore.Services;
-using Infrastructure.Data;
-using Infrastructure.Identity;
-using Infrastructure.Logging;
-using Infrastructure.Services;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.eShopWeb.Services;
+using Microsoft.eShopWeb.ApplicationCore.Interfaces;
+using Microsoft.eShopWeb.ApplicationCore.Services;
+using Microsoft.eShopWeb.Infrastructure.Data;
+using Microsoft.eShopWeb.Infrastructure.Identity;
+using Microsoft.eShopWeb.Infrastructure.Logging;
+using Microsoft.eShopWeb.Infrastructure.Services;
+using Microsoft.eShopWeb.Web.HealthChecks;
+using Microsoft.eShopWeb.Web.Interfaces;
+using Microsoft.eShopWeb.Web.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Newtonsoft.Json;
+using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.Linq;
+using System.Net.Mime;
 using System.Text;
-using Web.Services;
 
-namespace Microsoft.eShopWeb
+namespace Microsoft.eShopWeb.Web
 {
     public class Startup
     {
@@ -30,46 +39,58 @@ namespace Microsoft.eShopWeb
 
         public IConfiguration Configuration { get; }
 
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureDevelopmentServices(IServiceCollection services)
         {
-            // Requires LocalDB which can be installed with SQL Server Express 2016
-            // https://www.microsoft.com/en-us/download/details.aspx?id=54284
+            // use in-memory database
+            ConfigureInMemoryDatabases(services);
+
+            // use real database
+            // ConfigureProductionServices(services);
+        }
+
+        private void ConfigureInMemoryDatabases(IServiceCollection services)
+        {
+            // use in-memory database
             services.AddDbContext<CatalogContext>(c =>
-            {
-                try
-                {
-                    c.UseInMemoryDatabase("Catalog");
-                    //c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection"));
-                }
-                catch (System.Exception ex )
-                {
-                    var message = ex.Message;
-                }                
-            });
+                c.UseInMemoryDatabase("Catalog"));
 
             // Add Identity DbContext
             services.AddDbContext<AppIdentityDbContext>(options =>
                 options.UseInMemoryDatabase("Identity"));
-                //options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<AppIdentityDbContext>()
-                .AddDefaultTokenProviders();
+            ConfigureServices(services);
+        }
 
-            services.ConfigureApplicationCookie(options =>
-            {
-                options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromHours(1);
-                options.LoginPath = "/Account/Signin";
-                options.LogoutPath = "/Account/Signout";
-            });
+        public void ConfigureProductionServices(IServiceCollection services)
+        {
+            // use real database
+            // Requires LocalDB which can be installed with SQL Server Express 2016
+            // https://www.microsoft.com/en-us/download/details.aspx?id=54284
+            services.AddDbContext<CatalogContext>(c =>
+                c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection")));
+
+            // Add Identity DbContext
+            services.AddDbContext<AppIdentityDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
+
+            ConfigureServices(services);
+        }
+
+
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            ConfigureCookieSettings(services);
+
+            CreateIdentityIfNotCreated(services);
 
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
 
-            services.AddMemoryCache();
             services.AddScoped<ICatalogService, CachedCatalogService>();
             services.AddScoped<IBasketService, BasketService>();
+            services.AddScoped<IBasketViewModelService, BasketViewModelService>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<CatalogService>();
@@ -77,42 +98,155 @@ namespace Microsoft.eShopWeb
             services.AddSingleton<IUriComposer>(new UriComposer(Configuration.Get<CatalogSettings>()));
 
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
+            services.AddTransient<IEmailSender, EmailSender>();
 
             // Add memory cache services
             services.AddMemoryCache();
 
-            services.AddMvc();
+            services.AddRouting(options =>
+            {
+                // Replace the type and the name used to refer to it with your own
+                // IOutboundParameterTransformer implementation
+                options.ConstraintMap["slugify"] = typeof(SlugifyParameterTransformer);
+            });
 
-            _services = services;
+            services.AddMvc(options =>
+            {
+                options.Conventions.Add(new RouteTokenTransformerConvention(
+                         new SlugifyParameterTransformer()));
+                
+            }
+            )
+                .AddRazorPagesOptions(options =>
+                {
+                    options.Conventions.AuthorizePage("/Basket/Checkout");
+                    options.AllowAreas = true;
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddHttpContextAccessor();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+            });
+
+            services.AddHealthChecks()
+                .AddCheck<HomePageHealthCheck>("home_page_health_check")
+                .AddCheck<ApiHealthCheck>("api_health_check");
+
+            _services = services; // used to debug registered services
+        }
+
+        private static void CreateIdentityIfNotCreated(IServiceCollection services)
+        {
+            var sp = services.BuildServiceProvider();
+            using (var scope = sp.CreateScope())
+            {
+                var existingUserManager = scope.ServiceProvider
+                    .GetService<UserManager<ApplicationUser>>();
+                if(existingUserManager == null)
+                {
+                    services.AddIdentity<ApplicationUser, IdentityRole>()
+                        .AddDefaultUI(UIFramework.Bootstrap4)
+                        .AddEntityFrameworkStores<AppIdentityDbContext>()
+                                        .AddDefaultTokenProviders();
+                }
+            }
+        }
+
+        private static void ConfigureCookieSettings(IServiceCollection services)
+        {
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromHours(1);
+                options.LogoutPath = "/Account/Signout";
+                options.Cookie = new CookieBuilder
+                {
+                    IsEssential = true // required for auth to work without explicit user consent; adjust to suit your privacy policy
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, 
-            IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, LinkGenerator linkGenerator)
         {
+            //app.UseDeveloperExceptionPage();
+            app.UseHealthChecks("/health",
+                new HealthCheckOptions
+                {
+                    ResponseWriter = async (context, report) =>
+                    {
+                        var result = JsonConvert.SerializeObject(
+                            new
+                            {
+                                status = report.Status.ToString(),
+                                errors = report.Entries.Select(e => new
+                                {
+                                    key = e.Key,
+                                    value = Enum.GetName(typeof(HealthStatus), e.Value.Status)
+                                })
+                            });
+                        context.Response.ContentType = MediaTypeNames.Application.Json;
+                        await context.Response.WriteAsync(result);
+                    }
+                });
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
-                ListAllRegisteredServices(app);
+                ListAllRegisteredServices(app, linkGenerator);
                 app.UseDatabaseErrorPage();
             }
             else
             {
-                app.UseExceptionHandler("/Catalog/Error");
+                app.UseExceptionHandler("/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
             }
 
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
+
             app.UseAuthentication();
 
-            app.UseMvc();
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller:slugify=Home}/{action:slugify=Index}/{id?}");
+            });
         }
 
-        private void ListAllRegisteredServices(IApplicationBuilder app)
+        private void ListAllRegisteredServices(IApplicationBuilder app, LinkGenerator linkGenerator)
         {
+            var homePageLink = linkGenerator.GetPathByAction("Index", "Catalog");
+            var loginLink = linkGenerator.GetPathByAction("SignIn", "Account");
             app.Map("/allservices", builder => builder.Run(async context =>
             {
                 var sb = new StringBuilder();
+                sb.Append("<a href=\"");
+                sb.Append(homePageLink);
+                sb.AppendLine("\">Return to site</a> | ");
+                sb.Append("<a href=\"");
+                sb.Append(loginLink);
+                sb.AppendLine("\">Login to site</a>");
                 sb.Append("<h1>All Services</h1>");
                 sb.Append("<table><thead>");
                 sb.Append("<tr><th>Type</th><th>Lifetime</th><th>Instance</th></tr>");
@@ -130,44 +264,5 @@ namespace Microsoft.eShopWeb
             }));
         }
 
-        public void ConfigureDevelopment(IApplicationBuilder app,
-                                        IHostingEnvironment env,
-                                        ILoggerFactory loggerFactory,
-                                        UserManager<ApplicationUser> userManager,
-                                        CatalogContext catalogContext)
-        {
-            Configure(app, env);
-
-            //Seed Data
-            CatalogContextSeed.SeedAsync(app, catalogContext, loggerFactory)
-            .Wait();
-
-            var defaultUser = new ApplicationUser { UserName = "demouser@microsoft.com", Email = "demouser@microsoft.com" };
-            userManager.CreateAsync(defaultUser, "Pass@word1").Wait();
-        }
-
-        /// <summary>
-        /// Use this section to perform production-specific configuration.
-        /// In this case it is duplicating Development so that deployments to Azure will have sample data immediately.
-        /// </summary>
-        /// <param name="app"></param>
-        /// <param name="env"></param>
-        /// <param name="loggerFactory"></param>
-        /// <param name="userManager"></param>
-        public void ConfigureProduction(IApplicationBuilder app,
-                                        IHostingEnvironment env,
-                                        ILoggerFactory loggerFactory,
-                                        UserManager<ApplicationUser> userManager,
-                                        CatalogContext catalogContext)
-        {
-            Configure(app, env);
-
-            //Seed Data
-            CatalogContextSeed.SeedAsync(app, catalogContext, loggerFactory)
-            .Wait();
-
-            var defaultUser = new ApplicationUser { UserName = "demouser@microsoft.com", Email = "demouser@microsoft.com" };
-            userManager.CreateAsync(defaultUser, "Pass@word1").Wait();
-        }
     }
 }

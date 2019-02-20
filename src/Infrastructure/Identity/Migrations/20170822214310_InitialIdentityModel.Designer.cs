@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Infrastructure.Identity;
+using Microsoft.eShopWeb.Infrastructure.Identity;
 
-namespace Infrastructure.Identity.Migrations
+namespace Microsoft.eShopWeb.Infrastructure.Identity.Migrations
 {
     [DbContext(typeof(AppIdentityDbContext))]
     [Migration("20170822214310_InitialIdentityModel")]
