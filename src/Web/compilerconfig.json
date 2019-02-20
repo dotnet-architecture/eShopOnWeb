@@ -26,5 +26,9 @@
   {
     "outputFile": "wwwroot/css/_variables.css",
     "inputFile": "wwwroot/css/_variables.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/shared/components/pager/pager.css",
+    "inputFile": "wwwroot/css/shared/components/pager/pager.scss"
   }
 ]
