@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopWeb.Infrastructure.Data;
@@ -40,8 +41,9 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
                 });
 
                 services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<AppIdentityDbContext>()
-                                .AddDefaultTokenProviders();
+                        .AddDefaultUI(UIFramework.Bootstrap4)
+                        .AddEntityFrameworkStores<AppIdentityDbContext>()
+                        .AddDefaultTokenProviders();
 
                 // Build the service provider.
                 var sp = services.BuildServiceProvider();
