@@ -166,6 +166,7 @@ namespace Microsoft.eShopWeb.Web
             {
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromHours(1);
+                options.LoginPath = "/Account/Login";
                 options.LogoutPath = "/Account/Signout";
                 options.Cookie = new CookieBuilder
                 {
@@ -228,6 +229,10 @@ namespace Microsoft.eShopWeb.Web
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                name: "identity",
+                template: "Identity/{controller=Account}/{action=Register}/{id?}");
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller:slugify=Home}/{action:slugify=Index}/{id?}");
