@@ -26,7 +26,7 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
         [Fact]
         public async Task ReturnsSignInScreenOnGet()
         {
-            var response = await Client.GetAsync("/account/sign-in");
+            var response = await Client.GetAsync("/identity/account/login");
             response.EnsureSuccessStatusCode();
             var stringResponse = await response.Content.ReadAsStringAsync();
 
@@ -50,7 +50,7 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
         [Fact]
         public async Task ReturnsFormWithRequestVerificationToken()
         {
-            var response = await Client.GetAsync("/account/sign-in");
+            var response = await Client.GetAsync("/identity/account/login");
             response.EnsureSuccessStatusCode();
             var stringResponse = await response.Content.ReadAsStringAsync();
 
@@ -69,7 +69,7 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
         [Fact]
         public async Task ReturnsSuccessfulSignInOnPostWithValidCredentials()
         {
-            var getResponse = await Client.GetAsync("/account/sign-in");
+            var getResponse = await Client.GetAsync("/identity/account/login");
             getResponse.EnsureSuccessStatusCode();
             var stringResponse1 = await getResponse.Content.ReadAsStringAsync();
             string token = GetRequestVerificationToken(stringResponse1);
