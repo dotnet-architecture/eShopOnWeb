@@ -21,11 +21,6 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
             _dbContext = dbContext;
         }
 
-        public virtual T GetById(int id)
-        {
-            return _dbContext.Set<T>().Find(id);
-        }
-
         public T GetSingleBySpec(ISpecification<T> spec)
         {
             return List(spec).FirstOrDefault();
