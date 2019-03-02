@@ -62,12 +62,6 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
 
             return entity;
         }
-
-        public void Update(T entity)
-        {
-            _dbContext.Entry(entity).State = EntityState.Modified;
-            _dbContext.SaveChanges();
-        }
         
         public async Task UpdateAsync(T entity)
         {
