@@ -68,12 +68,6 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
             _dbContext.Entry(entity).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
         }
-
-        public void Delete(T entity)
-        {
-            _dbContext.Set<T>().Remove(entity);
-            _dbContext.SaveChanges();
-        }
         
         public async Task DeleteAsync(T entity)
         {
