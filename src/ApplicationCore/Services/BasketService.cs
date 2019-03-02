@@ -15,10 +15,8 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
         private readonly IAsyncRepository<BasketItem> _basketItemRepository;
         private readonly IUriComposer _uriComposer;
         private readonly IAppLogger<BasketService> _logger;
-        private readonly IRepository<CatalogItem> _itemRepository;
 
         public BasketService(IAsyncRepository<Basket> basketRepository,
-            IRepository<CatalogItem> itemRepository,
             IUriComposer uriComposer,
             IAppLogger<BasketService> logger,
             IAsyncRepository<BasketItem> basketItemRepository)
@@ -26,7 +24,6 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
             _basketRepository = basketRepository;
             _uriComposer = uriComposer;
             _logger = logger;
-            _itemRepository = itemRepository;
             _basketItemRepository = basketItemRepository;
         }
 
