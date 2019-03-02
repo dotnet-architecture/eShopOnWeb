@@ -55,14 +55,6 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
             return await ApplySpecification(spec).CountAsync();
         }
 
-        public T Add(T entity)
-        {
-            _dbContext.Set<T>().Add(entity);
-            _dbContext.SaveChanges();
-
-            return entity;
-        }
-
         public async Task<T> AddAsync(T entity)
         {
             _dbContext.Set<T>().Add(entity);
