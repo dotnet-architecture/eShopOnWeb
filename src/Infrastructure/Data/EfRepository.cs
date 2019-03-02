@@ -45,11 +45,6 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
             return await ApplySpecification(spec).ToListAsync();
         }
         
-        public int Count(ISpecification<T> spec)
-        {
-            return ApplySpecification(spec).Count();
-        }
-        
         public async Task<int> CountAsync(ISpecification<T> spec)
         {
             return await ApplySpecification(spec).CountAsync();

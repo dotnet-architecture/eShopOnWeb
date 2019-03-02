@@ -6,6 +6,5 @@ namespace Microsoft.eShopWeb.ApplicationCore.Interfaces
     public interface IRepository<T> where T : BaseEntity
     {
         T GetSingleBySpec(ISpecification<T> spec);
-        int Count(ISpecification<T> spec);
     }
 }
