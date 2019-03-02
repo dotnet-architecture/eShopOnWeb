@@ -20,12 +20,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
         {
             _dbContext = dbContext;
         }
-
-        public T GetSingleBySpec(ISpecification<T> spec)
-        {
-            return List(spec).FirstOrDefault();
-        }
-
+        
         public virtual async Task<T> GetByIdAsync(int id)
         {
             return await _dbContext.Set<T>().FindAsync(id);
@@ -36,10 +31,6 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
             return await _dbContext.Set<T>().ToListAsync();
         }
 
-        public IEnumerable<T> List(ISpecification<T> spec)
-        {
-            return ApplySpecification(spec).AsEnumerable();
-        }
         public async Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec)
         {
             return await ApplySpecification(spec).ToListAsync();
