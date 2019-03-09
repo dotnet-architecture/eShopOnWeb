@@ -18,14 +18,14 @@ namespace Microsoft.eShopWeb.Web.Services
     public class CatalogService : ICatalogService
     {
         private readonly ILogger<CatalogService> _logger;
-        private readonly IRepository<CatalogItem> _itemRepository;
+        private readonly IAsyncRepository<CatalogItem> _itemRepository;
         private readonly IAsyncRepository<CatalogBrand> _brandRepository;
         private readonly IAsyncRepository<CatalogType> _typeRepository;
         private readonly IUriComposer _uriComposer;
 
         public CatalogService(
             ILoggerFactory loggerFactory,
-            IRepository<CatalogItem> itemRepository,
+            IAsyncRepository<CatalogItem> itemRepository,
             IAsyncRepository<CatalogBrand> brandRepository,
             IAsyncRepository<CatalogType> typeRepository,
             IUriComposer uriComposer)
@@ -46,13 +46,13 @@ namespace Microsoft.eShopWeb.Web.Services
                 new CatalogFilterPaginatedSpecification(itemsPage * pageIndex, itemsPage, brandId, typeId);
 
             // the implementation below using ForEach and Count. We need a List.
-            var itemsOnPage = _itemRepository.List(filterPaginatedSpecification).ToList();
-            var totalItems = _itemRepository.Count(filterSpecification);
+            var itemsOnPage = await _itemRepository.ListAsync(filterPaginatedSpecification);
+            var totalItems = await _itemRepository.CountAsync(filterSpecification);
 
-            itemsOnPage.ForEach(x =>
+            foreach (var itemOnPage in itemsOnPage)
             {
-                x.PictureUri = _uriComposer.ComposePicUri(x.PictureUri);
-            });
+                itemOnPage.PictureUri = _uriComposer.ComposePicUri(itemOnPage.PictureUri);
+            }
 
             var vm = new CatalogIndexViewModel()
             {

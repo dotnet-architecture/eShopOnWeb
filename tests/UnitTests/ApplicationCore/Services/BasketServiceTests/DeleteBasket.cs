@@ -26,7 +26,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.BasketServiceTes
             basket.AddItem(2, It.IsAny<decimal>(), It.IsAny<int>());
             _mockBasketRepo.Setup(x => x.GetByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(basket);
-            var basketService = new BasketService(_mockBasketRepo.Object, null, null, null, _mockBasketItemRepo.Object);
+            var basketService = new BasketService(_mockBasketRepo.Object, null, null, _mockBasketItemRepo.Object);
 
             await basketService.DeleteBasketAsync(It.IsAny<int>());
 
