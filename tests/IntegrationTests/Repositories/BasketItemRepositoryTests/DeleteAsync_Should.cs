@@ -38,7 +38,7 @@ namespace Microsoft.eShopWeb.IntegrationTests.Repositories.BasketItemRepositoryT
             await _basketItemRepository.DeleteAsync(existingBasket.Items.FirstOrDefault());
             _catalogContext.SaveChanges();
 
-            var basketFromDB = _basketRepository.GetById(BasketBuilder.BasketId);
+            var basketFromDB = await _basketRepository.GetByIdAsync(BasketBuilder.BasketId);
 
             Assert.Equal(0, basketFromDB.Items.Count);
         }

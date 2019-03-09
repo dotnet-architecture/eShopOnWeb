@@ -84,8 +84,7 @@ namespace Microsoft.eShopWeb.Web
             ConfigureCookieSettings(services);
 
             CreateIdentityIfNotCreated(services);
-
-            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+            
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
 
             services.AddScoped<ICatalogService, CachedCatalogService>();
