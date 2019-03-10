@@ -71,25 +71,6 @@
     <UpToDateCheckInput Remove="Views\Account\Lockout.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <_ContentIncludedByDefault Remove="Views\Account\Lockout.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Account\LoginWith2fa.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Account\Register.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Manage\ChangePassword.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Manage\Disable2fa.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Manage\EnableAuthenticator.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Manage\ExternalLogins.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Manage\GenerateRecoveryCodes.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Manage\ResetAuthenticator.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Manage\SetPassword.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Manage\TwoFactorAuthentication.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Manage\_Layout.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Manage\_ManageNav.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Manage\_StatusMessage.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Manage\_ViewImports.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Order\Detail.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Shared\Components\Basket\Default.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <UpToDateCheckInput Remove="Views\Account\LoginWith2fa.cshtml" />
   </ItemGroup>
   <ItemGroup>
