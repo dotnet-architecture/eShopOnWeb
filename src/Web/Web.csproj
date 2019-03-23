@@ -9,8 +9,6 @@
 
   <ItemGroup>
     <Content Remove="compilerconfig.json" />
-    <Content Remove="wwwroot\css\app.css" />
-    <Content Remove="wwwroot\css\app.min.css" />
   </ItemGroup>
 
 
