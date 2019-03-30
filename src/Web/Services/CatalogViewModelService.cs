@@ -15,22 +15,22 @@ namespace Microsoft.eShopWeb.Web.Services
     /// This is a UI-specific service so belongs in UI project. It does not contain any business logic and works
     /// with UI-specific types (view models and SelectListItem types).
     /// </summary>
-    public class CatalogService : ICatalogService
+    public class CatalogViewModelService : ICatalogViewModelService
     {
-        private readonly ILogger<CatalogService> _logger;
+        private readonly ILogger<CatalogViewModelService> _logger;
         private readonly IAsyncRepository<CatalogItem> _itemRepository;
         private readonly IAsyncRepository<CatalogBrand> _brandRepository;
         private readonly IAsyncRepository<CatalogType> _typeRepository;
         private readonly IUriComposer _uriComposer;
 
-        public CatalogService(
+        public CatalogViewModelService(
             ILoggerFactory loggerFactory,
             IAsyncRepository<CatalogItem> itemRepository,
             IAsyncRepository<CatalogBrand> brandRepository,
             IAsyncRepository<CatalogType> typeRepository,
             IUriComposer uriComposer)
         {
-            _logger = loggerFactory.CreateLogger<CatalogService>();
+            _logger = loggerFactory.CreateLogger<CatalogViewModelService>();
             _itemRepository = itemRepository;
             _brandRepository = brandRepository;
             _typeRepository = typeRepository;

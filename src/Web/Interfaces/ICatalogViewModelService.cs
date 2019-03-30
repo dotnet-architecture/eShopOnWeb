@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.Web.Services
 {
-    public interface ICatalogService
+    public interface ICatalogViewModelService
     {
         Task<CatalogIndexViewModel> GetCatalogItems(int pageIndex, int itemsPage, int? brandId, int? typeId);
         Task<IEnumerable<SelectListItem>> GetBrands();
