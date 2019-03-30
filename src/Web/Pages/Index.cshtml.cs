@@ -7,18 +7,18 @@ namespace Microsoft.eShopWeb.Web.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ICatalogService _catalogService;
+        private readonly ICatalogViewModelService _catalogViewModelService;
 
-        public IndexModel(ICatalogService catalogService)
+        public IndexModel(ICatalogViewModelService catalogViewModelService)
         {
-            _catalogService = catalogService;
+            _catalogViewModelService = catalogViewModelService;
         }
 
         public CatalogIndexViewModel CatalogModel { get; set; } = new CatalogIndexViewModel();
 
         public async Task OnGet(CatalogIndexViewModel catalogModel, int? pageId)
         {
-            CatalogModel = await _catalogService.GetCatalogItems(pageId ?? 0, Constants.ITEMS_PER_PAGE, catalogModel.BrandFilterApplied, catalogModel.TypesFilterApplied);
+            CatalogModel = await _catalogViewModelService.GetCatalogItems(pageId ?? 0, Constants.ITEMS_PER_PAGE, catalogModel.BrandFilterApplied, catalogModel.TypesFilterApplied);
         }
 
 
