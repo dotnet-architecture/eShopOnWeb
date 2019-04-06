@@ -183,7 +183,7 @@ namespace Microsoft.eShopWeb.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, LinkGenerator linkGenerator)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             //app.UseDeveloperExceptionPage();
             app.UseHealthChecks("/health",

@@ -34,7 +34,7 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
         }
 
         [Fact]
-        public async Task RegexMatchesValidRequestVerificationToken()
+        public void RegexMatchesValidRequestVerificationToken()
         {
             // TODO: Move to a unit test
             // TODO: Move regex to a constant in test project
