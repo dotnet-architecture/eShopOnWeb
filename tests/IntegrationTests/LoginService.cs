@@ -46,7 +46,7 @@ namespace Microsoft.eShopWeb.IntegrationTests.Repositories.OrderRepositoryTests
                     Assert.True(result.Succeeded);
 
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                 }
             }
