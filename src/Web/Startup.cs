@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Ardalis.ListStartupServices;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -23,9 +24,9 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
-using System.Text;
 
 namespace Microsoft.eShopWeb.Web
 {
@@ -133,6 +134,13 @@ namespace Microsoft.eShopWeb.Web
                 .AddCheck<HomePageHealthCheck>("home_page_health_check")
                 .AddCheck<ApiHealthCheck>("api_health_check");
 
+            services.Configure<ServiceConfig>(config =>
+            {
+                config.Services = new List<ServiceDescriptor>(services);
+
+                config.Path = "/allservices";
+            });
+
             _services = services; // used to debug registered services
         }
 
@@ -200,7 +208,7 @@ namespace Microsoft.eShopWeb.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                ListAllRegisteredServices(app, linkGenerator);
+                app.UseShowAllServicesMiddleware();
                 app.UseDatabaseErrorPage();
             }
             else
@@ -237,36 +245,5 @@ namespace Microsoft.eShopWeb.Web
                     template: "{controller:slugify=Home}/{action:slugify=Index}/{id?}");
             });
         }
-
-        private void ListAllRegisteredServices(IApplicationBuilder app, LinkGenerator linkGenerator)
-        {
-            var homePageLink = linkGenerator.GetPathByAction("Index", "Catalog");
-            var loginLink = linkGenerator.GetPathByAction("SignIn", "Account");
-            app.Map("/allservices", builder => builder.Run(async context =>
-            {
-                var sb = new StringBuilder();
-                sb.Append("<a href=\"");
-                sb.Append(homePageLink);
-                sb.AppendLine("\">Return to site</a> | ");
-                sb.Append("<a href=\"");
-                sb.Append(loginLink);
-                sb.AppendLine("\">Login to site</a>");
-                sb.Append("<h1>All Services</h1>");
-                sb.Append("<table><thead>");
-                sb.Append("<tr><th>Type</th><th>Lifetime</th><th>Instance</th></tr>");
-                sb.Append("</thead><tbody>");
-                foreach (var svc in _services)
-                {
-                    sb.Append("<tr>");
-                    sb.Append($"<td>{svc.ServiceType.FullName}</td>");
-                    sb.Append($"<td>{svc.Lifetime}</td>");
-                    sb.Append($"<td>{svc.ImplementationType?.FullName}</td>");
-                    sb.Append("</tr>");
-                }
-                sb.Append("</tbody></table>");
-                await context.Response.WriteAsync(sb.ToString());
-            }));
-        }
-
     }
 }
