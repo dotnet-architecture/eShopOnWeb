@@ -1,4 +1,4 @@
-@import '../../../variables';
+@import '../../../variables.scss';
 
 .esh-pager {
 
@@ -12,7 +12,7 @@
         margin: 0 $margin;
 
         &.is-disabled {
-            opacity: 0;
+            opacity: .5;
             pointer-events: none;
         }
 

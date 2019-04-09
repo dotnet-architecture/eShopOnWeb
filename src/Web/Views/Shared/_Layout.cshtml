@@ -15,10 +15,6 @@
         <link rel="stylesheet" href="~/css/basket/basket-status/basket-status.component.css" />
         <link rel="stylesheet" href="~/css/catalog/catalog.component.css" />
         <link rel="stylesheet" href="~/css/orders/orders.component.css" />
-        <link rel="stylesheet" href="~/css/orders/orders-detail/orders-detail.component.css" />
-        <link rel="stylesheet" href="~/css/orders/orders-new/orders-new.component.css" />
-        <link rel="stylesheet" href="~/css/override.css" type="text/css" />
-        <link rel="stylesheet" href="~/css/site.min.css" type="text/css" />
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.5/css/bootstrap.min.css"
@@ -28,29 +24,31 @@
     </environment>
 </head>
 <body>
-    <header class="esh-app-header">
-        <div class="container">
-            <article class="row">
-                <section class="col-lg-7 col-md-6 col-xs-12">
-                    <a asp-area="" asp-page="/Index">
-                        <img src="~/images/brand.png" alt="eShop On Web" />
-                    </a>
-                </section>
-                <partial name="_LoginPartial" />
-            </article>
-        </div>
-    </header>
-    @RenderBody()
-    <footer class="esh-app-footer">
-        <div class="container">
-            <article class="row">
-                <section class="col-sm-6"></section>
-                <section class="col-sm-6">
-                    <div class="esh-app-footer-text hidden-xs"> e-ShopOnWeb. All rights reserved </div>
-                </section>
-            </article>
-        </div>
-    </footer>
+    <div class="esh-app-wrapper">
+        <header class="esh-app-header">
+            <div class="container">
+                <article class="row">
+                    <section class="col-lg-7 col-md-6 col-xs-12">
+                        <a asp-area="" asp-page="/Index">
+                            <img src="~/images/brand.png" alt="eShop On Web" />
+                        </a>
+                    </section>
+                    <partial name="_LoginPartial" />
+                </article>
+            </div>
+        </header>
+        @RenderBody()
+        <footer class="esh-app-footer footer">
+            <div class="container">
+                <article class="row">
+                    <section class="col-sm-6"></section>
+                    <section class="col-sm-6">
+                        <div class="esh-app-footer-text hidden-xs"> e-ShopOnWeb. All rights reserved </div>
+                    </section>
+                </article>
+            </div>
+        </footer>
+    </div>
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>

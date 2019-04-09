@@ -7,20 +7,29 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="compilerconfig.json" />
+  </ItemGroup>
+
 
   <ItemGroup>
+    <PackageReference Include="Ardalis.ListStartupServices" Version="1.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="1.0.172" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\fonts\" />
+    <Folder Include="wwwroot\lib\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ApplicationCore\ApplicationCore.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="compilerconfig.json" />
     <None Include="wwwroot\images\products\1.png" />
     <None Include="wwwroot\images\products\10.png" />
     <None Include="wwwroot\images\products\11.png" />
@@ -57,79 +66,4 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Account\Lockout.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Views\Account\Lockout.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Account\LoginWith2fa.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Account\Register.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Account\Signin.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Manage\ChangePassword.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Manage\Disable2fa.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Manage\EnableAuthenticator.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Manage\ExternalLogins.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Manage\GenerateRecoveryCodes.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Manage\ResetAuthenticator.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Manage\SetPassword.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Manage\TwoFactorAuthentication.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Manage\_Layout.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Manage\_ManageNav.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Manage\_StatusMessage.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Manage\_ViewImports.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Order\Detail.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Shared\Components\Basket\Default.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Account\LoginWith2fa.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Account\Register.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Account\Signin.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Manage\_Layout.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Manage\_ManageNav.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Manage\_StatusMessage.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Manage\_ViewImports.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Manage\ChangePassword.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Manage\Disable2fa.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Manage\EnableAuthenticator.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Manage\ExternalLogins.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Manage\GenerateRecoveryCodes.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Manage\ResetAuthenticator.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Manage\SetPassword.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Manage\TwoFactorAuthentication.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Order\Detail.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Shared\Components\Basket\Default.cshtml" />
-  </ItemGroup>
-
 </Project>
