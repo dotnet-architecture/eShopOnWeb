@@ -82,13 +82,13 @@ dotnet ef migrations add InitialIdentityModel --context appidentitydbcontext -p 
 
 ## Running the sample using Docker
 
-You can run both the Web and WebRazorPages samples at the same time by running these commands from the root folder (where the .sln file is located):
+You can run the Web sample by running these commands from the root folder (where the .sln file is located):
 
 ```
     docker-compose build
     docker-compose up
 ```
 
-You should be able to make requests to localhost:5106 and localhost:5107 once these commands complete.
+You should be able to make requests to localhost:5106 once these commands complete.
 
-You can run just the Web or WebRazorPages application by using the instructions located in their respective `Dockerfile` files in the root of the projects. Again, run these commands from the root of the solution (where the .sln file is located).
+You can also run the Web application by using the instructions located in its `Dockerfile` file in the root of the project. Again, run these commands from the root of the solution (where the .sln file is located).
