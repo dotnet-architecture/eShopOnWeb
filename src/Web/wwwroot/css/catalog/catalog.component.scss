@@ -1,4 +1,4 @@
-@import '../variables';
+@import '../_variables.scss';
 
 .esh-catalog {
     $banner-height: 260px;
@@ -78,7 +78,6 @@
         cursor: pointer;
         font-size: $font-size-m;
         margin-top: -$filter-padding * 3;
-        padding: $filter-padding;
         transition: all $animation-speed-default;
 
         &:hover {
