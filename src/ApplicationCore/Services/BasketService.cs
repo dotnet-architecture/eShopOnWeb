@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.eShopWeb.ApplicationCore.Specifications;
-using Microsoft.eShopWeb.ApplicationCore.Entities;
 using System.Linq;
 using Ardalis.GuardClauses;
 using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
@@ -13,16 +12,13 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
     {
         private readonly IAsyncRepository<Basket> _basketRepository;
         private readonly IAsyncRepository<BasketItem> _basketItemRepository;
-        private readonly IUriComposer _uriComposer;
         private readonly IAppLogger<BasketService> _logger;
 
         public BasketService(IAsyncRepository<Basket> basketRepository,
-            IUriComposer uriComposer,
             IAppLogger<BasketService> logger,
             IAsyncRepository<BasketItem> basketItemRepository)
         {
             _basketRepository = basketRepository;
-            _uriComposer = uriComposer;
             _logger = logger;
             _basketItemRepository = basketItemRepository;
         }
