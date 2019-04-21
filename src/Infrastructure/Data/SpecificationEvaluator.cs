@@ -1,10 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Microsoft.eShopWeb.Infrastructure.Data
 {
@@ -36,6 +33,11 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
             else if (specification.OrderByDescending != null)
             {
                 query = query.OrderByDescending(specification.OrderByDescending);
+            }
+
+            if (specification.GroupBy != null)
+            {
+                query = query.GroupBy(specification.GroupBy).SelectMany(x => x);
             }
 
             // Apply paging if enabled
