@@ -1,13 +1,13 @@
-# eShopOnWeb
+# Microsoft eShopOnWeb ASP.NET Core Reference Application
 
-Sample ASP.NET Core reference application, powered by Microsoft, demonstrating a single-process (monolithic) application architecture and deployment model. 
+Sample ASP.NET Core reference application, powered by Microsoft, demonstrating a single-process (monolithic) application architecture and deployment model. If you're new to .NET development, read the [Getting Started for Beginners](https://github.com/dotnet-architecture/eShopOnWeb/wiki/Getting-Started-for-Beginners) guide.
 
 This reference application is meant to support the free .PDF download ebook: [Architecting Modern Web Applications with ASP.NET Core and Azure](https://aka.ms/webappebook), updated to **ASP.NET Core 2.2**. [Also available in ePub/mobi formats](https://dotnet.microsoft.com/learn/web/aspnet-architecture).
 
 You can also read the book in online pages at the .NET docs here: 
 https://docs.microsoft.com/en-us/dotnet/standard/modern-web-apps-azure-architecture/
 
-[![image](https://user-images.githubusercontent.com/782127/52731698-5e910500-2f8c-11e9-80fa-5be7dee4888b.png)](https://dotnet.microsoft.com/learn/web/aspnet-architecture)
+[<img src="https://user-images.githubusercontent.com/782127/52731698-5e910500-2f8c-11e9-80fa-5be7dee4888b.png" height="300" />](https://dotnet.microsoft.com/learn/web/aspnet-architecture)
 
 The **eShopOnWeb** sample is related to the [eShopOnContainers](https://github.com/dotnet/eShopOnContainers) sample application which, in that case, focuses on a microservices/containers-based application architecture. However, **eShopOnWeb** is much simpler in regards to its current functionality and focuses on traditional Web Application Development with a single deployment.
 
