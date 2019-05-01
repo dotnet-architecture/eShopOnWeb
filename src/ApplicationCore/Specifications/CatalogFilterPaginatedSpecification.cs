@@ -9,7 +9,6 @@ namespace Microsoft.eShopWeb.ApplicationCore.Specifications
                 (!typeId.HasValue || i.CatalogTypeId == typeId))
         {
             ApplyPaging(skip, take);
-            ApplyGroupBy(i => new { i.CatalogType });
         }
     }
 }
