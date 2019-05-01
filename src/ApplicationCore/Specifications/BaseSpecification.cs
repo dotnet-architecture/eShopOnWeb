@@ -16,6 +16,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Specifications
         public List<string> IncludeStrings { get; } = new List<string>();
         public Expression<Func<T, object>> OrderBy { get; private set; }
         public Expression<Func<T, object>> OrderByDescending { get; private set; }
+        public Expression<Func<T, object>> GroupBy { get; private set; }
 
         public int Take { get; private set; }
         public int Skip { get; private set; }
@@ -43,5 +44,12 @@ namespace Microsoft.eShopWeb.ApplicationCore.Specifications
         {
             OrderByDescending = orderByDescendingExpression;
         }
+
+        //Not used anywhere at the moment, but someone requested an example of setting this up.
+        protected virtual void ApplyGroupBy(Expression<Func<T, object>> groupByExpression)
+        {
+            GroupBy = groupByExpression;
+        }
+
     }
 }
