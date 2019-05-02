@@ -1,4 +1,5 @@
 ﻿using Ardalis.ListStartupServices;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
@@ -85,7 +86,9 @@ namespace Microsoft.eShopWeb.Web
             ConfigureCookieSettings(services);
 
             CreateIdentityIfNotCreated(services);
-            
+
+            services.AddMediatR(typeof(BasketViewModelService).Assembly);
+
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
 
             services.AddScoped<ICatalogViewModelService, CachedCatalogViewModelService>();
