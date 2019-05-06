@@ -24,6 +24,9 @@ namespace Microsoft.eShopWeb.Web.Features.Orders
     {
         private readonly IOrderRepository _orderRepository;
 
+        private readonly string _defaultOrderStatus = "Pending";
+        private readonly decimal _defaultOrderDiscount = 0;
+
         public GetOrderDetailsHandler(IOrderRepository orderRepository)
         {
             _orderRepository = orderRepository;
@@ -44,7 +47,7 @@ namespace Microsoft.eShopWeb.Web.Features.Orders
                 OrderDate = order.OrderDate,
                 OrderItems = order.OrderItems.Select(oi => new OrderItemViewModel()
                 {
-                    Discount = 0,
+                    Discount = _defaultOrderDiscount,
                     PictureUrl = oi.ItemOrdered.PictureUri,
                     ProductId = oi.ItemOrdered.CatalogItemId,
                     ProductName = oi.ItemOrdered.ProductName,
@@ -53,7 +56,7 @@ namespace Microsoft.eShopWeb.Web.Features.Orders
                 }).ToList(),
                 OrderNumber = order.Id,
                 ShippingAddress = order.ShipToAddress,
-                Status = "Pending",
+                Status = _defaultOrderStatus,
                 Total = order.Total()
             };
         }
