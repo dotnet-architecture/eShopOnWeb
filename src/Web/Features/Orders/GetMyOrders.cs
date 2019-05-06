@@ -9,17 +9,17 @@ using System.Collections.Generic;
 
 namespace Microsoft.eShopWeb.Web.Features.Orders
 {
-    public class GetMyOrdersQuery : IRequest<IEnumerable<OrderViewModel>>
+    public class GetMyOrders : IRequest<IEnumerable<OrderViewModel>>
     {
         public string UserName { get; set; }
 
-        public GetMyOrdersQuery(string userName)
+        public GetMyOrders(string userName)
         {
             UserName = userName;
         }
     }
 
-    public class GetMyOrdersHandler : IRequestHandler<GetMyOrdersQuery, IEnumerable<OrderViewModel>>
+    public class GetMyOrdersHandler : IRequestHandler<GetMyOrders, IEnumerable<OrderViewModel>>
     {
         private readonly IOrderRepository _orderRepository;
         
@@ -28,7 +28,7 @@ namespace Microsoft.eShopWeb.Web.Features.Orders
             _orderRepository = orderRepository;
         }
 
-        public async Task<IEnumerable<OrderViewModel>> Handle(GetMyOrdersQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<OrderViewModel>> Handle(GetMyOrders request, CancellationToken cancellationToken)
         {
             var specification = new CustomerOrdersWithItemsSpecification(request.UserName);
             var orders = await _orderRepository.ListAsync(specification);
