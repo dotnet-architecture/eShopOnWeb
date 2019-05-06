@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.ApplicationCore.Specifications;
+using Microsoft.eShopWeb.Web.Features.Orders;
 using Microsoft.eShopWeb.Web.ViewModels;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,36 +16,19 @@ namespace Microsoft.eShopWeb.Web.Controllers
     public class OrderController : Controller
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IMediator _mediator;
 
-        public OrderController(IOrderRepository orderRepository)
+        public OrderController(IOrderRepository orderRepository, IMediator mediator)
         {
             _orderRepository = orderRepository;
+            _mediator = mediator;
         }
 
         [HttpGet()]
         public async Task<IActionResult> MyOrders()
         {
-            var orders = await _orderRepository.ListAsync(new CustomerOrdersWithItemsSpecification(User.Identity.Name));
+            var viewModel = await _mediator.Send(new GetMyOrdersQuery(User.Identity.Name));
 
-            var viewModel = orders
-                .Select(o => new OrderViewModel()
-                {
-                    OrderDate = o.OrderDate,
-                    OrderItems = o.OrderItems?.Select(oi => new OrderItemViewModel()
-                    {
-                        Discount = 0,
-                        PictureUrl = oi.ItemOrdered.PictureUri,
-                        ProductId = oi.ItemOrdered.CatalogItemId,
-                        ProductName = oi.ItemOrdered.ProductName,
-                        UnitPrice = oi.UnitPrice,
-                        Units = oi.Units
-                    }).ToList(),
-                    OrderNumber = o.Id,
-                    ShippingAddress = o.ShipToAddress,
-                    Status = "Pending",
-                    Total = o.Total()
-
-                });
             return View(viewModel);
         }
 
