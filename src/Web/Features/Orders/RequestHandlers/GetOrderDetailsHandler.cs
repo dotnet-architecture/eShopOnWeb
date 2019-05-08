@@ -1,25 +1,14 @@
 ﻿using MediatR;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.ApplicationCore.Specifications;
+using Microsoft.eShopWeb.Web.Features.Orders.Requests;
 using Microsoft.eShopWeb.Web.ViewModels;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Microsoft.eShopWeb.Web.Features.Orders
+namespace Microsoft.eShopWeb.Web.Features.Orders.RequestHandlers
 {
-    public class GetOrderDetails : IRequest<OrderViewModel>
-    {
-        public string UserName { get; set; }
-        public int OrderId { get; set; }
-
-        public GetOrderDetails(string userName, int orderId)
-        {
-            UserName = userName;
-            OrderId = orderId;
-        }
-    }
-
     public class GetOrderDetailsHandler : IRequestHandler<GetOrderDetails, OrderViewModel>
     {
         private readonly IOrderRepository _orderRepository;
@@ -33,12 +22,12 @@ namespace Microsoft.eShopWeb.Web.Features.Orders
         {
             var customerOrders = await _orderRepository.ListAsync(new CustomerOrdersWithItemsSpecification(request.UserName));
             var order = customerOrders.FirstOrDefault(o => o.Id == request.OrderId);
-            
+
             if (order == null)
             {
                 return null;
             }
-                
+
             return new OrderViewModel
             {
                 OrderDate = order.OrderDate,
