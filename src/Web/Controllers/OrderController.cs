@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopWeb.Web.Features.Orders;
+using Microsoft.eShopWeb.Web.Features.Orders.Requests;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.Web.Controllers
