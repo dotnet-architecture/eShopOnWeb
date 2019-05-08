@@ -9,7 +9,7 @@ namespace Microsoft.eShopWeb.Web.ViewModels
         public int OrderNumber { get; set; }
         public DateTimeOffset OrderDate { get; set; }
         public decimal Total { get; set; }
-        public string Status { get; set; }
+        public string Status => "Pending";
 
         public Address ShippingAddress { get; set; } 
 

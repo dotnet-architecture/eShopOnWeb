@@ -8,7 +8,7 @@
 
         public decimal UnitPrice { get; set; }
 
-        public decimal Discount { get; set; }
+        public decimal Discount => 0;
 
         public int Units { get; set; }
 
