@@ -48,8 +48,10 @@ pipeline {
         stage('Code Analysis') {
              when { branch 'sonar' }
             steps {
-                def msg = powershell(returnStdout: true, script: 'Write-Output "PowerShell is mighty!"')
-                println msg
+                powershell(returnStdout: true, script: '''
+                ipconfig
+                ''')
+                
             }
         }
         
