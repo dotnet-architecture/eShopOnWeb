@@ -1,7 +1,6 @@
 ﻿using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
-using Microsoft.eShopWeb.Web.Features.Orders.RequestHandlers;
-using Microsoft.eShopWeb.Web.Features.Orders.Requests;
+using Microsoft.eShopWeb.Web.Features.MyOrders;
 using Moq;
 using System.Collections.Generic;
 using System.Threading;
