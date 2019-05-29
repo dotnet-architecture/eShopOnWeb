@@ -17,7 +17,6 @@ $color-warning-darker: darken($color-warning, 20%);
 $color-warning-bright: lighten($color-warning, 10%);
 $color-warning-brighter: lighten($color-warning, 20%);
 
-
 $color-background-dark: #333333;
 $color-background-darker: #000000;
 $color-background-bright: #EEEEFF;
@@ -40,11 +39,11 @@ $font-weight-normal: 400;
 $font-weight-semibold: 600;
 $font-weight-bold: 700;
 
-$font-size-xs: .65rem;    // 10.4px
-$font-size-s: .85rem;    // 13.6px
-$font-size-m: 1rem;      // 16px
-$font-size-l: 1.25rem;   // 20px
-$font-size-xl: 1.5rem;   // 24px
+$font-size-xs: .65rem; // 10.4px
+$font-size-s: .85rem; // 13.6px
+$font-size-m: 1rem; // 16px
+$font-size-l: 1.25rem; // 20px
+$font-size-xl: 1.5rem; // 24px
 
 // Medias
 $media-screen-xxs: 360px;
