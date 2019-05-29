@@ -17,7 +17,8 @@
     padding-bottom: 1rem;
     padding-top: 2rem; }
   .esh-orders-title {
-    text-transform: uppercase; }
+    text-transform: uppercase;
+    font-size: 25px; }
   .esh-orders-items {
     height: 2rem;
     line-height: 2rem;
@@ -47,3 +48,7 @@
     .esh-orders-link:hover {
       color: #75b918;
       transition: color 0.35s; }
+  .esh-orders-detail-section {
+    padding-bottom: 30px; }
+  .esh-orders-detail-title {
+    font-size: 25px; }
