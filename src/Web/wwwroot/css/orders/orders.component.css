@@ -47,3 +47,7 @@
     .esh-orders-link:hover {
       color: #75b918;
       transition: color 0.35s; }
+  .esh-orders-detail-section {
+    padding-bottom: 30px; }
+  .esh-orders-detail-title {
+    font-size: 25px; }

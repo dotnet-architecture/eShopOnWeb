@@ -43,6 +43,7 @@
   border: 1px solid #EEEEEE;
   height: 10rem;
   transition: height 0.35s;
+  z-index: 10;
 }
 
 .esh-identity-item {
