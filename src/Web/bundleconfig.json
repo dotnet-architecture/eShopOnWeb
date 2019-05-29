@@ -1,0 +1,27 @@
+[
+  {
+    "outputFileName": "wwwroot/css/site.min.css",
+    "inputFiles": [
+      "wwwroot/css/app.css",
+      "wwwroot/css/app.component.css",
+      "wwwroot/css/shared/components/header/header.css",
+      "wwwroot/css/shared/components/identity/identity.css",
+      "wwwroot/css/shared/components/pager/pager.css",
+      "wwwroot/css/basket/basket.component.css",
+      "wwwroot/css/basket/basket-status/basket-status.component.css",
+      "wwwroot/css/catalog/catalog.component.css",
+      "wwwroot/css/orders/orders.component.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/site.min.js",
+    "inputFiles": [
+      "wwwroot/js/site.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  }
+]
