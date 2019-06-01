@@ -37,6 +37,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
         private void ConfigureBasketItem(EntityTypeBuilder<BasketItem> builder)
         {
             builder.Property(bi => bi.UnitPrice)
+                .IsRequired(true)
                 .HasColumnType("decimal(18,2)");
         }
 
@@ -148,6 +149,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
             builder.OwnsOne(i => i.ItemOrdered);
 
             builder.Property(oi => oi.UnitPrice)
+                .IsRequired(true)
                 .HasColumnType("decimal(18,2)");
         }
     }
