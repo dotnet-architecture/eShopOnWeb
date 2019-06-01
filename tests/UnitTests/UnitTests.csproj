@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\ApplicationCore\ApplicationCore.csproj" />
+    <ProjectReference Include="..\..\src\Web\Web.csproj" />
   </ItemGroup>
 
   <ItemGroup>

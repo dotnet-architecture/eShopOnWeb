@@ -56,7 +56,7 @@ namespace Microsoft.eShopWeb.Web.Services
 
             var vm = new CatalogIndexViewModel()
             {
-                CatalogItems = itemsOnPage.Select(i => new CatalogItemViewModel()
+                CatalogItems = itemsOnPage.Select(i => new CatalogItemViewModel
                 {
                     Id = i.Id,
                     Name = i.Name,
@@ -67,12 +67,12 @@ namespace Microsoft.eShopWeb.Web.Services
                 Types = await GetTypes(),
                 BrandFilterApplied = brandId ?? 0,
                 TypesFilterApplied = typeId ?? 0,
-                PaginationInfo = new PaginationInfoViewModel()
+                PaginationInfo = new PaginationInfoViewModel
                 {
                     ActualPage = pageIndex,
                     ItemsPerPage = itemsOnPage.Count,
                     TotalItems = totalItems,
-                    TotalPages = int.Parse(Math.Ceiling(((decimal)totalItems / itemsPage)).ToString())
+                    TotalPages = int.Parse(Math.Ceiling((decimal)totalItems / itemsPage).ToString())
                 }
             };
 
@@ -84,16 +84,16 @@ namespace Microsoft.eShopWeb.Web.Services
 
         public async Task<IEnumerable<SelectListItem>> GetBrands()
         {
-            _logger.LogInformation("GetBrands called.");
+            //_logger.LogInformation("GetBrands called.");
             var brands = await _brandRepository.ListAllAsync();
 
             var items = new List<SelectListItem>
             {
-                new SelectListItem() { Value = null, Text = "All", Selected = true }
+                new SelectListItem { Value = null, Text = "All", Selected = true }
             };
             foreach (CatalogBrand brand in brands)
             {
-                items.Add(new SelectListItem() { Value = brand.Id.ToString(), Text = brand.Brand });
+                items.Add(new SelectListItem { Value = brand.Id.ToString(), Text = brand.Brand });
             }
 
             return items;
@@ -105,11 +105,11 @@ namespace Microsoft.eShopWeb.Web.Services
             var types = await _typeRepository.ListAllAsync();
             var items = new List<SelectListItem>
             {
-                new SelectListItem() { Value = null, Text = "All", Selected = true }
+                new SelectListItem { Value = null, Text = "All", Selected = true }
             };
             foreach (CatalogType type in types)
             {
-                items.Add(new SelectListItem() { Value = type.Id.ToString(), Text = type.Type });
+                items.Add(new SelectListItem { Value = type.Id.ToString(), Text = type.Type });
             }
 
             return items;
