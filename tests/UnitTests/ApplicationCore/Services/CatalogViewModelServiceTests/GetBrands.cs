@@ -1,9 +1,10 @@
 ﻿using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.Web.Services;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Internal;
 using Moq;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
@@ -23,8 +24,10 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.CatalogViewModel
         {
             _logger = new Mock<ILogger<CatalogViewModelService>>();
             _loggerFactory = new Mock<ILoggerFactory>();
-            //_loggerFactory.Setup(x => x.CreateLogger<CatalogViewModelService>())
-                //.Returns(_logger.Object);
+
+            _logger.Setup(l => l.Log(LogLevel.Information, 0, It.IsAny<FormattedLogValues>(), It.IsAny<Exception>(),
+        It.IsAny<Func<object, Exception, string>>()));
+
             _itemRepository = new Mock<IAsyncRepository<CatalogItem>>();
             _brandRepository = new Mock<IAsyncRepository<CatalogBrand>>();
             _typeRepository = new Mock<IAsyncRepository<CatalogType>>();

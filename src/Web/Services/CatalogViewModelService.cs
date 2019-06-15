@@ -84,7 +84,7 @@ namespace Microsoft.eShopWeb.Web.Services
 
         public async Task<IEnumerable<SelectListItem>> GetBrands()
         {
-            //_logger.LogInformation("GetBrands called.");
+            _logger.LogInformation("GetBrands called.");
             var brands = await _brandRepository.ListAllAsync();
 
             var items = new List<SelectListItem>
