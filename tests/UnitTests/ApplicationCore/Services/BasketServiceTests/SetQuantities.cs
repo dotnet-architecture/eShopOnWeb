@@ -21,7 +21,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.BasketServiceTes
         [Fact]
         public async void ThrowsGivenInvalidBasketId()
         {
-            var basketService = new BasketService(_mockBasketRepo.Object, null, null);
+            var basketService = new BasketService(_mockBasketRepo.Object, null);
 
             await Assert.ThrowsAsync<BasketNotFoundException>(async () =>
                 await basketService.SetQuantities(_invalidId, new System.Collections.Generic.Dictionary<string, int>()));
@@ -30,7 +30,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.BasketServiceTes
         [Fact]
         public async void ThrowsGivenNullQuantities()
         {
-            var basketService = new BasketService(null, null, null);
+            var basketService = new BasketService(null, null);
 
             await Assert.ThrowsAsync<ArgumentNullException>(async () =>
                 await basketService.SetQuantities(123, null));
