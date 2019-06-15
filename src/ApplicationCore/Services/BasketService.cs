@@ -35,12 +35,6 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
         public async Task DeleteBasketAsync(int basketId)
         {
             var basket = await _basketRepository.GetByIdAsync(basketId);
-
-            foreach (var item in basket.Items.ToList())
-            {
-                await _basketItemRepository.DeleteAsync(item);
-            }
-
             await _basketRepository.DeleteAsync(basket);
         }
 
