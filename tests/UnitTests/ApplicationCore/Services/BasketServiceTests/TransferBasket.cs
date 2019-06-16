@@ -9,7 +9,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.BasketServiceTes
         [Fact]
         public async void ThrowsGivenNullAnonymousId()
         {
-            var basketService = new BasketService(null, null, null);
+            var basketService = new BasketService(null, null);
 
             await Assert.ThrowsAsync<ArgumentNullException>(async () => await basketService.TransferBasketAsync(null, "steve"));
         }
@@ -17,7 +17,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.BasketServiceTes
         [Fact]
         public async void ThrowsGivenNullUserId()
         {
-            var basketService = new BasketService(null, null, null);
+            var basketService = new BasketService(null, null);
 
             await Assert.ThrowsAsync<ArgumentNullException>(async () => await basketService.TransferBasketAsync("abcdefg", null));
         }
