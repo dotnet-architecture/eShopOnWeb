@@ -48,7 +48,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.CatalogViewModel
             _brandRepository.Verify(x => x.ListAllAsync(), Times.Once);
         }
 
-        https://ardalis.com/testing-logging-in-aspnet-core
+        //https://ardalis.com/testing-logging-in-aspnet-core
         private class FakeLogger : ILogger<CatalogViewModelService>
         {
             public IDisposable BeginScope<TState>(TState state)
