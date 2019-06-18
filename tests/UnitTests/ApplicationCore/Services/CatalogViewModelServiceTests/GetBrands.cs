@@ -2,7 +2,6 @@
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.Web.Services;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Internal;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -13,8 +12,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.CatalogViewModel
 {
     public class GetBrands
     {
-        private readonly Mock<ILogger<CatalogViewModelService>> _logger;
-        private readonly Mock<ILoggerFactory> _loggerFactory;
+        private readonly FakeLoggerFactory _fakeLoggerFactory;
         private readonly Mock<IAsyncRepository<CatalogItem>> _itemRepository;
         private readonly Mock<IAsyncRepository<CatalogBrand>> _brandRepository;
         private readonly Mock<IAsyncRepository<CatalogType>> _typeRepository;
@@ -22,22 +20,11 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.CatalogViewModel
 
         public GetBrands()
         {
-            _logger = new Mock<ILogger<CatalogViewModelService>>();
-            _loggerFactory = new Mock<ILoggerFactory>();
-
-            _logger.Setup(l => l.Log(LogLevel.Information, 0, It.IsAny<FormattedLogValues>(), It.IsAny<Exception>(),
-        It.IsAny<Func<object, Exception, string>>()));
-
+            _fakeLoggerFactory = new FakeLoggerFactory();
             _itemRepository = new Mock<IAsyncRepository<CatalogItem>>();
             _brandRepository = new Mock<IAsyncRepository<CatalogBrand>>();
             _typeRepository = new Mock<IAsyncRepository<CatalogType>>();
             _uriComposer = new Mock<IUriComposer>();
-
-            var catalogViewModelService = new CatalogViewModelService(_loggerFactory.Object,
-                _itemRepository.Object,
-                _brandRepository.Object,
-                _typeRepository.Object,
-                _uriComposer.Object);
         }
 
         [Fact]
@@ -49,8 +36,8 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.CatalogViewModel
             };
 
             _brandRepository.Setup(x => x.ListAllAsync()).ReturnsAsync(catalogBrands);
-            
-            var catalogViewModelService = new CatalogViewModelService(_loggerFactory.Object,
+
+            var catalogViewModelService = new CatalogViewModelService(_fakeLoggerFactory,
                                                                     _itemRepository.Object,
                                                                     _brandRepository.Object,
                                                                     _typeRepository.Object,
@@ -59,6 +46,42 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.CatalogViewModel
             var result = catalogViewModelService.GetBrands();
 
             _brandRepository.Verify(x => x.ListAllAsync(), Times.Once);
+        }
+
+        https://ardalis.com/testing-logging-in-aspnet-core
+        private class FakeLogger : ILogger<CatalogViewModelService>
+        {
+            public IDisposable BeginScope<TState>(TState state)
+            {
+                return null;
+            }
+
+            public bool IsEnabled(LogLevel logLevel)
+            {
+                return true;
+            }
+
+            public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+            {
+
+            }
+        }
+
+        private class FakeLoggerFactory : ILoggerFactory
+        {
+            public void AddProvider(ILoggerProvider provider)
+            {
+            }
+
+            public ILogger CreateLogger(string categoryName)
+            {
+                return new FakeLogger();
+            }
+
+            public void Dispose()
+            {
+
+            }
         }
     }
 }
