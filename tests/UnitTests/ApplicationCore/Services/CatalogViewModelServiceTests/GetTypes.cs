@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.CatalogViewModelServiceTests
 {
-    public class GetBrands
+    public class GetTypes
     {
         private readonly FakeLoggerFactory _fakeLoggerFactory;
         private readonly Mock<IAsyncRepository<CatalogItem>> _itemRepository;
@@ -16,7 +16,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.CatalogViewModel
         private readonly Mock<IAsyncRepository<CatalogType>> _typeRepository;
         private readonly Mock<IUriComposer> _uriComposer;
 
-        public GetBrands()
+        public GetTypes()
         {
             _fakeLoggerFactory = new FakeLoggerFactory();
             _itemRepository = new Mock<IAsyncRepository<CatalogItem>>();
@@ -26,14 +26,14 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.CatalogViewModel
         }
 
         [Fact]
-        public async Task CallsBrandRepositoryOnce()
+        public async Task CallsTypesRepositoryOnce()
         {
-            IReadOnlyList <CatalogBrand> catalogBrands = new List<CatalogBrand>
+            IReadOnlyList<CatalogType> catalogTypes = new List<CatalogType>
             {
-                new CatalogBrand { Brand = "1", Id = 1 }
+                new CatalogType { Type = "1", Id = 1 }
             };
 
-            _brandRepository.Setup(x => x.ListAllAsync()).ReturnsAsync(catalogBrands);
+            _typeRepository.Setup(x => x.ListAllAsync()).ReturnsAsync(catalogTypes);
 
             var catalogViewModelService = new CatalogViewModelService(_fakeLoggerFactory,
                                                                     _itemRepository.Object,
@@ -41,9 +41,9 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.CatalogViewModel
                                                                     _typeRepository.Object,
                                                                     _uriComposer.Object);
 
-            var result = await catalogViewModelService.GetBrands();
-            
-            _brandRepository.Verify(x => x.ListAllAsync(), Times.Once);
+            var result = await catalogViewModelService.GetTypes();
+
+            _typeRepository.Verify(x => x.ListAllAsync(), Times.Once);
         }
     }
 }
