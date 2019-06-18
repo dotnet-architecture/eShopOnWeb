@@ -43,8 +43,8 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.CatalogViewModel
                                                                     _typeRepository.Object,
                                                                     _uriComposer.Object);
 
-            var result = catalogViewModelService.GetBrands();
-
+            var result = await catalogViewModelService.GetBrands();
+            
             _brandRepository.Verify(x => x.ListAllAsync(), Times.Once);
         }
 
