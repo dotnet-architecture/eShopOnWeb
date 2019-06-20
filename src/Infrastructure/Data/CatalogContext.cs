@@ -19,6 +19,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
         public DbSet<CatalogType> CatalogTypes { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<BasketItem> BasketItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -30,6 +31,14 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
             builder.Entity<OrderItem>(ConfigureOrderItem);
             builder.Entity<Address>(ConfigureAddress);
             builder.Entity<CatalogItemOrdered>(ConfigurateCatalogItemOrdered);
+            builder.Entity<BasketItem>(ConfigureBasketItem);
+        }
+
+        private void ConfigureBasketItem(EntityTypeBuilder<BasketItem> builder)
+        {
+            builder.Property(bi => bi.UnitPrice)
+                .IsRequired(true)
+                .HasColumnType("decimal(18,2)");
         }
 
         private void ConfigurateCatalogItemOrdered(EntityTypeBuilder<CatalogItemOrdered> builder)
@@ -81,7 +90,8 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
                 .HasMaxLength(50);
 
             builder.Property(ci => ci.Price)
-                .IsRequired(true);
+                .IsRequired(true)
+                .HasColumnType("decimal(18,2)");
 
             builder.Property(ci => ci.PictureUri)
                 .IsRequired(false);
@@ -137,6 +147,10 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
         private void ConfigureOrderItem(EntityTypeBuilder<OrderItem> builder)
         {
             builder.OwnsOne(i => i.ItemOrdered);
+
+            builder.Property(oi => oi.UnitPrice)
+                .IsRequired(true)
+                .HasColumnType("decimal(18,2)");
         }
     }
 }

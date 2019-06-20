@@ -11,16 +11,13 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
     public class BasketService : IBasketService
     {
         private readonly IAsyncRepository<Basket> _basketRepository;
-        private readonly IAsyncRepository<BasketItem> _basketItemRepository;
         private readonly IAppLogger<BasketService> _logger;
 
         public BasketService(IAsyncRepository<Basket> basketRepository,
-            IAppLogger<BasketService> logger,
-            IAsyncRepository<BasketItem> basketItemRepository)
+            IAppLogger<BasketService> logger)
         {
             _basketRepository = basketRepository;
             _logger = logger;
-            _basketItemRepository = basketItemRepository;
         }
 
         public async Task AddItemToBasket(int basketId, int catalogItemId, decimal price, int quantity)
@@ -35,12 +32,6 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
         public async Task DeleteBasketAsync(int basketId)
         {
             var basket = await _basketRepository.GetByIdAsync(basketId);
-
-            foreach (var item in basket.Items.ToList())
-            {
-                await _basketItemRepository.DeleteAsync(item);
-            }
-
             await _basketRepository.DeleteAsync(basket);
         }
 
