@@ -2,7 +2,7 @@
 {
     <section class="col-lg-4 col-md-5 col-xs-12">
         <div class="esh-identity">
-            <form asp-area="" asp-controller="Account" asp-action="SignOut" method="post" id="logoutForm" class="navbar-right">
+            <form asp-area="Identity" asp-page="/Account/Logout" method="post" id="logoutForm" class="navbar-right">
                 <section class="esh-identity-section">
                     <div class="esh-identity-name">@Context.User.Identity.Name</div>
                     <img class="esh-identity-image" src="~/images/arrow-down.png">
