@@ -34,7 +34,7 @@ namespace Microsoft.eShopWeb.Web.Areas.Identity.Pages.Account
             }
             else
             {
-                return Page();
+                return RedirectToPage("/Index");
             }
         }
     }
