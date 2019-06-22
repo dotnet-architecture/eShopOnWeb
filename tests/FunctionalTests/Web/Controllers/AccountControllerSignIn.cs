@@ -81,7 +81,7 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
             keyValues.Add(new KeyValuePair<string, string>("__RequestVerificationToken", token));
             var formContent = new FormUrlEncodedContent(keyValues);
 
-            var postResponse = await Client.PostAsync("/account/sign-in", formContent);
+            var postResponse = await Client.PostAsync("/identity/account/login", formContent);
             Assert.Equal(HttpStatusCode.Redirect, postResponse.StatusCode);
             Assert.Equal(new System.Uri("/", UriKind.Relative), postResponse.Headers.Location);
         }
