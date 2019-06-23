@@ -1,10 +1,12 @@
-﻿using Microsoft.eShopWeb.ApplicationCore.Interfaces;
+﻿using Microsoft.eShopWeb.ApplicationCore.Attributes;
+using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate
 {
-    public class Basket : BaseEntity, IAggregateRoot
+    [AggregateRoot]
+    public class Basket : BaseEntity
     {
         public string BuyerId { get; set; }
         private readonly List<BasketItem> _items = new List<BasketItem>();

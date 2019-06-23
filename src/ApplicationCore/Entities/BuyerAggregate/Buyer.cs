@@ -1,10 +1,12 @@
 ﻿using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Ardalis.GuardClauses;
 using System.Collections.Generic;
+using Microsoft.eShopWeb.ApplicationCore.Attributes;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Entities.BuyerAggregate
 {
-    public class Buyer : BaseEntity, IAggregateRoot
+    [AggregateRoot]
+    public class Buyer : BaseEntity
     {
         public string IdentityGuid { get; private set; }
 
