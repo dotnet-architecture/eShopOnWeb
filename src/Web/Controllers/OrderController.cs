@@ -52,6 +52,9 @@ namespace Microsoft.eShopWeb.Web.Controllers
         {
             var customerOrders = await _orderRepository.ListAsync(new CustomerOrdersWithItemsSpecification(User.Identity.Name));
             var order = customerOrders.FirstOrDefault(o => o.Id == orderId);
+
+            
+            var thisMightBeNull = order.OrderDate;
             if (order == null)
             {
                 return BadRequest("No such order found for this user.");
