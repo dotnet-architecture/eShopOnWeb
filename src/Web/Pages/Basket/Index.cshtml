@@ -40,7 +40,7 @@
                             <section class="esh-basket-item esh-basket-item--middle esh-basket-item--mark col-xs-2">$ @Math.Round(item.Quantity * item.UnitPrice, 2).ToString("N2")</section>
                         </div>
                         <div class="row">
-
+                            
                         </div>
                     </article>
                     @*<div class="esh-catalog-item col-md-4">
@@ -67,24 +67,28 @@
                         </section>
                     </article>
                 </div>
+                <div class="row">
+                    <section class="esh-basket-item col-xs-1">
+                        <a asp-page="/Index" class="btn esh-basket-checkout text-white">[ Continue Shopping..]</a>
+                    </section>
+                    <section class="esh-basket-item col-xs-push-7 col-xs-4">
 
-                <section class="esh-basket-item col-xs-push-8 col-xs-4">
-                    <button class="btn esh-basket-checkout" name="updatebutton" value="" type="submit"
-                            asp-page-handler="Update">
-                        [ Update ]
-                    </button>
-                    <input type="submit" asp-page="Checkout"
-                           class="btn esh-basket-checkout"
-                           value="[ Checkout ]" name="action" />
-                </section>
-
+                        <button class="btn esh-basket-checkout" name="updatebutton" value="" type="submit"
+                                asp-page-handler="Update">
+                            [ Update ]
+                        </button>
+                        <input type="submit" asp-page="Checkout"
+                               class="btn esh-basket-checkout"
+                               value="[ Checkout ]" name="action" />
+                    </section>
+                </div>
             </div>
         </form>
     }
     else
     {
         <div class="esh-catalog-items row">
-            Basket is empty.
+            Basket is empty.   <a asp-page="/Index">Continue Shopping..</a>
         </div>
     }
 </div>
