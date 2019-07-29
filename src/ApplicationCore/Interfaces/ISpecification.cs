@@ -15,6 +15,6 @@ namespace Microsoft.eShopWeb.ApplicationCore.Interfaces
 
         int Take { get; }
         int Skip { get; }
-        bool isPagingEnabled { get;}
+        bool IsPagingEnabled { get;}
     }
 }
