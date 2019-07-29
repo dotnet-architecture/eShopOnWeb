@@ -30,7 +30,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
             builder.Entity<Order>(ConfigureOrder);
             builder.Entity<OrderItem>(ConfigureOrderItem);
             builder.Entity<Address>(ConfigureAddress);
-            builder.Entity<CatalogItemOrdered>(ConfigurateCatalogItemOrdered);
+            builder.Entity<CatalogItemOrdered>(ConfigureCatalogItemOrdered);
             builder.Entity<BasketItem>(ConfigureBasketItem);
         }
 
@@ -41,7 +41,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
                 .HasColumnType("decimal(18,2)");
         }
 
-        private void ConfigurateCatalogItemOrdered(EntityTypeBuilder<CatalogItemOrdered> builder)
+        private void ConfigureCatalogItemOrdered(EntityTypeBuilder<CatalogItemOrdered> builder)
         {
             builder.Property(cio => cio.ProductName)
                 .HasMaxLength(50)
