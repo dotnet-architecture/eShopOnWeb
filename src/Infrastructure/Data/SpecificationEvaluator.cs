@@ -41,7 +41,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
             }
 
             // Apply paging if enabled
-            if (specification.isPagingEnabled)
+            if (specification.IsPagingEnabled)
             {
                 query = query.Skip(specification.Skip)
                              .Take(specification.Take);
