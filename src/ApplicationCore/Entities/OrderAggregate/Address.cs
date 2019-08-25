@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate
 {
