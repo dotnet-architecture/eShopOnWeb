@@ -3,7 +3,6 @@ using System;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate
 {
-    [Owned]
     public class Address // ValueObject
     {
         public String Street { get; private set; }

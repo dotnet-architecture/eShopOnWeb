@@ -7,7 +7,6 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate
     /// Represents a snapshot of the item that was ordered. If catalog item details change, details of
     /// the item that was part of a completed order should not change.
     /// </summary>
-    [Owned]
     public class CatalogItemOrdered // ValueObject
     {
         public CatalogItemOrdered(int catalogItemId, string productName, string pictureUri)
