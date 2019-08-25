@@ -1,4 +1,5 @@
 ﻿using Ardalis.GuardClauses;
+using Microsoft.EntityFrameworkCore;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate
 {
