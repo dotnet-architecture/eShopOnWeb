@@ -59,10 +59,11 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
             {
                 if (quantities.TryGetValue(item.Id.ToString(), out var quantity))
                 {
-                    _logger.LogInformation($"Updating quantity of item ID:{item.Id} to {quantity}.");
+                    if(_logger != null) _logger.LogInformation($"Updating quantity of item ID:{item.Id} to {quantity}.");
                     item.Quantity = quantity;
                 }
             }
+            basket.RemoveEmptyItems();
             await _basketRepository.UpdateAsync(basket);
         }
 
