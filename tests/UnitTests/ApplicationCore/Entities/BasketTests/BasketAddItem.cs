@@ -53,5 +53,15 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Entities.BasketTests
             var firstItem = basket.Items.Single();
             Assert.Equal(1, firstItem.Quantity);
         }
+
+        [Fact]
+        public void RemoveEmptyItems()
+        {
+            var basket = new Basket();
+            basket.AddItem(_testCatalogItemId, _testUnitPrice, 0);
+            basket.RemoveEmptyItems();
+
+            Assert.Equal(0, basket.Items.Count);
+        }
     }
 }
