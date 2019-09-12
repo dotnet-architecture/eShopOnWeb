@@ -87,8 +87,12 @@
     }
     else
     {
-        <div class="esh-catalog-items row">
-            Basket is empty.   <a asp-page="/Index">Continue Shopping..</a>
-        </div>
+        <h3 class="esh-catalog-items row">
+            Basket is empty.
+        </h3>
+        
+        <section class="esh-basket-item">
+            <a asp-page="/Index" class="btn esh-basket-checkout text-white">[ Continue Shopping..]</a>
+        </section>
     }
 </div>
