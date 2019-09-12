@@ -1,5 +1,6 @@
 ﻿using Microsoft.eShopWeb.ApplicationCore.Services;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.BasketServiceTests
@@ -7,7 +8,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.BasketServiceTes
     public class TransferBasket
     {
         [Fact]
-        public async void ThrowsGivenNullAnonymousId()
+        public async Task ThrowsGivenNullAnonymousId()
         {
             var basketService = new BasketService(null, null);
 
@@ -15,7 +16,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.BasketServiceTes
         }
 
         [Fact]
-        public async void ThrowsGivenNullUserId()
+        public async Task ThrowsGivenNullUserId()
         {
             var basketService = new BasketService(null, null);
 
