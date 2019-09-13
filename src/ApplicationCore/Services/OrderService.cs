@@ -5,6 +5,7 @@ using Microsoft.eShopWeb.ApplicationCore.Entities;
 using System.Collections.Generic;
 using Ardalis.GuardClauses;
 using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
+using System;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Services
 {
@@ -37,6 +38,15 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
             }
             var order = new Order(basket.BuyerId, shippingAddress, items);
 
+            int currentSecond = DateTime.Now.Second;
+            if(currentSecond % 3 == 1)
+            {
+                order.SetStatusOutForDelivery();
+            }
+            if(currentSecond % 3 == 2)
+            {
+                order.SetStatusDelivered();
+            }
             await _orderRepository.AddAsync(order);
         }
     }

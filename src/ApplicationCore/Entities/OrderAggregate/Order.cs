@@ -26,6 +26,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate
 
         public DateTimeOffset OrderDate { get; private set; } = DateTimeOffset.Now;
         public Address ShipToAddress { get; private set; }
+        public string Status { get; private set; } = "Pending";
 
         // DDD Patterns comment
         // Using a private collection field, better for DDD Aggregate's encapsulation
@@ -47,6 +48,16 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate
                 total += item.UnitPrice * item.Units;
             }
             return total;
+        }
+
+        public void SetStatusOutForDelivery()
+        {
+            Status = "Out for Delivery";
+        }
+
+        public void SetStatusDelivered()
+        {
+            Status = "Delivered";
         }
     }
 }
