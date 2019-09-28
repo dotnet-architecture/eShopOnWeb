@@ -57,9 +57,20 @@ namespace Microsoft.eShopWeb.Web.Pages.Basket
         public async Task OnPostUpdate(Dictionary<string, int> items)
         {
             await SetBasketModelAsync();
-            await _basketService.SetQuantities(BasketModel.Id, items);
 
-            await SetBasketModelAsync();
+            try
+            {
+                await _basketService.SetQuantities(BasketModel.Id, items);
+                await SetBasketModelAsync();
+            }
+            catch (InvalidOperationException ex)
+            {
+                BasketModel.ErrorMessage = ex.Message;
+            }
+            catch (Exception)
+            {
+                BasketModel.ErrorMessage = "Something we weren't expecting happened.";
+            }
         }
 
         private async Task SetBasketModelAsync()

@@ -48,7 +48,10 @@
             </div>*@
 
                 }
-
+                @if (!string.IsNullOrEmpty(Model.BasketModel.ErrorMessage))
+                {
+                    <div>@Model.BasketModel.ErrorMessage</div>
+                }
                 <div class="container">
                     <article class="esh-basket-titles esh-basket-titles--clean row">
                         <section class="esh-basket-title col-xs-10"></section>

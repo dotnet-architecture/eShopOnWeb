@@ -5,6 +5,7 @@ using Microsoft.eShopWeb.ApplicationCore.Specifications;
 using System.Linq;
 using Ardalis.GuardClauses;
 using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
+using System;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Services
 {
@@ -55,10 +56,15 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
             Guard.Against.Null(quantities, nameof(quantities));
             var basket = await _basketRepository.GetByIdAsync(basketId);
             Guard.Against.NullBasket(basketId, basket);
+
             foreach (var item in basket.Items)
             {
                 if (quantities.TryGetValue(item.Id.ToString(), out var quantity))
                 {
+                    if (quantity > 3)
+                    {
+                        throw new InvalidOperationException("Business Rule - you may not have more than 3 of the same item in your basket!");
+                    }
                     if(_logger != null) _logger.LogInformation($"Updating quantity of item ID:{item.Id} to {quantity}.");
                     item.Quantity = quantity;
                 }
