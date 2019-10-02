@@ -5,7 +5,7 @@ using Microsoft.eShopWeb.ApplicationCore.Specifications;
 using System.Linq;
 using Ardalis.GuardClauses;
 using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
-using Microsoft.eShopWeb.ApplicationCore.Exceptions;
+using Microsoft.eShopWeb.ApplicationCore.Exceptions.BasketLogicExceptions;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Services
 {
@@ -65,7 +65,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
                 {
                     if (quantity > maxNumberOfUniqueItem)
                     {
-                        throw new BasketLogicException(maxNumberOfUniqueItem);
+                        throw new TooManyOfItemInBasketException(maxNumberOfUniqueItem);
                     }
 
                     if(_logger != null) _logger.LogInformation($"Updating quantity of item ID:{item.Id} to {quantity}.");

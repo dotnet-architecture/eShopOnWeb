@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace Microsoft.eShopWeb.ApplicationCore.Exceptions
+namespace Microsoft.eShopWeb.ApplicationCore.Exceptions.BasketLogicExceptions
 {
     public class BasketLogicException : Exception
     {
-        public BasketLogicException(int maxNumberOfItems)
-            : base($"{nameof(BasketLogicException)} - cannot have more than {maxNumberOfItems} of the same type of item in the basket. Basket not updated.")
+        public BasketLogicException()
+            : base($"A {nameof(BasketLogicException)} was thrown.")
         {
         }
 
