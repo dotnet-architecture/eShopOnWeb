@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.eShopWeb.ApplicationCore.Exceptions;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.eShopWeb.Web.Interfaces;
@@ -63,7 +64,7 @@ namespace Microsoft.eShopWeb.Web.Pages.Basket
                 await _basketService.SetQuantities(BasketModel.Id, items);
                 await SetBasketModelAsync();
             }
-            catch (InvalidOperationException ex)
+            catch (BasketLogicException ex)
             {
                 BasketModel.ErrorMessage = ex.Message;
             }
