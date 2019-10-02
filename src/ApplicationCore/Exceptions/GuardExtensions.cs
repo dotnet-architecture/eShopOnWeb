@@ -1,5 +1,6 @@
 ﻿using Microsoft.eShopWeb.ApplicationCore.Exceptions;
 using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
+using Microsoft.eShopWeb.ApplicationCore.Exceptions.BasketLogicExceptions;
 
 namespace Ardalis.GuardClauses
 {
@@ -9,6 +10,12 @@ namespace Ardalis.GuardClauses
         {
             if (basket == null)
                 throw new BasketNotFoundException(basketId);
+        }
+
+        public static void TooManyOfItemInBasket(this IGuardClause guardClause, int maxNumberOfItem, int numberOfItemDesired)
+        {
+            if (numberOfItemDesired > maxNumberOfItem)
+                throw new TooManyOfItemInBasketException(maxNumberOfItem);
         }
     }
 }
