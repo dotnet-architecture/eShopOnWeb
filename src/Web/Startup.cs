@@ -21,6 +21,7 @@ using Microsoft.eShopWeb.Web.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
@@ -110,19 +111,23 @@ namespace Microsoft.eShopWeb.Web
                 options.ConstraintMap["slugify"] = typeof(SlugifyParameterTransformer);
             });
 
+            //TODO: Still works the same
             services.AddMvc(options =>
             {
                 options.Conventions.Add(new RouteTokenTransformerConvention(
                          new SlugifyParameterTransformer()));
+
+            });
                 
-            }
-            )
-                .AddRazorPagesOptions(options =>
-                {
-                    options.Conventions.AuthorizePage("/Basket/Checkout");
-                    options.AllowAreas = true;
-                })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddRazorPages(options =>
+            {
+                options.Conventions.AuthorizePage("/Basket/Checkout");
+                //TODO: options.AllowAreas = true;
+            });
+
+            //TODO: See if needed
+            services.AddControllersWithViews();
+            services.AddControllers();
 
             services.AddHttpContextAccessor();
             services.AddSwaggerGen(c =>
@@ -130,6 +135,7 @@ namespace Microsoft.eShopWeb.Web
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
             });
 
+            //TODO: confirm health checks are working with the Endpoint section below
             services.AddHealthChecks()
                 .AddCheck<HomePageHealthCheck>("home_page_health_check")
                 .AddCheck<ApiHealthCheck>("api_health_check");
@@ -183,7 +189,7 @@ namespace Microsoft.eShopWeb.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             //app.UseDeveloperExceptionPage();
             app.UseHealthChecks("/health",
@@ -218,10 +224,11 @@ namespace Microsoft.eShopWeb.Web
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseRouting();
+            
+            app.UseHttpsRedirection();
             app.UseCookiePolicy();
-
             app.UseAuthentication();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
@@ -234,11 +241,12 @@ namespace Microsoft.eShopWeb.Web
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
-            app.UseMvc(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller:slugify=Home}/{action:slugify=Index}/{id?}");
+                endpoints.MapControllerRoute("default", "{controller:slugify=Home}/{action:slugify=Index}/{id?}");
+                endpoints.MapRazorPages();
+                endpoints.MapHealthChecks("home_page_health_check");
+                endpoints.MapHealthChecks("api_health_check");
             });
         }
     }
