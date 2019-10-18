@@ -40,11 +40,6 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
                     options.UseInternalServiceProvider(provider);
                 });
 
-                services.AddIdentity<ApplicationUser, IdentityRole>()
-                        .AddDefaultUI() //TODO: check this one as well
-                        .AddEntityFrameworkStores<AppIdentityDbContext>()
-                        .AddDefaultTokenProviders();
-
                 // Build the service provider.
                 var sp = services.BuildServiceProvider();
 
