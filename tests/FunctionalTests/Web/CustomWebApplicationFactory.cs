@@ -41,7 +41,7 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
                 });
 
                 services.AddIdentity<ApplicationUser, IdentityRole>()
-                        .AddDefaultUI(UIFramework.Bootstrap4)
+                        .AddDefaultUI() //TODO: check this one as well
                         .AddEntityFrameworkStores<AppIdentityDbContext>()
                         .AddDefaultTokenProviders();
 
