@@ -12,7 +12,6 @@ using Microsoft.eShopWeb.Infrastructure.Data;
 using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.eShopWeb.Infrastructure.Logging;
 using Microsoft.eShopWeb.Infrastructure.Services;
-using Microsoft.eShopWeb.Web.HealthChecks;
 using Microsoft.eShopWeb.Web.Interfaces;
 using Microsoft.eShopWeb.Web.Services;
 using Microsoft.Extensions.Configuration;
@@ -20,7 +19,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
-using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -85,7 +83,6 @@ namespace Microsoft.eShopWeb.Web
             CreateIdentityIfNotCreated(services);
             
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
-
             services.AddScoped<ICatalogViewModelService, CachedCatalogViewModelService>();
             services.AddScoped<IBasketService, BasketService>();
             services.AddScoped<IBasketViewModelService, BasketViewModelService>();
@@ -94,7 +91,6 @@ namespace Microsoft.eShopWeb.Web
             services.AddScoped<CatalogViewModelService>();
             services.Configure<CatalogSettings>(Configuration);
             services.AddSingleton<IUriComposer>(new UriComposer(Configuration.Get<CatalogSettings>()));
-
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
             services.AddTransient<IEmailSender, EmailSender>();
 
@@ -108,35 +104,24 @@ namespace Microsoft.eShopWeb.Web
                 options.ConstraintMap["slugify"] = typeof(SlugifyParameterTransformer);
             });
 
-            //TODO: Still works the same
             services.AddMvc(options =>
             {
                 options.Conventions.Add(new RouteTokenTransformerConvention(
                          new SlugifyParameterTransformer()));
 
-            });
-                
+            });    
             services.AddRazorPages(options =>
             {
                 options.Conventions.AuthorizePage("/Basket/Checkout");
-                //TODO: options.AllowAreas = true;
             });
-
-            //TODO: See if needed
             services.AddControllersWithViews();
             services.AddControllers();
 
             services.AddHttpContextAccessor();
-            //TODO: fix swagger
-            //services.AddSwaggerGen(c =>
-            //{
-            //    c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
-            //});
-            services.AddSwaggerGen();
-            //TODO: confirm health checks are working with the Endpoint section below
-            services.AddHealthChecks()
-                .AddCheck<HomePageHealthCheck>("home_page_health_check")
-                .AddCheck<ApiHealthCheck>("api_health_check");
+            
+            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApi.Models.OpenApiInfo { Title = "My API", Version = "v1"}));
+
+            services.AddHealthChecks();
 
             services.Configure<ServiceConfig>(config =>
             {
@@ -158,7 +143,7 @@ namespace Microsoft.eShopWeb.Web
                 if(existingUserManager == null)
                 {
                     services.AddIdentity<ApplicationUser, IdentityRole>()
-                        .AddDefaultUI() //TODO: Make sure this is good to go?
+                        .AddDefaultUI()
                         .AddEntityFrameworkStores<AppIdentityDbContext>()
                                         .AddDefaultTokenProviders();
                 }
