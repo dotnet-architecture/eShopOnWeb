@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Ardalis.EFCore.Extensions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
 using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
+using System.Reflection;
 
 namespace Microsoft.eShopWeb.Infrastructure.Data
 {
@@ -25,21 +27,21 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
         {
             //Intentionally rolling back this change to fix issue: https://github.com/dotnet-architecture/eShopOnWeb/issues/292
             //Will follow up after issue has been resolved.
-            //base.OnModelCreating(builder);
-            //builder.ApplyAllConfigurationsFromCurrentAssembly();
+            base.OnModelCreating(builder);
+            builder.ApplyAllConfigurationsFromCurrentAssembly();
 
             // alternately this is built-in to EF Core 2.2
-            //builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-            builder.Entity<Basket>(ConfigureBasket);
-            builder.Entity<CatalogBrand>(ConfigureCatalogBrand);
-            builder.Entity<CatalogType>(ConfigureCatalogType);
-            builder.Entity<CatalogItem>(ConfigureCatalogItem);
-            builder.Entity<Order>(ConfigureOrder);
-            builder.Entity<OrderItem>(ConfigureOrderItem);
-            builder.Entity<Address>(ConfigureAddress);
-            builder.Entity<CatalogItemOrdered>(ConfigureCatalogItemOrdered);
-            builder.Entity<BasketItem>(ConfigureBasketItem);
+            //builder.Entity<Basket>(ConfigureBasket);
+            //builder.Entity<CatalogBrand>(ConfigureCatalogBrand);
+            //builder.Entity<CatalogType>(ConfigureCatalogType);
+            //builder.Entity<CatalogItem>(ConfigureCatalogItem);
+            //builder.Entity<Order>(ConfigureOrder);
+            //builder.Entity<OrderItem>(ConfigureOrderItem);
+            //builder.Entity<Address>(ConfigureAddress);
+            //builder.Entity<CatalogItemOrdered>(ConfigureCatalogItemOrdered);
+            //builder.Entity<BasketItem>(ConfigureBasketItem);
         }
 
         private void ConfigureBasketItem(EntityTypeBuilder<BasketItem> builder)

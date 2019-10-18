@@ -132,7 +132,7 @@ namespace Microsoft.eShopWeb.Web
             //{
             //    c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
             //});
-
+            services.AddSwaggerGen();
             //TODO: confirm health checks are working with the Endpoint section below
             services.AddHealthChecks()
                 .AddCheck<HomePageHealthCheck>("home_page_health_check")
@@ -228,7 +228,7 @@ namespace Microsoft.eShopWeb.Web
             app.UseHttpsRedirection();
             app.UseCookiePolicy();
             app.UseAuthentication();
-
+            app.UseAuthorization();
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 

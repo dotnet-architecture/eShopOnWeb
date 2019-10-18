@@ -4,7 +4,7 @@ using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 
 namespace Microsoft.eShopWeb.Infrastructure.Data.Config
 {
-    public class CatalogItemOrderedConfiguration : IEntityTypeConfiguration<CatalogItemOrdered>
+    public class CatalogItemOrderedConfiguration //: IEntityTypeConfiguration<CatalogItemOrdered>
     {
         public void Configure(EntityTypeBuilder<CatalogItemOrdered> builder)
         {
