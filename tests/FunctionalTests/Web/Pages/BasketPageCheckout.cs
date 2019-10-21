@@ -11,6 +11,7 @@ using Xunit;
 
 namespace Microsoft.eShopWeb.FunctionalTests.WebRazorPages
 {
+    [Collection("Sequential")]
     public class BasketPageCheckout : IClassFixture<CustomWebApplicationFactory<Startup>>
     {
         public BasketPageCheckout(CustomWebApplicationFactory<Startup> factory)

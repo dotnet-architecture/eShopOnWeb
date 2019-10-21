@@ -7,6 +7,7 @@ using Xunit;
 
 namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
 {
+    [Collection("Sequential")]
     public class OrderIndexOnGet : IClassFixture<CustomWebApplicationFactory<Startup>>
     {
         public OrderIndexOnGet(CustomWebApplicationFactory<Startup> factory)

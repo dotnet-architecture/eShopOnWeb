@@ -11,6 +11,7 @@ using Xunit;
 
 namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
 {
+    [Collection("Sequential")]
     public class AccountControllerSignIn : IClassFixture<CustomWebApplicationFactory<Startup>>
     {
         public AccountControllerSignIn(CustomWebApplicationFactory<Startup> factory)
