@@ -18,6 +18,13 @@
                        asp-action="MyAccount">
                         <div class="esh-identity-name esh-identity-name--upper">My account</div>
                     </a>
+                    @if (User.IsInRole("Administrators"))
+                    {
+                        <a class="esh-identity-item"
+                           asp-page="/Admin/Index">
+                            <div class="esh-identity-name esh-identity-name--upper">Admin</div>
+                        </a>    
+                    }
                     <a class="esh-identity-item"
                        href="javascript:document.getElementById('logoutForm').submit()">
                         <div class="esh-identity-name esh-identity-name--upper">Log Out</div>
