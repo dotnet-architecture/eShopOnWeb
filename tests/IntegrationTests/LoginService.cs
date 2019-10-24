@@ -33,8 +33,8 @@ namespace Microsoft.eShopWeb.IntegrationTests.Repositories.OrderRepositoryTests
                 {
                     // seed sample user data
                     var userManager = scopedServices.GetRequiredService<UserManager<ApplicationUser>>();
-
-                    AppIdentityDbContextSeed.SeedAsync(userManager).Wait();
+                    var roleManager = scopedServices.GetRequiredService<RoleManager<IdentityRole>>();
+                    AppIdentityDbContextSeed.SeedAsync(userManager, roleManager).Wait();
 
                     var signInManager = scopedServices.GetRequiredService<SignInManager<ApplicationUser>>();
 

@@ -64,8 +64,8 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
 
                         // seed sample user data
                         var userManager = scopedServices.GetRequiredService<UserManager<ApplicationUser>>();
-
-                        AppIdentityDbContextSeed.SeedAsync(userManager).Wait();
+                        var roleManager = scopedServices.GetRequiredService<RoleManager<IdentityRole>>();
+                        AppIdentityDbContextSeed.SeedAsync(userManager, roleManager).Wait();
                     }
                     catch (Exception ex)
                     {
