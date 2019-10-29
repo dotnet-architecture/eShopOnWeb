@@ -20,7 +20,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
             _logger = logger;
         }
 
-        public async Task AddItemToBasket(int basketId, int catalogItemId, decimal price, int quantity)
+        public async Task AddItemToBasket(int basketId, int catalogItemId, decimal price, int quantity = 1)
         {
             var basket = await _basketRepository.GetByIdAsync(basketId);
 
