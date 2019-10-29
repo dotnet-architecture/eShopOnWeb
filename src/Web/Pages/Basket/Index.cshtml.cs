@@ -15,19 +15,15 @@ namespace Microsoft.eShopWeb.Web.Pages.Basket
     public class IndexModel : PageModel
     {
         private readonly IBasketService _basketService;
-        private const string _basketSessionKey = "basketId";
-        private readonly IUriComposer _uriComposer;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private string _username = null;
         private readonly IBasketViewModelService _basketViewModelService;
 
         public IndexModel(IBasketService basketService,
             IBasketViewModelService basketViewModelService,
-            IUriComposer uriComposer,
             SignInManager<ApplicationUser> signInManager)
         {
             _basketService = basketService;
-            _uriComposer = uriComposer;
             _signInManager = signInManager;
             _basketViewModelService = basketViewModelService;
         }
@@ -47,7 +43,7 @@ namespace Microsoft.eShopWeb.Web.Pages.Basket
             }
             await SetBasketModelAsync();
 
-            await _basketService.AddItemToBasket(BasketModel.Id, productDetails.Id, productDetails.Price, 1);
+            await _basketService.AddItemToBasket(BasketModel.Id, productDetails.Id, productDetails.Price);
 
             await SetBasketModelAsync();
 
