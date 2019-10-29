@@ -1,0 +1,11 @@
+﻿@page
+@{
+    ViewData["Title"] = "Admin - Edit Catalog";
+    @model EditCatalogItemModel
+}
+
+<img class="esh-catalog-thumbnail" src="@Model.CatalogModel.PictureUri" />
+@Html.DisplayNameFor(m => m.CatalogModel.Name)
+@Html.DisplayFor(m => m.CatalogModel.Name)
+@Html.DisplayNameFor(m => m.CatalogModel.Price)
+@Html.DisplayFor(m => m.CatalogModel.Price)
