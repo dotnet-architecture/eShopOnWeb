@@ -4,8 +4,39 @@
     @model EditCatalogItemModel
 }
 
-<img class="esh-catalog-thumbnail" src="@Model.CatalogModel.PictureUri" />
-@Html.DisplayNameFor(m => m.CatalogModel.Name)
-@Html.DisplayFor(m => m.CatalogModel.Name)
-@Html.DisplayNameFor(m => m.CatalogModel.Price)
-@Html.DisplayFor(m => m.CatalogModel.Price)
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <img class="esh-catalog-thumbnail" src="@Model.CatalogModel.PictureUri" />
+            <form method="post">
+                <div class="form-group">
+                    <label asp-for="CatalogModel.Name"></label>
+                    <input asp-for="CatalogModel.Name" class="form-control" />
+                    <span asp-validation-for="CatalogModel.Name"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CatalogModel.Price"></label>
+                    <input asp-for="CatalogModel.Price" class="form-control" />
+                    <span asp-validation-for="CatalogModel.Price"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CatalogModel.PictureUri"></label>
+                    <input asp-for="CatalogModel.PictureUri" class="form-control" />
+                    <span asp-validation-for="CatalogModel.PictureUri"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CatalogModel.Id"></label>
+                    <input asp-for="CatalogModel.Id" class="form-control" />
+                    <span asp-validation-for="CatalogModel.Id"></span>
+                </div>
+                <input type="submit" value="Save" />
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
