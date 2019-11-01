@@ -1,10 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 
 namespace Microsoft.eShopWeb.Infrastructure.Data.Config
 {
-    public class CatalogItemOrderedConfiguration //: IEntityTypeConfiguration<CatalogItemOrdered>
+    public class CatalogItemOrderedConfiguration
     {
         public void Configure(EntityTypeBuilder<CatalogItemOrdered> builder)
         {

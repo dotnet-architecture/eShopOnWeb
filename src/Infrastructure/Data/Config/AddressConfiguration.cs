@@ -1,10 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 
 namespace Microsoft.eShopWeb.Infrastructure.Data.Config
 {
-    public class AddressConfiguration //: IEntityTypeConfiguration<Address>
+    public class AddressConfiguration
     {
         public void Configure(EntityTypeBuilder<Address> builder)
         {
