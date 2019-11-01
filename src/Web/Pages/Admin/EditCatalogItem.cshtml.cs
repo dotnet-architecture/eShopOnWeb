@@ -26,7 +26,7 @@ namespace Microsoft.eShopWeb.Web.Pages.Admin
             CatalogModel = catalogModel;
         }
 
-        public async Task<IActionResult> OnPostAsync(CatalogItemViewModel model)
+        public async Task<IActionResult> OnPostAsync()
         {
             if (ModelState.IsValid)
             {

@@ -4,7 +4,6 @@
     @model EditCatalogItemModel
 }
 
-
 <div class="container">
     <div class="row">
         <div class="col-md-8">
@@ -30,7 +29,9 @@
                     <input asp-for="CatalogModel.Id" class="form-control" />
                     <span asp-validation-for="CatalogModel.Id"></span>
                 </div>
-                <input type="submit" value="Save" />
+                <div class="col-md-2">
+                    <input type="submit" value="Save" class="esh-catalog-button" />
+                </div>
             </form>
         </div>
     </div>
