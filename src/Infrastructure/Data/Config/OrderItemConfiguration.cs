@@ -8,7 +8,14 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Config
     {
         public void Configure(EntityTypeBuilder<OrderItem> builder)
         {
-            builder.OwnsOne(i => i.ItemOrdered);
+            builder.OwnsOne(i => i.ItemOrdered, io =>
+            {
+                io.WithOwner();
+
+                io.Property(cio => cio.ProductName)
+                    .HasMaxLength(50)
+                    .IsRequired();
+            });
 
             builder.Property(oi => oi.UnitPrice)
                 .IsRequired(true)

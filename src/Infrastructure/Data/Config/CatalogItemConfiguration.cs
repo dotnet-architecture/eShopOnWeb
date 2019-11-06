@@ -11,7 +11,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Config
             builder.ToTable("Catalog");
 
             builder.Property(ci => ci.Id)
-                .ForSqlServerUseSequenceHiLo("catalog_hilo")
+                .UseHiLo("catalog_hilo")
                 .IsRequired();
 
             builder.Property(ci => ci.Name)

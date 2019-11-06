@@ -6,6 +6,7 @@ using Xunit;
 
 namespace Microsoft.eShopWeb.FunctionalTests.WebRazorPages
 {
+    [Collection("Sequential")]
     public class HomePageOnGet : IClassFixture<CustomWebApplicationFactory<Startup>>
     {
         public HomePageOnGet(CustomWebApplicationFactory<Startup> factory)

@@ -7,7 +7,7 @@
 #
 # RUN COMMAND
 #  docker run --name eshopweb --rm -it -p 5106:5106 web
-FROM microsoft/dotnet:2.2-sdk AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS build
 WORKDIR /app
 
 COPY *.sln .
@@ -17,7 +17,7 @@ RUN dotnet restore
 
 RUN dotnet publish -c Release -o out
 
-FROM microsoft/dotnet:2.2-aspnetcore-runtime AS runtime
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/src/Web/out ./
 
