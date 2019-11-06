@@ -109,12 +109,13 @@ namespace Microsoft.eShopWeb.Web
                 options.Conventions.Add(new RouteTokenTransformerConvention(
                          new SlugifyParameterTransformer()));
 
-            });    
+            });
+            services.AddControllersWithViews();
             services.AddRazorPages(options =>
             {
                 options.Conventions.AuthorizePage("/Basket/Checkout");
             });
-            services.AddControllersWithViews();
+            
             services.AddControllers();
 
             services.AddHttpContextAccessor();
@@ -174,7 +175,6 @@ namespace Microsoft.eShopWeb.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //app.UseDeveloperExceptionPage();
             app.UseHealthChecks("/health",
                 new HealthCheckOptions
                 {
@@ -207,13 +207,14 @@ namespace Microsoft.eShopWeb.Web
                 app.UseHsts();
             }
 
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
-            
-            app.UseHttpsRedirection();
+
             app.UseCookiePolicy();
             app.UseAuthentication();
             app.UseAuthorization();
+
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
