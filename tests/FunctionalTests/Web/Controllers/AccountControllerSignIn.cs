@@ -11,6 +11,7 @@ using Xunit;
 
 namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
 {
+    [Collection("Sequential")]
     public class AccountControllerSignIn : IClassFixture<CustomWebApplicationFactory<Startup>>
     {
         public AccountControllerSignIn(CustomWebApplicationFactory<Startup> factory)
@@ -42,7 +43,7 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
             string regexpression = @"name=""__RequestVerificationToken"" type=""hidden"" value=""([-A-Za-z0-9+=/\\_]+?)""";
             var regex = new Regex(regexpression);
             var match = regex.Match(input);
-            var group = match.Groups.LastOrDefault();
+            var group = match.Groups.Values.LastOrDefault();
             Assert.NotNull(group);
             Assert.True(group.Value.Length > 50);
         }
@@ -63,7 +64,7 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
             string regexpression = @"name=""__RequestVerificationToken"" type=""hidden"" value=""([-A-Za-z0-9+=/\\_]+?)""";
             var regex = new Regex(regexpression);
             var match = regex.Match(input);
-            return match.Groups.LastOrDefault().Value;
+            return match.Groups.Values.LastOrDefault().Value;
         }
 
         [Fact]

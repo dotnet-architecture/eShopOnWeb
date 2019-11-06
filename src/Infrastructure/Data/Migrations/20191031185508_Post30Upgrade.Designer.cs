@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.eShopWeb.Infrastructure.Data;
 
 namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(CatalogContext))]
-    partial class CatalogContextModelSnapshot : ModelSnapshot
+    [Migration("20191031185508_Post30Upgrade")]
+    partial class Post30Upgrade
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -213,28 +215,19 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                             b1.Property<string>("City")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(100)")
-                                .HasMaxLength(100);
+                                .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("Country")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(90)")
-                                .HasMaxLength(90);
+                                .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("State")
-                                .HasColumnType("nvarchar(60)")
-                                .HasMaxLength(60);
+                                .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("Street")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(180)")
-                                .HasMaxLength(180);
+                                .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("ZipCode")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(18)")
-                                .HasMaxLength(18);
+                                .HasColumnType("nvarchar(max)");
 
                             b1.HasKey("OrderId");
 
@@ -265,9 +258,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("ProductName")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(50)")
-                                .HasMaxLength(50);
+                                .HasColumnType("nvarchar(max)");
 
                             b1.HasKey("OrderItemId");
 

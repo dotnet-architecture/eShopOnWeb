@@ -5,6 +5,7 @@ using Xunit;
 
 namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
 {
+    [Collection("Sequential")]
     public class CatalogControllerIndex : IClassFixture<CustomWebApplicationFactory<Startup>>
     {
         public CatalogControllerIndex(CustomWebApplicationFactory<Startup> factory)

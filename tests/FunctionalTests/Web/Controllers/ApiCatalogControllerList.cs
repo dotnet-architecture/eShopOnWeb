@@ -8,6 +8,7 @@ using Xunit;
 
 namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
 {
+    [Collection("Sequential")]
     public class ApiCatalogControllerList : IClassFixture<CustomWebApplicationFactory<Startup>>
     {
         public ApiCatalogControllerList(CustomWebApplicationFactory<Startup> factory)
