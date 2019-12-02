@@ -5,6 +5,10 @@ using Microsoft.eShopWeb.Infrastructure.Identity;
 using System;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Microsoft.eShopWeb.Infrastructure.Logging;
+using Microsoft.eShopWeb.ApplicationCore.Interfaces;
+using Microsoft.AspNetCore.Http;
 
 namespace Microsoft.eShopWeb.IntegrationTests.Repositories.OrderRepositoryTests
 {
@@ -20,7 +24,14 @@ namespace Microsoft.eShopWeb.IntegrationTests.Repositories.OrderRepositoryTests
             {
                 options.UseInMemoryDatabase("Identity");
             });
-            var serviceProvider = new ServiceCollection()
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                        .AddEntityFrameworkStores<AppIdentityDbContext>()
+                        .AddDefaultTokenProviders();
+
+            services.AddTransient(typeof(ILogger<>), (typeof(Logger<>)));
+
+            var serviceProvider = services
                 .BuildServiceProvider();
 
             // Create a scope to obtain a reference to the database
@@ -46,11 +57,13 @@ namespace Microsoft.eShopWeb.IntegrationTests.Repositories.OrderRepositoryTests
                     Assert.True(result.Succeeded);
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                 }
             }
 
         }
+
+
     }
 }
