@@ -28,7 +28,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Specifications
             Includes.Add(includeExpression);
         }
 
-        protected virtual void AddIncludes(Func<IncludeAggregator<T>, IIncludeQuery<T>> includeGenerator)
+        protected virtual void AddIncludes<TProperty>(Func<IncludeAggregator<T>, IIncludeQuery<T, TProperty>> includeGenerator)
         {
             var includeQuery = includeGenerator(new IncludeAggregator<T>());
             IncludeStrings.AddRange(includeQuery.Paths);

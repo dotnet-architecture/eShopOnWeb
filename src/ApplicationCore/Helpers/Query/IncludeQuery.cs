@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Helpers.Query
 {
-    public class IncludeQuery<TEntity> : IIncludeQuery<TEntity>
+    public class IncludeQuery<TEntity, TPreviousProperty> : IIncludeQuery<TEntity, TPreviousProperty>
     {
         public Guid Id { get; }
         public Dictionary<Guid, string> PathMap { get; } = new Dictionary<Guid, string>();
@@ -19,11 +19,6 @@ namespace Microsoft.eShopWeb.ApplicationCore.Helpers.Query
         }
 
         public IEnumerable<string> Paths => PathMap.Select(x => x.Value).Distinct().ToList();
-    }
-
-    public class IncludeQuery<TEntity, TPreviousProperty> : IncludeQuery<TEntity>, IIncludeQuery<TEntity, TPreviousProperty>
-    {
-        public IncludeQuery(Guid id, Dictionary<Guid, string> pathMap) : base(id, pathMap) { }
     }
 
     public static class IncludeableQueryExtensions
