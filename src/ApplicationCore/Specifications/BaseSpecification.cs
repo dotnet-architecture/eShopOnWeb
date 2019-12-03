@@ -2,6 +2,7 @@
 using System;
 using System.Linq.Expressions;
 using System.Collections.Generic;
+using Microsoft.eShopWeb.ApplicationCore.Helpers.Query;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Specifications
 {
@@ -26,6 +27,13 @@ namespace Microsoft.eShopWeb.ApplicationCore.Specifications
         {
             Includes.Add(includeExpression);
         }
+
+        protected virtual void AddIncludes(Func<IncludeAggregator<T>, IIncludeQuery<T>> includeGenerator)
+        {
+            var includeQuery = includeGenerator(new IncludeAggregator<T>());
+            IncludeStrings.AddRange(includeQuery.Paths);
+        }
+
         protected virtual void AddInclude(string includeString)
         {
             IncludeStrings.Add(includeString);

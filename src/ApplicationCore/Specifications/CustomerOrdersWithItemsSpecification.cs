@@ -1,4 +1,5 @@
 ﻿using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
+using Microsoft.eShopWeb.ApplicationCore.Helpers.Query;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Specifications
 {
@@ -7,8 +8,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Specifications
         public CustomerOrdersWithItemsSpecification(string buyerId)
             : base(o => o.BuyerId == buyerId)
         {
-            AddInclude(o => o.OrderItems);
-            AddInclude($"{nameof(Order.OrderItems)}.{nameof(OrderItem.ItemOrdered)}");
+            AddIncludes(query => query.Include(o => o.OrderItems).ThenInclude(i => i.ItemOrdered));
         }
     }
 }
