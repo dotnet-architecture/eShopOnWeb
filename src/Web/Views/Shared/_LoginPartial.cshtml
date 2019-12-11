@@ -8,6 +8,13 @@
                     <img class="esh-identity-image" src="~/images/arrow-down.png">
                 </section>
                 <section class="esh-identity-drop">
+                    @if (User.IsInRole("Administrators"))
+                    {
+                        <a class="esh-identity-item"
+                           asp-page="/Admin/Index">
+                            <div class="esh-identity-name esh-identity-name--upper">Admin</div>
+                        </a>
+                    }
                     <a class="esh-identity-item"
                        asp-controller="Order"
                        asp-action="MyOrders">
@@ -18,8 +25,7 @@
                        asp-action="MyAccount">
                         <div class="esh-identity-name esh-identity-name--upper">My account</div>
                     </a>
-                    <a class="esh-identity-item"
-                       href="javascript:document.getElementById('logoutForm').submit()">
+                    <a class="esh-identity-item" href="javascript:document.getElementById('logoutForm').submit()">
                         <div class="esh-identity-name esh-identity-name--upper">Log Out</div>
                         <img class="esh-identity-image" src="~/images/logout.png">
                     </a>
