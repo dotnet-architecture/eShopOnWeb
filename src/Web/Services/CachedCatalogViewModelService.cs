@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.eShopWeb.Web.ViewModels;
 using Microsoft.Extensions.Caching.Memory;
-using System;
+using Microsoft.eShopWeb.Web.Extensions;
 
 namespace Microsoft.eShopWeb.Web.Services
 {
@@ -11,10 +11,6 @@ namespace Microsoft.eShopWeb.Web.Services
     {
         private readonly IMemoryCache _cache;
         private readonly CatalogViewModelService _catalogViewModelService;
-        private static readonly string _brandsKey = "brands";
-        private static readonly string _typesKey = "types";
-        private static readonly string _itemsKeyTemplate = "items-{0}-{1}-{2}-{3}";
-        private static readonly TimeSpan _defaultCacheDuration = TimeSpan.FromSeconds(30);
 
         public CachedCatalogViewModelService(IMemoryCache cache,
             CatalogViewModelService catalogViewModelService)
@@ -25,28 +21,29 @@ namespace Microsoft.eShopWeb.Web.Services
 
         public async Task<IEnumerable<SelectListItem>> GetBrands()
         {
-            return await _cache.GetOrCreateAsync(_brandsKey, async entry =>
+            return await _cache.GetOrCreateAsync(CacheHelpers.GenerateBrandsCacheKey(), async entry =>
                     {
-                        entry.SlidingExpiration = _defaultCacheDuration;
+                        entry.SlidingExpiration = CacheHelpers.DefaultCacheDuration;
                         return await _catalogViewModelService.GetBrands();
                     });
         }
 
         public async Task<CatalogIndexViewModel> GetCatalogItems(int pageIndex, int itemsPage, int? brandId, int? typeId)
         {
-            string cacheKey = String.Format(_itemsKeyTemplate, pageIndex, itemsPage, brandId, typeId);
+            var cacheKey = CacheHelpers.GenerateCatalogItemCacheKey(pageIndex, Constants.ITEMS_PER_PAGE, brandId, typeId);
+
             return await _cache.GetOrCreateAsync(cacheKey, async entry =>
             {
-                entry.SlidingExpiration = _defaultCacheDuration;
+                entry.SlidingExpiration = CacheHelpers.DefaultCacheDuration;
                 return await _catalogViewModelService.GetCatalogItems(pageIndex, itemsPage, brandId, typeId);
             });
         }
 
         public async Task<IEnumerable<SelectListItem>> GetTypes()
         {
-            return await _cache.GetOrCreateAsync(_typesKey, async entry =>
+            return await _cache.GetOrCreateAsync(CacheHelpers.GenerateTypesCacheKey(), async entry =>
             {
-                entry.SlidingExpiration = _defaultCacheDuration;
+                entry.SlidingExpiration = CacheHelpers.DefaultCacheDuration;
                 return await _catalogViewModelService.GetTypes();
             });
         }

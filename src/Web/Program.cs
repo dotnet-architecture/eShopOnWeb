@@ -27,7 +27,8 @@ namespace Microsoft.eShopWeb.Web
                     await CatalogContextSeed.SeedAsync(catalogContext, loggerFactory);
 
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                    await AppIdentityDbContextSeed.SeedAsync(userManager);
+                    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                    await AppIdentityDbContextSeed.SeedAsync(userManager, roleManager);
                 }
                 catch (Exception ex)
                 {
