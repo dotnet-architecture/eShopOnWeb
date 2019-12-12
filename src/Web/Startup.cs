@@ -74,6 +74,10 @@ namespace Microsoft.eShopWeb.Web
             ConfigureServices(services);
         }
 
+        public void ConfigureTestingServices(IServiceCollection services)
+        {
+            ConfigureInMemoryDatabases(services);
+        }
 
 
         // This method gets called by the runtime. Use this method to add services to the container.
