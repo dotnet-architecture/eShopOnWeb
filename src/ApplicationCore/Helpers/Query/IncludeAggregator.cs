@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.eShopWeb.ApplicationCore.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
@@ -11,10 +12,15 @@ namespace Microsoft.eShopWeb.ApplicationCore.Helpers.Query
             var visitor = new IncludeVisitor();
             visitor.Visit(selector);
 
-            var id = Guid.NewGuid();
-            var pathMap = new Dictionary<Guid, string>() { { id, visitor.Path } };
+            var pathMap = new Dictionary<IIncludeQuery, string>();
+            var query = new IncludeQuery<TEntity, TProperty>(pathMap);
 
-            return new IncludeQuery<TEntity, TProperty>(id, pathMap);
+            if (!string.IsNullOrEmpty(visitor.Path))
+            {
+                pathMap[query] = visitor.Path;
+            }
+
+            return query;
         }
     }
 }

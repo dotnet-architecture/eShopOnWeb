@@ -8,7 +8,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Helpers.Query
 
         protected override Expression VisitMember(MemberExpression node)
         {
-            Path = string.IsNullOrEmpty(Path) ? node.Member.Name : $"{Path}.{node.Member.Name}";
+            Path = string.IsNullOrEmpty(Path) ? node.Member.Name : $"{node.Member.Name}.{Path}";
 
             return base.VisitMember(node);
         }
