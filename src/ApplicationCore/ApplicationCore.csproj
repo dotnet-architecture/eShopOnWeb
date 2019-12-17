@@ -6,7 +6,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Ardalis.GuardClauses" Version="1.2.9" />
+		<PackageReference Include="Ardalis.GuardClauses" Version="1.3.1" />
 		<PackageReference Include="System.Security.Claims" Version="4.3.0" />
 	</ItemGroup>
 
