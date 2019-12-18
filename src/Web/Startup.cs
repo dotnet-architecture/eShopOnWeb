@@ -123,7 +123,6 @@ namespace Microsoft.eShopWeb.Web
                 options.Conventions.AuthorizePage("/Basket/Checkout");
             });
             services.AddControllersWithViews();
-            services.AddControllers();
 
             services.AddHttpContextAccessor();
             

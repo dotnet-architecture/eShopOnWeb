@@ -1,5 +1,4 @@
-﻿using Microsoft.eShopWeb.FunctionalTests.Web.Controllers;
-using Microsoft.eShopWeb.Web;
+﻿using Microsoft.eShopWeb.FunctionalTests.Web;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
@@ -7,9 +6,9 @@ using Xunit;
 namespace Microsoft.eShopWeb.FunctionalTests.WebRazorPages
 {
     [Collection("Sequential")]
-    public class HomePageOnGet : IClassFixture<CustomWebApplicationFactory<Startup>>
+    public class HomePageOnGet : IClassFixture<WebTestFixture>
     {
-        public HomePageOnGet(CustomWebApplicationFactory<Startup> factory)
+        public HomePageOnGet(WebTestFixture factory)
         {
             Client = factory.CreateClient();
         }
