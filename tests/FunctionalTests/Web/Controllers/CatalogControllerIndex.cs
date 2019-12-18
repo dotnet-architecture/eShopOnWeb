@@ -1,14 +1,13 @@
-﻿using Microsoft.eShopWeb.Web;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
 {
     [Collection("Sequential")]
-    public class CatalogControllerIndex : IClassFixture<CustomWebApplicationFactory<Startup>>
+    public class CatalogControllerIndex : IClassFixture<WebTestFixture>
     {
-        public CatalogControllerIndex(CustomWebApplicationFactory<Startup> factory)
+        public CatalogControllerIndex(WebTestFixture factory)
         {
             Client = factory.CreateClient();
         }

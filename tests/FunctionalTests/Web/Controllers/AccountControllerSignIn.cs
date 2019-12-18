@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.eShopWeb.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +11,9 @@ using Xunit;
 namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
 {
     [Collection("Sequential")]
-    public class AccountControllerSignIn : IClassFixture<CustomWebApplicationFactory<Startup>>
+    public class AccountControllerSignIn : IClassFixture<WebTestFixture>
     {
-        public AccountControllerSignIn(CustomWebApplicationFactory<Startup> factory)
+        public AccountControllerSignIn(WebTestFixture factory)
         {
             Client = factory.CreateClient(new WebApplicationFactoryClientOptions
             {
