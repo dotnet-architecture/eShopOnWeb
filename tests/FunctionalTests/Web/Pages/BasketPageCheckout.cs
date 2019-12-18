@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.eShopWeb.FunctionalTests.Web.Controllers;
-using Microsoft.eShopWeb.Web;
+using Microsoft.eShopWeb.FunctionalTests.Web;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -12,9 +10,9 @@ using Xunit;
 namespace Microsoft.eShopWeb.FunctionalTests.WebRazorPages
 {
     [Collection("Sequential")]
-    public class BasketPageCheckout : IClassFixture<CustomWebApplicationFactory<Startup>>
+    public class BasketPageCheckout : IClassFixture<WebTestFixture>
     {
-        public BasketPageCheckout(CustomWebApplicationFactory<Startup> factory)
+        public BasketPageCheckout(WebTestFixture factory)
         {
             Client = factory.CreateClient(new WebApplicationFactoryClientOptions
             {
