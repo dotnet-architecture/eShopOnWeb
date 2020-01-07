@@ -51,6 +51,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
                     log.LogError(ex.Message);
                     await SeedAsync(catalogContext, loggerFactory, retryForAvailability);
                 }
+                throw;
             }
         }
 
