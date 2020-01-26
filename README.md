@@ -16,7 +16,7 @@ The **eShopOnWeb** sample is related to the [eShopOnContainers](https://github.c
 The goal for this sample is to demonstrate some of the principles and patterns described in the [eBook](https://aka.ms/webappebook). It is not meant to be an eCommerce reference application, and as such it does not implement many features that would be obvious and/or essential to a real eCommerce application.
 
 > ### VERSIONS
-> #### The `master` branch is currently running ASP.NET Core 2.2.
+> #### The `master` branch is currently running ASP.NET Core 3.1.
 > #### Older versions are tagged.
 
 ## Topics (eBook TOC)
@@ -58,6 +58,10 @@ You can also run the samples in Docker (see below).
 ```
 
 1. Ensure your connection strings in `appsettings.json` point to a local SQL Server instance.
+1. Ensure the tool EF was already installed. You can find some help [here](https://docs.microsoft.com/en-us/ef/core/miscellaneous/cli/dotnet)
+```
+dotnet tool install --global dotnet-ef
+```
 
 1. Open a command prompt in the Web folder and execute the following commands:
 
