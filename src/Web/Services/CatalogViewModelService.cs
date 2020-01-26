@@ -48,19 +48,14 @@ namespace Microsoft.eShopWeb.Web.Services
             // the implementation below using ForEach and Count. We need a List.
             var itemsOnPage = await _itemRepository.ListAsync(filterPaginatedSpecification);
             var totalItems = await _itemRepository.CountAsync(filterSpecification);
-
-            foreach (var itemOnPage in itemsOnPage)
-            {
-                itemOnPage.PictureUri = _uriComposer.ComposePicUri(itemOnPage.PictureUri);
-            }
-
+         
             var vm = new CatalogIndexViewModel()
             {
                 CatalogItems = itemsOnPage.Select(i => new CatalogItemViewModel()
                 {
                     Id = i.Id,
                     Name = i.Name,
-                    PictureUri = i.PictureUri,
+                    PictureUri = _uriComposer.ComposePicUri(i.PictureUri),
                     Price = i.Price
                 }),
                 Brands = await GetBrands(),
