@@ -48,7 +48,7 @@ namespace Microsoft.eShopWeb.Web.Services
 
         private async Task<BasketViewModel> CreateBasketForUser(string userId)
         {
-            var basket = new Basket() { BuyerId = userId };
+            var basket = new Basket(userId);
             await _basketRepository.AddAsync(basket);
 
             return new BasketViewModel()

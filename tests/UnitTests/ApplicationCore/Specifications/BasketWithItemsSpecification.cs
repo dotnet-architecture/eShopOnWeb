@@ -3,12 +3,14 @@ using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
+using Moq;
 
 namespace Microsoft.eShopWeb.UnitTests
 {
     public class BasketWithItems
     {
-        private int _testBasketId = 123;
+        private readonly int _testBasketId = 123;
+        private readonly string _buyerId = "Test buyerId";
 
         [Fact]
         public void MatchesBasketWithGivenId()
@@ -37,11 +39,18 @@ namespace Microsoft.eShopWeb.UnitTests
 
         public List<Basket> GetTestBasketCollection()
         {
+            var basket1Mock = new Mock<Basket>(_buyerId);
+            basket1Mock.SetupGet(s => s.Id).Returns(1);
+            var basket2Mock = new Mock<Basket>(_buyerId);
+            basket2Mock.SetupGet(s => s.Id).Returns(2);
+            var basket3Mock = new Mock<Basket>(_buyerId);
+            basket3Mock.SetupGet(s => s.Id).Returns(_testBasketId);
+
             return new List<Basket>()
             {
-                new Basket() { Id = 1 },
-                new Basket() { Id = 2 },
-                new Basket() { Id = _testBasketId }
+                basket1Mock.Object,
+                basket2Mock.Object,
+                basket3Mock.Object
             };
         }
     }

@@ -3,6 +3,7 @@ using Microsoft.eShopWeb.ApplicationCore.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
+using Moq;
 
 namespace Microsoft.eShopWeb.UnitTests
 {
@@ -31,11 +32,11 @@ namespace Microsoft.eShopWeb.UnitTests
         {
             return new List<CatalogItem>()
             {
-                new CatalogItem() { Id = 1, CatalogBrandId = 1, CatalogTypeId= 1 },
-                new CatalogItem() { Id = 2, CatalogBrandId = 1, CatalogTypeId= 2 },
-                new CatalogItem() { Id = 3, CatalogBrandId = 1, CatalogTypeId= 3 },
-                new CatalogItem() { Id = 4, CatalogBrandId = 2, CatalogTypeId= 1 },
-                new CatalogItem() { Id = 5, CatalogBrandId = 2, CatalogTypeId= 2 },
+                new CatalogItem(1, 1, "Description", "Name", 0, "FakePath"),
+                new CatalogItem(2, 1, "Description", "Name", 0, "FakePath"),
+                new CatalogItem(3, 1, "Description", "Name", 0, "FakePath"),
+                new CatalogItem(1, 2, "Description", "Name", 0, "FakePath"),
+                new CatalogItem(2, 2, "Description", "Name", 0, "FakePath"),  
             };
         }
     }

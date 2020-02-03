@@ -6,14 +6,15 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Entities.BasketTests
 {
     public class BasketAddItem
     {
-        private int _testCatalogItemId = 123;
-        private decimal _testUnitPrice = 1.23m;
-        private int _testQuantity = 2;
+        private readonly int _testCatalogItemId = 123;
+        private readonly decimal _testUnitPrice = 1.23m;
+        private readonly int _testQuantity = 2;
+        private readonly string _buyerId = "Test buyerId";
 
         [Fact]
         public void AddsBasketItemIfNotPresent()
         {
-            var basket = new Basket();
+            var basket = new Basket(_buyerId);
             basket.AddItem(_testCatalogItemId, _testUnitPrice, _testQuantity);
 
             var firstItem = basket.Items.Single();
@@ -25,7 +26,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Entities.BasketTests
         [Fact]
         public void IncrementsQuantityOfItemIfPresent()
         {
-            var basket = new Basket();
+            var basket = new Basket(_buyerId);
             basket.AddItem(_testCatalogItemId, _testUnitPrice, _testQuantity);
             basket.AddItem(_testCatalogItemId, _testUnitPrice, _testQuantity);
 
@@ -36,7 +37,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Entities.BasketTests
         [Fact]
         public void KeepsOriginalUnitPriceIfMoreItemsAdded()
         {
-            var basket = new Basket();
+            var basket = new Basket(_buyerId);
             basket.AddItem(_testCatalogItemId, _testUnitPrice, _testQuantity);
             basket.AddItem(_testCatalogItemId, _testUnitPrice * 2, _testQuantity);
 
@@ -47,7 +48,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Entities.BasketTests
         [Fact]
         public void DefaultsToQuantityOfOne()
         {
-            var basket = new Basket();
+            var basket = new Basket(_buyerId);
             basket.AddItem(_testCatalogItemId, _testUnitPrice);
 
             var firstItem = basket.Items.Single();
@@ -57,7 +58,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Entities.BasketTests
         [Fact]
         public void RemoveEmptyItems()
         {
-            var basket = new Basket();
+            var basket = new Basket(_buyerId);
             basket.AddItem(_testCatalogItemId, _testUnitPrice, 0);
             basket.RemoveEmptyItems();
 

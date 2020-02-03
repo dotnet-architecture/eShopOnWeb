@@ -1,11 +1,13 @@
 ﻿using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
+using Moq;
 
 namespace Microsoft.eShopWeb.UnitTests.Builders
 {
     public class BasketBuilder
     {
-        private Basket _basket;
+        private Basket _basket;      
         public string BasketBuyerId => "testbuyerId@test.com";
+
         public int BasketId => 1;
 
         public BasketBuilder()
@@ -20,13 +22,17 @@ namespace Microsoft.eShopWeb.UnitTests.Builders
 
         public Basket WithNoItems()
         {
-            _basket = new Basket { BuyerId = BasketBuyerId, Id = BasketId };
+            var basketMock = new Mock<Basket>(BasketBuyerId);
+            basketMock.SetupGet(s => s.Id).Returns(BasketId);
+
+            _basket = basketMock.Object;
             return _basket;
         }
 
         public Basket WithOneBasketItem()
         {
-            _basket = new Basket { BuyerId = BasketBuyerId, Id = BasketId };
+            var basketMock = new Mock<Basket>(BasketBuyerId);
+            _basket = basketMock.Object;
             _basket.AddItem(2, 3.40m, 4);
             return _basket;
         }

@@ -21,7 +21,7 @@ namespace Microsoft.eShopWeb.Web.Pages.Admin
         [BindProperty]
         public CatalogItemViewModel CatalogModel { get; set; } = new CatalogItemViewModel();
 
-        public async Task OnGet(CatalogItemViewModel catalogModel)
+        public void OnGet(CatalogItemViewModel catalogModel)
         {
             CatalogModel = catalogModel;
         }
