@@ -11,14 +11,17 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
     public class OrderService : IOrderService
     {
         private readonly IAsyncRepository<Order> _orderRepository;
+        private readonly IUriComposer _uriComposer;
         private readonly IAsyncRepository<Basket> _basketRepository;
         private readonly IAsyncRepository<CatalogItem> _itemRepository;
 
         public OrderService(IAsyncRepository<Basket> basketRepository,
             IAsyncRepository<CatalogItem> itemRepository,
-            IAsyncRepository<Order> orderRepository)
+            IAsyncRepository<Order> orderRepository,
+            IUriComposer uriComposer)
         {
             _orderRepository = orderRepository;
+            _uriComposer = uriComposer;
             _basketRepository = basketRepository;
             _itemRepository = itemRepository;
         }
@@ -31,7 +34,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
             foreach (var item in basket.Items)
             {
                 var catalogItem = await _itemRepository.GetByIdAsync(item.CatalogItemId);
-                var itemOrdered = new CatalogItemOrdered(catalogItem.Id, catalogItem.Name, catalogItem.PictureUri);
+                var itemOrdered = new CatalogItemOrdered(catalogItem.Id, catalogItem.Name,_uriComposer.ComposePicUri(catalogItem.PictureUri));
                 var orderItem = new OrderItem(itemOrdered, item.UnitPrice, item.Quantity);
                 items.Add(orderItem);
             }
