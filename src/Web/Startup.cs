@@ -85,7 +85,10 @@ namespace Microsoft.eShopWeb.Web
         {
             ConfigureCookieSettings(services);
 
-            CreateIdentityIfNotCreated(services);
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                       .AddDefaultUI()
+                       .AddEntityFrameworkStores<AppIdentityDbContext>()
+                                       .AddDefaultTokenProviders();
 
             services.AddMediatR(typeof(BasketViewModelService).Assembly);
 
@@ -138,23 +141,6 @@ namespace Microsoft.eShopWeb.Web
             });
 
             _services = services; // used to debug registered services
-        }
-
-        private static void CreateIdentityIfNotCreated(IServiceCollection services)
-        {
-            var sp = services.BuildServiceProvider();
-            using (var scope = sp.CreateScope())
-            {
-                var existingUserManager = scope.ServiceProvider
-                    .GetService<UserManager<ApplicationUser>>();
-                if(existingUserManager == null)
-                {
-                    services.AddIdentity<ApplicationUser, IdentityRole>()
-                        .AddDefaultUI()
-                        .AddEntityFrameworkStores<AppIdentityDbContext>()
-                                        .AddDefaultTokenProviders();
-                }
-            }
         }
 
         private static void ConfigureCookieSettings(IServiceCollection services)
