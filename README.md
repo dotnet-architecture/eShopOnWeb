@@ -101,3 +101,8 @@ You can run the Web sample by running these commands from the root folder (where
 You should be able to make requests to localhost:5106 once these commands complete.
 
 You can also run the Web application by using the instructions located in its `Dockerfile` file in the root of the project. Again, run these commands from the root of the solution (where the .sln file is located).
+
+## Community Extensions
+We have some great contributions from the community, and while these aren't maintained by Microsoft we still want to highlight them.
+
+[eShopOnWeb VB.NET](https://github.com/VBAndCs/eShopOnWeb_VB.NET) by Mohammad Hamdy Ghanem
