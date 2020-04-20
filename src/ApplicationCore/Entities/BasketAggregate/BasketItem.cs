@@ -1,4 +1,6 @@
-﻿namespace Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate
+﻿using System;
+
+namespace Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate
 {
     public class BasketItem : BaseEntity
     {
@@ -11,17 +13,20 @@
         public BasketItem(int catalogItemId, int quantity, decimal unitPrice)
         {
             CatalogItemId = catalogItemId;
-            Quantity = quantity;
             UnitPrice = unitPrice;
+            SetQuantity(quantity);
         }
 
         public void AddQuantity(int quantity)
         {
-            Quantity += quantity;
+            SetQuantity(Quantity + quantity);
         }
 
-        public void SetNewQuantity(int quantity)
+        public void SetQuantity(int quantity)
         {
+            if (quantity < 0)
+                throw new ArgumentException($"{nameof(Quantity)} can't be less than 0.");
+            
             Quantity = quantity;
         }
     }

@@ -60,7 +60,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
                 if (quantities.TryGetValue(item.Id.ToString(), out var quantity))
                 {
                     if (_logger != null) _logger.LogInformation($"Updating quantity of item ID:{item.Id} to {quantity}.");
-                    item.SetNewQuantity(quantity);
+                    item.SetQuantity(quantity);
                 }
             }
             basket.RemoveEmptyItems();
