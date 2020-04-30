@@ -71,7 +71,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Entities.BasketTests
         {
             var basket = new Basket(_buyerId);
 
-            Assert.Throws<ArgumentException>(() => basket.AddItem(_testCatalogItemId, _testUnitPrice, -1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => basket.AddItem(_testCatalogItemId, _testUnitPrice, -1));
         }
         
         [Fact]
@@ -80,7 +80,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Entities.BasketTests
             var basket = new Basket(_buyerId);
             basket.AddItem(_testCatalogItemId, _testUnitPrice);
                 
-            Assert.Throws<ArgumentException>(() => basket.AddItem(_testCatalogItemId, _testUnitPrice, -2));
+            Assert.Throws<ArgumentOutOfRangeException>(() => basket.AddItem(_testCatalogItemId, _testUnitPrice, -2));
         }
     }
 }

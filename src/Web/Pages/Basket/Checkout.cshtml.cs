@@ -8,6 +8,7 @@ using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.eShopWeb.Web.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.Web.Pages.Basket
@@ -37,11 +38,15 @@ namespace Microsoft.eShopWeb.Web.Pages.Basket
         {
         }
 
-        public async Task<IActionResult> OnPost(Dictionary<string, int> items)
+        public async Task<IActionResult> OnPost(IEnumerable<BasketItemViewModel> items)
         {
             await SetBasketModelAsync();
 
-            await _basketService.SetQuantities(BasketModel.Id, items);
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var updateModel = items.ToDictionary(b => b.Id.ToString(), b => b.Quantity);
+            await _basketService.SetQuantities(BasketModel.Id, updateModel);
 
             await _orderService.CreateOrderAsync(BasketModel.Id, new Address("123 Main St.", "Kent", "OH", "United States", "44240"));
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using Ardalis.GuardClauses;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate
 {
@@ -24,9 +25,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate
 
         public void SetQuantity(int quantity)
         {
-            if (quantity < 0)
-                throw new ArgumentException($"{nameof(Quantity)} can't be less than 0.");
-            
+            Guard.Against.OutOfRange(quantity, nameof(quantity), 0, int.MaxValue);
             Quantity = quantity;
         }
     }
