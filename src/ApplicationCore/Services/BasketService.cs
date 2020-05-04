@@ -39,7 +39,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
         {
             Guard.Against.NullOrEmpty(userName, nameof(userName));
             var basketSpec = new BasketWithItemsSpecification(userName);
-            var basket = (await _basketRepository.ListAsync(basketSpec)).FirstOrDefault();
+            var basket = (await _basketRepository.FirstOrDefaultAsync(basketSpec));
             if (basket == null)
             {
                 _logger.LogInformation($"No basket found for {userName}");
@@ -72,7 +72,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
             Guard.Against.NullOrEmpty(anonymousId, nameof(anonymousId));
             Guard.Against.NullOrEmpty(userName, nameof(userName));
             var basketSpec = new BasketWithItemsSpecification(anonymousId);
-            var basket = (await _basketRepository.ListAsync(basketSpec)).FirstOrDefault();
+            var basket = (await _basketRepository.FirstOrDefaultAsync(basketSpec));
             if (basket == null) return;
             basket.SetNewBuyerId(userName);
             await _basketRepository.UpdateAsync(basket);
