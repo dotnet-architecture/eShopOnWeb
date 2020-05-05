@@ -33,8 +33,15 @@ namespace Microsoft.eShopWeb.Web.Pages.Basket
 
         public BasketViewModel BasketModel { get; set; } = new BasketViewModel();
 
-        public void OnGet()
+        public async Task OnGet()
         {
+            if (HttpContext.Request.Query.ContainsKey(Constants.BASKET_ID))
+            {
+                var basketId = int.Parse(HttpContext.Request.Query[Constants.BASKET_ID]);
+                await _basketService.TransferBasketAsync(Request.Cookies[Constants.BASKET_COOKIENAME], User.Identity.Name);
+                await _orderService.CreateOrderAsync(basketId, new Address("123 Main St.", "Kent", "OH", "United States", "44240"));
+                await _basketService.DeleteBasketAsync(basketId);
+            }
         }
 
         public async Task<IActionResult> OnPost(Dictionary<string, int> items)
