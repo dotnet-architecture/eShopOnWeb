@@ -61,6 +61,16 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task<T> FirstAsync(ISpecification<T> spec)
+        {
+            return await ApplySpecification(spec).FirstAsync();
+        }
+
+        public async Task<T> FirstOrDefaultAsync(ISpecification<T> spec)
+        {
+            return await ApplySpecification(spec).FirstOrDefaultAsync();
+        }
+
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)
         {
             return SpecificationEvaluator<T>.GetQuery(_dbContext.Set<T>().AsQueryable(), spec);
