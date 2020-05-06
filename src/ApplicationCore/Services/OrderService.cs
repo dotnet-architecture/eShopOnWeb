@@ -5,6 +5,7 @@ using Microsoft.eShopWeb.ApplicationCore.Entities;
 using System.Collections.Generic;
 using Ardalis.GuardClauses;
 using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
+using Microsoft.eShopWeb.ApplicationCore.Specifications;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Services
 {
@@ -28,7 +29,9 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
 
         public async Task CreateOrderAsync(int basketId, Address shippingAddress)
         {
-            var basket = await _basketRepository.GetByIdAsync(basketId);
+            var basketSpec = new BasketWithItemsSpecification(basketId);
+            var basket = await _basketRepository.FirstOrDefaultAsync(basketSpec);
+
             Guard.Against.NullBasket(basketId, basket);
             var items = new List<OrderItem>();
             foreach (var item in basket.Items)

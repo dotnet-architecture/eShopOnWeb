@@ -120,7 +120,7 @@ namespace Microsoft.eShopWeb.Web
                 options.Conventions.Add(new RouteTokenTransformerConvention(
                          new SlugifyParameterTransformer()));
 
-            });    
+            });
             services.AddRazorPages(options =>
             {
                 options.Conventions.AuthorizePage("/Basket/Checkout");
@@ -128,8 +128,8 @@ namespace Microsoft.eShopWeb.Web
             services.AddControllersWithViews();
 
             services.AddHttpContextAccessor();
-            
-            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApi.Models.OpenApiInfo { Title = "My API", Version = "v1"}));
+
+            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApi.Models.OpenApiInfo { Title = "My API", Version = "v1" }));
 
             services.AddHealthChecks();
 
@@ -201,7 +201,7 @@ namespace Microsoft.eShopWeb.Web
 
             app.UseStaticFiles();
             app.UseRouting();
-            
+
             app.UseHttpsRedirection();
             app.UseCookiePolicy();
             app.UseAuthentication();

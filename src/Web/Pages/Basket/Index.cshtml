@@ -77,8 +77,15 @@
                                 asp-page-handler="Update">
                             [ Update ]
                         </button>
+                        @{
+                            var data = new Dictionary<string, string>
+                                                    {
+                                { Constants.BASKET_ID, Model.BasketModel.Id.ToString() },
+                            };
+                        }
                         <input type="submit" asp-page="Checkout"
                                class="btn esh-basket-checkout"
+                               asp-all-route-data=data
                                value="[ Checkout ]" name="action" />
                     </section>
                 </div>
