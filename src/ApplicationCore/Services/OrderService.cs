@@ -1,12 +1,11 @@
-﻿using Microsoft.eShopWeb.ApplicationCore.Interfaces;
-using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
-using System.Threading.Tasks;
+﻿using Ardalis.GuardClauses;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
-using System.Collections.Generic;
-using Ardalis.GuardClauses;
 using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
+using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
+using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.ApplicationCore.Specifications;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Services
 {
@@ -34,7 +33,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
             var basket = await _basketRepository.FirstOrDefaultAsync(basketSpec);
 
             Guard.Against.NullBasket(basketId, basket);
-          
+
             var catalogItemsSpecification = new CatalogItemsSpecification(basket.Items.Select(item => item.Id).ToArray());
             var catalogItems = await _itemRepository.ListAsync(catalogItemsSpecification);
 
