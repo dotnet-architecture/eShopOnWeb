@@ -48,7 +48,7 @@ namespace Microsoft.eShopWeb.Web.Services
             // the implementation below using ForEach and Count. We need a List.
             var itemsOnPage = await _itemRepository.ListAsync(filterPaginatedSpecification);
             var totalItems = await _itemRepository.CountAsync(filterSpecification);
-         
+
             var vm = new CatalogIndexViewModel()
             {
                 CatalogItems = itemsOnPage.Select(i => new CatalogItemViewModel()
@@ -82,14 +82,13 @@ namespace Microsoft.eShopWeb.Web.Services
             _logger.LogInformation("GetBrands called.");
             var brands = await _brandRepository.ListAllAsync();
 
-            var items = new List<SelectListItem>
-            {
-                new SelectListItem() { Value = null, Text = "All", Selected = true }
-            };
-            foreach (CatalogBrand brand in brands)
-            {
-                items.Add(new SelectListItem() { Value = brand.Id.ToString(), Text = brand.Brand });
-            }
+            var items = brands
+                .Select(brand => new SelectListItem() { Value = brand.Id.ToString(), Text = brand.Brand })
+                .OrderBy(b => b.Text)
+                .ToList();
+
+            var allItem = new SelectListItem() { Value = null, Text = "All", Selected = true };
+            items.Insert(0, allItem);
 
             return items;
         }
@@ -98,14 +97,14 @@ namespace Microsoft.eShopWeb.Web.Services
         {
             _logger.LogInformation("GetTypes called.");
             var types = await _typeRepository.ListAllAsync();
-            var items = new List<SelectListItem>
-            {
-                new SelectListItem() { Value = null, Text = "All", Selected = true }
-            };
-            foreach (CatalogType type in types)
-            {
-                items.Add(new SelectListItem() { Value = type.Id.ToString(), Text = type.Type });
-            }
+
+            var items = types
+                .Select(type => new SelectListItem() { Value = type.Id.ToString(), Text = type.Type })
+                .OrderBy(t => t.Text)
+                .ToList();
+
+            var allItem = new SelectListItem() { Value = null, Text = "All", Selected = true };
+            items.Insert(0, allItem);
 
             return items;
         }
