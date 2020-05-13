@@ -34,12 +34,12 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
 
             Guard.Against.NullBasket(basketId, basket);
 
-            var catalogItemsSpecification = new CatalogItemsSpecification(basket.Items.Select(item => item.Id).ToArray());
+            var catalogItemsSpecification = new CatalogItemsSpecification(basket.Items.Select(item => item.CatalogItemId).ToArray());
             var catalogItems = await _itemRepository.ListAsync(catalogItemsSpecification);
 
             var items = basket.Items.Select(basketItem =>
             {
-                var catalogItem = catalogItems.First(c => c.Id == basketItem.Id);
+                var catalogItem = catalogItems.First(c => c.Id == basketItem.CatalogItemId);
                 var itemOrdered = new CatalogItemOrdered(catalogItem.Id, catalogItem.Name, _uriComposer.ComposePicUri(catalogItem.PictureUri));
                 var orderItem = new OrderItem(itemOrdered, basketItem.UnitPrice, basketItem.Quantity);
                 return orderItem;

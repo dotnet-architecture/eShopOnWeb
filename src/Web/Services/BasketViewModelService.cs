@@ -63,12 +63,12 @@ namespace Microsoft.eShopWeb.Web.Services
 
         private async Task<List<BasketItemViewModel>> GetBasketItems(IReadOnlyCollection<BasketItem> basketItems)
         {
-            var catalogItemsSpecification = new CatalogItemsSpecification(basketItems.Select(b => b.Id).ToArray());
+            var catalogItemsSpecification = new CatalogItemsSpecification(basketItems.Select(b => b.CatalogItemId).ToArray());
             var catalogItems = await _itemRepository.ListAsync(catalogItemsSpecification);
 
             var items = basketItems.Select(basketItem =>
             {
-                var catalogItem = catalogItems.First(c => c.Id == basketItem.Id);
+                var catalogItem = catalogItems.First(c => c.Id == basketItem.CatalogItemId);
 
                 var basketItemViewModel = new BasketItemViewModel
                 {
