@@ -1,7 +1,7 @@
 ﻿using Microsoft.eShopWeb.Web.ViewModels;
-using Newtonsoft.Json;
 using System.Linq;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -23,7 +23,7 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
             var response = await Client.GetAsync("/api/catalog/list");
             response.EnsureSuccessStatusCode();
             var stringResponse = await response.Content.ReadAsStringAsync();
-            var model = JsonConvert.DeserializeObject<CatalogIndexViewModel>(stringResponse);
+            var model = JsonSerializer.Deserialize<CatalogIndexViewModel>(stringResponse);
 
             Assert.Equal(10, model.CatalogItems.Count());
         }
@@ -34,7 +34,7 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
             var response = await Client.GetAsync("/api/catalog/list?page=1");
             response.EnsureSuccessStatusCode();
             var stringResponse = await response.Content.ReadAsStringAsync();
-            var model = JsonConvert.DeserializeObject<CatalogIndexViewModel>(stringResponse);
+            var model = JsonSerializer.Deserialize<CatalogIndexViewModel>(stringResponse);
 
             Assert.Equal(2, model.CatalogItems.Count());
         }
