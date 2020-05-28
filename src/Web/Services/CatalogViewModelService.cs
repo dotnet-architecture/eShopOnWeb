@@ -57,9 +57,9 @@ namespace Microsoft.eShopWeb.Web.Services
                     Name = i.Name,
                     PictureUri = _uriComposer.ComposePicUri(i.PictureUri),
                     Price = i.Price
-                }),
-                Brands = await GetBrands(),
-                Types = await GetTypes(),
+                }).ToList(),
+                Brands = (await GetBrands()).ToList(),
+                Types = (await GetTypes()).ToList(),
                 BrandFilterApplied = brandId ?? 0,
                 TypesFilterApplied = typeId ?? 0,
                 PaginationInfo = new PaginationInfoViewModel()
