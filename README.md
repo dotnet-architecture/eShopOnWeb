@@ -9,7 +9,7 @@ A list of Frequently Asked Questions about this repository can be found [here](h
 This reference application is meant to support the free .PDF download ebook: [Architecting Modern Web Applications with ASP.NET Core and Azure](https://aka.ms/webappebook), updated to **ASP.NET Core 3.1**. [Also available in ePub/mobi formats](https://dotnet.microsoft.com/learn/web/aspnet-architecture).
 
 You can also read the book in online pages at the .NET docs here: 
-https://docs.microsoft.com/en-us/dotnet/standard/modern-web-apps-azure-architecture/
+https://docs.microsoft.com/dotnet/architecture/modern-web-apps-azure/
 
 [<img src="https://user-images.githubusercontent.com/782127/74948402-48512c80-53ca-11ea-948a-58d037440888.png" height="300" />](https://dotnet.microsoft.com/learn/web/aspnet-architecture)
 
@@ -60,7 +60,8 @@ You can also run the samples in Docker (see below).
 ```
 
 1. Ensure your connection strings in `appsettings.json` point to a local SQL Server instance.
-1. Ensure the tool EF was already installed. You can find some help [here](https://docs.microsoft.com/en-us/ef/core/miscellaneous/cli/dotnet)
+1. Ensure the tool EF was already installed. You can find some help [here](https://docs.microsoft.com/ef/core/miscellaneous/cli/dotnet)
+
 ```
 dotnet tool install --global dotnet-ef
 ```
