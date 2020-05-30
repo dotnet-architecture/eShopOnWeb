@@ -22,8 +22,10 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Mime;
+using System.Reflection;
 
 namespace Microsoft.eShopWeb.Web
 {
@@ -129,7 +131,19 @@ namespace Microsoft.eShopWeb.Web
 
             services.AddHttpContextAccessor();
 
-            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApi.Models.OpenApiInfo { Title = "My API", Version = "v1" }));
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApi.Models.OpenApiInfo
+                {
+                    Title = "Eshop on web",
+                    Version = "v1"
+                });
+
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
 
             services.AddHealthChecks();
 
@@ -213,7 +227,7 @@ namespace Microsoft.eShopWeb.Web
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Eshop on web Api V1");
             });
 
             app.UseEndpoints(endpoints =>

@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Web</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.eShopWeb.Web.Controllers.Api.BaseApiController">
+            <summary>
+            Base controller to define all api base definition
+            </summary>
+        </member>
+        <member name="T:Microsoft.eShopWeb.Web.Controllers.Api.CatalogController">
+            <summary>
+            Controller to manage the catalog of product
+            </summary>
+        </member>
+        <member name="M:Microsoft.eShopWeb.Web.Controllers.Api.CatalogController.#ctor(Microsoft.eShopWeb.Web.Services.ICatalogViewModelService)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="catalogViewModelService"></param>
+        </member>
+        <member name="M:Microsoft.eShopWeb.Web.Controllers.Api.CatalogController.List(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Get all catalog item available (use pagination)
+            </summary>
+            <param name="brandFilterApplied">Filter by brand id</param>
+            <param name="typesFilterApplied">Filter by type id</param>
+            <param name="page">The page wants to load</param>
+            <returns></returns>
+        </member>
+        <member name="T:Microsoft.eShopWeb.Web.Services.CatalogViewModelService">
+            <summary>
+            This is a UI-specific service so belongs in UI project. It does not contain any business logic and works
+            with UI-specific types (view models and SelectListItem types).
+            </summary>
+        </member>
+        <member name="T:Microsoft.eShopWeb.Web.ViewModels.CatalogIndexViewModel">
+            <summary>
+            Represent the model for the complete catalog
+            </summary>
+        </member>
+        <member name="P:Microsoft.eShopWeb.Web.ViewModels.CatalogIndexViewModel.CatalogItems">
+            <summary>
+            The list of the items contained in the catalog
+            </summary>
+        </member>
+        <member name="P:Microsoft.eShopWeb.Web.ViewModels.CatalogIndexViewModel.Brands">
+            <summary>
+            All brands available
+            </summary>
+        </member>
+        <member name="P:Microsoft.eShopWeb.Web.ViewModels.CatalogIndexViewModel.Types">
+            <summary>
+            All types of catalog's item available
+            </summary>
+        </member>
+        <member name="P:Microsoft.eShopWeb.Web.ViewModels.CatalogIndexViewModel.BrandFilterApplied">
+            <summary>
+            The id of brand filtered
+            </summary>
+        </member>
+        <member name="P:Microsoft.eShopWeb.Web.ViewModels.CatalogIndexViewModel.TypesFilterApplied">
+            <summary>
+            The id of item type filtered
+            </summary>
+        </member>
+        <member name="P:Microsoft.eShopWeb.Web.ViewModels.CatalogIndexViewModel.PaginationInfo">
+            <summary>
+            Representation of pagination information
+            </summary>
+        </member>
+        <member name="T:Microsoft.eShopWeb.Web.ViewModels.CatalogItemViewModel">
+            <summary>
+            Represent the detail of a catalog item
+            </summary>
+        </member>
+        <member name="P:Microsoft.eShopWeb.Web.ViewModels.CatalogItemViewModel.Id">
+            <summary>
+            The unique identifier
+            </summary>
+        </member>
+        <member name="P:Microsoft.eShopWeb.Web.ViewModels.CatalogItemViewModel.Name">
+            <summary>
+            The name of the item
+            </summary>
+        </member>
+        <member name="P:Microsoft.eShopWeb.Web.ViewModels.CatalogItemViewModel.PictureUri">
+            <summary>
+            Path without domain of the item's picture
+            </summary>
+        </member>
+        <member name="P:Microsoft.eShopWeb.Web.ViewModels.CatalogItemViewModel.Price">
+            <summary>
+            The price
+            </summary>
+        </member>
+        <member name="T:Microsoft.eShopWeb.Web.ViewModels.PaginationInfoViewModel">
+            <summary>
+            Represent the detail of pagination information
+            </summary>
+        </member>
+        <member name="P:Microsoft.eShopWeb.Web.ViewModels.PaginationInfoViewModel.TotalItems">
+            <summary>
+            Number of the total existing item
+            </summary>
+        </member>
+        <member name="P:Microsoft.eShopWeb.Web.ViewModels.PaginationInfoViewModel.ItemsPerPage">
+            <summary>
+            Number of item by page
+            </summary>
+        </member>
+        <member name="P:Microsoft.eShopWeb.Web.ViewModels.PaginationInfoViewModel.ActualPage">
+            <summary>
+            The number of the current page
+            </summary>
+        </member>
+        <member name="P:Microsoft.eShopWeb.Web.ViewModels.PaginationInfoViewModel.TotalPages">
+            <summary>
+            The number of total page available
+            </summary>
+        </member>
+        <member name="P:Microsoft.eShopWeb.Web.ViewModels.PaginationInfoViewModel.Previous">
+            <summary>
+            Contains 'is-disabled' if there aren't previous page available
+            </summary>
+        </member>
+        <member name="P:Microsoft.eShopWeb.Web.ViewModels.PaginationInfoViewModel.Next">
+            <summary>
+            Contains 'is-disabled' if there aren't nex page available
+            </summary>
+        </member>
+    </members>
+</doc>
