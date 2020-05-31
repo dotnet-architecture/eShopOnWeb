@@ -1,8 +1,8 @@
-﻿using Microsoft.eShopWeb.Web.Services;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using Microsoft.eShopWeb.Web.Services;
 using Microsoft.eShopWeb.Web.ViewModels;
+using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.Web.Controllers.Api
 {
