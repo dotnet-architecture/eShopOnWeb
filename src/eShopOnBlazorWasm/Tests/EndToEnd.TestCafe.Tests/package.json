@@ -1,0 +1,10 @@
+{
+  "name": "test-app.end-to-end.test-cafe.tests",
+  "scripts": {
+    "server": "dotnet run --no-build --project ../../Source/Server/eShopOnBlazorWasm.Server.csproj  --urls https://localhost:5011",
+    "test": "testcafe edge tests/ --app \"npm run server > NUL\" --app-init-delay 5000"
+  },
+  "devDependencies": {
+    "testcafe": "^1.4.1"
+  }
+}

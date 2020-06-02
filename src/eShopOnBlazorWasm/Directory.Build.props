@@ -1,0 +1,55 @@
+<Project>
+  <!-- Set common properties regarding assembly information and nuget packages -->
+  
+  <PropertyGroup>
+    <Authors>Steven T. Cramer</Authors>
+    <Product>eShopOnBlazorWasm</Product>
+  </PropertyGroup>
+
+  <!-- Common compile parameters -->
+  <PropertyGroup>
+    <Nullable>disable</Nullable>
+    <LangVersion>preview</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <!-- We use full (Windows PDBs) until cross platform support for source link will get better -->
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <TestProjectTargetFramework>netcoreapp3.1</TestProjectTargetFramework>
+  </PropertyGroup>
+
+  <!--Versions of packages used across the solution-->
+  <PropertyGroup Label="Package Versions">
+    <MicrosoftAspNetCoreBlazorVersion>3.2.0</MicrosoftAspNetCoreBlazorVersion>
+    <MicrosoftAspNetCoreComponentsWebAssemblyVersion>$(MicrosoftAspNetCoreBlazorVersion)</MicrosoftAspNetCoreComponentsWebAssemblyVersion>
+    <MicrosoftAspNetCoreComponentsWebAssemblyBuildVersion>$(MicrosoftAspNetCoreBlazorVersion)</MicrosoftAspNetCoreComponentsWebAssemblyBuildVersion>
+    <MicrosoftAspNetCoreBlazorHttpClientVersion>$(MicrosoftAspNetCoreBlazorVersion)</MicrosoftAspNetCoreBlazorHttpClientVersion>
+    <MicrosoftAspNetCoreComponentsWebAssemblyServerVersion>$(MicrosoftAspNetCoreBlazorVersion)</MicrosoftAspNetCoreComponentsWebAssemblyServerVersion>
+    <SystemNetHttpJsonVersion>3.2.0</SystemNetHttpJsonVersion>
+    <SystemConfigurationConfigurationManagerVersion>4.7.0</SystemConfigurationConfigurationManagerVersion>
+
+    <MicrosoftAspNetCoreVersion>3.1.4</MicrosoftAspNetCoreVersion>    
+    <MicrosoftAspNetCoreMvcTestingVersion>$(MicrosoftAspNetCoreVersion)</MicrosoftAspNetCoreMvcTestingVersion>
+    <MicrosoftAspNetCoreTestHostVersion>$(MicrosoftAspNetCoreVersion)</MicrosoftAspNetCoreTestHostVersion>
+    <MicrosoftCodeAnalysisFxCopAnalyzersVersion>3.0.0</MicrosoftCodeAnalysisFxCopAnalyzersVersion>
+
+    <BlazorStateVersion>3.2.1</BlazorStateVersion>
+    <BlazorExtensionsLoggingVersion>0.4.0</BlazorExtensionsLoggingVersion>
+    <DawnGuardVersion>1.12.0</DawnGuardVersion>
+    <FixieVersion>2.2.1</FixieVersion>
+    <FixieConsoleVersion>2.2.1</FixieConsoleVersion>
+    <FluentAssertionsVersion>5.10.3</FluentAssertionsVersion>
+    <MediatrExtensionsMicrosoftDependencyInjectionVersion>8.0.0</MediatrExtensionsMicrosoftDependencyInjectionVersion>
+    <MediatrVersion>8.0.1</MediatrVersion>
+    <MoqVersion>4.14.1</MoqVersion>
+    <ScrutorVersion>3.2.1</ScrutorVersion>
+    <SeleniumSupportVersion>3.141.0</SeleniumSupportVersion>
+    <SeleniumWebDriverVersion>3.141.0</SeleniumWebDriverVersion>
+    <ShouldlyVersion>3.0.2</ShouldlyVersion>
+    <SystemTextJsonVersion>4.7.2</SystemTextJsonVersion>
+
+  </PropertyGroup>
+</Project>

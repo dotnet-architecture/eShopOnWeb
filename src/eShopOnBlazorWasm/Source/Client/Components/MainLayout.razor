@@ -1,0 +1,44 @@
+@namespace eShopOnBlazorWasm.Components
+@using eShopOnBlazorWasm.Features.Applications.Components
+
+@inherits LayoutComponentBase
+
+<NavBar />
+<!-- Container should take up as minimum all of the view port but can be bigger. -->
+<div class="container-fluid">
+  <div class="row">
+    <!-- sidebar -->
+    <nav class="col-md-2 d-none d-md-block bg-primary sidebar">
+      <SideBar />
+    </nav>
+    <!-- default is flex for pages
+        ml-auto will make this right justified
+        col-md-10 will make it max width of 10 col
+        pb-5 will give room for the footer on the bottom
+        d-flex and flex-column may not be needed.
+        -->
+    <main class="col-md-10 ml-auto bg-light pb-5">@Body</main>
+  </div>
+  <div class="row">
+    <div class="col p-0">
+      <Footer />
+    </div>
+  </div>
+</div>
+
+<style>
+  body
+  {
+    padding-top: @HeadingHeight
+  }
+
+  .sidebar
+  {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    padding-top: @HeadingHeight;
+  }
+</style>

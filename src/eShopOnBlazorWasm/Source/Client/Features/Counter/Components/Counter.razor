@@ -1,0 +1,9 @@
+@namespace eShopOnBlazorWasm.Features.Counters.Components
+@using eShopOnBlazorWasm.Features.Bases
+@inherits BaseComponent
+
+<div data-qa="@TestId">
+  <p>Current count: @CounterState.Count</p>
+
+  <button class="btn btn-primary" @onclick="ButtonClick">Click me</button>
+</div>

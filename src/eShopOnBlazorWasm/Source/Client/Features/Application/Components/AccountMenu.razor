@@ -1,0 +1,37 @@
+@namespace eShopOnBlazorWasm.Features.Applications.Components
+@inherits BaseComponent
+@using eShopOnBlazorWasm.Features.Bases
+@using eShopOnBlazorWasm.Pages
+@using Microsoft.AspNetCore.Components.Routing
+
+<!-- A grey horizontal navbar that becomes vertical on small screens -->
+<nav class="navbar navbar-dark navbar-expand-sm bg-primary p-0">
+  <!-- Links -->
+  <div class="navbar-collapse">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item" style="display:none">
+        <NavLink class="nav-link" href="">
+          Action 1
+        </NavLink>
+      </li>
+      <li class="nav-item dropdown">
+        <button type="button" class="btn btn-primary dropdown-toggle" @onclick="ButtonClick">
+          <span style="font-size:xx-large" class="oi oi-person" aria-hidden="true"></span>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right bg-primary @ShowCssClass" aria-labelledby="navbarDropdown">
+          <NavLink class="dropdown-item nav-link nav-item" href="@ProfilePage.Route">
+            <span class="oi oi-person" aria-hidden="true"></span>
+            Profile
+          </NavLink>
+          <div class="dropdown-divider"></div>
+          <NavLink class="dropdown-item nav-link nav-item" href="@ChangePasswordPage.Route">
+            <span class="oi oi-bolt" aria-hidden="true"></span> Change Password
+          </NavLink>
+          <NavLink class="dropdown-item nav-link nav-item" href="@LogoutPage.Route">
+            <span class="oi oi-account-logout" aria-hidden="true"></span> Logout
+          </NavLink>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>

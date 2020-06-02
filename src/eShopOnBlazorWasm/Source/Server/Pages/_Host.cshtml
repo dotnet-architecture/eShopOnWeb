@@ -1,0 +1,37 @@
+﻿@page "/"
+@namespace eShopOnBlazorWasm.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using eShopOnBlazorWasm.Components
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>eShopOnBlazorWasm</title>
+  <base href="~/" />
+  <environment include="Development">
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+  </environment>
+  <environment exclude="Development">
+    <link 
+      rel="stylesheet" 
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" 
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" 
+      crossorigin="anonymous"
+    />
+  </environment>
+  <link href="css/site.css" rel="stylesheet" />
+</head>
+<body>
+  <app>@(await Html.RenderComponentAsync<App>(RenderMode.Server))</app>
+
+  <script src="_content/Blazor-State/blazorstate.js"></script>
+  <script src="BlazorDualMode.js"></script>
+  <script src="InteropTest.js"></script>
+  <script>
+    const applicationVersion = 'eShopOnBlazorWasm.0.0.1';
+    configureBlazor(applicationVersion);
+  </script>
+</body>
+</html>

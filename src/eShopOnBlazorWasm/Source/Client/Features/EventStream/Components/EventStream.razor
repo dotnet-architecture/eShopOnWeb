@@ -1,0 +1,10 @@
+@namespace eShopOnBlazorWasm.Features.EventStreams
+@using eShopOnBlazorWasm.Features.Bases
+@inherits BaseComponent
+<h6>Event Stream</h6>
+<ul>
+  @foreach (var item in Events)
+  {
+    <li>@item</li>
+  }
+</ul>

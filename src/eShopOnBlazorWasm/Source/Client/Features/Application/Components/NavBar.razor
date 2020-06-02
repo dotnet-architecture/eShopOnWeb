@@ -1,0 +1,48 @@
+@namespace eShopOnBlazorWasm.Features.Applications.Components
+
+@using eShopOnBlazorWasm.Features.Bases
+@using Microsoft.AspNetCore.Components.Routing
+
+@inherits BaseComponent
+<!-- A grey horizontal navbar that becomes vertical on small screens -->
+<header class="navbar fixed-top navbar-dark navbar-expand-sm bg-primary py-0">
+  <!-- Brand/logo -->
+  <a class="navbar-brand" href="#">
+    <img src="@ApplicationState.Logo" alt="logo" style="width:40px;">
+  </a>
+  <!-- Toggler -->
+  <button class="navbar-toggler" type="button" @onclick="ToggleNavMenu" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <!-- Links -->
+  <div class="@NavMenuCssClass navbar-collapse">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <NavLink class="nav-link" href="">
+          Home
+        </NavLink>
+      </li>
+      <li class="nav-item">
+        <NavLink class="nav-link" target="_blank" href="https://thefreezeteam.com/">
+          TheFreezeTeam
+        </NavLink>
+      </li>
+      <li class="nav-item">
+        <NavLink class="nav-link" target="_blank" href="https://timewarpengineering.github.io">
+          TimeWarp GitHub
+        </NavLink>
+      </li>
+      <li class="nav-item">
+        <NavLink class="nav-link" href="">
+          About Us
+        </NavLink>
+      </li>
+      <li class="nav-item">
+        <NavLink class="nav-link" href="">
+          Contact
+        </NavLink>
+      </li>
+    </ul>
+    <AccountMenu />
+  </div>
+</header>

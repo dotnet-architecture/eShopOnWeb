@@ -1,0 +1,15 @@
+@namespace eShopOnBlazorWasm.Components
+
+@using Microsoft.AspNetCore.Components.Routing
+
+@inherits ComponentBase
+
+<Router AppAssembly="typeof(Client.Program).Assembly">
+  <Found Context="routeData">
+    <RouteView RouteData="routeData" DefaultLayout="typeof(eShopOnBlazorWasm.Components.MainLayout)" />
+  </Found>
+  <NotFound>
+    <h1>Page not found</h1>
+    <p>Sorry, but there's nothing here!</p>
+  </NotFound>
+</Router>
