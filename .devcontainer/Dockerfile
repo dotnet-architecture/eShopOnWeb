@@ -70,6 +70,7 @@ RUN apt-get update \
     #
     # Install EF Core dotnet tool
     && dotnet tool install dotnet-ef --tool-path /home/$USERNAME/.dotnet/tools \
+    && chown -R $USERNAME /home/$USERNAME/.dotnet \
     #
     # Clean up
     && apt-get autoremove -y \
