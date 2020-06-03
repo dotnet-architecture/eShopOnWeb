@@ -93,10 +93,16 @@ namespace eShopOnBlazorWasm.Server
     private void ConfigureSwagger(IServiceCollection aServiceCollection)
     {
       // Register the Swagger generator, defining 1 or more Swagger documents
-      aServiceCollection.AddSwaggerGen(c =>
-      {
-        c.SwaggerDoc(SwaggerVersion, new OpenApiInfo { Title = SwaggerApiTitle, Version = SwaggerVersion });
-      });
+      aServiceCollection.AddSwaggerGen
+        (
+          aSwaggerGenOptions => 
+            aSwaggerGenOptions
+            .SwaggerDoc
+            (
+              SwaggerVersion, 
+              new OpenApiInfo { Title = SwaggerApiTitle, Version = SwaggerVersion }
+            )
+        );
     }
   }
 }

@@ -49,6 +49,9 @@
     <SeleniumSupportVersion>3.141.0</SeleniumSupportVersion>
     <SeleniumWebDriverVersion>3.141.0</SeleniumWebDriverVersion>
     <ShouldlyVersion>3.0.2</ShouldlyVersion>
+    <SwashbuckleAspNetCoreSwaggerVersion>5.4.1</SwashbuckleAspNetCoreSwaggerVersion>
+    <SwashbuckleAspNetCoreSwaggerGenVersion>5.4.1</SwashbuckleAspNetCoreSwaggerGenVersion>
+    <SwashbuckleAspNetCoreSwaggerUIVersion>5.4.1</SwashbuckleAspNetCoreSwaggerUIVersion>
     <SystemTextJsonVersion>4.7.2</SystemTextJsonVersion>
 
   </PropertyGroup>
