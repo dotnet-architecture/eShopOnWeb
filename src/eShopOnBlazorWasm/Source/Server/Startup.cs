@@ -7,18 +7,33 @@ namespace eShopOnBlazorWasm.Server
   using Microsoft.AspNetCore.ResponseCompression;
   using Microsoft.Extensions.DependencyInjection;
   using Microsoft.Extensions.Hosting;
+  using Microsoft.OpenApi.Models;
   using System.Linq;
   using System.Net.Mime;
   using System.Reflection;
 
   public class Startup
   {
+    const string SwaggerVersion = "v1";
+    string SwaggerApiTitle => $"TimeWarp.Blazor API {SwaggerVersion}";
+    string SwaggerEndPoint => $"/swagger/{SwaggerVersion}/swagger.json";
+
     public void Configure
     (
       IApplicationBuilder aApplicationBuilder,
       IWebHostEnvironment aWebHostEnvironment
     )
     {
+      // Enable middleware to serve generated Swagger as a JSON endpoint.
+      aApplicationBuilder.UseSwagger();
+
+      // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+      // specifying the Swagger JSON endpoint.
+      aApplicationBuilder.UseSwaggerUI
+      (
+        aSwaggerUIOptions => aSwaggerUIOptions.SwaggerEndpoint(SwaggerEndPoint, SwaggerApiTitle)
+      );
+
       aApplicationBuilder.UseResponseCompression();
 
       if (aWebHostEnvironment.IsDevelopment())
@@ -72,6 +87,16 @@ namespace eShopOnBlazorWasm.Server
           .AsSelf()
           .WithScopedLifetime()
       );
+      ConfigureSwagger(aServiceCollection);
+    }
+
+    private void ConfigureSwagger(IServiceCollection aServiceCollection)
+    {
+      // Register the Swagger generator, defining 1 or more Swagger documents
+      aServiceCollection.AddSwaggerGen(c =>
+      {
+        c.SwaggerDoc(SwaggerVersion, new OpenApiInfo { Title = SwaggerApiTitle, Version = SwaggerVersion });
+      });
     }
   }
 }
