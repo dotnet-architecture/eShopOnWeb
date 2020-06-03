@@ -75,5 +75,19 @@ namespace eShopOnBlazorWasm.Server.Integration.Tests.Infrastructure
       return response;
     }
 
+    protected async Task<TResponse> PostJsonAsync<TResponse>(string aUri, IRequest<TResponse> aRequest)
+    {
+      var httpContent = new StringContent(JsonSerializer.Serialize(aRequest));
+      HttpResponseMessage httpResponseMessage = await HttpClient.PostAsync(aUri, httpContent);
+
+      httpResponseMessage.EnsureSuccessStatusCode();
+
+      string json = await httpResponseMessage.Content.ReadAsStringAsync();
+
+      TResponse response = JsonSerializer.Deserialize<TResponse>(json, JsonSerializerOptions);
+
+      return response;
+    }
+
   }
 }
