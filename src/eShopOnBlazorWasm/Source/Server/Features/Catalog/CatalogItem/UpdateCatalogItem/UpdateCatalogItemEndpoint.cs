@@ -6,7 +6,7 @@ namespace eShopOnBlazorWasm.Features.Catalog
 
   public class UpdateCatalogItemEndpoint : BaseEndpoint<UpdateCatalogItemRequest, UpdateCatalogItemResponse>
   {
-    [HttpGet(UpdateCatalogItemRequest.Route)]
+    [HttpPut(UpdateCatalogItemRequest.Route)]
     public async Task<IActionResult> Process(UpdateCatalogItemRequest aRequest) => await Send(aRequest);
   }
 }

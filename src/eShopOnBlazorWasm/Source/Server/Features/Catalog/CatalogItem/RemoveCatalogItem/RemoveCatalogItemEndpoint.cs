@@ -6,7 +6,7 @@ namespace eShopOnBlazorWasm.Features.Catalog
 
   public class RemoveCatalogItemEndpoint : BaseEndpoint<RemoveCatalogItemRequest, RemoveCatalogItemResponse>
   {
-    [HttpGet(RemoveCatalogItemRequest.Route)]
+    [HttpDelete(RemoveCatalogItemRequest.Route)]
     public async Task<IActionResult> Process(RemoveCatalogItemRequest aRequest) => await Send(aRequest);
   }
 }

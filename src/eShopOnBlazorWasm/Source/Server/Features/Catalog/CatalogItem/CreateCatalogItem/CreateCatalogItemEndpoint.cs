@@ -6,7 +6,7 @@ namespace eShopOnBlazorWasm.Features.Catalog
 
   public class CreateCatalogItemEndpoint : BaseEndpoint<CreateCatalogItemRequest, CreateCatalogItemResponse>
   {
-    [HttpGet(CreateCatalogItemRequest.Route)]
+    [HttpPost(CreateCatalogItemRequest.Route)]
     public async Task<IActionResult> Process(CreateCatalogItemRequest aRequest) => await Send(aRequest);
   }
 }
