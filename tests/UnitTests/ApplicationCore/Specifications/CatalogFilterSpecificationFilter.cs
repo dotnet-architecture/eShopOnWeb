@@ -3,7 +3,6 @@ using Microsoft.eShopWeb.ApplicationCore.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
-using Moq;
 
 namespace Microsoft.eShopWeb.UnitTests
 {
@@ -23,7 +22,7 @@ namespace Microsoft.eShopWeb.UnitTests
 
             var result = GetTestItemCollection()
                 .AsQueryable()
-                .Where(spec.Criteria);
+                .Where(spec.Criterias.FirstOrDefault());
 
             Assert.Equal(expectedCount, result.Count());
         }

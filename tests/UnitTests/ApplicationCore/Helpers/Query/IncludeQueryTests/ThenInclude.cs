@@ -1,4 +1,4 @@
-﻿using Microsoft.eShopWeb.ApplicationCore.Helpers.Query;
+﻿using Ardalis.Specification.QueryExtensions.Include;
 using Microsoft.eShopWeb.UnitTests.Builders;
 using System.Linq;
 using Xunit;

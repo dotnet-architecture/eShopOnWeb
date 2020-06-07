@@ -19,7 +19,7 @@ namespace Microsoft.eShopWeb.UnitTests
 
             var result = GetTestBasketCollection()
                 .AsQueryable()
-                .FirstOrDefault(spec.Criteria);
+                .FirstOrDefault(spec.Criterias.FirstOrDefault());
 
             Assert.NotNull(result);
             Assert.Equal(_testBasketId, result.Id);
@@ -34,7 +34,7 @@ namespace Microsoft.eShopWeb.UnitTests
 
             Assert.False(GetTestBasketCollection()
                 .AsQueryable()
-                .Any(spec.Criteria));
+                .Any(spec.Criterias.FirstOrDefault()));
         }
 
         public List<Basket> GetTestBasketCollection()

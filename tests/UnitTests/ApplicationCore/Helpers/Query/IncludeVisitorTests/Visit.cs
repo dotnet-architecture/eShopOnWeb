@@ -1,4 +1,4 @@
-﻿using Microsoft.eShopWeb.ApplicationCore.Helpers.Query;
+﻿using Ardalis.Specification.QueryExtensions.Include;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;

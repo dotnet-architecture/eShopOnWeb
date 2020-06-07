@@ -1,4 +1,4 @@
-﻿using Microsoft.eShopWeb.ApplicationCore.Helpers.Query;
+﻿using Ardalis.Specification.QueryExtensions.Include;
 using Xunit;
 
 namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Helpers.Query.IncludeAggregatorTests
