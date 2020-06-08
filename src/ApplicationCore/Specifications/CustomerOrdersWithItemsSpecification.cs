@@ -1,5 +1,6 @@
-﻿using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
-using Microsoft.eShopWeb.ApplicationCore.Helpers.Query;
+﻿using Ardalis.Specification;
+using Ardalis.Specification.QueryExtensions.Include;
+using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Specifications
 {
@@ -8,7 +9,8 @@ namespace Microsoft.eShopWeb.ApplicationCore.Specifications
         public CustomerOrdersWithItemsSpecification(string buyerId)
             : base(o => o.BuyerId == buyerId)
         {
-            AddIncludes(query => query.Include(o => o.OrderItems).ThenInclude(i => i.ItemOrdered));
+            AddIncludes(query => query.Include(o => o.OrderItems)
+            .ThenInclude(i => i.ItemOrdered));
         }
     }
 }
