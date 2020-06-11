@@ -2,7 +2,7 @@
 
 namespace Microsoft.eShopWeb
 {
-    public static class StringExtensions
+    public static class JsonExtensions
     {
         private static readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
         {
