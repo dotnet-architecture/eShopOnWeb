@@ -25,7 +25,7 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
             var response = await Client.GetAsync("/api/catalog/list");
             response.EnsureSuccessStatusCode();
             var stringResponse = await response.Content.ReadAsStringAsync();
-            var model = JsonSerializer.Deserialize<CatalogIndexViewModel>(stringResponse, _jsonOptions);
+            var model = stringResponse.FromJson<CatalogIndexViewModel>();
 
             Assert.Equal(10, model.CatalogItems.Count());
         }
@@ -36,7 +36,7 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
             var response = await Client.GetAsync("/api/catalog/list?page=1");
             response.EnsureSuccessStatusCode();
             var stringResponse = await response.Content.ReadAsStringAsync();
-            var model = JsonSerializer.Deserialize<CatalogIndexViewModel>(stringResponse, _jsonOptions);
+            var model = stringResponse.FromJson<CatalogIndexViewModel>();
 
             Assert.Equal(2, model.CatalogItems.Count());
         }

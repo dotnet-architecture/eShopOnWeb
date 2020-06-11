@@ -172,16 +172,15 @@ namespace Microsoft.eShopWeb.Web
                 {
                     ResponseWriter = async (context, report) =>
                     {
-                        var result = JsonConvert.SerializeObject(
-                            new
+                        var result = new
+                        {
+                            status = report.Status.ToString(),
+                            errors = report.Entries.Select(e => new
                             {
-                                status = report.Status.ToString(),
-                                errors = report.Entries.Select(e => new
-                                {
-                                    key = e.Key,
-                                    value = Enum.GetName(typeof(HealthStatus), e.Value.Status)
-                                })
-                            });
+                                key = e.Key,
+                                value = Enum.GetName(typeof(HealthStatus), e.Value.Status)
+                            })
+                        }.ToJson();
                         context.Response.ContentType = MediaTypeNames.Application.Json;
                         await context.Response.WriteAsync(result);
                     }
