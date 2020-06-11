@@ -1,5 +1,6 @@
 namespace eShopOnBlazorWasm.Server
 {
+  using AutoMapper;
   using FluentValidation.AspNetCore;
   using MediatR;
   using Microsoft.AspNetCore.Builder;
@@ -16,12 +17,41 @@ namespace eShopOnBlazorWasm.Server
   using System.Net.Mime;
   using System.Reflection;
   using eShopOnBlazorWasm.Features.Bases;
+  using Microsoft.eShopWeb.Infrastructure.Data;
+  using Microsoft.eShopWeb.ApplicationCore.Interfaces;
+  using Microsoft.eShopWeb.ApplicationCore.Entities;
+  using Microsoft.EntityFrameworkCore;
 
   public class Startup
   {
     const string SwaggerVersion = "v1";
     string SwaggerApiTitle => $"TimeWarp.Blazor API {SwaggerVersion}";
     string SwaggerEndPoint => $"/swagger/{SwaggerVersion}/swagger.json";
+
+    public void ConfigureDevelopmentServices(IServiceCollection aServiceCollection)
+    {
+      // use in-memory database
+      ConfigureInMemoryDatabases(aServiceCollection);
+
+      // use real database
+      //ConfigureProductionServices(services);
+    }
+
+    private void ConfigureInMemoryDatabases(IServiceCollection aServiceCollection)
+    {
+      // use in-memory database
+      aServiceCollection.AddDbContext<CatalogContext>
+      (
+        aDbContextOptionsBuilder => aDbContextOptionsBuilder.UseInMemoryDatabase("Catalog")
+      );
+
+      // Add Identity DbContext
+      //aServiceCollection.AddDbContext<AppIdentityDbContext>(options =>
+      //    options.UseInMemoryDatabase("Identity"));
+
+      ConfigureServices(aServiceCollection);
+    }
+
 
     public void Configure
     (
@@ -63,6 +93,9 @@ namespace eShopOnBlazorWasm.Server
 
     public void ConfigureServices(IServiceCollection aServiceCollection)
     {
+      ConfigureApplicationCoreServices(aServiceCollection);
+      var assemblies = new Assembly[] { typeof(Startup).Assembly };
+      aServiceCollection.AddAutoMapper(assemblies);
 
       aServiceCollection.AddRazorPages();
       aServiceCollection.AddServerSideBlazor();
@@ -78,7 +111,8 @@ namespace eShopOnBlazorWasm.Server
 
       aServiceCollection.Configure<ApiBehaviorOptions>
       (
-        aApiBehaviorOptions => aApiBehaviorOptions.SuppressInferBindingSourcesForParameters = true);
+        aApiBehaviorOptions => aApiBehaviorOptions.SuppressInferBindingSourcesForParameters = true
+      );
 
       aServiceCollection.AddResponseCompression
       (
@@ -102,6 +136,11 @@ namespace eShopOnBlazorWasm.Server
           .WithScopedLifetime()
       );
       ConfigureSwagger(aServiceCollection);
+    }
+
+    private void ConfigureApplicationCoreServices(IServiceCollection aServiceCollection)
+    {
+      aServiceCollection.AddScoped(typeof(IAsyncRepository<CatalogType>), typeof(EfRepository<CatalogType>));
     }
 
     private void ConfigureSwagger(IServiceCollection aServiceCollection)

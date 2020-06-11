@@ -36,6 +36,10 @@
     <MicrosoftAspNetCoreTestHostVersion>$(MicrosoftAspNetCoreVersion)</MicrosoftAspNetCoreTestHostVersion>
     <MicrosoftCodeAnalysisFxCopAnalyzersVersion>3.0.0</MicrosoftCodeAnalysisFxCopAnalyzersVersion>
 
+    <MicrosoftEntityFrameworkCoreInMemoryVersion>3.1.4</MicrosoftEntityFrameworkCoreInMemoryVersion>
+
+    <AutoMapperVersion>9.0.0</AutoMapperVersion>
+    <AutoMapperExtensionsMicrosoftDependencyInjectionVersion>7.0.0</AutoMapperExtensionsMicrosoftDependencyInjectionVersion>
     <BlazorExtensionsLoggingVersion>0.4.0</BlazorExtensionsLoggingVersion>
     <BlazorStateVersion>3.2.1</BlazorStateVersion>
     <DawnGuardVersion>1.12.0</DawnGuardVersion>
