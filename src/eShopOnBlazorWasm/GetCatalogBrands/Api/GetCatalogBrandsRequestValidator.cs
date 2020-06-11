@@ -2,10 +2,10 @@
 {
   using FluentValidation;
   
-  public class GetCatalogTypesRequestValidator : AbstractValidator<GetCatalogTypesRequest>
+  public class GetCatalogBrandsRequestValidator : AbstractValidator<GetCatalogBrandsRequest>
   {
 
-    public GetCatalogTypesRequestValidator()
+    public GetCatalogBrandsRequestValidator()
     {
 
       // Declare message as const here. Or could use an injected Language Service
@@ -13,7 +13,7 @@
       // public const string InsufficentFundsMessage = "You can not send more than your balance";
       // public const string MustBeGreaterThanZeroMessage = "'{PropertyName}' must be greater than zero";
 
-      RuleFor(aGetCatalogTypesRequest => aGetCatalogTypesRequest.Days)
+      RuleFor(aGetCatalogBrandsRequest => aGetCatalogBrandsRequest.Days)
         .NotEmpty().GreaterThan(0);
 
       // https://docs.fluentvalidation.net/

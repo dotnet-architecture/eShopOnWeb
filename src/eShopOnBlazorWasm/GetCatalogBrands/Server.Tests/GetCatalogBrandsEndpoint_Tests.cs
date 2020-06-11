@@ -1,4 +1,4 @@
-﻿namespace GetCatalogTypesEndpoint
+﻿namespace GetCatalogBrandsEndpoint
 {
   using FluentAssertions;
   using Microsoft.AspNetCore.Mvc.Testing;
@@ -12,7 +12,7 @@
 
   public class Returns : BaseTest
   {
-    private readonly GetCatalogTypesRequest GetCatalogTypesRequest;
+    private readonly GetCatalogBrandsRequest GetCatalogBrandsRequest;
 
     public Returns
     (
@@ -20,34 +20,34 @@
       JsonSerializerOptions aJsonSerializerOptions
     ) : base(aWebApplicationFactory, aJsonSerializerOptions)
     {
-      GetCatalogTypesRequest = new GetCatalogTypesRequest { Days = 10 };
+      GetCatalogBrandsRequest = new GetCatalogBrandsRequest { Days = 10 };
     }
 
-    public async Task GetCatalogTypesResponse()
+    public async Task GetCatalogBrandsResponse()
     {
-      GetCatalogTypesResponse GetCatalogTypesResponse =
-        await GetJsonAsync<GetCatalogTypesResponse>(GetCatalogTypesRequest.RouteFactory);
+      GetCatalogBrandsResponse GetCatalogBrandsResponse =
+        await GetJsonAsync<GetCatalogBrandsResponse>(GetCatalogBrandsRequest.RouteFactory);
 
-      ValidateGetCatalogTypesResponse(GetCatalogTypesResponse);
+      ValidateGetCatalogBrandsResponse(GetCatalogBrandsResponse);
     }
 
     public async Task ValidationError()
     {
       // Set invalid value
-      GetCatalogTypesRequest.Days = -1;
+      GetCatalogBrandsRequest.Days = -1;
 
-      HttpResponseMessage httpResponseMessage = await HttpClient.GetAsync(GetCatalogTypesRequest.RouteFactory);
+      HttpResponseMessage httpResponseMessage = await HttpClient.GetAsync(GetCatalogBrandsRequest.RouteFactory);
 
       string json = await httpResponseMessage.Content.ReadAsStringAsync();
 
       httpResponseMessage.StatusCode.Should().Be(HttpStatusCode.BadRequest);
       json.Should().Contain("errors");
-      json.Should().Contain(nameof(GetCatalogTypesRequest.Days));
+      json.Should().Contain(nameof(GetCatalogBrandsRequest.Days));
     }
 
-    private void ValidateGetCatalogTypesResponse(GetCatalogTypesResponse aGetCatalogTypesResponse)
+    private void ValidateGetCatalogBrandsResponse(GetCatalogBrandsResponse aGetCatalogBrandsResponse)
     {
-      aGetCatalogTypesResponse.RequestId.Should().Be(GetCatalogTypesRequest.Id);
+      aGetCatalogBrandsResponse.RequestId.Should().Be(GetCatalogBrandsRequest.Id);
       // check Other properties here
     }
   }

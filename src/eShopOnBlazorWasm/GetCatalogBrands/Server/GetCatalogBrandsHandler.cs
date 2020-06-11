@@ -7,16 +7,16 @@ namespace eShopOnBlazorWasm.Features.Catalogs
   using System.Threading;
   using System.Threading.Tasks;
   
-  public class GetCatalogTypesHandler : IRequestHandler<GetCatalogTypesRequest, GetCatalogTypesResponse>
+  public class GetCatalogBrandsHandler : IRequestHandler<GetCatalogBrandsRequest, GetCatalogBrandsResponse>
   {
 
-    public async Task<GetCatalogTypesResponse> Handle
+    public async Task<GetCatalogBrandsResponse> Handle
     (
-      GetCatalogTypesRequest aGetCatalogTypesRequest,
+      GetCatalogBrandsRequest aGetCatalogBrandsRequest,
       CancellationToken aCancellationToken
     )
     {
-      var response = new GetCatalogTypesResponse(aGetCatalogTypesRequest.Id);
+      var response = new GetCatalogBrandsResponse(aGetCatalogBrandsRequest.Id);
 
       return await Task.Run(() => response);
     }

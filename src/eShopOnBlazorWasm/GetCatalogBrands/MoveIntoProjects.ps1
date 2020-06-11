@@ -1,6 +1,6 @@
 ﻿$FeatureName = "Catalog"
 $RootNamespace = "eShopOnBlazorWasm"
-$RequestName = "GetCatalogTypes"
+$RequestName = "GetCatalogBrands"
 
 $ApiFeaturePath = "..\Source\Api\Features\$FeatureName"
 $ApiRequestPath = "$ApiFeaturePath\$RequestName"

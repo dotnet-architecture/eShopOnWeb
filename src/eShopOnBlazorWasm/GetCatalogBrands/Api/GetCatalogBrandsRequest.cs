@@ -4,9 +4,9 @@ namespace eShopOnBlazorWasm.Features.Catalogs
   using System.Text.Json.Serialization;
   using eShopOnBlazorWasm.Features.Bases;
 
-  public class GetCatalogTypesRequest : BaseApiRequest, IRequest<GetCatalogTypesResponse>
+  public class GetCatalogBrandsRequest : BaseApiRequest, IRequest<GetCatalogBrandsResponse>
   {
-    public const string Route = "api/Catalog/GetCatalogTypes";
+    public const string Route = "api/Catalog/GetCatalogBrands";
 
     /// <summary>
     /// The Number of days of forecasts to get
