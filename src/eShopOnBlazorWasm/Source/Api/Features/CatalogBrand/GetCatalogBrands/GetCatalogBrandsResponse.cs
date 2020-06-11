@@ -1,4 +1,4 @@
-﻿namespace eShopOnBlazorWasm.Features.Catalog
+﻿namespace eShopOnBlazorWasm.Features.CatalogBrands
 {
   using eShopOnBlazorWasm.Features.Bases;
   using System;
@@ -7,7 +7,7 @@
   {
     public GetCatalogBrandsResponse() { }
 
-    public GetCatalogBrandsResponse(Guid aRequestId)
+    public GetCatalogBrandsResponse(Guid aRequestId) : this()
     {
       RequestId = aRequestId;
     }

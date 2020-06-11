@@ -7,7 +7,7 @@
   using System.Threading.Tasks;
   using eShopOnBlazorWasm.Server.Integration.Tests.Infrastructure;
   using eShopOnBlazorWasm.Server;
-  using eShopOnBlazorWasm.Features.Catalog;
+  using eShopOnBlazorWasm.Features.CatalogBrands;
 
   public class Returns : BaseTest
   {

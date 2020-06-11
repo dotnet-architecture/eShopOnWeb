@@ -1,4 +1,4 @@
-namespace eShopOnBlazorWasm.Features.Catalog
+namespace eShopOnBlazorWasm.Features.CatalogBrands
 {
   using MediatR;
   using System;

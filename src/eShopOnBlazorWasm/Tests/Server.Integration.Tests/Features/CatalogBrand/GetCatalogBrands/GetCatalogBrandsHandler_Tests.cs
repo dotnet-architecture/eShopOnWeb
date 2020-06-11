@@ -1,11 +1,10 @@
 ﻿namespace GetCatalogBrandsHandler
 {
-  using eShopOnBlazorWasm.Features.Catalog;
+  using eShopOnBlazorWasm.Features.CatalogBrands;
   using eShopOnBlazorWasm.Server.Integration.Tests.Infrastructure;
   using eShopOnBlazorWasm.Server;
   using FluentAssertions;
   using Microsoft.AspNetCore.Mvc.Testing;
-  using Shouldly;
   using System.Text.Json;
   using System.Threading.Tasks;
 
@@ -31,7 +30,6 @@
 
     private void ValidateGetCatalogBrandsResponse(GetCatalogBrandsResponse aGetCatalogBrandsResponse)
     {
-      aGetCatalogBrandsResponse.RequestId.ShouldBe(GetCatalogBrandsRequest.Id);
       aGetCatalogBrandsResponse.RequestId.Should().Be(GetCatalogBrandsRequest.Id);
     }
 
