@@ -13,7 +13,7 @@ namespace eShopOnBlazorWasm.Features.Catalogs
     /// </summary>
     /// <remarks>
     /// Longer Description
-    /// `<see cref="GetCatalogTypesRequest"/>`
+    /// `<see cref="GetCatalogTypesRequest.Days"/>`
     /// </remarks>
     /// <param name="aGetCatalogTypesRequest"></param>
     /// <returns><see cref="GetCatalogTypesResponse"/></returns>

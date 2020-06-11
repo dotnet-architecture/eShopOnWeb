@@ -1,14 +1,12 @@
-﻿namespace eShopOnBlazorWasm.Features.Catalog
+﻿namespace eShopOnBlazorWasm.Features.Catalogs
 {
   using eShopOnBlazorWasm.Features.Bases;
   using MediatR;
-  using System.Text.Json.Serialization;
 
-  public class GetCatalogTypesRequest : BaseRequest, IRequest<GetCatalogTypesResponse>
+  public class GetCatalogTypesRequest : BaseApiRequest, IRequest<GetCatalogTypesResponse>
   {
-    public const string Route = "api/catalogTypes";
+    public const string Route = "api/CatalogTypes";
 
-    [JsonIgnore]
-    public string RouteFactory => $"{Route}?{nameof(Id)}={Id}";
+    internal override string RouteFactory => $"{Route}?{nameof(Id)}={Id}";
   }
 }

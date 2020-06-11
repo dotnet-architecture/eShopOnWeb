@@ -2,12 +2,11 @@
 {
   using FluentAssertions;
   using Microsoft.AspNetCore.Mvc.Testing;
-  using Shouldly;
   using System.Text.Json;
   using System.Threading.Tasks;
   using eShopOnBlazorWasm.Server.Integration.Tests.Infrastructure;
   using eShopOnBlazorWasm.Server;
-  using eShopOnBlazorWasm.Features.Catalog;
+  using eShopOnBlazorWasm.Features.Catalogs;
 
   public class Returns : BaseTest
   {
@@ -30,12 +29,7 @@
       ValidateGetCatalogTypesResponse(getCatalogTypesResponse);
     }
 
-    private void ValidateGetCatalogTypesResponse(GetCatalogTypesResponse aGetCatalogTypesResponse)
-    {
-      aGetCatalogTypesResponse.RequestId.ShouldBe(GetCatalogTypesRequest.Id);
+    private void ValidateGetCatalogTypesResponse(GetCatalogTypesResponse aGetCatalogTypesResponse) =>
       aGetCatalogTypesResponse.RequestId.Should().Be(GetCatalogTypesRequest.Id);
-
-    }
-
   }
 }

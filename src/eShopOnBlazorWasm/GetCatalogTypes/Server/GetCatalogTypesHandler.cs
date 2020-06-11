@@ -9,6 +9,7 @@ namespace eShopOnBlazorWasm.Features.Catalogs
   
   public class GetCatalogTypesHandler : IRequestHandler<GetCatalogTypesRequest, GetCatalogTypesResponse>
   {
+
     public async Task<GetCatalogTypesResponse> Handle
     (
       GetCatalogTypesRequest aGetCatalogTypesRequest,

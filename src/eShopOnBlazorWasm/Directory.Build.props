@@ -36,22 +36,27 @@
     <MicrosoftAspNetCoreTestHostVersion>$(MicrosoftAspNetCoreVersion)</MicrosoftAspNetCoreTestHostVersion>
     <MicrosoftCodeAnalysisFxCopAnalyzersVersion>3.0.0</MicrosoftCodeAnalysisFxCopAnalyzersVersion>
 
-    <BlazorStateVersion>3.2.1</BlazorStateVersion>
     <BlazorExtensionsLoggingVersion>0.4.0</BlazorExtensionsLoggingVersion>
+    <BlazorStateVersion>3.2.1</BlazorStateVersion>
     <DawnGuardVersion>1.12.0</DawnGuardVersion>
-    <FixieVersion>2.2.1</FixieVersion>
     <FixieConsoleVersion>2.2.1</FixieConsoleVersion>
+    <FixieVersion>2.2.1</FixieVersion>
     <FluentAssertionsVersion>5.10.3</FluentAssertionsVersion>
+    <FluentValidationAspNetCoreVersion>8.6.2</FluentValidationAspNetCoreVersion>
+    <FluentValidationVersion>8.6.2</FluentValidationVersion>
     <MediatrExtensionsMicrosoftDependencyInjectionVersion>8.0.0</MediatrExtensionsMicrosoftDependencyInjectionVersion>
     <MediatrVersion>8.0.1</MediatrVersion>
+    <MicroElementsSwashbuckleFluentValidationVersion>3.1.1</MicroElementsSwashbuckleFluentValidationVersion>
     <MoqVersion>4.14.1</MoqVersion>
     <ScrutorVersion>3.2.1</ScrutorVersion>
     <SeleniumSupportVersion>3.141.0</SeleniumSupportVersion>
     <SeleniumWebDriverVersion>3.141.0</SeleniumWebDriverVersion>
     <ShouldlyVersion>3.0.2</ShouldlyVersion>
-    <SwashbuckleAspNetCoreSwaggerVersion>5.4.1</SwashbuckleAspNetCoreSwaggerVersion>
+    <SwashbuckleAspNetCoreAnnotationsVersion>5.4.1</SwashbuckleAspNetCoreAnnotationsVersion>
+    <SwashbuckleAspNetCoreFiltersVersion>5.1.1</SwashbuckleAspNetCoreFiltersVersion>
     <SwashbuckleAspNetCoreSwaggerGenVersion>5.4.1</SwashbuckleAspNetCoreSwaggerGenVersion>
     <SwashbuckleAspNetCoreSwaggerUIVersion>5.4.1</SwashbuckleAspNetCoreSwaggerUIVersion>
+    <SwashbuckleAspNetCoreSwaggerVersion>5.4.1</SwashbuckleAspNetCoreSwaggerVersion>
     <SystemTextJsonVersion>4.7.2</SystemTextJsonVersion>
 
   </PropertyGroup>

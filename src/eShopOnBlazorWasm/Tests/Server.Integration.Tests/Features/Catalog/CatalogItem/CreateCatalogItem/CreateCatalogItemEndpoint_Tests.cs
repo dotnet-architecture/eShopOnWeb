@@ -24,8 +24,13 @@
 
     public async Task NewCatalogItem()
     {
+      var createCatalogItemRequest = new CreateCatalogItemRequest
+      {
+        
+      };
+
       CreateCatalogItemResponse createCatalogItemResponse =
-        await GetJsonAsync<CreateCatalogItemResponse>(CreateCatalogItemRequest.RouteFactory);
+        await PostJsonAsync<CreateCatalogItemResponse>(CreateCatalogItemRequest.RouteFactory, createCatalogItemRequest);
 
       ValidateCreateCatalogItemResponse(createCatalogItemResponse);
     }

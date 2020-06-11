@@ -1,4 +1,4 @@
-﻿namespace eShopOnBlazorWasm.Features.Catalog
+﻿namespace eShopOnBlazorWasm.Features.Catalogs
 {
   using eShopOnBlazorWasm.Features.Bases;
   using System;

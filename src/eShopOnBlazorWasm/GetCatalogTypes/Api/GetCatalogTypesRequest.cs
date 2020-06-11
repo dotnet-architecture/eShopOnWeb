@@ -1,11 +1,12 @@
-namespace eShopOnBlazorWasm.Features.WeatherForecasts
+namespace eShopOnBlazorWasm.Features.Catalogs
 {
   using MediatR;
+  using System.Text.Json.Serialization;
   using eShopOnBlazorWasm.Features.Bases;
 
-  public class GetWeatherForecastsRequest : BaseApiRequest, IRequest<GetWeatherForecastsResponse>
+  public class GetCatalogTypesRequest : BaseApiRequest, IRequest<GetCatalogTypesResponse>
   {
-    public const string Route = "api/weatherForecasts";
+    public const string Route = "api/Catalog/GetCatalogTypes";
 
     /// <summary>
     /// The Number of days of forecasts to get

@@ -13,9 +13,7 @@ namespace eShopOnBlazorWasm.Server
         (
           aWebHostBuilder =>
           {
-            #region UseHttpSys
-            // The default is kestrel
-            #endregion
+
             aWebHostBuilder.UseStaticWebAssets();
             aWebHostBuilder.UseStartup<Startup>();
           }
