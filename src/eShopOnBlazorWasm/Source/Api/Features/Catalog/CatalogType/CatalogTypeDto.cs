@@ -5,7 +5,7 @@
     /// <summary>
     /// Catalog Type
     /// </summary>
-    /// <example> </example>
+    /// <example>T-Shirt</example>
     public string Type { get; set; }
 
     public CatalogTypeDto() { }
