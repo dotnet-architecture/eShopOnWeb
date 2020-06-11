@@ -7,18 +7,15 @@
   public class GetCatalogTypesResponse : BaseResponse
   {
     /// <summary>
-    /// The collection of forecasts requested
+    /// Catalog Types
     /// </summary>
     public List<CatalogTypeDto> CatalogTypes { get; set; }
 
-    public GetCatalogTypesResponse() 
+    public GetCatalogTypesResponse() { }
+
+    public GetCatalogTypesResponse(Guid aRequestId) : base(aRequestId)
     {
       CatalogTypes = new List<CatalogTypeDto>();
-    }
-
-    public GetCatalogTypesResponse(Guid aRequestId):this()
-    {
-      RequestId = aRequestId;
     }
   }
 }

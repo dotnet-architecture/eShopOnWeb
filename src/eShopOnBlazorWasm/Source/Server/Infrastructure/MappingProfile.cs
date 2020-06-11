@@ -1,7 +1,8 @@
 ﻿namespace eShopOnBlazorWasm.Infrastructure
 {
   using AutoMapper;
-  using eShopOnBlazorWasm.Features.CatalogBrand;
+  using eShopOnBlazorWasm.Features.CatalogBrands;
+  using eShopOnBlazorWasm.Features.CatalogItem;
   using eShopOnBlazorWasm.Features.Catalogs;
   using Microsoft.eShopWeb.ApplicationCore.Entities;
 
@@ -11,6 +12,7 @@
     {
       CreateMap<CatalogType, CatalogTypeDto>();
       CreateMap<CatalogBrand, CatalogBrandDto>();
+      CreateMap<CatalogItem, CatalogItemDto>();
     }
   }
 }

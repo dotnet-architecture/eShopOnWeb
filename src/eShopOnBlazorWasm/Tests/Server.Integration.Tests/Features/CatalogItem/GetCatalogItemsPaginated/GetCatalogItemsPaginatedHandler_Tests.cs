@@ -5,9 +5,9 @@
   using System.Text.Json;
   using Microsoft.AspNetCore.Mvc.Testing;
   using eShopOnBlazorWasm.Server.Integration.Tests.Infrastructure;
+  using eShopOnBlazorWasm.Features.CatalogItems;
   using eShopOnBlazorWasm.Server;
   using FluentAssertions;
-  using eShopOnBlazorWasm.Features.Catalog;
 
   public class Handle_Returns : BaseTest
   {
@@ -31,7 +31,6 @@
 
     private void ValidateGetCatalogItemsPaginatedResponse(GetCatalogItemsPaginatedResponse aGetCatalogItemsPaginatedResponse)
     {
-      aGetCatalogItemsPaginatedResponse.RequestId.ShouldBe(GetCatalogItemsPaginatedRequest.Id);
       aGetCatalogItemsPaginatedResponse.RequestId.Should().Be(GetCatalogItemsPaginatedRequest.Id);
     }
 

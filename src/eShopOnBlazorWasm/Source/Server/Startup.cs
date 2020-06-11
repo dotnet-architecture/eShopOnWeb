@@ -140,7 +140,7 @@ namespace eShopOnBlazorWasm.Server
 
     private void ConfigureApplicationCoreServices(IServiceCollection aServiceCollection)
     {
-      aServiceCollection.AddScoped(typeof(IAsyncRepository<CatalogType>), typeof(EfRepository<CatalogType>));
+      aServiceCollection.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
     }
 
     private void ConfigureSwagger(IServiceCollection aServiceCollection)

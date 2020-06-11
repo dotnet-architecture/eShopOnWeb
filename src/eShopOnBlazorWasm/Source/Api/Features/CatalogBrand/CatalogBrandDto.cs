@@ -1,4 +1,4 @@
-﻿namespace eShopOnBlazorWasm.Features.CatalogBrand
+﻿namespace eShopOnBlazorWasm.Features.CatalogBrands
 {
   public class CatalogBrandDto
   {

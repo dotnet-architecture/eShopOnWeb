@@ -2,12 +2,13 @@
 {
   using FluentAssertions;
   using Microsoft.AspNetCore.Mvc.Testing;
-  using Shouldly;
+  using System.Net;
+  using System.Net.Http;
   using System.Text.Json;
   using System.Threading.Tasks;
+  using eShopOnBlazorWasm.Features.CatalogItems;
   using eShopOnBlazorWasm.Server.Integration.Tests.Infrastructure;
   using eShopOnBlazorWasm.Server;
-  using eShopOnBlazorWasm.Features.Catalog;
 
   public class Returns : BaseTest
   {
@@ -30,14 +31,25 @@
       ValidateGetCatalogItemsPaginatedResponse(getCatalogItemsPaginatedResponse);
     }
 
-    private void ValidateGetCatalogItemsPaginatedResponse(GetCatalogItemsPaginatedResponse aGetCatalogItemsPaginatedResponse)
+    public async Task ValidationError()
     {
-      aGetCatalogItemsPaginatedResponse.RequestId.ShouldBe(GetCatalogItemsPaginatedRequest.Id);
-      aGetCatalogItemsPaginatedResponse.RequestId.Should().Be(GetCatalogItemsPaginatedRequest.Id);
-      //aGetCatalogItemsPaginatedResponse.CatalogItems.Count.ShouldBe(GetCatalogItemsPaginatedRequest.PageSize);
-      //aGetCatalogItemsPaginatedResponse.CatalogItems.Count.Should().Be(GetCatalogItemsPaginatedRequest.PageSize);
+      // Set invalid value
+      GetCatalogItemsPaginatedRequest.PageIndex = -1;
 
+      HttpResponseMessage httpResponseMessage = await HttpClient.GetAsync(GetCatalogItemsPaginatedRequest.RouteFactory);
+
+      string json = await httpResponseMessage.Content.ReadAsStringAsync();
+
+      httpResponseMessage.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+      json.Should().Contain("errors");
+      json.Should().Contain(nameof(GetCatalogItemsPaginatedRequest.PageIndex));
     }
 
+    private void ValidateGetCatalogItemsPaginatedResponse(GetCatalogItemsPaginatedResponse aGetCatalogItemsPaginatedResponse)
+    {
+      aGetCatalogItemsPaginatedResponse.RequestId.Should().Be(GetCatalogItemsPaginatedRequest.Id);
+      aGetCatalogItemsPaginatedResponse.CatalogItems.Count.Should().Be(GetCatalogItemsPaginatedRequest.PageSize);
+      // check Other properties here
+    }
   }
 }
