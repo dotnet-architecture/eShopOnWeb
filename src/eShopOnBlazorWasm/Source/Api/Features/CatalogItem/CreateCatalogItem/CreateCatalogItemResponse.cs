@@ -1,15 +1,19 @@
-﻿namespace eShopOnBlazorWasm.Features.Catalog
+﻿namespace eShopOnBlazorWasm.Features.CatalogItems
 {
   using eShopOnBlazorWasm.Features.Bases;
+  using eShopOnBlazorWasm.Features.CatalogItem;
   using System;
 
   public class CreateCatalogItemResponse : BaseResponse
   {
+
+    /// <summary>
+    /// The created Item
+    /// </summary>
+    public CatalogItemDto CatalogItem { get; set; }
+
     public CreateCatalogItemResponse() { }
 
-    public CreateCatalogItemResponse(Guid aRequestId)
-    {
-      RequestId = aRequestId;
-    }
+    public CreateCatalogItemResponse(Guid aRequestId): base(aRequestId) { }
   }
 }

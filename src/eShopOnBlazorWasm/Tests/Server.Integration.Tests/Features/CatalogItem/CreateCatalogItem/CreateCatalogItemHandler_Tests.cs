@@ -1,14 +1,12 @@
 ﻿namespace CreateCatalogItemHandler
 {
-  using Shouldly;
   using System.Threading.Tasks;
   using System.Text.Json;
   using Microsoft.AspNetCore.Mvc.Testing;
   using eShopOnBlazorWasm.Server.Integration.Tests.Infrastructure;
-  using eShopOnBlazorWasm.Features.WeatherForecasts;
   using eShopOnBlazorWasm.Server;
   using FluentAssertions;
-  using eShopOnBlazorWasm.Features.Catalog;
+  using eShopOnBlazorWasm.Features.CatalogItems;
 
   public class Handle_Returns : BaseTest
   {
@@ -32,8 +30,7 @@
 
     private void ValidateCreateCatalogItemResponse(CreateCatalogItemResponse aCreateCatalogItemResponse)
     {
-      aCreateCatalogItemResponse.RequestId.ShouldBe(CreateCatalogItemRequest.Id);
-      aCreateCatalogItemResponse.RequestId.Should().Be(CreateCatalogItemRequest.Id);
+      aCreateCatalogItemResponse.RequestId.Should().Be(CreateCatalogItemRequest.RequestId);
     }
 
   }
