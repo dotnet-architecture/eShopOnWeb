@@ -24,6 +24,6 @@
     public int? CatalogTypeId { get; set; }
 
     internal override string RouteFactory => 
-      $"{Route}?{nameof(PageSize)}={PageSize}&{nameof(PageIndex)}={PageIndex}&{nameof(Id)}={Id}";
+      $"{Route}?{nameof(PageSize)}={PageSize}&{nameof(PageIndex)}={PageIndex}&{nameof(RequestId)}={RequestId}";
   }
 }

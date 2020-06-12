@@ -13,6 +13,6 @@ namespace eShopOnBlazorWasm.Features.WeatherForecasts
     /// <example>5</example>
     public int Days { get; set; }
 
-    internal override string RouteFactory => $"{Route}?{nameof(Days)}={Days}&{nameof(Id)}={Id}";
+    internal override string RouteFactory => $"{Route}?{nameof(Days)}={Days}&{nameof(RequestId)}={RequestId}";
   }
 }

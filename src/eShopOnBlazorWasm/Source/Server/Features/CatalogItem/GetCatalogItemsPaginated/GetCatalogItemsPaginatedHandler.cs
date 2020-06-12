@@ -3,7 +3,6 @@ namespace eShopOnBlazorWasm.Features.CatalogItems
   using AutoMapper;
   using MediatR;
   using Microsoft.eShopWeb.ApplicationCore.Interfaces;
-  using System;
   using System.Collections.Generic;
   using System.Linq;
   using Microsoft.eShopWeb.ApplicationCore.Entities;
@@ -40,7 +39,7 @@ namespace eShopOnBlazorWasm.Features.CatalogItems
           typeId: aGetCatalogItemsPaginatedRequest.CatalogTypeId
         );
       IReadOnlyList<CatalogItem> catalogItems = await CatalogItemRepository.ListAsync(catalogFilterPaginatedSpecification);
-      var response = new GetCatalogItemsPaginatedResponse(aGetCatalogItemsPaginatedRequest.Id);
+      var response = new GetCatalogItemsPaginatedResponse(aGetCatalogItemsPaginatedRequest.RequestId);
 
       response.CatalogItems.AddRange(catalogItems.Select(Mapper.Map<CatalogItemDto>));
 

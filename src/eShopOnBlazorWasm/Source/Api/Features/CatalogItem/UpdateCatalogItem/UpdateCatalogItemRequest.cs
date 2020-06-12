@@ -11,6 +11,6 @@
     public int CatalogItemId { get; set; }
 
     [JsonIgnore]
-    public string RouteFactory => $"{Route}/{CatalogItemId}?{nameof(Id)}={Id}";
+    public string RouteFactory => $"{Route}/{CatalogItemId}?{nameof(RequestId)}={RequestId}";
   }
 }

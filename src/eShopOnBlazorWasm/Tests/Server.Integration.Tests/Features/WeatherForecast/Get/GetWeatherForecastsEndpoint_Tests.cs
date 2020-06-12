@@ -32,8 +32,8 @@
 
     private void ValidateGetWeatherForecastsResponse(GetWeatherForecastsResponse aGetWeatherForecastsResponse)
     {
-      aGetWeatherForecastsResponse.RequestId.ShouldBe(GetWeatherForecastsRequest.Id);
-      aGetWeatherForecastsResponse.RequestId.Should().Be(GetWeatherForecastsRequest.Id);
+      aGetWeatherForecastsResponse.RequestId.ShouldBe(GetWeatherForecastsRequest.RequestId);
+      aGetWeatherForecastsResponse.RequestId.Should().Be(GetWeatherForecastsRequest.RequestId);
       aGetWeatherForecastsResponse.WeatherForecasts.Count.ShouldBe(GetWeatherForecastsRequest.Days);
       aGetWeatherForecastsResponse.WeatherForecasts.Count.Should().Be(GetWeatherForecastsRequest.Days);
     }

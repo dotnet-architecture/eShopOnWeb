@@ -29,7 +29,7 @@ namespace eShopOnBlazorWasm.Features.WeatherForecasts
       CancellationToken aCancellationToken
     )
     {
-      var response = new GetWeatherForecastsResponse(aGetWeatherForecastsRequest.Id);
+      var response = new GetWeatherForecastsResponse(aGetWeatherForecastsRequest.RequestId);
       var random = new Random();
       var weatherForecasts = new List<WeatherForecastDto>();
       Enumerable.Range(1, aGetWeatherForecastsRequest.Days).ToList().ForEach

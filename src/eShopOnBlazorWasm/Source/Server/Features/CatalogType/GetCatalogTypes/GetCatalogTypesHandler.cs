@@ -29,7 +29,7 @@ namespace eShopOnBlazorWasm.Features.Catalogs
     {
       IReadOnlyList<CatalogType> catalogTypes = await CatalogTypeRepository.ListAllAsync();
       
-      var response = new GetCatalogTypesResponse(aGetCatalogTypesRequest.Id);
+      var response = new GetCatalogTypesResponse(aGetCatalogTypesRequest.RequestId);
       response.CatalogTypes.AddRange(catalogTypes.Select(Mapper.Map<CatalogTypeDto>));
 
       return response;

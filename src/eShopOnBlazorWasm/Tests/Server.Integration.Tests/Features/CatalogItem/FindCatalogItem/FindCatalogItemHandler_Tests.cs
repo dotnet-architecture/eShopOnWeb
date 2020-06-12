@@ -31,8 +31,8 @@
 
     private void ValidateFindCatalogItemResponse(FindCatalogItemResponse aFindCatalogItemResponse)
     {
-      aFindCatalogItemResponse.RequestId.ShouldBe(FindCatalogItemRequest.Id);
-      aFindCatalogItemResponse.RequestId.Should().Be(FindCatalogItemRequest.Id);
+      aFindCatalogItemResponse.RequestId.ShouldBe(FindCatalogItemRequest.RequestId);
+      aFindCatalogItemResponse.RequestId.Should().Be(FindCatalogItemRequest.RequestId);
 
     }
 

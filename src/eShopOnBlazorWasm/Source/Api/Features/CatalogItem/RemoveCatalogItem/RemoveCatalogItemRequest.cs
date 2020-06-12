@@ -11,7 +11,7 @@
 
     [JsonIgnore]
     public string RouteFactory =>
-      $"{Route}?{nameof(Id)}={Id}"
+      $"{Route}?{nameof(RequestId)}={RequestId}"
       .Replace
       (
         $"{{{nameof(CatalogItemId)}}}",

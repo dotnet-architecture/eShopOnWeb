@@ -31,7 +31,7 @@
 
     private void ValidateGetCatalogItemsPaginatedResponse(GetCatalogItemsPaginatedResponse aGetCatalogItemsPaginatedResponse)
     {
-      aGetCatalogItemsPaginatedResponse.RequestId.Should().Be(GetCatalogItemsPaginatedRequest.Id);
+      aGetCatalogItemsPaginatedResponse.RequestId.Should().Be(GetCatalogItemsPaginatedRequest.RequestId);
     }
 
   }

@@ -30,7 +30,7 @@
 
     private void ValidateGetCatalogBrandsResponse(GetCatalogBrandsResponse aGetCatalogBrandsResponse)
     {
-      aGetCatalogBrandsResponse.RequestId.Should().Be(GetCatalogBrandsRequest.Id);
+      aGetCatalogBrandsResponse.RequestId.Should().Be(GetCatalogBrandsRequest.RequestId);
     }
 
   }

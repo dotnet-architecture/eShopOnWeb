@@ -32,8 +32,8 @@
 
     private void ValidateRemoveCatalogItemResponse(RemoveCatalogItemResponse aRemoveCatalogItemResponse)
     {
-      aRemoveCatalogItemResponse.RequestId.ShouldBe(RemoveCatalogItemRequest.Id);
-      aRemoveCatalogItemResponse.RequestId.Should().Be(RemoveCatalogItemRequest.Id);
+      aRemoveCatalogItemResponse.RequestId.ShouldBe(RemoveCatalogItemRequest.RequestId);
+      aRemoveCatalogItemResponse.RequestId.Should().Be(RemoveCatalogItemRequest.RequestId);
     }
 
   }

@@ -7,6 +7,6 @@
   {
     public const string Route = "api/CatalogTypes";
 
-    internal override string RouteFactory => $"{Route}?{nameof(Id)}={Id}";
+    internal override string RouteFactory => $"{Route}?{nameof(RequestId)}={RequestId}";
   }
 }
