@@ -1,4 +1,5 @@
 ﻿using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
+using System;
 using System.Linq;
 using Xunit;
 
@@ -63,6 +64,23 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Entities.BasketTests
             basket.RemoveEmptyItems();
 
             Assert.Equal(0, basket.Items.Count);
+        }
+
+        [Fact]
+        public void CantAddItemWithNegativeQuantity()
+        {
+            var basket = new Basket(_buyerId);
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => basket.AddItem(_testCatalogItemId, _testUnitPrice, -1));
+        }
+
+        [Fact]
+        public void CantModifyQuantityToNegativeNumber()
+        {
+            var basket = new Basket(_buyerId);
+            basket.AddItem(_testCatalogItemId, _testUnitPrice);
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => basket.AddItem(_testCatalogItemId, _testUnitPrice, -2));
         }
     }
 }
