@@ -12,14 +12,22 @@
 
     public CatalogItemDto() { }
 
-    public CatalogItemDto(int catalogTypeId, int catalogBrandId, string description, string name, decimal price, Uri pictureUri)
+    public CatalogItemDto
+    (
+      int aCatalogTypeId, 
+      int aCatalogBrandId, 
+      string aDescription, 
+      string aName, 
+      decimal aPrice, 
+      Uri aPictureUri
+    )
     {
-      CatalogTypeId = catalogTypeId;
-      CatalogBrandId = catalogBrandId;
-      Description = description;
-      Name = name;
-      Price = price;
-      PictureUri = pictureUri;
+      CatalogTypeId = aCatalogTypeId;
+      CatalogBrandId = aCatalogBrandId;
+      Description = aDescription;
+      Name = aName;
+      Price = aPrice;
+      PictureUri = aPictureUri;
     }
   }
 }
