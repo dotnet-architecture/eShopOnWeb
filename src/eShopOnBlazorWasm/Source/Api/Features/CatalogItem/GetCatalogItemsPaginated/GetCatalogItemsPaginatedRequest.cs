@@ -10,13 +10,13 @@
     /// <summary>
     /// Page Size
     /// </summary>
-    /// <example>25</example>
+    /// <example>5</example>
     public int PageSize { get; set; }
 
     /// <summary>
-    /// Page Index
+    /// Page Index zero based
     /// </summary>
-    /// <example>2</example>
+    /// <example>1</example>
     public int PageIndex { get; set; }
 
     public int? CatalogBrandId { get; set; }
