@@ -1,13 +1,12 @@
 ﻿namespace FindCatalogItemHandler
 {
-  using Shouldly;
   using System.Threading.Tasks;
   using System.Text.Json;
   using Microsoft.AspNetCore.Mvc.Testing;
   using eShopOnBlazorWasm.Server.Integration.Tests.Infrastructure;
   using eShopOnBlazorWasm.Server;
   using FluentAssertions;
-  using eShopOnBlazorWasm.Features.Catalog;
+  using eShopOnBlazorWasm.Features.CatalogItems;
 
   public class Handle_Returns : BaseTest
   {
@@ -31,9 +30,7 @@
 
     private void ValidateFindCatalogItemResponse(FindCatalogItemResponse aFindCatalogItemResponse)
     {
-      aFindCatalogItemResponse.RequestId.ShouldBe(FindCatalogItemRequest.RequestId);
       aFindCatalogItemResponse.RequestId.Should().Be(FindCatalogItemRequest.RequestId);
-
     }
 
   }

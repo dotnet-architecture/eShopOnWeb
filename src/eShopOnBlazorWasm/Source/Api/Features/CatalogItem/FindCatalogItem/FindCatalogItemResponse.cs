@@ -1,4 +1,4 @@
-﻿namespace eShopOnBlazorWasm.Features.Catalog
+﻿namespace eShopOnBlazorWasm.Features.CatalogItems
 {
   using eShopOnBlazorWasm.Features.Bases;
   using System;
@@ -7,9 +7,9 @@
   {
     public FindCatalogItemResponse() { }
 
-    public FindCatalogItemResponse(Guid aRequestId)
+    public FindCatalogItemResponse(Guid aRequestId) : base(aRequestId)
     {
-      RequestId = aRequestId;
+
     }
   }
 }

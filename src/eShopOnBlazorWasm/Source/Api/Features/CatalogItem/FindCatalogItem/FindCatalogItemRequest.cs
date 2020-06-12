@@ -1,22 +1,29 @@
-﻿namespace eShopOnBlazorWasm.Features.Catalog
+﻿namespace eShopOnBlazorWasm.Features.CatalogItems
 {
   using eShopOnBlazorWasm.Features.Bases;
   using MediatR;
-  using System.Text.Json.Serialization;
-  public class FindCatalogItemRequest : BaseRequest, IRequest<FindCatalogItemResponse>
+  using System;
+  using System.Collections.Specialized;
+
+  public class FindCatalogItemRequest : BaseApiRequest, IRequest<FindCatalogItemResponse>
   {
-    public const string Route = "api/catalogItem/{CatalogItemId}";
+    public const string Route = "api/CatalogItems/{CatalogItemId}";
 
-    public int CatalogItemId { get; set; }
+    public int? CatalogBrandId { get; set; }
 
-    [JsonIgnore]
-    public string RouteFactory =>
-      $"{Route}?{nameof(RequestId)}={RequestId}"
-      .Replace
-      (
-        $"{{{nameof(CatalogItemId)}}}",
-        CatalogItemId.ToString(),
-        System.StringComparison.OrdinalIgnoreCase
-      );
+    public int? CatalogTypeId { get; set; }
+
+    internal override string RouteFactory
+    {
+      get
+      {
+        var queryParams = new NameValueCollection
+        {
+          [nameof(CatalogBrandId)] = Convert.ToString(CatalogBrandId),
+          [nameof(CatalogTypeId)] = Convert.ToString(CatalogTypeId)
+        };
+        return $"{Route}?{queryParams}";
+      }
+    }
   }
 }

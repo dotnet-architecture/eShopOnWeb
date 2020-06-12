@@ -6,7 +6,7 @@ namespace eShopOnBlazorWasm.Features.CatalogItems
   using System.Threading.Tasks;
   using eShopOnBlazorWasm.Features.Bases;
 
-  public class FindCatalogItemEndpoint : BaseEndpoint<FindCatalogItemRequest, FindCatalogItemResponse>
+  public class GetCatalogItemEndpoint : BaseEndpoint<GetCatalogItemRequest, GetCatalogItemResponse>
   {
     /// <summary>
     /// Your summary these comments will show in the Open API Docs
@@ -14,12 +14,13 @@ namespace eShopOnBlazorWasm.Features.CatalogItems
     /// <remarks>
     /// Longer Description
     /// </remarks>
-    /// <param name="aFindCatalogItemRequest"></param>
-    /// <returns><see cref="FindCatalogItemResponse"/></returns>
-    [HttpGet(FindCatalogItemRequest.Route)]
+    /// <param name="aGetCatalogItemRequest"></param>
+    /// <returns><see cref="GetCatalogItemResponse"/></returns>
+    [HttpGet(GetCatalogItemRequest.Route)]
     [SwaggerOperation(Tags = new[] { FeatureAnnotations.FeatureGroup })]
-    [ProducesResponseType(typeof(FindCatalogItemResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(GetCatalogItemResponse), (int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    public async Task<IActionResult> Process(FindCatalogItemRequest aFindCatalogItemRequest) => await Send(aFindCatalogItemRequest);
+    [ProducesResponseType((int)HttpStatusCode.NotFound)]
+    public async Task<IActionResult> Process(GetCatalogItemRequest aGetCatalogItemRequest) => await Send(aGetCatalogItemRequest);
   }
 }
