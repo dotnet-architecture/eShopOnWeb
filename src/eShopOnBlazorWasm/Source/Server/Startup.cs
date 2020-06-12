@@ -94,8 +94,7 @@ namespace eShopOnBlazorWasm.Server
     public void ConfigureServices(IServiceCollection aServiceCollection)
     {
       ConfigureApplicationCoreServices(aServiceCollection);
-      var assemblies = new Assembly[] { typeof(Startup).Assembly };
-      aServiceCollection.AddAutoMapper(assemblies);
+      aServiceCollection.AddAutoMapper(typeof(Startup).Assembly);
 
       aServiceCollection.AddRazorPages();
       aServiceCollection.AddServerSideBlazor();
@@ -125,7 +124,7 @@ namespace eShopOnBlazorWasm.Server
 
       Client.Program.ConfigureServices(aServiceCollection);
 
-      aServiceCollection.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
+      aServiceCollection.AddMediatR(typeof(Startup).Assembly);
 
       aServiceCollection.Scan
       (
