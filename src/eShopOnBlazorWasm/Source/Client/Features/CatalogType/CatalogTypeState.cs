@@ -7,15 +7,15 @@
   internal partial class CatalogTypeState : State<CatalogTypeState>
   {
 
-    private List<CatalogTypeDto> _CatalogTypes;
+    private Dictionary<int, CatalogTypeDto> _CatalogTypes;
 
-    public IReadOnlyList<CatalogTypeDto> CatalogItems => _CatalogTypes.AsReadOnly();
+    public IReadOnlyDictionary<int, CatalogTypeDto> CatalogItems => _CatalogTypes;
 
     public CatalogTypeState() { }
 
     /// <summary>
     /// Set the Initial State
     /// </summary>
-    public override void Initialize() => _CatalogTypes = new List<CatalogTypeDto>();
+    public override void Initialize() => _CatalogTypes = new Dictionary<int, CatalogTypeDto>();
   }
 }

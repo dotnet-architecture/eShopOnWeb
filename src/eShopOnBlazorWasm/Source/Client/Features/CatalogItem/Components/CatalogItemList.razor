@@ -21,7 +21,7 @@
       {
         <tr>
           <td>
-            <img class="esh-thumbnail" src="@($"/Pics/{catalogItem.PictureUri}")">
+            <img class="esh-thumbnail" src="@catalogItem.PictureUri">
           </td>
           <td>
             <p>@catalogItem.Name</p>
@@ -30,16 +30,13 @@
             <p>@catalogItem.Description</p>
           </td>
           <td>
-            <p>@catalogItem.CatalogBrandId</p>
+            <p>@CatalogBrandState.CatalogBrands[catalogItem.CatalogBrandId]</p>
           </td>
           <td>
-            <p>@catalogItem.CatalogTypeId</p>
+            <p>@CatalogTypeState.CatalogItems[catalogItem.CatalogTypeId]</p>
           </td>
           <td>
             <span class="esh-price">@catalogItem.Price</span>
-          </td>
-          <td>
-            <p>@catalogItem.PictureUri</p>
           </td>
           <td>
             <a href="@($"/Catalog/Edit/{catalogItem.Id}")" class="esh-table-link">
@@ -50,7 +47,7 @@
               Details
             </a>
             |
-            <a href="@($"/Catalog/Delete/{catalogItem.Id}")" class="esh-table-link">
+            <a href="@Pages.Catalog.Delete.RouteFactory(catalogItem.Id)" class="esh-table-link">
               Delete
             </a>
           </td>

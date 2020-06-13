@@ -7,9 +7,8 @@ namespace eShopOnBlazorWasm.Features.CatalogTypes
   using System.Threading;
   using System.Threading.Tasks;
   using eShopOnBlazorWasm.Features.Bases;
-  using eShopOnBlazorWasm.Features.WeatherForecasts;
-  using static eShopOnBlazorWasm.Features.CatalogTypes.CatalogTypeState;
   using eShopOnBlazorWasm.Features.Catalogs;
+  using System.Linq;
 
   internal partial class CatalogTypeState
   {
@@ -31,7 +30,12 @@ namespace eShopOnBlazorWasm.Features.CatalogTypes
         var getCatalogTypesRequest = new GetCatalogTypesRequest();
         GetCatalogTypesResponse getCatalogTypesResponse =
           await HttpClient.GetFromJsonAsync<GetCatalogTypesResponse>(getCatalogTypesRequest.RouteFactory);
-        CatalogTypeState._CatalogTypes = getCatalogTypesResponse.CatalogTypes;
+        
+        CatalogTypeState._CatalogTypes = 
+          getCatalogTypesResponse
+            .CatalogTypes
+            .ToDictionary(aCatalogType => aCatalogType.Id, aCatalogType => aCatalogType);
+
         return Unit.Value;
       }
     }

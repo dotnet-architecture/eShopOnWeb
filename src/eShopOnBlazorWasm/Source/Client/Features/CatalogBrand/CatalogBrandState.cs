@@ -6,15 +6,15 @@
   internal partial class CatalogBrandState : State<CatalogBrandState>
   {
 
-    private List<CatalogBrandDto> _CatalogBrands;
+    private Dictionary<int, CatalogBrandDto> _CatalogBrands;
 
-    public IReadOnlyList<CatalogBrandDto> CatalogBrands => _CatalogBrands.AsReadOnly();
+    public IReadOnlyDictionary<int, CatalogBrandDto> CatalogBrands => _CatalogBrands;
 
     public CatalogBrandState() { }
 
     /// <summary>
     /// Set the Initial State
     /// </summary>
-    public override void Initialize() => _CatalogBrands = new List<CatalogBrandDto>();
+    public override void Initialize() => _CatalogBrands = new Dictionary<int, CatalogBrandDto>();
   }
 }

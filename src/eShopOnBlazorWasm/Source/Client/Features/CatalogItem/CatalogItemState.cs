@@ -1,6 +1,7 @@
 namespace eShopOnBlazorWasm.Features.CatalogItems
 {
   using BlazorState;
+  using System;
   using System.Collections.Generic;
 
   internal partial class CatalogItemState : State<CatalogItemState>
@@ -17,6 +18,12 @@ namespace eShopOnBlazorWasm.Features.CatalogItems
     /// <summary>
     /// Set the Initial State
     /// </summary>
-    public override void Initialize() => _CatalogItems = new List<CatalogItemDto>();
+    public override void Initialize()
+    {
+      Console.WriteLine("Initialize CatalogItemState");
+      PageIndex = 0;
+      PageSize = 10;
+      _CatalogItems = new List<CatalogItemDto>();
+    }
   }
 }

@@ -5,6 +5,7 @@
   using Microsoft.JSInterop;
   using System;
   using System.Collections.Generic;
+  using System.Linq;
   using System.Reflection;
   
   internal partial class CatalogBrandState : State<CatalogBrandState>
@@ -27,7 +28,8 @@
     public void Initialize(List<CatalogBrandDto> aCatalogItems)
     {
       ThrowIfNotTestAssembly(Assembly.GetCallingAssembly());
-      _CatalogBrands = aCatalogItems;
+      _CatalogBrands = aCatalogItems
+        .ToDictionary(aCatalogBrand => aCatalogBrand.Id, aCatalogBrand => aCatalogBrand);
     }
   }
 }

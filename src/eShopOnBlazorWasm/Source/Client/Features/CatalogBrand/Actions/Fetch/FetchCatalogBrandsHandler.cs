@@ -7,6 +7,7 @@ namespace eShopOnBlazorWasm.Features.CatalogBrands
   using System.Threading;
   using System.Threading.Tasks;
   using eShopOnBlazorWasm.Features.Bases;
+  using System.Linq;
 
   internal partial class CatalogBrandState
   {
@@ -28,7 +29,9 @@ namespace eShopOnBlazorWasm.Features.CatalogBrands
         var getCatalogBrandRequest = new GetCatalogBrandsRequest();
         GetCatalogBrandsResponse getCatalogBrandsResponse =
           await HttpClient.GetFromJsonAsync<GetCatalogBrandsResponse>(getCatalogBrandRequest.RouteFactory);
-        CatalogBrandState._CatalogBrands = getCatalogBrandsResponse.CatalogBrands;
+        CatalogBrandState._CatalogBrands = 
+          getCatalogBrandsResponse.CatalogBrands
+            .ToDictionary(aCatalogBrand => aCatalogBrand.Id, aCatalogBrand => aCatalogBrand);
         return Unit.Value;
       }
     }

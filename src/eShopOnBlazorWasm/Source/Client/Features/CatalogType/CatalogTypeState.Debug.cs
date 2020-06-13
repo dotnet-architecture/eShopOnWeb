@@ -5,6 +5,7 @@
   using Microsoft.JSInterop;
   using System;
   using System.Collections.Generic;
+  using System.Linq;
   using System.Reflection;
   
   internal partial class CatalogTypeState : State<CatalogTypeState>
@@ -23,11 +24,11 @@
     /// <summary>
     /// Use in Tests ONLY, to initialize the State
     /// </summary>
-    /// <param name="aCount"></param>
-    public void Initialize(List<CatalogTypeDto> aCatalogItems)
+    public void Initialize(List<CatalogTypeDto> aCatalogTypes)
     {
       ThrowIfNotTestAssembly(Assembly.GetCallingAssembly());
-      _CatalogTypes = aCatalogItems;
+
+      _CatalogTypes = aCatalogTypes.ToDictionary( aCatalogType => aCatalogType.Id, aCatalogType => aCatalogType);
     }
   }
 }
