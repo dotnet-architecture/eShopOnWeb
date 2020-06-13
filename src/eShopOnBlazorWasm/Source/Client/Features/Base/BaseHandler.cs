@@ -2,6 +2,9 @@ namespace eShopOnBlazorWasm.Features.Bases
 {
   using BlazorState;
   using eShopOnBlazorWasm.Features.Applications;
+  using eShopOnBlazorWasm.Features.CatalogBrands;
+  using eShopOnBlazorWasm.Features.CatalogItems;
+  using eShopOnBlazorWasm.Features.CatalogTypes;
   using eShopOnBlazorWasm.Features.Counters;
   using eShopOnBlazorWasm.Features.EventStreams;
 
@@ -13,6 +16,12 @@ namespace eShopOnBlazorWasm.Features.Bases
     where TAction : IAction
   {
     protected ApplicationState ApplicationState => Store.GetState<ApplicationState>();
+
+    protected CatalogBrandState CatalogBrandState => Store.GetState<CatalogBrandState>();
+
+    protected CatalogItemState CatalogItemState => Store.GetState<CatalogItemState>();
+
+    protected CatalogTypeState CatalogTypeState => Store.GetState<CatalogTypeState>();
 
     protected CounterState CounterState => Store.GetState<CounterState>();
 

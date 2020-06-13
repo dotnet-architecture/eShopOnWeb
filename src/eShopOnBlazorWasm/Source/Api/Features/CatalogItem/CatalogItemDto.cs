@@ -4,12 +4,12 @@
   public class CatalogItemDto
   {
     public int Id { get; set; }
-    public string Name { get; private set; }
-    public string Description { get; private set; }
-    public decimal Price { get; private set; }
-    public Uri PictureUri { get; private set; }
-    public int CatalogTypeId { get; private set; }
-    public int CatalogBrandId { get; private set; }
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public decimal Price { get; set; }
+    public Uri PictureUri { get; set; }
+    public int CatalogTypeId { get; set; }
+    public int CatalogBrandId { get; set; }
 
     public CatalogItemDto() { }
 

@@ -30,4 +30,22 @@
   <ItemGroup>
     <ProjectReference Include="..\Api\eShopOnBlazorWasm.Api.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Features\CatalogItem\Components\Delete - Copy.razor.cs">
+      <DependentUpon>Delete.razor.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\CatalogItem\Components\Details - Copy - Copy.razor.cs">
+      <DependentUpon>Details - Copy.razor.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\CatalogItem\Components\Details - Copy.razor.cs">
+      <DependentUpon>Details.razor.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\CatalogItem\Components\Edit - Copy - Copy.razor.cs">
+      <DependentUpon>Edit - Copy.razor.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\CatalogItem\Components\Edit - Copy.razor.cs">
+      <DependentUpon>Edit.razor.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

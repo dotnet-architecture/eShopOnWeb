@@ -1,0 +1,58 @@
+@namespace eShopOnBlazorWasm.Features.CatalogItems.Components
+@using eShopOnBlazorWasm.Features.Bases
+@inherits BaseComponent
+
+<div data-qa="@TestId">
+  <p>CatalogItemList Component</p>
+
+  <table class="table">
+    <thead>
+      <tr class="esh-table-header">
+        <th></th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Brand</th>
+        <th>Type</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach (var catalogItem in CatalogItemState.CatalogItems)
+      {
+        <tr>
+          <td>
+            <img class="esh-thumbnail" src="@catalogItem.PictureUri">
+          </td>
+          <td>
+            <p>@catalogItem.Name</p>
+          </td>
+          <td>
+            <p>@catalogItem.Description</p>
+          </td>
+          <td>
+            <p>@CatalogBrandState.CatalogBrands[catalogItem.CatalogBrandId]</p>
+          </td>
+          <td>
+            <p>@CatalogTypeState.CatalogTypes[catalogItem.CatalogTypeId]</p>
+          </td>
+          <td>
+            <span class="esh-price">@catalogItem.Price</span>
+          </td>
+          <td>
+            <a href="@($"/Catalog/Edit/{catalogItem.Id}")" class="esh-table-link">
+              Edit
+            </a>
+            |
+            <a href="@($"/Catalog/Details/{catalogItem.Id}")" class="esh-table-link">
+              Details
+            </a>
+            |
+            <a href="@Pages.Catalog.Delete.RouteFactory(catalogItem.Id)" class="esh-table-link">
+              Delete
+            </a>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

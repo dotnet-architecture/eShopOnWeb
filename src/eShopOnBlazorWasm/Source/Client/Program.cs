@@ -34,6 +34,9 @@ namespace eShopOnBlazorWasm.Client
       (
         (aOptions) =>
         {
+#if ReduxDevToolsEnabled
+          aOptions.UseReduxDevToolsBehavior = true;
+#endif
           aOptions.Assemblies =
             new Assembly[]
             {

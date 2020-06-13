@@ -1,0 +1,8 @@
+@namespace eShopOnBlazorWasm.Pages.Catalog
+@using eShopOnBlazorWasm.Features.Bases
+@inherits BaseComponent
+@page "/Catalog/Delete/{EntityId}"
+
+<h1>CatalogItem Delete Page</h1>
+
+<eShopOnBlazorWasm.Features.CatalogItems.Components.Delete CatalogItemId=@EntityId />
