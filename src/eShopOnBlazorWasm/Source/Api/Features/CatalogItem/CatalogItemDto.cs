@@ -1,4 +1,4 @@
-﻿namespace eShopOnBlazorWasm.Features.CatalogItem
+﻿namespace eShopOnBlazorWasm.Features.CatalogItems
 {
   using System;
   public class CatalogItemDto

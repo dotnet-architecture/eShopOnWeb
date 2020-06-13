@@ -7,7 +7,7 @@
   using eShopOnBlazorWasm.Server.Integration.Tests.Infrastructure;
   using eShopOnBlazorWasm.Server;
   using FluentAssertions;
-  using eShopOnBlazorWasm.Features.Catalog;
+  using eShopOnBlazorWasm.Features.CatalogItems;
 
   public class Handle_Returns : BaseTest
   {
@@ -19,7 +19,7 @@
       JsonSerializerOptions aJsonSerializerOptions
     ) : base(aWebApplicationFactory, aJsonSerializerOptions)
     {
-      UpdateCatalogItemRequest = new UpdateCatalogItemRequest { };
+      UpdateCatalogItemRequest = new UpdateCatalogItemRequest { CatalogItemId = 10 };
     }
 
     public async Task UpdatedCatalogItem()
@@ -31,7 +31,6 @@
 
     private void ValidateUpdateCatalogItemResponse(UpdateCatalogItemResponse aUpdateCatalogItemResponse)
     {
-      aUpdateCatalogItemResponse.RequestId.ShouldBe(UpdateCatalogItemRequest.RequestId);
       aUpdateCatalogItemResponse.RequestId.Should().Be(UpdateCatalogItemRequest.RequestId);
       
     }

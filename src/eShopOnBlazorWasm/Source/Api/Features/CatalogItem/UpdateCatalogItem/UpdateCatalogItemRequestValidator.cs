@@ -2,10 +2,10 @@
 {
   using FluentValidation;
   
-  public class CreateCatalogItemRequestValidator : AbstractValidator<CreateCatalogItemRequest>
+  public class UpdateCatalogItemRequestValidator : AbstractValidator<UpdateCatalogItemRequest>
   {
 
-    public CreateCatalogItemRequestValidator()
+    public UpdateCatalogItemRequestValidator()
     {
 
       RuleFor(aCreateCatalogItemRequest => aCreateCatalogItemRequest.Price)

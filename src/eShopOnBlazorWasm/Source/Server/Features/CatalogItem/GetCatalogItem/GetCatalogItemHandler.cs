@@ -6,7 +6,6 @@ namespace eShopOnBlazorWasm.Features.CatalogItems
   using Microsoft.eShopWeb.ApplicationCore.Interfaces;
   using System.Threading;
   using System.Threading.Tasks;
-  using eShopOnBlazorWasm.Features.CatalogItem;
 
   public class GetCatalogItemHandler : IRequestHandler<GetCatalogItemRequest, GetCatalogItemResponse>
   {

@@ -4,12 +4,8 @@ namespace eShopOnBlazorWasm.Features.CatalogItems
   using MediatR;
   using Microsoft.eShopWeb.ApplicationCore.Interfaces;
   using Microsoft.eShopWeb.ApplicationCore.Entities;
-  using System;
-  using System.Collections.Generic;
-  using System.Linq;
   using System.Threading;
   using System.Threading.Tasks;
-  using eShopOnBlazorWasm.Features.CatalogItem;
 
   public class CreateCatalogItemHandler : IRequestHandler<CreateCatalogItemRequest, CreateCatalogItemResponse>
   {

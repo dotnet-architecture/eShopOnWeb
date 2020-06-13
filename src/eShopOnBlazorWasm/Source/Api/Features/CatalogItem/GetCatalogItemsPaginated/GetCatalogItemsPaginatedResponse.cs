@@ -1,7 +1,6 @@
 ﻿namespace eShopOnBlazorWasm.Features.CatalogItems
 {
   using eShopOnBlazorWasm.Features.Bases;
-  using eShopOnBlazorWasm.Features.CatalogItem;
   using System;
   using System.Collections.Generic;
 

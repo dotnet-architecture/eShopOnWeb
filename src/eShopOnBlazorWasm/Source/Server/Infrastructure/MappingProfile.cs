@@ -2,7 +2,6 @@
 {
   using AutoMapper;
   using eShopOnBlazorWasm.Features.CatalogBrands;
-  using eShopOnBlazorWasm.Features.CatalogItem;
   using eShopOnBlazorWasm.Features.CatalogItems;
   using eShopOnBlazorWasm.Features.Catalogs;
   using Microsoft.eShopWeb.ApplicationCore.Entities;
@@ -15,6 +14,7 @@
       CreateMap<CatalogBrand, CatalogBrandDto>();
       CreateMap<CatalogItem, CatalogItemDto>();
       CreateMap<CreateCatalogItemRequest, CatalogItem>(MemberList.Source);
+      CreateMap<UpdateCatalogItemRequest, CatalogItem>(MemberList.Source);
     }
   }
 }

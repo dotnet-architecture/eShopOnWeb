@@ -2,7 +2,6 @@ namespace eShopOnBlazorWasm.Features.CatalogItems
 {
   using System;
   using eShopOnBlazorWasm.Features.Bases;
-  using eShopOnBlazorWasm.Features.CatalogItem;
 
   public class GetCatalogItemResponse : BaseResponse
   {

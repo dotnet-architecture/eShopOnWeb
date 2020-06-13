@@ -9,7 +9,6 @@ namespace eShopOnBlazorWasm.Features.CatalogItems
   using System.Threading;
   using System.Threading.Tasks;
   using Microsoft.eShopWeb.ApplicationCore.Specifications;
-  using eShopOnBlazorWasm.Features.CatalogItem;
 
   public class GetCatalogItemsPaginatedHandler : 
     IRequestHandler<GetCatalogItemsPaginatedRequest, GetCatalogItemsPaginatedResponse>
