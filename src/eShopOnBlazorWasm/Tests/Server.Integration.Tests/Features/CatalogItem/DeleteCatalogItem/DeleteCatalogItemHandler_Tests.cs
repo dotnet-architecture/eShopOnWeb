@@ -30,7 +30,7 @@
 
     private void ValidateDeleteCatalogItemResponse(DeleteCatalogItemResponse aDeleteCatalogItemResponse)
     {
-      aDeleteCatalogItemResponse.RequestId.Should().Be(DeleteCatalogItemRequest.RequestId);
+      aDeleteCatalogItemResponse.CorrelationId.Should().Be(DeleteCatalogItemRequest.CorrelationId);
       // check Other properties here
     }
 

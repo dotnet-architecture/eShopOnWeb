@@ -10,6 +10,7 @@ namespace eShopOnBlazorWasm.Features.Catalog
   using System.Threading.Tasks;
   using System.Threading;
   using System;
+  using FluentValidation;
 
   public class UpdateCatalogItemHandler : IRequestHandler<UpdateCatalogItemRequest, UpdateCatalogItemResponse>
   {
@@ -29,15 +30,19 @@ namespace eShopOnBlazorWasm.Features.Catalog
     )
     {
       CatalogItem catalogItem = await CatalogItemRepository.GetByIdAsync(aUpdateCatalogItemRequest.CatalogItemId);
-      _ = Mapper.Map<UpdateCatalogItemRequest, CatalogItem>(aUpdateCatalogItemRequest, catalogItem);
+
+      // TODO: Return NotFound if null
+
+      Mapper.Map<UpdateCatalogItemRequest, CatalogItem>(aUpdateCatalogItemRequest, catalogItem);
+      
       await CatalogItemRepository.UpdateAsync(catalogItem);
 
-      var response = new UpdateCatalogItemResponse(aUpdateCatalogItemRequest.RequestId)
+      var response = new UpdateCatalogItemResponse(aUpdateCatalogItemRequest.CorrelationId)
       {
         CatalogItem = Mapper.Map<CatalogItem, CatalogItemDto>(catalogItem)
       };
 
-      return await Task.Run(() => response);
+      return response;
     }
   }
 }

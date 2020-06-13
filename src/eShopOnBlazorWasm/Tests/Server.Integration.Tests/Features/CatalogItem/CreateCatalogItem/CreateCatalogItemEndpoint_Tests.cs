@@ -52,7 +52,7 @@
 
     private void ValidateCreateCatalogItemResponse(CreateCatalogItemResponse aCreateCatalogItemResponse)
     {
-      aCreateCatalogItemResponse.RequestId.Should().Be(CreateCatalogItemRequest.RequestId);
+      aCreateCatalogItemResponse.CorrelationId.Should().Be(CreateCatalogItemRequest.CorrelationId);
     }
 
   }

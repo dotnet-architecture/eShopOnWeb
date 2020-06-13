@@ -51,6 +51,6 @@
     public decimal Price { get; set; }
 
 
-    internal override string RouteFactory => $"{Route}/{CatalogItemId}?{nameof(RequestId)}={RequestId}";
+    internal override string RouteFactory => $"{Route}/{CatalogItemId}?{nameof(CorrelationId)}={CorrelationId}";
   }
 }

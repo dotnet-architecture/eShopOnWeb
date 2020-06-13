@@ -8,6 +8,6 @@
   {
     public const string Route = "api/CatalogBrands";
 
-    internal override string RouteFactory => $"{Route}?{nameof(RequestId)}={RequestId}";
+    internal override string RouteFactory => $"{Route}?{nameof(CorrelationId)}={CorrelationId}";
   }
 }

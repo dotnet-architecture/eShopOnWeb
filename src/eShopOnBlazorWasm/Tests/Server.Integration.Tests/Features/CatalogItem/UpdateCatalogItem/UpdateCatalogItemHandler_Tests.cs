@@ -31,7 +31,7 @@
 
     private void ValidateUpdateCatalogItemResponse(UpdateCatalogItemResponse aUpdateCatalogItemResponse)
     {
-      aUpdateCatalogItemResponse.RequestId.Should().Be(UpdateCatalogItemRequest.RequestId);
+      aUpdateCatalogItemResponse.CorrelationId.Should().Be(UpdateCatalogItemRequest.CorrelationId);
       
     }
 

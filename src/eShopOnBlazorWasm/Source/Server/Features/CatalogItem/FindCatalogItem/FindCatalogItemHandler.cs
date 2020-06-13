@@ -15,7 +15,7 @@ namespace eShopOnBlazorWasm.Features.CatalogItems
       CancellationToken aCancellationToken
     )
     {
-      var response = new FindCatalogItemResponse(aFindCatalogItemRequest.RequestId);
+      var response = new FindCatalogItemResponse(aFindCatalogItemRequest.CorrelationId);
 
       return await Task.Run(() => response);
     }

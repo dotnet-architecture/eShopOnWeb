@@ -7,7 +7,6 @@ namespace eShopOnBlazorWasm.Features.Bases
   using eShopOnBlazorWasm.Features.CatalogTypes;
   using eShopOnBlazorWasm.Features.Counters;
   using eShopOnBlazorWasm.Features.EventStreams;
-  using eShopOnBlazorWasm.Features.WeatherForecasts;
 
   /// <summary>
   /// Makes access to the State a little easier and by inheriting from
@@ -26,6 +25,5 @@ namespace eShopOnBlazorWasm.Features.Bases
     internal CatalogTypeState CatalogTypeState => GetState<CatalogTypeState>();
     internal CounterState CounterState => GetState<CounterState>();
     internal EventStreamState EventStreamState => GetState<EventStreamState>();
-    internal WeatherForecastsState WeatherForecastsState => GetState<WeatherForecastsState>();
   }
 }

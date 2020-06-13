@@ -28,7 +28,7 @@ namespace eShopOnBlazorWasm.Features.CatalogBrands
     )
     {
       IReadOnlyList<CatalogBrand> catalogBrands = await CatalogBrandRepository.ListAllAsync();
-      var response = new GetCatalogBrandsResponse(aGetCatalogBrandsRequest.RequestId);
+      var response = new GetCatalogBrandsResponse(aGetCatalogBrandsRequest.CorrelationId);
       response.CatalogBrands.AddRange(catalogBrands.Select(Mapper.Map<CatalogBrandDto>));
 
       return await Task.Run(() => response);

@@ -31,8 +31,8 @@
 
     private void ValidateGetCatalogTypesResponse(GetCatalogTypesResponse aGetCatalogTypesResponse)
     {
-      aGetCatalogTypesResponse.RequestId.ShouldBe(GetCatalogTypesRequest.RequestId);
-      aGetCatalogTypesResponse.RequestId.Should().Be(GetCatalogTypesRequest.RequestId);
+      aGetCatalogTypesResponse.CorrelationId.ShouldBe(GetCatalogTypesRequest.CorrelationId);
+      aGetCatalogTypesResponse.CorrelationId.Should().Be(GetCatalogTypesRequest.CorrelationId);
     }
 
   }

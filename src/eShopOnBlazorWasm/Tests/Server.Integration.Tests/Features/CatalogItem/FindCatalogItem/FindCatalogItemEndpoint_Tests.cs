@@ -49,7 +49,7 @@
 
     private void ValidateFindCatalogItemResponse(FindCatalogItemResponse aFindCatalogItemResponse)
     {
-      aFindCatalogItemResponse.RequestId.Should().Be(FindCatalogItemRequest.RequestId);
+      aFindCatalogItemResponse.CorrelationId.Should().Be(FindCatalogItemRequest.CorrelationId);
     }
 
   }
