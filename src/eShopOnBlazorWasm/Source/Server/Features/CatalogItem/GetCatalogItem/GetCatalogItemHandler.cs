@@ -1,14 +1,23 @@
 namespace eShopOnBlazorWasm.Features.CatalogItems
 {
+  using AutoMapper;
+  using Microsoft.eShopWeb.ApplicationCore.Entities;
   using MediatR;
-  using System;
-  using System.Collections.Generic;
-  using System.Linq;
+  using Microsoft.eShopWeb.ApplicationCore.Interfaces;
   using System.Threading;
   using System.Threading.Tasks;
-  
+  using eShopOnBlazorWasm.Features.CatalogItem;
+
   public class GetCatalogItemHandler : IRequestHandler<GetCatalogItemRequest, GetCatalogItemResponse>
   {
+    public GetCatalogItemHandler(IAsyncRepository<CatalogItem> aCatalogItemRepository, IMapper aMapper)
+    {
+      CatalogItemRepository = aCatalogItemRepository;
+      Mapper = aMapper;
+    }
+
+    public IAsyncRepository<CatalogItem> CatalogItemRepository { get; }
+    public IMapper Mapper { get; }
 
     public async Task<GetCatalogItemResponse> Handle
     (
@@ -16,9 +25,13 @@ namespace eShopOnBlazorWasm.Features.CatalogItems
       CancellationToken aCancellationToken
     )
     {
-      var response = new GetCatalogItemResponse(aGetCatalogItemRequest.RequestId);
+      CatalogItem catalogItem = await CatalogItemRepository.GetByIdAsync(aGetCatalogItemRequest.CatalogItemId);
+      var response = new GetCatalogItemResponse(aGetCatalogItemRequest.RequestId)
+      {
+        CatalogItem = Mapper.Map<CatalogItem, CatalogItemDto>(catalogItem)
+      };
 
-      return await Task.Run(() => response);
+      return response;
     }
   }
 }
