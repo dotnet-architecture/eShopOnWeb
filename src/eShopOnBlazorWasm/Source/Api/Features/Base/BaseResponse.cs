@@ -7,21 +7,15 @@ namespace eShopOnBlazorWasm.Features.Bases
     /// <summary>
     /// Used to correlate request and response
     /// </summary>
-    public Guid RequestId { get; set; }
+    public Guid CorrelationId { get; set; }
 
-    /// <summary>
-    /// Used to correlate request and response
-    /// </summary>
-    public Guid ResponseId { get; }
-
-    public BaseResponse(Guid aRequestId) : this()
+    public BaseResponse(Guid correlationId) : base()
     {
-      RequestId = aRequestId;
+      CorrelationId = correlationId;
     }
 
     public BaseResponse()
     {
-      ResponseId = Guid.NewGuid();
     }
   }
 }

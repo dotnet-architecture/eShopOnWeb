@@ -14,7 +14,7 @@ namespace eShopOnBlazorWasm.Features.CatalogItems
     public int CatalogItemId { get; set; }
 
     internal override string RouteFactory =>
-      $"{Route}?{nameof(RequestId)}={RequestId}"
+      $"{Route}?{nameof(CorrelationId)}={CorrelationId}"
       .Replace
       (
         $"{{{nameof(CatalogItemId)}}}",

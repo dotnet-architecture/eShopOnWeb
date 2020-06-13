@@ -37,7 +37,7 @@ namespace eShopOnBlazorWasm.Features.Catalog
       
       await CatalogItemRepository.UpdateAsync(catalogItem);
 
-      var response = new UpdateCatalogItemResponse(aUpdateCatalogItemRequest.RequestId)
+      var response = new UpdateCatalogItemResponse(aUpdateCatalogItemRequest.CorrelationId)
       {
         CatalogItem = Mapper.Map<CatalogItem, CatalogItemDto>(catalogItem)
       };

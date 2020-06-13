@@ -38,7 +38,7 @@ namespace eShopOnBlazorWasm.Features.CatalogItems
           typeId: aGetCatalogItemsPaginatedRequest.CatalogTypeId
         );
       IReadOnlyList<CatalogItem> catalogItems = await CatalogItemRepository.ListAsync(catalogFilterPaginatedSpecification);
-      var response = new GetCatalogItemsPaginatedResponse(aGetCatalogItemsPaginatedRequest.RequestId);
+      var response = new GetCatalogItemsPaginatedResponse(aGetCatalogItemsPaginatedRequest.CorrelationId);
 
       response.CatalogItems.AddRange(catalogItems.Select(Mapper.Map<CatalogItemDto>));
 

@@ -32,8 +32,8 @@
 
     private void ValidateGetCatalogBrandsResponse(GetCatalogBrandsResponse aGetCatalogBrandsResponse)
     {
-      aGetCatalogBrandsResponse.RequestId.ShouldBe(GetCatalogBrandsRequest.RequestId);
-      aGetCatalogBrandsResponse.RequestId.Should().Be(GetCatalogBrandsRequest.RequestId);
+      aGetCatalogBrandsResponse.CorrelationId.ShouldBe(GetCatalogBrandsRequest.CorrelationId);
+      aGetCatalogBrandsResponse.CorrelationId.Should().Be(GetCatalogBrandsRequest.CorrelationId);
       //aGetCatalogBrandsResponse.CatalogBrands.Count.ShouldBe(???);
       //aGetCatalogBrandsResponse.CatalogBrands.Count.Should().Be(???);
     }

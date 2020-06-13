@@ -31,7 +31,7 @@ namespace eShopOnBlazorWasm.Features.CatalogItems
       CatalogItem catalogItem = await CatalogItemRepository.GetByIdAsync(aDeleteCatalogItemRequest.CatalogItemId);
       await CatalogItemRepository.DeleteAsync(catalogItem);
 
-      var response = new DeleteCatalogItemResponse(aDeleteCatalogItemRequest.RequestId);
+      var response = new DeleteCatalogItemResponse(aDeleteCatalogItemRequest.CorrelationId);
 
       return await Task.Run(() => response);
     }

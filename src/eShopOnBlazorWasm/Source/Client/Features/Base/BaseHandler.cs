@@ -4,7 +4,6 @@ namespace eShopOnBlazorWasm.Features.Bases
   using eShopOnBlazorWasm.Features.Applications;
   using eShopOnBlazorWasm.Features.Counters;
   using eShopOnBlazorWasm.Features.EventStreams;
-  using eShopOnBlazorWasm.Features.WeatherForecasts;
 
   /// <summary>
   /// Base Handler that makes it easy to access state
@@ -18,8 +17,6 @@ namespace eShopOnBlazorWasm.Features.Bases
     protected CounterState CounterState => Store.GetState<CounterState>();
 
     protected EventStreamState EventStreamState => Store.GetState<EventStreamState>();
-
-    protected WeatherForecastsState WeatherForecastsState => Store.GetState<WeatherForecastsState>();
 
     public BaseHandler(IStore aStore) : base(aStore) { }
   }

@@ -5,13 +5,13 @@ namespace eShopOnBlazorWasm.Features.Bases
   public abstract class BaseRequest
   {
     /// <summary>
-    /// Unique Identifier
+    /// Unique Identifier used by logging
     /// </summary>
-    public Guid RequestId { get; set; }
+    public Guid CorrelationId { get; set; }
 
     public BaseRequest()
     {
-      RequestId = Guid.NewGuid();
+      CorrelationId = Guid.NewGuid();
     }
   }
 }

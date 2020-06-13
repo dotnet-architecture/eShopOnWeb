@@ -47,7 +47,7 @@
 
     private void ValidateGetCatalogItemsPaginatedResponse(GetCatalogItemsPaginatedResponse aGetCatalogItemsPaginatedResponse)
     {
-      aGetCatalogItemsPaginatedResponse.RequestId.Should().Be(GetCatalogItemsPaginatedRequest.RequestId);
+      aGetCatalogItemsPaginatedResponse.CorrelationId.Should().Be(GetCatalogItemsPaginatedRequest.CorrelationId);
       aGetCatalogItemsPaginatedResponse.CatalogItems.Count.Should().Be(GetCatalogItemsPaginatedRequest.PageSize);
       // check Other properties here
     }

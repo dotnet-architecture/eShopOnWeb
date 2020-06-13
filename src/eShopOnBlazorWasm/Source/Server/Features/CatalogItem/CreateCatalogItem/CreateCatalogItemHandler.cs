@@ -25,7 +25,7 @@ namespace eShopOnBlazorWasm.Features.CatalogItems
       CancellationToken aCancellationToken
     )
     {
-      var response = new CreateCatalogItemResponse(aCreateCatalogItemRequest.RequestId);
+      var response = new CreateCatalogItemResponse(aCreateCatalogItemRequest.CorrelationId);
       CatalogItem catalogItem = Mapper.Map<CreateCatalogItemRequest, CatalogItem>(aCreateCatalogItemRequest);
       catalogItem = await CatalogItemRepository.AddAsync(catalogItem);
       response.CatalogItem = Mapper.Map<CatalogItem, CatalogItemDto>(catalogItem);

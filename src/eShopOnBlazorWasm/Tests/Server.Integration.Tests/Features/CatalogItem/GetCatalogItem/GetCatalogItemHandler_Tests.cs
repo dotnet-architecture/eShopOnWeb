@@ -30,7 +30,7 @@
 
     private void ValidateGetCatalogItemResponse(GetCatalogItemResponse aGetCatalogItemResponse)
     {
-      aGetCatalogItemResponse.RequestId.Should().Be(GetCatalogItemRequest.RequestId);
+      aGetCatalogItemResponse.CorrelationId.Should().Be(GetCatalogItemRequest.CorrelationId);
       // check Other properties here
     }
 
