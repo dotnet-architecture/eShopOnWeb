@@ -7,6 +7,7 @@ namespace eShopOnBlazorWasm.Features.CatalogItems
   using System.Threading;
   using System.Threading.Tasks;
   using eShopOnBlazorWasm.Features.Bases;
+  using System;
 
   internal partial class CatalogItemState
   {
@@ -25,7 +26,12 @@ namespace eShopOnBlazorWasm.Features.CatalogItems
         CancellationToken aCancellationToken
       )
       {
-        var getCatalogItemsPaginatedRequest = new GetCatalogItemsPaginatedRequest();
+        var getCatalogItemsPaginatedRequest = 
+          new GetCatalogItemsPaginatedRequest 
+          { 
+            PageSize = CatalogItemState.PageSize,
+            PageIndex = CatalogItemState.PageIndex
+          };
         GetCatalogItemsPaginatedResponse getCatalogItemsResponse =
           await HttpClient.GetFromJsonAsync<GetCatalogItemsPaginatedResponse>(getCatalogItemsPaginatedRequest.RouteFactory);
         CatalogItemState._CatalogItems = getCatalogItemsResponse.CatalogItems;
