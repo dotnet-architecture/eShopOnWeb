@@ -2,25 +2,50 @@
 @using eShopOnBlazorWasm.Pages
 @using Microsoft.AspNetCore.Components.Routing
 
-<ul class="navbar-nav mr-auto">
-  <li class="nav-item">
-    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-      <span class="oi oi-home" aria-hidden="true"></span> Home
-    </NavLink>
-  </li>
-  <li class="nav-item">
-    <NavLink class="nav-link" href="@CounterPage.Route">
-      <span class="oi oi-plus" aria-hidden="true"></span> Counter
-    </NavLink>
-  </li>
-  <li class="nav-item">
-    <NavLink class="nav-link" href="@WeatherForecastsPage.Route">
-      <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-    </NavLink>
-  </li>
-  <li class="nav-item">
-    <NavLink class="nav-link" href="/swagger/" target="_blank">
-      <span class="oi oi-external-link" aria-hidden="true"></span> Api Docs
-    </NavLink>
-  </li>
-</ul>
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item">
+      <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+        <span class="oi oi-home" aria-hidden="true"></span> Home
+      </NavLink>
+    </li>
+    <li class="nav-item">
+      <NavLink class="nav-link" href="@CounterPage.Route">
+        <span class="oi oi-plus" aria-hidden="true"></span> Counter
+      </NavLink>
+    </li>
+    <li class="nav-item">
+      <NavLink class="nav-link" href="@WeatherForecastsPage.Route">
+        <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+      </NavLink>
+    </li>
+    <li class="nav-item">
+      <NavLink class="nav-link" href="/swagger/" target="_blank">
+        <span class="oi oi-external-link" aria-hidden="true"></span> Api Docs
+      </NavLink>
+    </li>
+    <li class="nav-item">
+      <NavLink class="nav-link" href="@Pages.Catalog.IndexPage.Route">
+        <span class="oi oi-list-rich" aria-hidden="true"></span> Index
+      </NavLink>
+    </li>
+    <li class="nav-item">
+      <NavLink class="nav-link" href="@Pages.Catalog.CreatePage.Route">
+        <span class="oi oi-list-rich" aria-hidden="true"></span> Create
+      </NavLink>
+    </li>
+    <li class="nav-item">
+      <NavLink class="nav-link" href="@Pages.Catalog.DetailsPage.Route">
+        <span class="oi oi-list-rich" aria-hidden="true"></span> Details
+      </NavLink>
+    </li>
+    <li class="nav-item">
+      <NavLink class="nav-link" href="@Pages.Catalog.EditPage.Route">
+        <span class="oi oi-list-rich" aria-hidden="true"></span> Edit
+      </NavLink>
+    </li>
+    <li class="nav-item">
+      <NavLink class="nav-link" href="@Pages.Catalog.DeletePage.Route">
+        <span class="oi oi-list-rich" aria-hidden="true"></span> Delete
+      </NavLink>
+    </li>
+  </ul>
