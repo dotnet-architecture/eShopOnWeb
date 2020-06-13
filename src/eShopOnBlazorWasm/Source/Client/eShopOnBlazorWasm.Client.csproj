@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Features\CatalogItem\Actions\" />
     <Folder Include="Properties\" />
   </ItemGroup>
 

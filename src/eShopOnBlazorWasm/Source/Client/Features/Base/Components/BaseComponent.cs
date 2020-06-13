@@ -2,6 +2,7 @@ namespace eShopOnBlazorWasm.Features.Bases
 {
   using BlazorState.Pipeline.ReduxDevTools;
   using eShopOnBlazorWasm.Features.Applications;
+  using eShopOnBlazorWasm.Features.CatalogItems;
   using eShopOnBlazorWasm.Features.Counters;
   using eShopOnBlazorWasm.Features.EventStreams;
   using eShopOnBlazorWasm.Features.WeatherForecasts;
@@ -18,6 +19,7 @@ namespace eShopOnBlazorWasm.Features.Bases
   public class BaseComponent : BlazorStateDevToolsComponent
   {
     internal ApplicationState ApplicationState => GetState<ApplicationState>();
+    internal CatalogItemState CatalogItemState => GetState<CatalogItemState>();
     internal CounterState CounterState => GetState<CounterState>();
     internal EventStreamState EventStreamState => GetState<EventStreamState>();
     internal WeatherForecastsState WeatherForecastsState => GetState<WeatherForecastsState>();
