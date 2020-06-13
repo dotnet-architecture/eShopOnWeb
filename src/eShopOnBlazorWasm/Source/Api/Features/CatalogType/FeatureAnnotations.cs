@@ -2,6 +2,6 @@
 {
   public static class FeatureAnnotations
   {
-    public const string FeatureGroup = "Catalog";
+    public const string FeatureGroup = "CatalogType";
   }
 }
