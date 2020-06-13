@@ -5,6 +5,8 @@ namespace eShopOnBlazorWasm.Features.CatalogItems
 
   internal partial class CatalogItemState : State<CatalogItemState>
   {
+    public int PageSize { get; private set; }
+    public int PageIndex { get; private set; }
 
     private List<CatalogItemDto> _CatalogItems;
 

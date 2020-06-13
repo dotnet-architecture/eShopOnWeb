@@ -4,7 +4,7 @@ namespace eShopOnBlazorWasm.Pages.Catalog
   using System.Threading.Tasks;
   using eShopOnBlazorWasm.Features.Bases;
 
-  public partial class DeletePage: BaseComponent
+  public partial class Delete: BaseComponent
   {
     public const string Route = "/Catalog/Delete";
 

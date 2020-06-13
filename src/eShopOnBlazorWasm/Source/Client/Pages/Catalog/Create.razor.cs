@@ -4,7 +4,7 @@ namespace eShopOnBlazorWasm.Pages.Catalog
   using System.Threading.Tasks;
   using eShopOnBlazorWasm.Features.Bases;
 
-  public partial class CreatePage: BaseComponent
+  public partial class Create: BaseComponent
   {
     public const string Route = "/Catalog/Create";
 

@@ -4,7 +4,7 @@ namespace eShopOnBlazorWasm.Pages.Catalog
   using System.Threading.Tasks;
   using eShopOnBlazorWasm.Features.Bases;
 
-  public partial class EditPage: BaseComponent
+  public partial class Edit: BaseComponent
   {
     public const string Route = "/Catalog/Edit";
 

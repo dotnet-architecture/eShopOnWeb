@@ -4,7 +4,7 @@ namespace eShopOnBlazorWasm.Pages.Catalog
   using System.Threading.Tasks;
   using eShopOnBlazorWasm.Features.Bases;
 
-  public partial class DetailsPage: BaseComponent
+  public partial class Details: BaseComponent
   {
     public const string Route = "/Catalog/Details";
 
