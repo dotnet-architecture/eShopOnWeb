@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>$(TestProjectTargetFramework)</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Fixie" Version="$(FixieVersion)" />
+    <PackageReference Include="Selenium.Support" Version="$(SeleniumSupportVersion)" />
+    <PackageReference Include="Selenium.WebDriver" Version="$(SeleniumSupportVersion)" />
+    <PackageReference Include="Shouldly" Version="$(ShouldlyVersion)" />
+    <DotNetCliToolReference Include="Fixie.Console" Version="$(FixieConsoleVersion)" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Source\Server\eShopOnBlazorWasm.Server.csproj" />
+  </ItemGroup>
+</Project>

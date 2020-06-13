@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="All Rules with default action" Description="All Rules with default action. Rules with IsEnabledByDefault = false are disabled." ToolsVersion="16.0">
+  <Rules AnalyzerId="Microsoft.CodeQuality.Analyzers" RuleNamespace="Microsoft.CodeQuality.Analyzers">
+    <Rule Id="CA1707" Action="None" />
+    <Rule Id="CA1822" Action="None" />
+    <Rule Id="CA2007" Action="None" />
+    <Rule Id="CA2227" Action="None" />
+  </Rules>
+  <Rules AnalyzerId="Microsoft.CodeQuality.VisualBasic.Analyzers" RuleNamespace="Microsoft.CodeQuality.VisualBasic.Analyzers">
+    <Rule Id="CA1001" Action="Warning" />
+    <Rule Id="CA1003" Action="None" />
+    <Rule Id="CA1019" Action="None" />
+    <Rule Id="CA1032" Action="Warning" />
+    <Rule Id="CA1065" Action="Warning" />
+    <Rule Id="CA1200" Action="Warning" />
+    <Rule Id="CA1507" Action="Warning" />
+    <Rule Id="CA1821" Action="Warning" />
+    <Rule Id="CA2200" Action="Warning" />
+    <Rule Id="CA2218" Action="Warning" />
+    <Rule Id="CA2224" Action="Warning" />
+    <Rule Id="CA2234" Action="Warning" />
+  </Rules>
+  <Rules AnalyzerId="Microsoft.NetCore.Analyzers" RuleNamespace="Microsoft.NetCore.Analyzers">
+    <Rule Id="CA1303" Action="None" />
+    <Rule Id="CA1305" Action="None" />
+  </Rules>
+  <Rules AnalyzerId="Microsoft.NetCore.VisualBasic.Analyzers" RuleNamespace="Microsoft.NetCore.VisualBasic.Analyzers">
+    <Rule Id="CA1309" Action="None" />
+    <Rule Id="CA1810" Action="Warning" />
+    <Rule Id="CA1824" Action="Warning" />
+    <Rule Id="CA1825" Action="Warning" />
+    <Rule Id="CA2010" Action="Warning" />
+    <Rule Id="CA2201" Action="None" />
+    <Rule Id="CA2207" Action="Warning" />
+  </Rules>
+  <Rules AnalyzerId="Microsoft.NetFramework.VisualBasic.Analyzers" RuleNamespace="Microsoft.NetFramework.VisualBasic.Analyzers">
+    <Rule Id="CA3076" Action="Warning" />
+    <Rule Id="CA3077" Action="Warning" />
+  </Rules>
+</RuleSet>

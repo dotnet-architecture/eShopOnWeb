@@ -1,0 +1,35 @@
+@namespace eShopOnBlazorWasm.Pages
+
+@using eShopOnBlazorWasm.Features.Bases
+@using eShopOnBlazorWasm.Components
+@using eShopOnBlazorWasm.Features.Counters.Components
+@using eShopOnBlazorWasm.Features.EventStreams
+
+@inherits BaseComponent
+
+@page "/counter"
+
+<h1>Counter Page</h1>
+
+<h2>Counter Display 1</h2>
+<Counter TestId="Counter1" />
+<br />
+
+<h2>Counter Display 2</h2>
+<Counter TestId="Counter2" />
+<br />
+<hr />
+<h6>Reset button will clear all state in the Store and return you to the home page</h6>
+<ResetButton />
+<br />
+<hr />
+<h6>Click below to send a Change Route Request that should take back to home page.</h6>
+<button class="btn btn-primary" data-qa="ChangeRoute" @onclick="ButtonClick">Change Route to Home</button>
+<br />
+<hr />
+<h6>Click below to send a IncrementCountAction via JsInterop.</h6>
+<button class="btn btn-primary" data-qa="JsInterop" onclick="window.InteropTest()">Increment Count by 7 via JavaScript Interop</button>
+<br />
+<hr />
+<h6>EventStream is an example of middleware.  It adds each action to list.</h6>
+<EventStream />

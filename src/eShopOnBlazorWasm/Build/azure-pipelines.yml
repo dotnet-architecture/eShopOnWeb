@@ -1,0 +1,25 @@
+name: $(BuildDefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)
+trigger:
+ branches:
+  include:
+  - master
+
+pr:
+- master
+
+steps:
+- task: DotNetCoreCLI@2
+  displayName: Publish The Server project which will be deployed to azure
+  inputs:
+    command: publish
+    publishWebProjects: false
+    projects: 'Source/Server/eShopOnBlazorWasm.Server.csproj'
+    arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
+  enabled: true
+
+- task: PublishBuildArtifacts@1
+  displayName: Publish Artifact
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
+    ArtifactName: drop
+    publishLocation: Container

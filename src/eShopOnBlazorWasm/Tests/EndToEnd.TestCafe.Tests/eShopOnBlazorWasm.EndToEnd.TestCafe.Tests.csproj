@@ -1,0 +1,12 @@
+﻿<!--A Sdk version is required see nuget for available versions-->
+<Project Sdk="Microsoft.Build.NoTargets/1.0.80">
+  <PropertyGroup>
+    <!--Even though the TargetFramework is NOT used it is required in order to be able to open in Visual Studio-->
+    <TargetFramework>$(TestProjectTargetFramework)</TargetFramework>
+  </PropertyGroup>
+
+  <Target Name="Just A Message" AfterTargets="Build">
+    <Message Text="This Project does not produce an assembly it is to make the TestCafe Tests accessible in Visual Studio." Importance="High" />
+    <Message Text="I recommend using VS Code to edit TestCafe tests" Importance="High" />
+  </Target>
+</Project>
