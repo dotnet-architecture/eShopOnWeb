@@ -2,12 +2,14 @@
 {
   using BlazorState;
   using System.Collections.Generic;
+  using System.Text.Json.Serialization;
 
   internal partial class CatalogBrandState : State<CatalogBrandState>
   {
 
     private Dictionary<int, CatalogBrandDto> _CatalogBrands;
 
+    [JsonIgnore]
     public IReadOnlyDictionary<int, CatalogBrandDto> CatalogBrands => _CatalogBrands;
 
     public CatalogBrandState() { }
