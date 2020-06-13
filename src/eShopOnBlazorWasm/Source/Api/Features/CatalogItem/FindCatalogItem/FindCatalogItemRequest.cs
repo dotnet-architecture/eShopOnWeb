@@ -7,7 +7,7 @@
 
   public class FindCatalogItemRequest : BaseApiRequest, IRequest<FindCatalogItemResponse>
   {
-    public const string Route = "api/CatalogItems/{CatalogItemId}";
+    public const string Route = "api/CatalogItems/Find";
 
     public int? CatalogBrandId { get; set; }
 
