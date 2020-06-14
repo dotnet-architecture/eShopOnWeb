@@ -7,7 +7,9 @@
     public string Name { get; set; }
     public string Description { get; set; }
     public decimal Price { get; set; }
-    public Uri PictureUri { get; set; }
+#pragma warning disable CA1056 // Uri properties should not be strings
+    public string PictureUriString { get; set; }
+#pragma warning restore CA1056 // Uri properties should not be strings
     public int CatalogTypeId { get; set; }
     public int CatalogBrandId { get; set; }
 
@@ -19,8 +21,10 @@
       int aCatalogBrandId, 
       string aDescription, 
       string aName, 
-      decimal aPrice, 
-      Uri aPictureUri
+      decimal aPrice,
+#pragma warning disable CA1054 // Uri parameters should not be strings
+      string aPictureUriString
+#pragma warning restore CA1054 // Uri parameters should not be strings
     )
     {
       CatalogTypeId = aCatalogTypeId;
@@ -28,7 +32,7 @@
       Description = aDescription;
       Name = aName;
       Price = aPrice;
-      PictureUri = aPictureUri;
+      PictureUriString = aPictureUriString;
     }
   }
 }

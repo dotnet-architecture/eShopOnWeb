@@ -14,14 +14,18 @@ namespace eShopOnBlazorWasm.Features.CatalogItems
     IRequestHandler<GetCatalogItemsPaginatedRequest, GetCatalogItemsPaginatedResponse>
   {
 
-    public GetCatalogItemsPaginatedHandler(IAsyncRepository<CatalogItem> aCatalogItemRepository, IMapper aMapper)
+    public GetCatalogItemsPaginatedHandler(IAsyncRepository<CatalogItem> aCatalogItemRepository, 
+      IMapper aMapper,
+      IUriComposer aUriComposer)
     {
       CatalogItemRepository = aCatalogItemRepository;
       Mapper = aMapper;
+      UriComposer = aUriComposer;
     }
 
     public IAsyncRepository<CatalogItem> CatalogItemRepository { get; }
     public IMapper Mapper { get; }
+    public IUriComposer UriComposer { get; }
 
     public async Task<GetCatalogItemsPaginatedResponse> Handle
     (
@@ -41,6 +45,10 @@ namespace eShopOnBlazorWasm.Features.CatalogItems
       var response = new GetCatalogItemsPaginatedResponse(aGetCatalogItemsPaginatedRequest.CorrelationId);
 
       response.CatalogItems.AddRange(catalogItems.Select(Mapper.Map<CatalogItemDto>));
+      foreach (CatalogItemDto item in response.CatalogItems)
+      {
+        item.PictureUriString = UriComposer.ComposePicUri(item.PictureUriString);
+      }
 
       return await Task.Run(() => response);
     }
