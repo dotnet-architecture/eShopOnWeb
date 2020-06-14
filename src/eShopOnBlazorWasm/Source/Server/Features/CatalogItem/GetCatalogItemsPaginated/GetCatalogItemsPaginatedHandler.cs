@@ -47,10 +47,10 @@ namespace eShopOnBlazorWasm.Features.CatalogItems
       response.CatalogItems.AddRange(catalogItems.Select(Mapper.Map<CatalogItemDto>));
       foreach (CatalogItemDto item in response.CatalogItems)
       {
-        item.PictureUriString = UriComposer.ComposePicUri(item.PictureUriString);
+        item.PictureUri = UriComposer.ComposePicUri(item.PictureUri);
       }
 
-      return await Task.Run(() => response);
+      return response;
     }
   }
 }
