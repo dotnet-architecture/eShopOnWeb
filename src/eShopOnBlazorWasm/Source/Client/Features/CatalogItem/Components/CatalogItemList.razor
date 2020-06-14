@@ -39,15 +39,15 @@
             <span class="esh-price">@catalogItem.Price</span>
           </td>
           <td>
-            <a href="@($"/Catalog/Edit/{catalogItem.Id}")" class="esh-table-link">
+            <a href=@Pages.Catalog.Edit.RouteFactory(catalogItem.Id) class="esh-table-link">
               Edit
             </a>
             |
-            <a href="@($"/Catalog/Details/{catalogItem.Id}")" class="esh-table-link">
+            <a href=@Pages.Catalog.Details.RouteFactory(catalogItem.Id) class="esh-table-link">
               Details
             </a>
             |
-            <a href="@Pages.Catalog.Delete.RouteFactory(catalogItem.Id)" class="esh-table-link">
+            <a href=@Pages.Catalog.Delete.RouteFactory(catalogItem.Id) class="esh-table-link">
               Delete
             </a>
           </td>
