@@ -7,7 +7,6 @@ namespace eShopOnBlazorWasm.Features.CatalogTypes
   using System.Threading;
   using System.Threading.Tasks;
   using eShopOnBlazorWasm.Features.Bases;
-  using eShopOnBlazorWasm.Features.Catalogs;
   using System.Linq;
 
   internal partial class CatalogTypeState

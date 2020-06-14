@@ -3,7 +3,7 @@
   using AutoMapper;
   using eShopOnBlazorWasm.Features.CatalogBrands;
   using eShopOnBlazorWasm.Features.CatalogItems;
-  using eShopOnBlazorWasm.Features.Catalogs;
+  using eShopOnBlazorWasm.Features.CatalogTypes;
   using Microsoft.eShopWeb.ApplicationCore.Entities;
 
   public class MappingProfile : Profile

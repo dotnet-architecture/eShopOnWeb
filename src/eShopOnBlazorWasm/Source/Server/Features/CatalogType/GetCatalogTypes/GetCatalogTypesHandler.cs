@@ -1,15 +1,14 @@
-namespace eShopOnBlazorWasm.Features.Catalogs
+namespace eShopOnBlazorWasm.Features.CatalogTypes
 {
   using AutoMapper;
   using MediatR;
   using Microsoft.eShopWeb.ApplicationCore.Entities;
   using Microsoft.eShopWeb.ApplicationCore.Interfaces;
-  using System;
   using System.Collections.Generic;
   using System.Linq;
   using System.Threading;
   using System.Threading.Tasks;
-  
+
   public class GetCatalogTypesHandler : IRequestHandler<GetCatalogTypesRequest, GetCatalogTypesResponse>
   {
     public GetCatalogTypesHandler(IAsyncRepository<CatalogType> aCatalogTypeRepository, IMapper aMapper)

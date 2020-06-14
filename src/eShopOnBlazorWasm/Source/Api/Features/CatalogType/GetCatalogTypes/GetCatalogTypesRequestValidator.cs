@@ -1,4 +1,4 @@
-﻿namespace eShopOnBlazorWasm.Features.Catalogs
+﻿namespace eShopOnBlazorWasm.Features.CatalogTypes
 {
   using FluentValidation;
 

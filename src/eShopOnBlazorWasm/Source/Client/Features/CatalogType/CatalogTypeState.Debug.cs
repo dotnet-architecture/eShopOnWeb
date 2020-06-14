@@ -1,13 +1,10 @@
 ﻿namespace eShopOnBlazorWasm.Features.CatalogTypes
 {
   using BlazorState;
-  using eShopOnBlazorWasm.Features.Catalogs;
-  using Microsoft.JSInterop;
-  using System;
   using System.Collections.Generic;
   using System.Linq;
   using System.Reflection;
-  
+
   internal partial class CatalogTypeState : State<CatalogTypeState>
   {
     public override CatalogTypeState Hydrate(IDictionary<string, object> aKeyValuePairs)
