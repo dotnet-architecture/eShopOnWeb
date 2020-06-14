@@ -2,4 +2,18 @@
 @using eShopOnBlazorWasm.Features.Bases
 @inherits BaseComponent
 
-<p>Catalog Item Details Component</p>
+  <h4>Catalog Item Details</h4>
+  <hr />
+  <img src="" />
+  <dl>
+    <dt>Name</dt>
+    <dd>@CatalogItem.Name</dd>
+    <dt>Description</dt>
+    <dd>@CatalogItem.Description</dd>
+    <dt>Brand</dt>
+    <dd>@CatalogBrand.</dd>
+    <dt>Type</dt>
+    <dd>@CatalogType</dd>
+    <dt>Price</dt>
+    <dd>@CatalogItem.Price</dd>
+  </dl>

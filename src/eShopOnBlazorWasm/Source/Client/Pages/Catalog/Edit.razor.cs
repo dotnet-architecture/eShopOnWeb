@@ -12,7 +12,7 @@ namespace eShopOnBlazorWasm.Pages.Catalog
     public static string RouteFactory(int aEntityId) =>
       Route.Replace($"{{{nameof(EntityId)}}}", aEntityId.ToString(), System.StringComparison.OrdinalIgnoreCase);
 
-    [Parameter] public string EntityId { get; set; }
+    [Parameter] public int EntityId { get; set; }
 
     protected async Task ButtonClick() =>
       _ = await Mediator.Send(new RouteState.ChangeRouteAction { NewRoute = "/" });
