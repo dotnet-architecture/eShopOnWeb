@@ -8,6 +8,6 @@
   using System.Threading.Tasks;
   public partial class Edit
   {
-    [Parameter] public string CatalogItemId { get; set; }
+    [Parameter] public int CatalogItemId { get; set; }
   }
 }
