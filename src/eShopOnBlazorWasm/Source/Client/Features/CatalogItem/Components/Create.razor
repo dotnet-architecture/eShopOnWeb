@@ -1,5 +1,45 @@
 ﻿@namespace eShopOnBlazorWasm.Features.CatalogItems.Components
-@using eShopOnBlazorWasm.Features.Bases
+
 @inherits BaseComponent
 
-<p>Catalog Item Create Component</p>
+<h4>Catalog Item Create Component</h4>
+
+<div>
+  <EditForm Model=@CreateCatalogItemRequest OnValidSubmit=@HandleValidSubmit>
+    <Validate />
+    <ValidationSummary />
+    <div class="form-group">
+      <label for="Name">Name</label>
+      <InputText @bind-Value=CreateCatalogItemRequest.Name class="form-control" id="Name" />
+    </div>
+    <div class="form-group">
+      <label for="Description">Description</label>
+      <InputText @bind-Value=CreateCatalogItemRequest.Description class="form-control" id="Description" />
+    </div>
+    <div class="form-group">
+      <label for="Brand">Brand</label>
+      <InputSelect @bind-Value=CreateCatalogItemRequest.CatalogBrandId class="form-control" id="Brand">
+        @foreach (CatalogBrandDto catalogBrand in CatalogBrands)
+        {
+          <option value="@catalogBrand.Id">@catalogBrand.Brand</option>
+        }
+      </InputSelect>
+    </div>
+    <div class="form-group">
+      <label for="Type">Type</label>
+      <InputSelect @bind-Value=CreateCatalogItemRequest.CatalogTypeId class="form-control" id="Type">
+        @foreach (CatalogTypeDto catalogType in CatalogTypes)
+        {
+          <option value="@catalogType.Id">@catalogType.Type</option>
+        }
+      </InputSelect>
+    </div>
+    <div class="form-group">
+      <label for="Price">Price</label>
+      <InputNumber @bind-Value=CreateCatalogItemRequest.Price class="form-control" id="Price" />
+    </div>
+    <input type="submit" class="btn btn-primary" value="Save" />
+  </EditForm>
+
+</div>
+
