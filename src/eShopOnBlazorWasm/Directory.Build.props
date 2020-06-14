@@ -52,6 +52,7 @@
     <MediatrVersion>8.0.1</MediatrVersion>
     <MicroElementsSwashbuckleFluentValidationVersion>3.1.1</MicroElementsSwashbuckleFluentValidationVersion>
     <MoqVersion>4.14.1</MoqVersion>
+    <PeterLeslieMorrisBlazorFluentValidationVersion>1.3.1</PeterLeslieMorrisBlazorFluentValidationVersion>
     <ScrutorVersion>3.2.1</ScrutorVersion>
     <SeleniumSupportVersion>3.141.0</SeleniumSupportVersion>
     <SeleniumWebDriverVersion>3.141.0</SeleniumWebDriverVersion>
