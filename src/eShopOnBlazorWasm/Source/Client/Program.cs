@@ -11,6 +11,8 @@ namespace eShopOnBlazorWasm.Client
   using eShopOnBlazorWasm.Components;
   using eShopOnBlazorWasm.Features.ClientLoaders;
   using eShopOnBlazorWasm.Features.EventStreams;
+  using PeterLeslieMorris.Blazor.Validation;
+  using eShopOnBlazorWasm.Features.CatalogItems;
 
   public class Program
   {
@@ -43,6 +45,17 @@ namespace eShopOnBlazorWasm.Client
                 typeof(Program).GetTypeInfo().Assembly,
             };
         }
+      );
+
+      aServiceCollection.AddFormValidation
+      (
+        aValidationConfiguration =>
+          aValidationConfiguration
+          .AddFluentValidation
+          (
+            typeof(Api.AssemblyAnnotations).Assembly, 
+            typeof(Client.AssemblyAnnotations).Assembly
+          )
       );
 
       aServiceCollection.AddScoped(typeof(IPipelineBehavior<,>), typeof(EventStreamBehavior<,>));

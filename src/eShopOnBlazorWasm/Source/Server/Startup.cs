@@ -19,7 +19,6 @@ namespace eShopOnBlazorWasm.Server
   using eShopOnBlazorWasm.Features.Bases;
   using Microsoft.eShopWeb.Infrastructure.Data;
   using Microsoft.eShopWeb.ApplicationCore.Interfaces;
-  using Microsoft.eShopWeb.ApplicationCore.Entities;
   using Microsoft.EntityFrameworkCore;
   using Microsoft.Extensions.Configuration;
   using Microsoft.eShopWeb.ApplicationCore.Services;
