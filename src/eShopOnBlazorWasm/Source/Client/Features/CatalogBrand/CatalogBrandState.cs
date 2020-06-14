@@ -13,7 +13,7 @@
     [JsonIgnore]
     public IReadOnlyDictionary<int, CatalogBrandDto> CatalogBrands => _CatalogBrands;
 
-    public IReadOnlyList<CatalogBrandDto> CatalogBrands_List => _CatalogBrands.Values.ToList();
+    public IReadOnlyList<CatalogBrandDto> CatalogBrandsAsList => _CatalogBrands.Values.ToList();
 
     public CatalogBrandState() { }
 
