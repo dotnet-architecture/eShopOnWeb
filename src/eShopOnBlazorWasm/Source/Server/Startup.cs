@@ -21,6 +21,9 @@ namespace eShopOnBlazorWasm.Server
   using Microsoft.eShopWeb.ApplicationCore.Interfaces;
   using Microsoft.eShopWeb.ApplicationCore.Entities;
   using Microsoft.EntityFrameworkCore;
+  using Microsoft.Extensions.Configuration;
+  using Microsoft.eShopWeb.ApplicationCore.Services;
+  using Microsoft.eShopWeb;
 
   public class Startup
   {
@@ -28,10 +31,18 @@ namespace eShopOnBlazorWasm.Server
     string SwaggerApiTitle => $"TimeWarp.Blazor API {SwaggerVersion}";
     string SwaggerEndPoint => $"/swagger/{SwaggerVersion}/swagger.json";
 
-    public void ConfigureDevelopmentServices(IServiceCollection aServiceCollection)
+    public Startup(IConfiguration configuration)
+    {
+      Configuration = configuration;
+    }
+
+    public IConfiguration Configuration { get; }
+
+    public void ConfigureDevelopmentServices(IServiceCollection services)
     {
       // use in-memory database
-      ConfigureInMemoryDatabases(aServiceCollection);
+      ConfigureInMemoryDatabases(services);
+      services.AddSingleton<IUriComposer>(new UriComposer(Configuration.Get<CatalogSettings>()));
 
       // use real database
       //ConfigureProductionServices(services);
