@@ -3,7 +3,6 @@ using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.Infrastructure.Data
@@ -18,7 +17,6 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
             {
                 // TODO: Only run this if using a real database
                 // context.Database.Migrate();
-
                 if (!await catalogContext.CatalogBrands.AnyAsync())
                 {
                     catalogContext.CatalogBrands.AddRange(
