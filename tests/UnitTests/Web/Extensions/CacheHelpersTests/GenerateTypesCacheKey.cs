@@ -3,10 +3,10 @@ using Xunit;
 
 namespace Microsoft.eShopWeb.UnitTests.Web.Extensions.CacheHelpersTests
 {
-    public class GenerateTypesCacheKey_Should
+    public class GenerateTypesCacheKey
     {
         [Fact]
-        public void ReturnTypesCacheKey()
+        public void ReturnsTypesCacheKey()
         {
             var result = CacheHelpers.GenerateTypesCacheKey();
 

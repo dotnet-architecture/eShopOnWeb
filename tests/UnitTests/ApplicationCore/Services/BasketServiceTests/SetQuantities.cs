@@ -36,6 +36,5 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.BasketServiceTes
             await Assert.ThrowsAsync<ArgumentNullException>(async () =>
                 await basketService.SetQuantities(123, null));
         }
-
     }
 }
