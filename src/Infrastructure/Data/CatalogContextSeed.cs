@@ -1,8 +1,8 @@
-﻿using Microsoft.eShopWeb.ApplicationCore.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.Infrastructure.Data
@@ -17,8 +17,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
             {
                 // TODO: Only run this if using a real database
                 // context.Database.Migrate();
-
-                if (!catalogContext.CatalogBrands.Any())
+                if (!await catalogContext.CatalogBrands.AnyAsync())
                 {
                     catalogContext.CatalogBrands.AddRange(
                         GetPreconfiguredCatalogBrands());
@@ -26,7 +25,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
                     await catalogContext.SaveChangesAsync();
                 }
 
-                if (!catalogContext.CatalogTypes.Any())
+                if (!await catalogContext.CatalogTypes.AnyAsync())
                 {
                     catalogContext.CatalogTypes.AddRange(
                         GetPreconfiguredCatalogTypes());
@@ -34,7 +33,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
                     await catalogContext.SaveChangesAsync();
                 }
 
-                if (!catalogContext.CatalogItems.Any())
+                if (!await catalogContext.CatalogItems.AnyAsync())
                 {
                     catalogContext.CatalogItems.AddRange(
                         GetPreconfiguredItems());
