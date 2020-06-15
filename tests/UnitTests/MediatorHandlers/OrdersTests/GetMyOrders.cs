@@ -1,7 +1,7 @@
 ﻿using Ardalis.Specification;
 using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
-using Microsoft.eShopWeb.Web.Features.OrderDetails;
+using Microsoft.eShopWeb.Web.Features.MyOrders;
 using Moq;
 using System.Collections.Generic;
 using System.Threading;
@@ -10,11 +10,11 @@ using Xunit;
 
 namespace Microsoft.eShopWeb.UnitTests.MediatorHandlers.OrdersTests
 {
-    public class GetOrderDetails_Should
+    public class GetMyOrders
     {
         private readonly Mock<IOrderRepository> _mockOrderRepository;
 
-        public GetOrderDetails_Should()
+        public GetMyOrders()
         {
             var item = new OrderItem(new CatalogItemOrdered(1, "ProductName", "URI"), 10.00m, 10);
             var address = new Address(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>());
@@ -25,27 +25,15 @@ namespace Microsoft.eShopWeb.UnitTests.MediatorHandlers.OrdersTests
         }
 
         [Fact]
-        public async Task NotBeNull_If_Order_Exists()
+        public async Task NotReturnNullIfOrdersArePresent()
         {
-            var request = new GetOrderDetails("SomeUserName", 0);
+            var request = new eShopWeb.Web.Features.MyOrders.GetMyOrders("SomeUserName");
 
-            var handler = new GetOrderDetailsHandler(_mockOrderRepository.Object);
+            var handler = new GetMyOrdersHandler(_mockOrderRepository.Object);
 
             var result = await handler.Handle(request, CancellationToken.None);
 
             Assert.NotNull(result);
-        }
-
-        [Fact]
-        public async Task BeNull_If_Order_Not_found()
-        {
-            var request = new GetOrderDetails("SomeUserName", 100);
-
-            var handler = new GetOrderDetailsHandler(_mockOrderRepository.Object);
-
-            var result = await handler.Handle(request, CancellationToken.None);
-
-            Assert.Null(result);
         }
     }
 }

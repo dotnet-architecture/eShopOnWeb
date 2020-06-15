@@ -4,10 +4,10 @@ using Xunit;
 
 namespace Microsoft.eShopWeb.UnitTests.Web.Extensions.CacheHelpersTests
 {
-    public class GenerateCatalogItemCacheKey_Should
+    public class GenerateCatalogItemCacheKey
     {
         [Fact]
-        public void ReturnCatalogItemCacheKey()
+        public void ReturnsCatalogItemCacheKey()
         {
             var pageIndex = 0;
             int? brandId = null;
