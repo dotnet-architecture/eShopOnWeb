@@ -6,19 +6,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Microsoft.eShopWeb.IntegrationTests.Repositories.OrderRepositoryTests
 {
-    public class GetByIdWithItemsAsync_Should
+    public class GetByIdWithItemsAsync
     {
         private readonly CatalogContext _catalogContext;
         private readonly OrderRepository _orderRepository;
         private OrderBuilder OrderBuilder { get; } = new OrderBuilder();
-        private readonly ITestOutputHelper _output;
-        public GetByIdWithItemsAsync_Should(ITestOutputHelper output)
+
+        public GetByIdWithItemsAsync()
         {
-            _output = output;
             var dbOptions = new DbContextOptionsBuilder<CatalogContext>()
                 .UseInMemoryDatabase(databaseName: "TestCatalog")
                 .Options;
@@ -27,7 +25,7 @@ namespace Microsoft.eShopWeb.IntegrationTests.Repositories.OrderRepositoryTests
         }
 
         [Fact]
-        public async Task GetOrderAndItemsByOrderId_When_MultipleOrdersPresent()
+        public async Task GetOrderAndItemsByOrderIdWhenMultipleOrdersPresent()
         {
             //Arrange
             var itemOneUnitPrice = 5.50m;
