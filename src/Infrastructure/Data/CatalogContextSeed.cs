@@ -19,7 +19,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
                 // context.Database.Migrate();
                 if (!await catalogContext.CatalogBrands.AnyAsync())
                 {
-                    catalogContext.CatalogBrands.AddRange(
+                    await catalogContext.CatalogBrands.AddRangeAsync(
                         GetPreconfiguredCatalogBrands());
 
                     await catalogContext.SaveChangesAsync();
@@ -27,7 +27,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
 
                 if (!await catalogContext.CatalogTypes.AnyAsync())
                 {
-                    catalogContext.CatalogTypes.AddRange(
+                    await catalogContext.CatalogTypes.AddRangeAsync(
                         GetPreconfiguredCatalogTypes());
 
                     await catalogContext.SaveChangesAsync();
@@ -35,7 +35,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
 
                 if (!await catalogContext.CatalogItems.AnyAsync())
                 {
-                    catalogContext.CatalogItems.AddRange(
+                    await catalogContext.CatalogItems.AddRangeAsync(
                         GetPreconfiguredItems());
 
                     await catalogContext.SaveChangesAsync();
