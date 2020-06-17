@@ -22,7 +22,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
 
         public async Task AddItemToBasket(int basketId, int catalogItemId, decimal price, int quantity = 1)
         {
-            var basket = await _basketRepository.GetByIdAsync(basketId);
+            var basket = await _basketRepository.FirstAsync(new BasketWithItemsSpecification(basketId));
 
             basket.AddItem(catalogItemId, price, quantity);
 
