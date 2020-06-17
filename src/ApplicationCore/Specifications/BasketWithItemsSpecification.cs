@@ -9,6 +9,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Specifications
         {
             AddInclude(b => b.Items);
         }
+
         public BasketWithItemsSpecification(string buyerId) : base(b => b.BuyerId == buyerId)
         {
             AddInclude(b => b.Items);
