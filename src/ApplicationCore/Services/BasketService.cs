@@ -22,7 +22,9 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
 
         public async Task AddItemToBasket(int basketId, int catalogItemId, decimal price, int quantity = 1)
         {
-            var basket = await _basketRepository.GetByIdAsync(basketId);
+            var basketSpec = new BasketWithItemsSpecification(basketId);
+            var basket = await _basketRepository.FirstOrDefaultAsync(basketSpec);
+            Guard.Against.NullBasket(basketId, basket);
 
             basket.AddItem(catalogItemId, price, quantity);
 
@@ -53,7 +55,8 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
         public async Task SetQuantities(int basketId, Dictionary<string, int> quantities)
         {
             Guard.Against.Null(quantities, nameof(quantities));
-            var basket = await _basketRepository.GetByIdAsync(basketId);
+            var basketSpec = new BasketWithItemsSpecification(basketId);
+            var basket = await _basketRepository.FirstOrDefaultAsync(basketSpec);
             Guard.Against.NullBasket(basketId, basket);
 
             foreach (var item in basket.Items)
