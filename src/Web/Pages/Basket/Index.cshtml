@@ -43,9 +43,8 @@
                 <div class="row">
 
                 </div>
-            </article> @*<div class="esh-catalog-item col-md-4">
-                            @item.ProductId
-                        </div>*@                }
+            </article>              
+                }
 
                 <div class="container">
                     <article class="esh-basket-titles esh-basket-titles--clean row">
@@ -60,9 +59,6 @@
 
                     <article class="esh-basket-items row">
                         <section class="esh-basket-item col-xs-7"></section>
-                        <section class="esh-basket-item col-xs-2">
-                            @*<button class="btn esh-basket-checkout" name="name" value="" type="submit">[ Update ]</button>*@
-                        </section>
                     </article>
                 </div>
                 <div class="row">
@@ -75,15 +71,16 @@
                                 asp-page-handler="Update">
                             [ Update ]
                         </button>
-                        @{ var data = new Dictionary<string, string>
-                                                                                            {
-                                { Constants.BASKET_ID, Model.BasketModel.Id.ToString() },
-                            }; }
-
+                        @{ 
+                           var data = new Dictionary<string, string>
+                           {
+                               { Constants.BASKET_ID, Model.BasketModel.Id.ToString() },
+                           }; 
+                        }
                             <input type="submit" asp-page="Checkout"
                                    class="btn esh-basket-checkout"
+                                   asp-all-route-data=data
                                    value="[ Checkout ]" name="action" />
-
                     </section>
                 </div>
             </div>
