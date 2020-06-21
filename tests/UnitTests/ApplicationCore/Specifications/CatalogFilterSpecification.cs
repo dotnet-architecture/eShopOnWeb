@@ -1,12 +1,11 @@
-﻿using Microsoft.eShopWeb.ApplicationCore.Specifications;
-using Microsoft.eShopWeb.ApplicationCore.Entities;
+﻿using Microsoft.eShopWeb.ApplicationCore.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
 namespace Microsoft.eShopWeb.UnitTests
 {
-    public class CatalogFilterSpecificationFilter
+    public class CatalogFilterSpecification
     {
         [Theory]
         [InlineData(null, null, 5)]
@@ -18,7 +17,7 @@ namespace Microsoft.eShopWeb.UnitTests
         [InlineData(2, 3, 0)]
         public void MatchesExpectedNumberOfItems(int? brandId, int? typeId, int expectedCount)
         {
-            var spec = new CatalogFilterSpecification(brandId, typeId);
+            var spec = new eShopWeb.ApplicationCore.Specifications.CatalogFilterSpecification(brandId, typeId);
 
             var result = GetTestItemCollection()
                 .AsQueryable()
