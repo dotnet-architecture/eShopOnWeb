@@ -13,7 +13,7 @@ namespace Microsoft.eShopWeb.UnitTests
         private readonly string _buyerId = "Test buyerId";
 
         [Fact]
-        public void MatchesBasketWithGivenId()
+        public void MatchesBasketWithGivenBasketId()
         {
             var spec = new BasketWithItemsSpecification(_testBasketId);
 
@@ -23,14 +23,37 @@ namespace Microsoft.eShopWeb.UnitTests
 
             Assert.NotNull(result);
             Assert.Equal(_testBasketId, result.Id);
-
         }
 
         [Fact]
-        public void MatchesNoBasketsIfIdNotPresent()
+        public void MatchesNoBasketsIfBasketIdNotPresent()
         {
-            int badId = -1;
-            var spec = new BasketWithItemsSpecification(badId);
+            int badBasketId = -1;
+            var spec = new BasketWithItemsSpecification(badBasketId);
+
+            Assert.False(GetTestBasketCollection()
+                .AsQueryable()
+                .Any(spec.Criterias.FirstOrDefault()));
+        }
+
+        [Fact]
+        public void MatchesBasketWithGivenBuyerId()
+        {
+            var spec = new BasketWithItemsSpecification(_buyerId);
+
+            var result = GetTestBasketCollection()
+                .AsQueryable()
+                .FirstOrDefault(spec.Criterias.FirstOrDefault());
+
+            Assert.NotNull(result);
+            Assert.Equal(_buyerId, result.BuyerId);
+        }
+
+        [Fact]
+        public void MatchesNoBasketsIfBuyerIdNotPresent()
+        {
+            string badBuyerId = "badBuyerId";
+            var spec = new BasketWithItemsSpecification(badBuyerId);
 
             Assert.False(GetTestBasketCollection()
                 .AsQueryable()

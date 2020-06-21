@@ -57,16 +57,6 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Entities.BasketTests
         }
 
         [Fact]
-        public void RemoveEmptyItems()
-        {
-            var basket = new Basket(_buyerId);
-            basket.AddItem(_testCatalogItemId, _testUnitPrice, 0);
-            basket.RemoveEmptyItems();
-
-            Assert.Equal(0, basket.Items.Count);
-        }
-
-        [Fact]
         public void CantAddItemWithNegativeQuantity()
         {
             var basket = new Basket(_buyerId);

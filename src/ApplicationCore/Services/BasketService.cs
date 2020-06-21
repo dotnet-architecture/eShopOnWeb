@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.eShopWeb.ApplicationCore.Specifications;
-using System.Linq;
 using Ardalis.GuardClauses;
 using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
 
@@ -35,21 +34,6 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
         {
             var basket = await _basketRepository.GetByIdAsync(basketId);
             await _basketRepository.DeleteAsync(basket);
-        }
-
-        public async Task<int> GetBasketItemCountAsync(string userName)
-        {
-            Guard.Against.NullOrEmpty(userName, nameof(userName));
-            var basketSpec = new BasketWithItemsSpecification(userName);
-            var basket = (await _basketRepository.FirstOrDefaultAsync(basketSpec));
-            if (basket == null)
-            {
-                _logger.LogInformation($"No basket found for {userName}");
-                return 0;
-            }
-            int count = basket.Items.Sum(i => i.Quantity);
-            _logger.LogInformation($"Basket for {userName} has {count} items.");
-            return count;
         }
 
         public async Task SetQuantities(int basketId, Dictionary<string, int> quantities)
