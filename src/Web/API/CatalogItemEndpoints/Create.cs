@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.Web.API.CatalogItemEndpoints
@@ -14,6 +15,14 @@ namespace Microsoft.eShopWeb.Web.API.CatalogItemEndpoints
         {
             _itemRepository = itemRepository;
         }
+
+        [HttpPost("api/catalog-items")]
+        [SwaggerOperation(
+            Summary = "Creates a new Catalog Item",
+            Description = "Creates a new Catalog Item",
+            OperationId = "catalog-items.create",
+            Tags = new[] { "CatalogItemEndpoints" })
+        ]
         public override async Task<ActionResult<CreateCatalogItemResponse>> HandleAsync(CreateCatalogItemRequest request)
         {
             var response = new CreateCatalogItemResponse(request.CorrelationId);
