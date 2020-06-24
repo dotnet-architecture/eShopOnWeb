@@ -1,6 +1,7 @@
 ﻿using Ardalis.ListStartupServices;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -199,6 +200,9 @@ namespace Microsoft.eShopWeb.Web
                 app.UseHsts();
             }
 
+            //app.UseBlazorFrameworkFiles();
+
+            app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseRouting();
 
@@ -222,6 +226,9 @@ namespace Microsoft.eShopWeb.Web
                 endpoints.MapRazorPages();
                 endpoints.MapHealthChecks("home_page_health_check");
                 endpoints.MapHealthChecks("api_health_check");
+                //endpoints.MapBlazorHub(); // signalr hub for server side
+                //endpoints.MapFallbackToPage("/Index");
+
             });
         }
     }
