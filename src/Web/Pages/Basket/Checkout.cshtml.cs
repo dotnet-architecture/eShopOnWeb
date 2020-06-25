@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -14,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.Web.Pages.Basket
 {
+    [Authorize]
     public class CheckoutModel : PageModel
     {
         private readonly IBasketService _basketService;
@@ -40,13 +42,7 @@ namespace Microsoft.eShopWeb.Web.Pages.Basket
 
         public async Task OnGet()
         {
-            if (HttpContext.Request.Query.ContainsKey(Constants.BASKET_ID))
-            {
-                var basketId = int.Parse(HttpContext.Request.Query[Constants.BASKET_ID]);
-                await _basketService.TransferBasketAsync(Request.Cookies[Constants.BASKET_COOKIENAME], User.Identity.Name);
-                await _orderService.CreateOrderAsync(basketId, new Address("123 Main St.", "Kent", "OH", "United States", "44240"));
-                await _basketService.DeleteBasketAsync(basketId);
-            }
+            await SetBasketModelAsync();
         }
 
         public async Task<IActionResult> OnPost(IEnumerable<BasketItemViewModel> items)
@@ -72,7 +68,7 @@ namespace Microsoft.eShopWeb.Web.Pages.Basket
                 return RedirectToPage("/Basket/Index");
             }
 
-            return RedirectToPage();
+            return RedirectToPage("Success");
         }
 
         private async Task SetBasketModelAsync()
