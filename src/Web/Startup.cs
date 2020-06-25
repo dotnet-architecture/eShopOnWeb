@@ -13,6 +13,7 @@ using Microsoft.eShopWeb.Infrastructure.Data;
 using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.eShopWeb.Infrastructure.Logging;
 using Microsoft.eShopWeb.Infrastructure.Services;
+using Microsoft.eShopWeb.Web.API;
 using Microsoft.eShopWeb.Web.Interfaces;
 using Microsoft.eShopWeb.Web.Services;
 using Microsoft.Extensions.Configuration;
@@ -24,6 +25,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
+using static Microsoft.eShopWeb.Web.API.BaseRequest;
 
 namespace Microsoft.eShopWeb.Web
 {
@@ -129,7 +131,12 @@ namespace Microsoft.eShopWeb.Web
 
             services.AddHttpContextAccessor();
 
-            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApi.Models.OpenApiInfo { Title = "My API", Version = "v1" }));
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApi.Models.OpenApiInfo { Title = "My API", Version = "v1" });
+                c.EnableAnnotations();
+                c.SchemaFilter<CustomSchemaFilters>();
+            });
 
             services.AddHealthChecks();
 
