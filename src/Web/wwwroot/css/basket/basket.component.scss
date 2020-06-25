@@ -82,6 +82,10 @@
             background-color: $color-secondary-darker;
             transition: all $animation-speed-default;
         }
+
+        &:visited {
+            color: $color-foreground-brighter;
+        }
     }
 }
 
