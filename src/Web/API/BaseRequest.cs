@@ -5,16 +5,16 @@ namespace Microsoft.eShopWeb.Web.API
     /// <summary>
     /// Base class used by API requests
     /// </summary>
-    public abstract class BaseRequest
+    public abstract class BaseMessage
     {
         /// <summary>
         /// Unique Identifier used by logging
         /// </summary>
-        public Guid CorrelationId { get; set; }
+        protected Guid _correlationId = Guid.NewGuid();
+        public Guid CorrelationId() => _correlationId;
+    }
 
-        public BaseRequest()
-        {
-            CorrelationId = Guid.NewGuid();
-        }
+    public abstract class BaseRequest : BaseMessage 
+    {
     }
 }

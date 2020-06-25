@@ -25,7 +25,7 @@ namespace Microsoft.eShopWeb.Web.API.CatalogItemEndpoints
         ]
         public override async Task<ActionResult<CreateCatalogItemResponse>> HandleAsync(CreateCatalogItemRequest request)
         {
-            var response = new CreateCatalogItemResponse(request.CorrelationId);
+            var response = new CreateCatalogItemResponse(request.CorrelationId());
 
             CatalogItem newItem = new CatalogItem(request.CatalogTypeId, request.CatalogBrandId, request.Description, request.Name, request.Price, request.PictureUri);
 
