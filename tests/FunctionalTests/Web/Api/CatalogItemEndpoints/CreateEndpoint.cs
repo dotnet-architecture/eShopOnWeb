@@ -23,7 +23,7 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
         public HttpClient Client { get; }
 
         [Fact]
-        public async Task ReturnsSuccessGivenValidId()
+        public async Task ReturnsSuccessGivenValidNewItem()
         {
             var testBrandId = 1;
             var testTypeId = 2;

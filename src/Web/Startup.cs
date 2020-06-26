@@ -1,4 +1,5 @@
 ﻿using Ardalis.ListStartupServices;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -130,6 +131,8 @@ namespace Microsoft.eShopWeb.Web
             services.AddControllersWithViews();
 
             services.AddHttpContextAccessor();
+
+            services.AddAutoMapper(typeof(Startup).Assembly);
 
             services.AddSwaggerGen(c =>
             {
