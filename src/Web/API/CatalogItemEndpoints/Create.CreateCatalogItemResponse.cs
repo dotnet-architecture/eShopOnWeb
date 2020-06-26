@@ -8,6 +8,10 @@ namespace Microsoft.eShopWeb.Web.API.CatalogItemEndpoints
         {
         }
 
+        public CreateCatalogItemResponse()
+        {
+        }
+
         public CatalogItemDto CatalogItem { get; set; }
     }
 }

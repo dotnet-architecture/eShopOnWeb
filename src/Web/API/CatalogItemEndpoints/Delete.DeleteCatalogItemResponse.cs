@@ -8,6 +8,10 @@ namespace Microsoft.eShopWeb.Web.API.CatalogItemEndpoints
         {
         }
 
+        public DeleteCatalogItemResponse()
+        {
+        }
+
         public string Status { get; set; } = "Deleted";
     }
 }
