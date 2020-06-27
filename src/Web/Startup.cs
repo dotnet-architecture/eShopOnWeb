@@ -1,7 +1,10 @@
 ﻿using Ardalis.ListStartupServices;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
@@ -109,29 +112,65 @@ namespace Microsoft.eShopWeb.Web
             services.AddSingleton<IUriComposer>(new UriComposer(Configuration.Get<CatalogSettings>()));
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddScoped<ITokenClaimsService, IdentityTokenClaimService>();
 
             // Add memory cache services
             services.AddMemoryCache();
 
+            // https://stackoverflow.com/questions/46938248/asp-net-core-2-0-combining-cookies-and-bearer-authorization-for-the-same-endpoin
             var key = Encoding.ASCII.GetBytes("SecretKeyOfDoomThatMustBeAMinimumNumberOfBytes");
-            services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(x =>
-            {
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
+            services.AddAuthentication(config =>
                 {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-            });
+                    //config.DefaultScheme = "smart";
+                    //config.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    //config.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 
+                    config.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    config.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    config.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    config.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+
+                //.AddPolicyScheme("smart", "Bearer Jwt or Cookie", options =>
+                //{
+                //    options.ForwardDefaultSelector = context =>
+                //    {
+                //        var bearerAuth = context.Request.Headers["Authorization"].FirstOrDefault()?.StartsWith("Bearer ") ?? false;
+                //        if (bearerAuth)
+                //            return JwtBearerDefaults.AuthenticationScheme;
+                //        else
+                //            return CookieAuthenticationDefaults.AuthenticationScheme;
+                //    };
+                //})
+
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+                {
+                    options.LoginPath = new PathString("/Identity/Account/Login");
+                    options.AccessDeniedPath = new PathString("/Identity/Account/Login");
+                    options.LogoutPath = new PathString("/Identity/Account/Logout");
+//                    options.Cookie.Name = "eShopOnWeb.Identity";
+                    options.SlidingExpiration = true;
+                    options.ExpireTimeSpan = TimeSpan.FromHours(1);
+                })
+                .AddJwtBearer(x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
+
+            //services.AddAuthorization(options =>
+            //{
+            //    options.DefaultPolicy = new AuthorizationPolicyBuilder(CookieAuthenticationDefaults.AuthenticationScheme, JwtBearerDefaults.AuthenticationScheme)
+            //        .RequireAuthenticatedUser()
+            //        .Build();
+            //});
 
             services.AddRouting(options =>
             {
@@ -266,6 +305,21 @@ namespace Microsoft.eShopWeb.Web
             app.UseCookiePolicy();
             app.UseAuthentication();
             app.UseAuthorization();
+
+            // redirect from pages to login when not authorized
+            app.Use(async (context, next) =>
+            {
+                await next();
+                var bearerAuth = context.Request.Headers["Authorization"]
+                    .FirstOrDefault()?.StartsWith("Bearer ") ?? false;
+                if (context.Response.StatusCode == 401
+                    && !context.User.Identity.IsAuthenticated
+                    && !bearerAuth)
+                {
+                    await context.ChallengeAsync("oidc");
+                }
+            });
+
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 

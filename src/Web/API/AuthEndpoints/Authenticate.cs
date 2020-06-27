@@ -18,10 +18,13 @@ namespace Microsoft.eShopWeb.Web.API.AuthEndpoints
     public class Authenticate : BaseAsyncEndpoint<AuthenticateRequest, AuthenticateResponse>
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ITokenClaimsService _tokenClaimsService;
 
-        public Authenticate(SignInManager<ApplicationUser> signInManager)
+        public Authenticate(SignInManager<ApplicationUser> signInManager,
+            ITokenClaimsService tokenClaimsService)
         {
             _signInManager = signInManager;
+            _tokenClaimsService = tokenClaimsService;
         }
 
         [HttpPost("api/authenticate")]
@@ -39,27 +42,9 @@ namespace Microsoft.eShopWeb.Web.API.AuthEndpoints
 
             response.Result = result.Succeeded;
 
-            response.Token = generateJwtToken(request.Username);
+            response.Token = await _tokenClaimsService.GetTokenAsync(request.Username);
 
             return response;
-        }
-
-        private string generateJwtToken(string userName)
-        {
-            // generate token that is valid for 7 days
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(AuthorizationConstants.JWT_SECRET_KEY);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, userName)
-                }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
         }
     }
 }

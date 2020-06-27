@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopWeb.Web.Features.MyOrders;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 namespace Microsoft.eShopWeb.Web.Controllers
 {
     [ApiExplorerSettings(IgnoreApi = true)]
-    [Authorize] // Controllers that mainly require Authorization still use Controller/View; other pages use Pages
+    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)] // Controllers that mainly require Authorization still use Controller/View; other pages use Pages
     [Route("[controller]/[action]")]
     public class OrderController : Controller
     {

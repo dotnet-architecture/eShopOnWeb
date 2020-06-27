@@ -1,8 +1,10 @@
-﻿using Microsoft.eShopWeb.Web.API.CatalogItemEndpoints;
+﻿using Microsoft.eShopWeb.FunctionalTests.Web.Api;
+using Microsoft.eShopWeb.Web.API.CatalogItemEndpoints;
 using Microsoft.eShopWeb.Web.ViewModels;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -14,6 +16,12 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
     public class CreateEndpoint : IClassFixture<WebTestFixture>
     {
         JsonSerializerOptions _jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+        private int _testBrandId = 1;
+        private int _testTypeId = 2;
+        private string _testDescription = "test description";
+        private string _testName = "test name";
+        private string _testUri = "test uri";
+        private decimal _testPrice = 1.23m;
 
         public CreateEndpoint(WebTestFixture factory)
         {
@@ -23,36 +31,49 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
         public HttpClient Client { get; }
 
         [Fact]
-        public async Task ReturnsSuccessGivenValidNewItem()
+        public async Task ReturnsNotAuthorizedGivenNormalUserToken()
         {
-            var testBrandId = 1;
-            var testTypeId = 2;
-            var testDescription = "test description";
-            var testName = "test name";
-            var testUri = "test uri";
-            var testPrice = 1.23m;
+            var jsonContent = GetValidNewItemJson();
+            var token = ApiTokenHelper.GetNormalUserToken();
+            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await Client.PostAsync("api/catalog-items", jsonContent);
 
-            var request = new CreateCatalogItemRequest() 
-            { 
-                CatalogBrandId = testBrandId,
-                CatalogTypeId = testTypeId,
-                Description = testDescription,
-                 Name = testName,
-                 PictureUri = testUri,
-                 Price = testPrice
-            };
-            var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
+            Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task ReturnsSuccessGivenValidNewItemAndAdminUserToken()
+        {
+            var jsonContent = GetValidNewItemJson();
+            var adminToken = ApiTokenHelper.GetAdminUserToken();
+            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", adminToken);
             var response = await Client.PostAsync("api/catalog-items", jsonContent);
             response.EnsureSuccessStatusCode();
             var stringResponse = await response.Content.ReadAsStringAsync();
             var model = stringResponse.FromJson<CreateCatalogItemResponse>();
 
-            Assert.Equal(testBrandId, model.CatalogItem.CatalogBrandId);
-            Assert.Equal(testTypeId, model.CatalogItem.CatalogTypeId);
-            Assert.Equal(testDescription, model.CatalogItem.Description);
-            Assert.Equal(testName, model.CatalogItem.Name);
-            Assert.Equal(testUri, model.CatalogItem.PictureUri);
-            Assert.Equal(testPrice, model.CatalogItem.Price);
+            Assert.Equal(_testBrandId, model.CatalogItem.CatalogBrandId);
+            Assert.Equal(_testTypeId, model.CatalogItem.CatalogTypeId);
+            Assert.Equal(_testDescription, model.CatalogItem.Description);
+            Assert.Equal(_testName, model.CatalogItem.Name);
+            Assert.Equal(_testUri, model.CatalogItem.PictureUri);
+            Assert.Equal(_testPrice, model.CatalogItem.Price);
+        }
+
+        private StringContent GetValidNewItemJson()
+        {
+            var request = new CreateCatalogItemRequest()
+            {
+                CatalogBrandId = _testBrandId,
+                CatalogTypeId = _testTypeId,
+                Description = _testDescription,
+                Name = _testName,
+                PictureUri = _testUri,
+                Price = _testPrice
+            };
+            var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
+
+            return jsonContent;
         }
     }
 }
