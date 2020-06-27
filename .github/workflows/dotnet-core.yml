@@ -20,4 +20,4 @@ jobs:
     - name: Build
       run: dotnet build ./eShopOnWeb.sln --configuration Release
     - name: Test
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet test ./eShopOnWeb.sln --no-restore --verbosity normal
