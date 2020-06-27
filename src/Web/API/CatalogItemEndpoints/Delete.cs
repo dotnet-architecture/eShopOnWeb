@@ -1,4 +1,5 @@
 ﻿using Ardalis.ApiEndpoints;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.Web.API.CatalogItemEndpoints
 {
+    [Authorize]
     public class Delete : BaseAsyncEndpoint<DeleteCatalogItemRequest, DeleteCatalogItemResponse>
     {
         private readonly IAsyncRepository<CatalogItem> _itemRepository;

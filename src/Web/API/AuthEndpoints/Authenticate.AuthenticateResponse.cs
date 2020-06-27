@@ -13,5 +13,6 @@ namespace Microsoft.eShopWeb.Web.API.AuthEndpoints
         }
 
         public bool Result { get; set; }
+        public string Token { get; set; }
     }
 }
