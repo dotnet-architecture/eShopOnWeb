@@ -1,4 +1,5 @@
 ![Build Status](https://github.com/dotnet-architecture/eShopOnWeb/workflows/eShopOnWeb%20Build%20and%20Test/badge.svg)
+GitHub Actions Demo
 
 # Microsoft eShopOnWeb ASP.NET Core Reference Application
 
