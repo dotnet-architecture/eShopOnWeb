@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Catalog\**" />
+    <Content Remove="Catalog\**" />
+    <EmbeddedResource Remove="Catalog\**" />
+    <None Remove="Catalog\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="compilerconfig.json" />
   </ItemGroup>
 
@@ -36,7 +43,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Catalog\" />
     <Folder Include="wwwroot\fonts\" />
     <Folder Include="wwwroot\lib\" />
   </ItemGroup>
