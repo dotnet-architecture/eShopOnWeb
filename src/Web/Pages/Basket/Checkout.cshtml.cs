@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.Web.Pages.Basket
 {
-    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+    [Authorize]
     public class CheckoutModel : PageModel
     {
         private readonly IBasketService _basketService;
