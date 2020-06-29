@@ -1,7 +1,6 @@
-﻿using Microsoft.eShopWeb.FunctionalTests.Web.Api;
+﻿using Microsoft.eShopWeb.FunctionalTests.PublicApi;
+using Microsoft.eShopWeb.FunctionalTests.Web.Api;
 using Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints;
-using Microsoft.eShopWeb.Web.ViewModels;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -13,7 +12,7 @@ using Xunit;
 namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
 {
     [Collection("Sequential")]
-    public class CreateEndpoint : IClassFixture<WebTestFixture>
+    public class CreateEndpoint : IClassFixture<ApiTestFixture>
     {
         JsonSerializerOptions _jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         private int _testBrandId = 1;
@@ -23,7 +22,7 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
         private string _testUri = "test uri";
         private decimal _testPrice = 1.23m;
 
-        public CreateEndpoint(WebTestFixture factory)
+        public CreateEndpoint(ApiTestFixture factory)
         {
             Client = factory.CreateClient();
         }

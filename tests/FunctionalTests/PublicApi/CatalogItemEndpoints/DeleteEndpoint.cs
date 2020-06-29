@@ -1,4 +1,5 @@
-﻿using Microsoft.eShopWeb.FunctionalTests.Web.Api;
+﻿using Microsoft.eShopWeb.FunctionalTests.PublicApi;
+using Microsoft.eShopWeb.FunctionalTests.Web.Api;
 using Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints;
 using System.Net;
 using System.Net.Http;
@@ -10,11 +11,11 @@ using Xunit;
 namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
 {
     [Collection("Sequential")]
-    public class DeleteEndpoint : IClassFixture<WebTestFixture>
+    public class DeleteEndpoint : IClassFixture<ApiTestFixture>
     {
         JsonSerializerOptions _jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
-        public DeleteEndpoint(WebTestFixture factory)
+        public DeleteEndpoint(ApiTestFixture factory)
         {
             Client = factory.CreateClient();
         }

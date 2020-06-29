@@ -1,8 +1,6 @@
 ﻿using Microsoft.eShopWeb.ApplicationCore.Constants;
+using Microsoft.eShopWeb.FunctionalTests.PublicApi;
 using Microsoft.eShopWeb.PublicApi.AuthEndpoints;
-using Microsoft.eShopWeb.Web.ViewModels;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -12,11 +10,11 @@ using Xunit;
 namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
 {
     [Collection("Sequential")]
-    public class AuthenticateEndpoint : IClassFixture<WebTestFixture>
+    public class AuthenticateEndpoint : IClassFixture<ApiTestFixture>
     {
         JsonSerializerOptions _jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
-        public AuthenticateEndpoint(WebTestFixture factory)
+        public AuthenticateEndpoint(ApiTestFixture factory)
         {
             Client = factory.CreateClient();
         }
