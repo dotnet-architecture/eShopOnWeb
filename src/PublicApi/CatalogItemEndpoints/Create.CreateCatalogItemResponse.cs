@@ -1,10 +1,14 @@
 ﻿using System;
 
-namespace Microsoft.eShopWeb.Web.API.CatalogItemEndpoints
+namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
 {
     public class CreateCatalogItemResponse : BaseResponse
     {
         public CreateCatalogItemResponse(Guid correlationId) : base(correlationId)
+        {
+        }
+
+        public CreateCatalogItemResponse()
         {
         }
 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Microsoft.eShopWeb.Web.API
+namespace Microsoft.eShopWeb.PublicApi
 {
     /// <summary>
     /// Base class used by API requests
@@ -12,9 +12,5 @@ namespace Microsoft.eShopWeb.Web.API
         /// </summary>
         protected Guid _correlationId = Guid.NewGuid();
         public Guid CorrelationId() => _correlationId;
-    }
-
-    public abstract class BaseRequest : BaseMessage 
-    {
     }
 }

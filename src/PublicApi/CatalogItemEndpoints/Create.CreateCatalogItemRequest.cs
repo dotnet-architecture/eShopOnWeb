@@ -1,4 +1,4 @@
-﻿namespace Microsoft.eShopWeb.Web.API.CatalogItemEndpoints
+﻿namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
 {
     public class CreateCatalogItemRequest : BaseRequest 
     {

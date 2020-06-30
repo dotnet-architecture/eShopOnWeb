@@ -8,7 +8,10 @@ using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopWeb.Infrastructure.Data;
 using Microsoft.eShopWeb.Infrastructure.Identity;
-using Microsoft.eShopWeb.Web.API;
+using Microsoft.eShopWeb.Infrastructure.Logging;
+using Microsoft.eShopWeb.Infrastructure.Services;
+using Microsoft.eShopWeb.Web.Interfaces;
+using Microsoft.eShopWeb.Web.Services;
 using Microsoft.eShopWeb.Web.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -107,12 +110,6 @@ namespace Microsoft.eShopWeb.Web
             });
             services.AddControllersWithViews();
             services.AddHttpContextAccessor();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApi.Models.OpenApiInfo { Title = "My API", Version = "v1" });
-                c.EnableAnnotations();
-                c.SchemaFilter<CustomSchemaFilters>();
-            });
             services.AddHealthChecks();
             services.Configure<ServiceConfig>(config =>
             {
@@ -166,15 +163,6 @@ namespace Microsoft.eShopWeb.Web
             app.UseCookiePolicy();
             app.UseAuthentication();
             app.UseAuthorization();
-            // Enable middleware to serve generated Swagger as a JSON endpoint.
-            app.UseSwagger();
-
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
-            // specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            });
 
             app.UseEndpoints(endpoints =>
             {

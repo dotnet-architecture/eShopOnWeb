@@ -1,12 +1,16 @@
 ﻿using Ardalis.ApiEndpoints;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.eShopWeb.ApplicationCore.Constants;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Threading.Tasks;
 
-namespace Microsoft.eShopWeb.Web.API.CatalogItemEndpoints
+namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
 {
+    [Authorize(Roles = AuthorizationConstants.Roles.ADMINISTRATORS, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class Delete : BaseAsyncEndpoint<DeleteCatalogItemRequest, DeleteCatalogItemResponse>
     {
         private readonly IAsyncRepository<CatalogItem> _itemRepository;
