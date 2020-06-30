@@ -5,7 +5,7 @@ using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Threading.Tasks;
 
-namespace Microsoft.eShopWeb.Web.API.CatalogItemEndpoints
+namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
 {
     public class GetById : BaseAsyncEndpoint<GetByIdCatalogItemRequest, GetByIdCatalogItemResponse>
     {
