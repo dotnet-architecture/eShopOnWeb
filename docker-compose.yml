@@ -6,4 +6,9 @@ services:
     build:
       context: .
       dockerfile: src/Web/Dockerfile
+  eshoppublicapi:
+    image: ${DOCKER_REGISTRY-}eshoppublicapi
+    build:
+      context: .
+      dockerfile: src/PublicApi/Dockerfile
 
