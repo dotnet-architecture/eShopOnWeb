@@ -33,7 +33,9 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
 
             var existingItem = await _itemRepository.GetByIdAsync(request.Id);
 
-            existingItem.Update(request.Name, request.Price);
+            existingItem.UpdateDetails(request.Name, request.Description, request.Price);
+            existingItem.UpdateBrand(request.CatalogBrandId);
+            existingItem.UpdateType(request.CatalogTypeId);
 
             await _itemRepository.UpdateAsync(existingItem);
 
