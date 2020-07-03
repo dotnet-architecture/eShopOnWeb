@@ -1,9 +1,11 @@
 ﻿using Ardalis.GuardClauses;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
-using System.Security.Cryptography;
+using System.Collections.Generic;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Entities
 {
+
+
     public class CatalogItem : BaseEntity, IAggregateRoot
     {
         public string Name { get; private set; }
@@ -33,6 +35,9 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities
         public void Update(string name, decimal price)
         {
             Guard.Against.NullOrEmpty(name, nameof(name));
+            
+            DomainEvents.Raise(new UpdatingNameEvent(this.Id, name)).Wait();
+
             Name = name;
             Price = price;
         }
@@ -40,6 +45,8 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities
         public void UpdateDetails(string name, string description, decimal price)
         {
             Guard.Against.NullOrEmpty(name, nameof(name));
+            DomainEvents.Raise(new UpdatingNameEvent(this.Id, name)).Wait();
+
             Guard.Against.NullOrEmpty(description, nameof(description));
             Guard.Against.NegativeOrZero(price, nameof(price));
             Name = name;

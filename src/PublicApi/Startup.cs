@@ -1,6 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 using AutoMapper;
+using MediatR;
+
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +11,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopWeb.ApplicationCore.Constants;
+using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.ApplicationCore.Services;
 using Microsoft.eShopWeb.Infrastructure.Data;
@@ -119,9 +123,9 @@ namespace Microsoft.eShopWeb.PublicApi
 
 
             services.AddControllers();
+            services.AddMediatR(typeof(CatalogItem).Assembly);
 
             services.AddAutoMapper(typeof(Startup).Assembly);
-
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
@@ -157,7 +161,8 @@ namespace Microsoft.eShopWeb.PublicApi
                     }
                 });
             });
-
+            ServiceLocator.SetLocatorProvider(services.BuildServiceProvider());
+            DomainEvents.Mediator = () => ServiceLocator.Current.GetInstance<IMediator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -188,6 +193,40 @@ namespace Microsoft.eShopWeb.PublicApi
             {
                 endpoints.MapControllers();
             });
+        }
+    }
+
+    public class ServiceLocator
+    {
+        private ServiceProvider _currentServiceProvider;
+        private static ServiceProvider _serviceProvider;
+
+        public ServiceLocator(ServiceProvider currentServiceProvider)
+        {
+            _currentServiceProvider = currentServiceProvider;
+        }
+
+        public static ServiceLocator Current
+        {
+            get
+            {
+                return new ServiceLocator(_serviceProvider);
+            }
+        }
+
+        public static void SetLocatorProvider(ServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
+        }
+
+        public object GetInstance(Type serviceType)
+        {
+            return _currentServiceProvider.GetService(serviceType);
+        }
+
+        public TService GetInstance<TService>()
+        {
+            return _currentServiceProvider.GetService<TService>();
         }
     }
 }

@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopWeb.ApplicationCore.Constants;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
+using Microsoft.eShopWeb.ApplicationCore.Exceptions;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
+using System;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
@@ -33,7 +35,21 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
 
             var existingItem = await _itemRepository.GetByIdAsync(request.Id);
 
-            existingItem.UpdateDetails(request.Name, request.Description, request.Price);
+            try
+            {
+                existingItem.UpdateDetails(request.Name, request.Description, request.Price);
+            }
+            catch (AggregateException e)
+                when ((e.InnerException) is DuplicateCatalogItemNameException dupeException)
+            {
+                this.ModelState.AddModelError("name", $"Duplicate name not permitted. Name is duplicate of item id {dupeException.DuplicateItemId}.");
+                return BadRequest(ModelState);
+
+                // TODO: Look into ProblemDetails https://tools.ietf.org/html/rfc7807
+                // nuget Hellang.ProblemDetails
+                // return base.Problem()
+            }
+
             existingItem.UpdateBrand(request.CatalogBrandId);
             existingItem.UpdateType(request.CatalogTypeId);
 
