@@ -1,7 +1,8 @@
 ﻿namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
 {
-    public class CreateCatalogItemRequest : BaseRequest 
+    public class UpdateCatalogItemRequest : BaseRequest
     {
+        public int Id { get; set; }
         public int CatalogBrandId { get; set; }
         public int CatalogTypeId { get; set; }
         public string Description { get; set; }
