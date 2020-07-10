@@ -1,9 +1,8 @@
 @page "/"
 @inject HttpClient Http
+@inject SecureHttpClient SecureHttp
 
 <h1>Manage Product Catalog</h1>
-
-<p>This component demonstrates fetching data from the server.</p>
 
 @if (catalogItems == null)
 {
@@ -26,17 +25,17 @@ else
         <tbody>
             @foreach (var item in catalogItems)
             {
-            <tr>
-                <td>
-                    <img class="esh-thumbnail" src="@($"https://localhost:44315/{item.PictureUri}")">
-                </td>
-                <td>@GetTypeName(item.CatalogTypeId)</td>
-                <td>@GetBrandName(item.CatalogBrandId)</td>
-                <td>@item.Id</td>
-                <td>@item.Name</td>
-                <td>@item.Description</td>
-                <td>@item.Price</td>
-            </tr>
+                <tr>
+                    <td>
+                        <img class="esh-thumbnail" src="@($"https://localhost:44315/{item.PictureUri}")">
+                    </td>
+                    <td>@GetTypeName(item.CatalogTypeId)</td>
+                    <td>@GetBrandName(item.CatalogBrandId)</td>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>@item.Description</td>
+                    <td>@item.Price</td>
+                </tr>
             }
         </tbody>
     </table>
@@ -51,8 +50,8 @@ else
     {
         catalogItems = (await Http.GetFromJsonAsync<PagedCatalogItemResult>("https://localhost:44339/api/catalog-items?PageSize=50")).CatalogItems;
         catalogTypes = (await Http.GetFromJsonAsync<CatalogTypeResult>("https://localhost:44339/api/catalog-types")).CatalogTypes;
-        catalogBrands = (await Http.GetFromJsonAsync<CatalogBrandResult>("https://localhost:44339/api/catalog-brands")).CatalogBrands;
-
+        //catalogBrands = (await Http.GetFromJsonAsync<CatalogBrandResult>("https://localhost:44339/api/catalog-brands")).CatalogBrands;
+        catalogBrands = await SecureHttp.GetCatalogBrandsAsync();
     }
 
     protected string GetTypeName(int typeId)

@@ -1,14 +1,19 @@
 ﻿using Ardalis.ApiEndpoints;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.eShopWeb.ApplicationCore.Constants;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.PublicApi.CatalogBrandEndpoints
 {
+    [Authorize(Roles = AuthorizationConstants.Roles.ADMINISTRATORS, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class List : BaseAsyncEndpoint<ListCatalogBrandsResponse>
     {
         private readonly IAsyncRepository<CatalogBrand> _catalogBrandRepository;
