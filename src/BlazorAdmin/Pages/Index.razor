@@ -1,7 +1,64 @@
-﻿@page "/"
+@page "/"
+@inject HttpClient Http
 
-<h1>Hello, world!</h1>
+<h1>Manage Product Catalog</h1>
 
-Welcome to your new app.
+<p>This component demonstrates fetching data from the server.</p>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+@if (catalogItems == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Id</th>
+                <th>Name</th>
+                <th>@nameof(CatalogItem.Description)</th>
+                <th>@nameof(CatalogItem.Price)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in catalogItems)
+            {
+                <tr>
+                    <td>
+                        <img class="esh-thumbnail" src="@($"https://localhost:44315/{item.PictureUri}")">
+                    </td>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>@item.Description</td>
+                    <td>@item.Price</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private CatalogItem[] catalogItems;
+
+    protected override async Task OnInitializedAsync()
+    {
+        catalogItems = (await Http.GetFromJsonAsync<PagedCatalogItemResult>("https://localhost:44339/api/catalog-items?PageSize=50")).CatalogItems.ToArray();
+    }
+
+    public class PagedCatalogItemResult
+    {
+        public List<CatalogItem> CatalogItems { get; set; } = new List<CatalogItem>();
+        public int PageCount { get; set; } = 0;
+    }
+
+    public class CatalogItem
+    {
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public decimal Price { get; set; }
+        public string PictureUri { get; set; }
+    }
+}
