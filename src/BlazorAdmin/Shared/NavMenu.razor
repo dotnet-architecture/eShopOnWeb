@@ -1,4 +1,7 @@
-﻿@using Microsoft.AspNetCore.Components
+﻿@inject AuthService AuthService
+
+@using Microsoft.AspNetCore.Components
+@using BlazorAdmin.Services
 <div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">eShopOnWeb Admin</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -14,15 +17,24 @@
             </NavLink>
         </li>
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="login">
-                <span class="oi oi-account-login" aria-hidden="true"></span> Login
-            </NavLink>
+            @if (@AuthService.IsLoggedIn)
+            {
+                <NavLink class="nav-link" href="logout">
+                    <span class="oi oi-account-logout" aria-hidden="true"></span> Logout
+                </NavLink>
+            }
+            else
+            {
+                <NavLink class="nav-link" href="login">
+                    <span class="oi oi-account-login" aria-hidden="true"></span> Login
+                </NavLink>
+            }
+
         </li>
     </ul>
 </div>
 
 @code {
-    [Inject] private NavigationManager NavigationManager { get; set; }
 
     private bool collapseNavMenu = true;
 
