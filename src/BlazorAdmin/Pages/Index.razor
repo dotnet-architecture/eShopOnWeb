@@ -15,6 +15,8 @@ else
         <thead>
             <tr>
                 <th></th>
+                <th>Item Type</th>
+                <th>Brand</th>
                 <th>Id</th>
                 <th>Name</th>
                 <th>@nameof(CatalogItem.Description)</th>
@@ -24,26 +26,46 @@ else
         <tbody>
             @foreach (var item in catalogItems)
             {
-                <tr>
-                    <td>
-                        <img class="esh-thumbnail" src="@($"https://localhost:44315/{item.PictureUri}")">
-                    </td>
-                    <td>@item.Id</td>
-                    <td>@item.Name</td>
-                    <td>@item.Description</td>
-                    <td>@item.Price</td>
-                </tr>
+            <tr>
+                <td>
+                    <img class="esh-thumbnail" src="@($"https://localhost:44315/{item.PictureUri}")">
+                </td>
+                <td>@GetTypeName(item.CatalogTypeId)</td>
+                <td>@GetBrandName(item.CatalogBrandId)</td>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.Description</td>
+                <td>@item.Price</td>
+            </tr>
             }
         </tbody>
     </table>
 }
 
 @code {
-    private CatalogItem[] catalogItems;
+    private List<CatalogItem> catalogItems = new List<CatalogItem>();
+    private List<CatalogType> catalogTypes = new List<CatalogType>();
+    private List<CatalogBrand> catalogBrands = new List<CatalogBrand>();
 
     protected override async Task OnInitializedAsync()
     {
-        catalogItems = (await Http.GetFromJsonAsync<PagedCatalogItemResult>("https://localhost:44339/api/catalog-items?PageSize=50")).CatalogItems.ToArray();
+        catalogItems = (await Http.GetFromJsonAsync<PagedCatalogItemResult>("https://localhost:44339/api/catalog-items?PageSize=50")).CatalogItems;
+        catalogTypes = (await Http.GetFromJsonAsync<CatalogTypeResult>("https://localhost:44339/api/catalog-types")).CatalogTypes;
+        catalogBrands = (await Http.GetFromJsonAsync<CatalogBrandResult>("https://localhost:44339/api/catalog-brands")).CatalogBrands;
+
+    }
+
+    protected string GetTypeName(int typeId)
+    {
+        return catalogTypes.FirstOrDefault(t => t.Id == typeId).Name;
+    }
+
+    protected string GetBrandName(int brandId)
+    {
+        var brand = catalogBrands.FirstOrDefault(t => t.Id == brandId);
+
+        if (brand == null) return "None";
+        return brand.Name;
     }
 
     public class PagedCatalogItemResult
@@ -52,9 +74,33 @@ else
         public int PageCount { get; set; } = 0;
     }
 
+    public class CatalogTypeResult
+    {
+        public List<CatalogType> CatalogTypes { get; set; } = new List<CatalogType>();
+    }
+
+    public class CatalogBrandResult
+    {
+        public List<CatalogBrand> CatalogBrands { get; set; } = new List<CatalogBrand>();
+    }
+
+    public class CatalogType
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
+    public class CatalogBrand
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
     public class CatalogItem
     {
         public int Id { get; set; }
+        public int CatalogTypeId { get; set; }
+        public int CatalogBrandId { get; set; }
 
         public string Name { get; set; }
         public string Description { get; set; }
