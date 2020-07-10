@@ -1,9 +1,11 @@
 ﻿using Ardalis.GuardClauses;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
-using System.Security.Cryptography;
+using System.Collections.Generic;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Entities
 {
+
+
     public class CatalogItem : BaseEntity, IAggregateRoot
     {
         public string Name { get; private set; }
@@ -30,18 +32,12 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities
             PictureUri = pictureUri;
         }
 
-        public void Update(string name, decimal price)
-        {
-            Guard.Against.NullOrEmpty(name, nameof(name));
-            Name = name;
-            Price = price;
-        }
-
         public void UpdateDetails(string name, string description, decimal price)
         {
             Guard.Against.NullOrEmpty(name, nameof(name));
             Guard.Against.NullOrEmpty(description, nameof(description));
             Guard.Against.NegativeOrZero(price, nameof(price));
+
             Name = name;
             Description = description;
             Price = price;
