@@ -25,8 +25,8 @@
     <PackageReference Include="Ardalis.Specification" Version="3.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
 
-    <PackageReference Include="MediatR" Version="8.0.1" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="MediatR" Version="8.0.2" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="BuildBundlerMinifier" Version="2.9.406" Condition="'$(Configuration)'=='Release'" PrivateAssets="All" />
     <PackageReference Include="Microsoft.CodeAnalysis" Version="3.6.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.5" />
