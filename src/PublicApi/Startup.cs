@@ -1,6 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 using AutoMapper;
+using MediatR;
+
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +11,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopWeb.ApplicationCore.Constants;
+using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.ApplicationCore.Services;
 using Microsoft.eShopWeb.Infrastructure.Data;
@@ -119,9 +123,9 @@ namespace Microsoft.eShopWeb.PublicApi
 
 
             services.AddControllers();
+            services.AddMediatR(typeof(CatalogItem).Assembly);
 
             services.AddAutoMapper(typeof(Startup).Assembly);
-
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
@@ -157,7 +161,6 @@ namespace Microsoft.eShopWeb.PublicApi
                     }
                 });
             });
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
