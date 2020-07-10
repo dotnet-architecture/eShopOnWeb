@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using BlazorAdmin.Network;
+using BlazorAdmin.Services;
+using Blazored.LocalStorage;
 
 namespace BlazorAdmin
 {
@@ -20,6 +22,9 @@ namespace BlazorAdmin
 
             builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddTransient(sp => new SecureHttpClient(sp.GetRequiredService<HttpClient>()));
+
+            builder.Services.AddSingleton<ILocalStorageService, LocalStorageService>();
+            builder.Services.AddSingleton<AuthService>();
 
             await builder.Build().RunAsync();
         }

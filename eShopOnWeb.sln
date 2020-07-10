@@ -32,7 +32,7 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublicApi", "src\PublicApi\PublicApi.csproj", "{B5E4F33C-4667-4A55-AF6A-740F84C4CF3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorAdmin", "src\BlazorAdmin\BlazorAdmin.csproj", "{71368733-80A4-4869-B215-3A7001878577}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorAdmin", "src\BlazorAdmin\BlazorAdmin.csproj", "{71368733-80A4-4869-B215-3A7001878577}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

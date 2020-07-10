@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using BlazorAdmin.Constants;
 using static BlazorAdmin.Pages.Index;
 
 namespace BlazorAdmin.Network
@@ -14,16 +15,29 @@ namespace BlazorAdmin.Network
         public SecureHttpClient(HttpClient client)
         {
             this.client = client;
-            this.client.DefaultRequestHeaders.Add("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFkbWluQG1pY3Jvc29mdC5jb20iLCJyb2xlIjoiQWRtaW5pc3RyYXRvcnMiLCJuYmYiOjE1OTQ0MDQ2MjgsImV4cCI6MTU5NTAwOTQyOCwiaWF0IjoxNTk0NDA0NjI4fQ.10hYllCtfSQU3deYW0Slc7AHOS4QFD0yga_A9R_uuAY");
+        }
+
+        public void SetToken(string token)
+        {
+            if (IsTokenAdded())
+            {
+                this.client.DefaultRequestHeaders.Remove("Authorization");
+            }
+            
+            this.client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
         }
 
         public async Task<List<CatalogBrand>> GetCatalogBrandsAsync()
         {
             var brands = new List<CatalogBrand>();
+            if (!IsTokenAdded())
+            {
+                return brands;
+            }
 
             try
             {
-                brands = (await client.GetFromJsonAsync<CatalogBrandResult>("https://localhost:44339/api/catalog-brands")).CatalogBrands;
+                brands = (await client.GetFromJsonAsync<CatalogBrandResult>($"{GeneralConstants.API_URL}catalog-brands")).CatalogBrands;
             }
             catch (AccessTokenNotAvailableException exception)
             {
@@ -31,6 +45,11 @@ namespace BlazorAdmin.Network
             }
 
             return brands;
+        }
+
+        private bool IsTokenAdded()
+        {
+            return this.client.DefaultRequestHeaders.Contains("Authorization");
         }
     }
 }
