@@ -1,7 +1,4 @@
-﻿using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
-using System.Collections.Generic;
-using Microsoft.eShopWeb.UnitTests.Builders;
-using Xunit;
+﻿using Xunit;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using System;
 
