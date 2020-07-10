@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopWeb.ApplicationCore.Constants;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
+using Microsoft.eShopWeb.ApplicationCore.Exceptions;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
+using System;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
