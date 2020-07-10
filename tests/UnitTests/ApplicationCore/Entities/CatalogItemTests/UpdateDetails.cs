@@ -5,12 +5,11 @@ using Xunit;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using System;
 
-namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Entities.OrderTests
+namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Entities.CatalogItemTests
 {
     public class UpdateDetails
     {
         private CatalogItem _testItem;
-        private decimal _testUnitPrice = 42m;
         private int _validTypeId = 1;
         private int _validBrandId = 2;
         private string _validDescription = "test description";

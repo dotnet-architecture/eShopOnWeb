@@ -35,22 +35,7 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
 
             var existingItem = await _itemRepository.GetByIdAsync(request.Id);
 
-            try
-            {
-                existingItem.UpdateDetails(request.Name, request.Description, request.Price);
-            }
-            catch (AggregateException e)
-                when ((e.InnerException) is DuplicateCatalogItemNameException dupeException)
-            {
-                this.ModelState.AddModelError("name", $"Duplicate name not permitted. Name is duplicate of item id {dupeException.DuplicateItemId}.");
-                return BadRequest(ModelState);
-
-                // TODO: Look into ProblemDetails https://tools.ietf.org/html/rfc7807
-                // nuget Hellang.ProblemDetails
-                // https://docs.microsoft.com/en-us/aspnet/core/web-api/handle-errors?view=aspnetcore-3.1#validation-failure-error-response
-                // return base.Problem()
-            }
-
+            existingItem.UpdateDetails(request.Name, request.Description, request.Price);
             existingItem.UpdateBrand(request.CatalogBrandId);
             existingItem.UpdateType(request.CatalogTypeId);
 

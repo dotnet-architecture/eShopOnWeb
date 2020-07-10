@@ -32,23 +32,12 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities
             PictureUri = pictureUri;
         }
 
-        public void Update(string name, decimal price)
-        {
-            Guard.Against.NullOrEmpty(name, nameof(name));
-            
-            DomainEvents.Raise(new UpdatingNameEvent(this.Id, name)).Wait();
-
-            Name = name;
-            Price = price;
-        }
-
         public void UpdateDetails(string name, string description, decimal price)
         {
             Guard.Against.NullOrEmpty(name, nameof(name));
-            DomainEvents.Raise(new UpdatingNameEvent(this.Id, name)).Wait();
-
             Guard.Against.NullOrEmpty(description, nameof(description));
             Guard.Against.NegativeOrZero(price, nameof(price));
+
             Name = name;
             Description = description;
             Price = price;

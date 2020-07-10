@@ -161,8 +161,6 @@ namespace Microsoft.eShopWeb.PublicApi
                     }
                 });
             });
-            ServiceLocator.SetLocatorProvider(services.BuildServiceProvider());
-            DomainEvents.Mediator = () => ServiceLocator.Current.GetInstance<IMediator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -193,40 +191,6 @@ namespace Microsoft.eShopWeb.PublicApi
             {
                 endpoints.MapControllers();
             });
-        }
-    }
-
-    public class ServiceLocator
-    {
-        private ServiceProvider _currentServiceProvider;
-        private static ServiceProvider _serviceProvider;
-
-        public ServiceLocator(ServiceProvider currentServiceProvider)
-        {
-            _currentServiceProvider = currentServiceProvider;
-        }
-
-        public static ServiceLocator Current
-        {
-            get
-            {
-                return new ServiceLocator(_serviceProvider);
-            }
-        }
-
-        public static void SetLocatorProvider(ServiceProvider serviceProvider)
-        {
-            _serviceProvider = serviceProvider;
-        }
-
-        public object GetInstance(Type serviceType)
-        {
-            return _currentServiceProvider.GetService(serviceType);
-        }
-
-        public TService GetInstance<TService>()
-        {
-            return _currentServiceProvider.GetService<TService>();
         }
     }
 }
