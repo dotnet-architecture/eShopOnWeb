@@ -47,6 +47,7 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
 
                 // TODO: Look into ProblemDetails https://tools.ietf.org/html/rfc7807
                 // nuget Hellang.ProblemDetails
+                // https://docs.microsoft.com/en-us/aspnet/core/web-api/handle-errors?view=aspnetcore-3.1#validation-failure-error-response
                 // return base.Problem()
             }
 
