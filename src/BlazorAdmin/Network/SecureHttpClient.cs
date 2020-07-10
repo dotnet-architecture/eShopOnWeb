@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using BlazorAdmin.Constants;
+using BlazorAdmin.Services;
 using static BlazorAdmin.Pages.Index;
 
 namespace BlazorAdmin.Network
@@ -15,25 +16,13 @@ namespace BlazorAdmin.Network
         public SecureHttpClient(HttpClient client)
         {
             this.client = client;
-        }
 
-        public void SetToken(string token)
-        {
-            if (IsTokenAdded())
-            {
-                this.client.DefaultRequestHeaders.Remove("Authorization");
-            }
-            
-            this.client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+            this.client.DefaultRequestHeaders.Add("Authorization", $"Bearer ");
         }
 
         public async Task<List<CatalogBrand>> GetCatalogBrandsAsync()
         {
             var brands = new List<CatalogBrand>();
-            if (!IsTokenAdded())
-            {
-                return brands;
-            }
 
             try
             {
@@ -45,11 +34,6 @@ namespace BlazorAdmin.Network
             }
 
             return brands;
-        }
-
-        private bool IsTokenAdded()
-        {
-            return this.client.DefaultRequestHeaders.Contains("Authorization");
         }
     }
 }

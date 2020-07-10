@@ -26,14 +26,19 @@ namespace BlazorAdmin.Services
             _localStorage = localStorage;
         }
 
-        public async Task Login(AuthRequest user, SecureHttpClient secureHttp)
+        public HttpClient GetHttpClient()
+        {
+            return _httpClient;
+        }
+
+        public async Task Login(AuthRequest user)
         {
             var jsonContent = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync($"{GeneralConstants.API_URL}authenticate", jsonContent);
 
             if (response.IsSuccessStatusCode)
             {
-                await SaveToken(response, secureHttp);
+                await SaveToken(response);
                 await SaveUsername(response);
                 await SetAuthorizationHeader();
 
@@ -46,6 +51,7 @@ namespace BlazorAdmin.Services
         {
             await _localStorage.RemoveItemAsync("authToken");
             await _localStorage.RemoveItemAsync("username");
+            RemoveHttpClientToken();
             UserName = null;
             IsLoggedIn = false;
         }
@@ -56,14 +62,28 @@ namespace BlazorAdmin.Services
             UserName = await GetUsername();
         }
 
-        private async Task SaveToken(HttpResponseMessage response, SecureHttpClient secureHttp)
+        private async Task SaveToken(HttpResponseMessage response)
         {
             var responseContent = await response.Content.ReadAsStringAsync();
             var jwt = JsonConvert.DeserializeObject<AuthResponse>(responseContent);
 
-            secureHttp.SetToken(jwt.Token);
+            UpdateHttpClientToken(jwt.Token);
 
             await _localStorage.SetItemAsync("authToken", jwt.Token);
+        }
+
+        private void UpdateHttpClientToken(string token)
+        {
+            RemoveHttpClientToken();
+            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+        }
+
+        private void RemoveHttpClientToken()
+        {
+            if (_httpClient.DefaultRequestHeaders.Contains("Authorization"))
+            {
+                _httpClient.DefaultRequestHeaders.Remove("Authorization");
+            }
         }
 
         private async Task SaveUsername(HttpResponseMessage response)

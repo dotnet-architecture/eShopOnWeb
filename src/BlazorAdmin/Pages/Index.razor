@@ -3,6 +3,8 @@
 @using System.Linq
 @using System.Threading.Tasks
 @using BlazorAdmin.Constants
+@using BlazorAdmin.Services
+@inject AuthService AuthService
 @inject HttpClient Http
 @inject SecureHttpClient SecureHttp
 
@@ -54,8 +56,8 @@ else
     {
         catalogItems = (await Http.GetFromJsonAsync<PagedCatalogItemResult>($"{GeneralConstants.API_URL}catalog-items?PageSize=50")).CatalogItems;
         catalogTypes = (await Http.GetFromJsonAsync<CatalogTypeResult>($"{GeneralConstants.API_URL}catalog-types")).CatalogTypes;
-        //catalogBrands = (await Http.GetFromJsonAsync<CatalogBrandResult>($"{GeneralConstants.API_URL}catalog-brands")).CatalogBrands;
-        catalogBrands = await SecureHttp.GetCatalogBrandsAsync();
+        catalogBrands = (await AuthService.GetHttpClient().GetFromJsonAsync<CatalogBrandResult>($"{GeneralConstants.API_URL}catalog-brands")).CatalogBrands;
+        //catalogBrands = await SecureHttp.GetCatalogBrandsAsync();
     }
 
     protected string GetTypeName(int typeId)

@@ -33,7 +33,7 @@
 
     protected async Task LoginUser()
     {
-        await AuthService.Login(AuthRequest, SecureHttp);
+        await AuthService.Login(AuthRequest);
 
         if (AuthService.IsLoggedIn)
         {
