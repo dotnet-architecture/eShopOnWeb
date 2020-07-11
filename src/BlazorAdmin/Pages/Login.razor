@@ -1,11 +1,10 @@
 ﻿@page "/login"
-@using System.Threading.Tasks
 @using BlazorAdmin.Services
-@using Microsoft.AspNetCore.Components
 
 @inject AuthService Auth
 @inject NavigationManager NavigationManager
-@inject SecureHttpClient SecureHttp
+
+@inherits BlazorAdmin.Helper.BlazorComponent
 
 <div class="container">
     @if (ShowLoginFailed)
@@ -37,6 +36,7 @@
 
         if (Auth.IsLoggedIn)
         {
+            CallRequestRefresh();
             NavigationManager.NavigateTo("/");
         }
         else

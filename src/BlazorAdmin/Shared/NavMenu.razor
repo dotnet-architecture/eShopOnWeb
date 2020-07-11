@@ -1,6 +1,6 @@
 ﻿@inject AuthService Auth
+@inherits BlazorAdmin.Helper.BlazorComponent
 
-@using Microsoft.AspNetCore.Components
 @using BlazorAdmin.Services
 <div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">eShopOnWeb Admin</a>
@@ -35,12 +35,6 @@
 </div>
 
 @code {
-
-    [Parameter]
-    public bool Change
-    {
-        set => StateHasChanged();
-    }
 
     private bool collapseNavMenu = true;
 

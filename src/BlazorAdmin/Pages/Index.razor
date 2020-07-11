@@ -1,6 +1,8 @@
 @page "/"
 @using BlazorAdmin.Services
 
+@inject AuthService Auth
+
 <h1>Manage Product Catalog</h1>
 
 @if (catalogItems == null)
@@ -38,4 +40,34 @@ else
             }
         </tbody>
     </table>
+}
+
+@code
+{
+    private List<CatalogItem> catalogItems = new List<CatalogItem>();
+    private List<CatalogType> catalogTypes = new List<CatalogType>();
+    private List<CatalogBrand> catalogBrands = new List<CatalogBrand>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        catalogItems = await new CatalogItemService(Auth).GetPagedCatalogItemsAsync(50);
+        catalogTypes = await new CatalogTypeService(Auth).GetCatalogTypesAsync();
+        catalogBrands = await new CatalogBrandService(Auth).GetCatalogBrandsAsync();
+    }
+
+    protected string GetTypeName(int typeId)
+    {
+        var type = catalogTypes.FirstOrDefault(t => t.Id == typeId);
+
+        return type == null ? "None" : type.Name;
+    }
+
+    protected string GetBrandName(int brandId)
+    {
+        var brand = catalogBrands.FirstOrDefault(t => t.Id == brandId);
+
+        return brand == null ? "None" : brand.Name;
+    }
 }

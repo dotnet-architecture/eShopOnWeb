@@ -1,11 +1,9 @@
 ﻿@page "/logout"
-@using System.Threading.Tasks
 @using BlazorAdmin.Services
-@using Microsoft.AspNetCore.Components
 
 @inject AuthService AuthService
 @inject NavigationManager NavigationManager
-@inject SecureHttpClient SecureHttp
+@inherits BlazorAdmin.Helper.BlazorComponent
 
 
 @code {
@@ -14,6 +12,7 @@
     protected override async Task OnInitializedAsync()
     {
         await AuthService.Logout();
+        CallRequestRefresh();
         NavigationManager.NavigateTo("/");
     }
 }
