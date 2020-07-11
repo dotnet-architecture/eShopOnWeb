@@ -5,7 +5,6 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using BlazorAdmin.Constants;
 using BlazorAdmin.Services;
-using static BlazorAdmin.Pages.Index;
 
 namespace BlazorAdmin.Network
 {

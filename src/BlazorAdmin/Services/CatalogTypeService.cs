@@ -7,39 +7,40 @@ using Newtonsoft.Json;
 
 namespace BlazorAdmin.Services
 {
-    public class CatalogBrandService
+    public class CatalogTypeService
     {
         private readonly AuthService _authService;
 
-        public CatalogBrandService(AuthService authService)
+        public CatalogTypeService(AuthService authService)
         {
             _authService = authService;
         }
 
-        public async Task<List<CatalogBrand>> GetCatalogBrandsAsync()
+        public async Task<List<CatalogType>> GetCatalogTypesAsync()
         {
-            var brands = new List<CatalogBrand>();
+            var types = new List<CatalogType>();
+
             if (!_authService.IsLoggedIn)
             {
-                return brands;
+                return types;
             }
 
             try
             {
-                var result = (await _authService.GetHttpClient().GetAsync($"{GeneralConstants.API_URL}catalog-brands"));
+                var result = (await _authService.GetHttpClient().GetAsync($"{GeneralConstants.API_URL}catalog-types"));
                 if (result.StatusCode != HttpStatusCode.OK)
                 {
-                    return brands;
+                    return types;
                 }
 
-                brands = JsonConvert.DeserializeObject<CatalogBrandResult>(await result.Content.ReadAsStringAsync()).CatalogBrands;
+                types = JsonConvert.DeserializeObject<CatalogTypeResult>(await result.Content.ReadAsStringAsync()).CatalogTypes;
             }
             catch (AccessTokenNotAvailableException)
             {
-                return brands;
+                return types;
             }
 
-            return brands;
+            return types;
         }
 
     }

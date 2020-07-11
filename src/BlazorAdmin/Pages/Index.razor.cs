@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
-using BlazorAdmin.Constants;
 using BlazorAdmin.Network;
 using BlazorAdmin.Services;
 using Microsoft.AspNetCore.Components;
@@ -16,7 +12,6 @@ namespace BlazorAdmin.Pages
     {
         [Inject] private AuthService Auth { get; set; }
         [Inject] protected HttpClient Http { get; set; }
-        [Inject] private SecureHttpClient SecureHttp { get; set; }
 
         private List<CatalogItem> catalogItems = new List<CatalogItem>();
         private List<CatalogType> catalogTypes = new List<CatalogType>();
@@ -27,36 +22,23 @@ namespace BlazorAdmin.Pages
             await base.OnInitializedAsync();
 
             catalogItems = await new CatalogItemService(Auth).GetPagedCatalogItemsAsync(50);
-            catalogTypes = (await Http.GetFromJsonAsync<CatalogTypeResult>($"{GeneralConstants.API_URL}catalog-types")).CatalogTypes;
+            catalogTypes = await new CatalogTypeService(Auth).GetCatalogTypesAsync();
             catalogBrands = await new CatalogBrandService(Auth).GetCatalogBrandsAsync();
-            //catalogBrands = await SecureHttp.GetCatalogBrandsAsync();
         }
 
         protected string GetTypeName(int typeId)
         {
-            return catalogTypes.FirstOrDefault(t => t.Id == typeId)?.Name;
+            var type = catalogTypes.FirstOrDefault(t => t.Id == typeId);
+
+            return type == null ? "None" : type.Name;
         }
 
         protected string GetBrandName(int brandId)
         {
             var brand = catalogBrands.FirstOrDefault(t => t.Id == brandId);
 
-            if (brand == null) return "None";
-            return brand.Name;
+            return brand == null ? "None" : brand.Name;
         }
-
-        public class CatalogTypeResult
-        {
-            public List<CatalogType> CatalogTypes { get; set; } = new List<CatalogType>();
-        }
-
-        public class CatalogType
-        {
-            public int Id { get; set; }
-            public string Name { get; set; }
-        }
-
-
 
     }
 }

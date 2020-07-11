@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace BlazorAdmin.Constants
+﻿namespace BlazorAdmin.Constants
 {
     public class GeneralConstants
     {
