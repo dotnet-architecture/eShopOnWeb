@@ -60,6 +60,7 @@ namespace BlazorAdmin.Services
         {
             IsLoggedIn = !string.IsNullOrEmpty(await GetToken());
             UserName = await GetUsername();
+            await SetAuthorizationHeader();
         }
 
         private async Task SaveToken(HttpResponseMessage response)
@@ -101,11 +102,8 @@ namespace BlazorAdmin.Services
 
         private async Task SetAuthorizationHeader()
         {
-            if (!_httpClient.DefaultRequestHeaders.Contains("Authorization"))
-            {
-                var token = await GetToken();
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            }
+            var token = await GetToken();
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
         private IEnumerable<Claim> ParseClaimsFromJwt(string jwt)

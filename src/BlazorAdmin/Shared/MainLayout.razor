@@ -1,11 +1,12 @@
 ﻿@using System.Threading.Tasks
 @using BlazorAdmin.Services
+@using System
 @inherits Microsoft.AspNetCore.Components.LayoutComponentBase
 
 @inject AuthService Auth
 
 <div class="sidebar">
-    <NavMenu />
+    <NavMenu Change="AfterRender" />
 </div>
 
 <div class="main">
@@ -20,13 +21,17 @@
 
 @code
 {
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected bool AfterRender { get; set; }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        AfterRender = !AfterRender;
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+    protected override async Task OnInitializedAsync()
     {
         await Auth.RefreshLoginInfo();
-
-        if (firstRender)
-        {
-            this.StateHasChanged();
-        }
+        await base.OnInitializedAsync();
     }
 }

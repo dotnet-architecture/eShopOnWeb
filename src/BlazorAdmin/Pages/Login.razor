@@ -2,8 +2,9 @@
 @using System.Threading.Tasks
 @using BlazorAdmin.Services
 @using Microsoft.AspNetCore.Components
+@using System
 
-@inject AuthService AuthService
+@inject AuthService Auth
 @inject NavigationManager NavigationManager
 @inject SecureHttpClient SecureHttp
 
@@ -33,9 +34,9 @@
 
     protected async Task LoginUser()
     {
-        await AuthService.Login(AuthRequest);
+        await Auth.Login(AuthRequest);
 
-        if (AuthService.IsLoggedIn)
+        if (Auth.IsLoggedIn)
         {
             NavigationManager.NavigateTo("/");
         }

@@ -1,7 +1,9 @@
-﻿@inject AuthService AuthService
+﻿@inject AuthService Auth
 
 @using Microsoft.AspNetCore.Components
 @using BlazorAdmin.Services
+@using System.Threading.Tasks
+@using System
 <div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">eShopOnWeb Admin</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -17,7 +19,7 @@
             </NavLink>
         </li>
         <li class="nav-item px-3">
-            @if (@AuthService.IsLoggedIn)
+            @if (Auth.IsLoggedIn)
             {
                 <NavLink class="nav-link" href="logout">
                     <span class="oi oi-account-logout" aria-hidden="true"></span> Logout
@@ -36,7 +38,11 @@
 
 @code {
 
-
+    [Parameter]
+    public bool Change
+    {
+        set => StateHasChanged();
+    }
 
     private bool collapseNavMenu = true;
 
