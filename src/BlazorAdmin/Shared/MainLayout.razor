@@ -22,9 +22,10 @@
 {
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        await Auth.RefreshLoginInfo();
+
         if (firstRender)
         {
-            await Auth.RefreshLoginInfo();
             this.StateHasChanged();
         }
     }
