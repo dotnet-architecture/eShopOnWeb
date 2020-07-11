@@ -26,7 +26,7 @@ namespace BlazorAdmin.Pages
         {
             await base.OnInitializedAsync();
 
-            catalogItems = (await Http.GetFromJsonAsync<PagedCatalogItemResult>($"{GeneralConstants.API_URL}catalog-items?PageSize=50")).CatalogItems;
+            catalogItems = await new CatalogItemService(Auth).GetPagedCatalogItemsAsync(50);
             catalogTypes = (await Http.GetFromJsonAsync<CatalogTypeResult>($"{GeneralConstants.API_URL}catalog-types")).CatalogTypes;
             catalogBrands = await new CatalogBrandService(Auth).GetCatalogBrandsAsync();
             //catalogBrands = await SecureHttp.GetCatalogBrandsAsync();
@@ -45,12 +45,6 @@ namespace BlazorAdmin.Pages
             return brand.Name;
         }
 
-        public class PagedCatalogItemResult
-        {
-            public List<CatalogItem> CatalogItems { get; set; } = new List<CatalogItem>();
-            public int PageCount { get; set; } = 0;
-        }
-
         public class CatalogTypeResult
         {
             public List<CatalogType> CatalogTypes { get; set; } = new List<CatalogType>();
@@ -63,16 +57,6 @@ namespace BlazorAdmin.Pages
         }
 
 
-        public class CatalogItem
-        {
-            public int Id { get; set; }
-            public int CatalogTypeId { get; set; }
-            public int CatalogBrandId { get; set; }
 
-            public string Name { get; set; }
-            public string Description { get; set; }
-            public decimal Price { get; set; }
-            public string PictureUri { get; set; }
-        }
     }
 }
