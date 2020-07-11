@@ -51,7 +51,7 @@ namespace BlazorAdmin.Services
         {
             await _localStorage.RemoveItemAsync("authToken");
             await _localStorage.RemoveItemAsync("username");
-            RemoveHttpClientToken();
+            RemoveAuthorizationHeader();
             UserName = null;
             IsLoggedIn = false;
         }
@@ -67,18 +67,10 @@ namespace BlazorAdmin.Services
             var responseContent = await response.Content.ReadAsStringAsync();
             var jwt = JsonConvert.DeserializeObject<AuthResponse>(responseContent);
 
-            UpdateHttpClientToken(jwt.Token);
-
             await _localStorage.SetItemAsync("authToken", jwt.Token);
         }
 
-        private void UpdateHttpClientToken(string token)
-        {
-            RemoveHttpClientToken();
-            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
-        }
-
-        private void RemoveHttpClientToken()
+        private void RemoveAuthorizationHeader()
         {
             if (_httpClient.DefaultRequestHeaders.Contains("Authorization"))
             {

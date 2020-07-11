@@ -1,4 +1,8 @@
-﻿@inherits Microsoft.AspNetCore.Components.LayoutComponentBase
+﻿@using System.Threading.Tasks
+@using BlazorAdmin.Services
+@inherits Microsoft.AspNetCore.Components.LayoutComponentBase
+
+@inject AuthService Auth
 
 <div class="sidebar">
     <NavMenu />
@@ -13,3 +17,15 @@
         @Body
     </div>
 </div>
+
+@code
+{
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Auth.RefreshLoginInfo();
+            this.StateHasChanged();
+        }
+    }
+}
