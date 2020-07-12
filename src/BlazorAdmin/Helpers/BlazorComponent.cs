@@ -8,10 +8,10 @@ namespace BlazorAdmin.Helpers
     {
         private readonly RefreshBroadcast _refresh = RefreshBroadcast.Instance;
 
-        protected override Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
             _refresh.RefreshRequested += DoRefresh;
-            return base.OnInitializedAsync();
+            base.OnInitialized();
         }
 
         public void CallRequestRefresh()
