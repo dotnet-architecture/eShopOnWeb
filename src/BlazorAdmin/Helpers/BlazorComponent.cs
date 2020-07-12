@@ -2,26 +2,27 @@
 using BlazorAdmin.Services;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorAdmin.Helper
+namespace BlazorAdmin.Helpers
 {
-    public class BlazorLayoutComponent : LayoutComponentBase
+    public class BlazorComponent : ComponentBase
     {
-        [Inject] private RefreshService Refresh { get; set; }
+        private readonly RefreshBroadcast _refresh = RefreshBroadcast.Instance;
 
         protected override Task OnInitializedAsync()
         {
-            Refresh.RefreshRequested += DoRefresh;
+            _refresh.RefreshRequested += DoRefresh;
             return base.OnInitializedAsync();
         }
 
         public void CallRequestRefresh()
         {
-            Refresh.CallRequestRefresh();
+            _refresh.CallRequestRefresh();
         }
 
         private void DoRefresh()
         {
             StateHasChanged();
         }
+
     }
 }

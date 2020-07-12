@@ -22,8 +22,6 @@ namespace BlazorAdmin
             builder.Services.AddSingleton<ILocalStorageService, LocalStorageService>();
             builder.Services.AddSingleton<AuthService>();
 
-            builder.Services.AddSingleton<RefreshService>();
-
             await builder.Build().RunAsync();
         }
     }
