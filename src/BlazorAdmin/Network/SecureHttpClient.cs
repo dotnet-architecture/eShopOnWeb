@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using static BlazorAdmin.Pages.Index;
+using BlazorAdmin.Constants;
+using BlazorAdmin.Services;
 
 namespace BlazorAdmin.Network
 {
@@ -14,7 +15,8 @@ namespace BlazorAdmin.Network
         public SecureHttpClient(HttpClient client)
         {
             this.client = client;
-            this.client.DefaultRequestHeaders.Add("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFkbWluQG1pY3Jvc29mdC5jb20iLCJyb2xlIjoiQWRtaW5pc3RyYXRvcnMiLCJuYmYiOjE1OTQ0MDQ2MjgsImV4cCI6MTU5NTAwOTQyOCwiaWF0IjoxNTk0NDA0NjI4fQ.10hYllCtfSQU3deYW0Slc7AHOS4QFD0yga_A9R_uuAY");
+
+            this.client.DefaultRequestHeaders.Add("Authorization", $"Bearer ");
         }
 
         public async Task<List<CatalogBrand>> GetCatalogBrandsAsync()
@@ -23,7 +25,7 @@ namespace BlazorAdmin.Network
 
             try
             {
-                brands = (await client.GetFromJsonAsync<CatalogBrandResult>("https://localhost:44339/api/catalog-brands")).CatalogBrands;
+                brands = (await client.GetFromJsonAsync<CatalogBrandResult>($"{GeneralConstants.API_URL}catalog-brands")).CatalogBrands;
             }
             catch (AccessTokenNotAvailableException exception)
             {

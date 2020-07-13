@@ -1,0 +1,47 @@
+﻿@page "/login"
+@using BlazorAdmin.Services
+
+@inject AuthService Auth
+@inject NavigationManager NavigationManager
+
+@inherits BlazorAdmin.Helpers.BlazorComponent
+
+<div class="container">
+    @if (ShowLoginFailed)
+    {
+        <div class="alert alert-danger">
+            Login attempt failed.
+        </div>
+    }
+    <h1> RegExlib Login</h1>
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" name="username" placeholder="Username" class="form-control" @bind="@AuthRequest.Username" />
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" name="password" placeholder="Password" class="form-control" @bind="@AuthRequest.Password" />
+    </div>
+    <button class="btn btn-primary" @onclick="@LoginUser">Login</button>
+</div>
+
+@code {
+
+    protected AuthRequest AuthRequest { get; set; } = new AuthRequest();
+    protected bool ShowLoginFailed { get; set; }
+
+    protected async Task LoginUser()
+    {
+        await Auth.Login(AuthRequest);
+
+        if (Auth.IsLoggedIn)
+        {
+            CallRequestRefresh();
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            ShowLoginFailed = true;
+        }
+    }
+}

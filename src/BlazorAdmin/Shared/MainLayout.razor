@@ -1,4 +1,7 @@
-﻿@inherits LayoutComponentBase
+﻿@using BlazorAdmin.Services
+
+@inject AuthService Auth
+@inherits BlazorAdmin.Helpers.BlazorLayoutComponent
 
 <div class="sidebar">
     <NavMenu />
@@ -13,3 +16,14 @@
         @Body
     </div>
 </div>
+
+@code
+{
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Auth.RefreshLoginInfo();
+        CallRequestRefresh();
+        await base.OnInitializedAsync();
+    }
+}

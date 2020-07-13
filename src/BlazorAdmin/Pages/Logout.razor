@@ -1,0 +1,18 @@
+﻿@page "/logout"
+@using BlazorAdmin.Services
+
+@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+@inherits BlazorAdmin.Helpers.BlazorComponent
+
+
+@code {
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await AuthService.Logout();
+        CallRequestRefresh();
+        NavigationManager.NavigateTo("/");
+    }
+}
