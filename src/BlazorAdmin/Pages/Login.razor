@@ -14,7 +14,6 @@
         </div>
     }
     <h1> Blazor Admin Login</h1>
-    Login Status: @LoginStatus
     <div class="form-group">
         <label for="username">Username</label>
         <input type="text" name="username" placeholder="Username" class="form-control" @bind="@AuthRequest.Username" />
@@ -30,30 +29,29 @@
 
     protected AuthRequest AuthRequest { get; set; } = new AuthRequest();
     protected bool ShowLoginFailed { get; set; }
-    protected string LoginStatus { get; set; } = "Not Logged In";
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         await Auth.RefreshLoginInfo();
-        if(Auth.IsLoggedIn)
-        {
-            LoginStatus = "Logged In";
-        }
+        NavigateToRootIfLoggedIn();
     }
 
     protected async Task LoginUser()
     {
         await Auth.Login(AuthRequest);
+        NavigateToRootIfLoggedIn();
 
+        // if we're still here then login failed
+        ShowLoginFailed = true;
+    }
+
+    private void NavigateToRootIfLoggedIn()
+    {
         if (Auth.IsLoggedIn)
         {
             CallRequestRefresh();
             NavigationManager.NavigateTo("/");
-        }
-        else
-        {
-            ShowLoginFailed = true;
         }
     }
 }
