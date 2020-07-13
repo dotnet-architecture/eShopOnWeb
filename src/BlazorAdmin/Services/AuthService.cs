@@ -6,7 +6,6 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using BlazorAdmin.Constants;
 using Blazored.LocalStorage;
 using Newtonsoft.Json;
 
@@ -33,7 +32,7 @@ namespace BlazorAdmin.Services
         public async Task Login(AuthRequest user)
         {
             var jsonContent = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync($"{GeneralConstants.API_URL}authenticate", jsonContent);
+            var response = await _httpClient.PostAsync($"{Constants.API_URL}authenticate", jsonContent);
 
             if (response.IsSuccessStatusCode)
             {

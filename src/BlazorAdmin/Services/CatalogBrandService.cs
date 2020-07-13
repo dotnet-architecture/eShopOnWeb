@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
-using BlazorAdmin.Constants;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Newtonsoft.Json;
 
@@ -26,7 +25,7 @@ namespace BlazorAdmin.Services
 
             try
             {
-                var result = (await _authService.GetHttpClient().GetAsync($"{GeneralConstants.API_URL}catalog-brands"));
+                var result = (await _authService.GetHttpClient().GetAsync($"{Constants.API_URL}catalog-brands"));
                 if (result.StatusCode != HttpStatusCode.OK)
                 {
                     return brands;

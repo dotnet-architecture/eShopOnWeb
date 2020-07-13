@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
-using BlazorAdmin.Constants;
 using Newtonsoft.Json;
 
 namespace BlazorAdmin.Services
@@ -19,7 +18,7 @@ namespace BlazorAdmin.Services
         {
             var catalogItems = new List<CatalogItem>();
 
-            var result = (await _authService.GetHttpClient().GetAsync($"{GeneralConstants.API_URL}catalog-items?PageSize={pageSize}"));
+            var result = (await _authService.GetHttpClient().GetAsync($"{Constants.API_URL}catalog-items?PageSize={pageSize}"));
             if (result.StatusCode != HttpStatusCode.OK)
             {
                 return catalogItems;

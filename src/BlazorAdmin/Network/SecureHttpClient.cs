@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using BlazorAdmin.Constants;
 using BlazorAdmin.Services;
 
 namespace BlazorAdmin.Network
@@ -25,7 +24,7 @@ namespace BlazorAdmin.Network
 
             try
             {
-                brands = (await client.GetFromJsonAsync<CatalogBrandResult>($"{GeneralConstants.API_URL}catalog-brands")).CatalogBrands;
+                brands = (await client.GetFromJsonAsync<CatalogBrandResult>($"{Constants.API_URL}catalog-brands")).CatalogBrands;
             }
             catch (AccessTokenNotAvailableException exception)
             {

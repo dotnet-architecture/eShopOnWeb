@@ -13,7 +13,8 @@
             Login attempt failed.
         </div>
     }
-    <h1> RegExlib Login</h1>
+    <h1> Blazor Admin Login</h1>
+    Login Status: @LoginStatus
     <div class="form-group">
         <label for="username">Username</label>
         <input type="text" name="username" placeholder="Username" class="form-control" @bind="@AuthRequest.Username" />
@@ -29,6 +30,17 @@
 
     protected AuthRequest AuthRequest { get; set; } = new AuthRequest();
     protected bool ShowLoginFailed { get; set; }
+    protected string LoginStatus { get; set; } = "Not Logged In";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await Auth.RefreshLoginInfo();
+        if(Auth.IsLoggedIn)
+        {
+            LoginStatus = "Logged In";
+        }
+    }
 
     protected async Task LoginUser()
     {
