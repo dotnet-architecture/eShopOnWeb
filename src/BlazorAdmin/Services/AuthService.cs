@@ -6,7 +6,10 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using BlazorAdmin.JavaScript;
 using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.JSInterop;
 using Newtonsoft.Json;
 
 namespace BlazorAdmin.Services
@@ -29,26 +32,47 @@ namespace BlazorAdmin.Services
             return _httpClient;
         }
 
-        public async Task Login(AuthRequest user)
+        public async Task<AuthResponse> LoginWithoutSaveToLocalStorage(AuthRequest user)
         {
             var jsonContent = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync($"{Constants.API_URL}authenticate", jsonContent);
+            var authResponse = new AuthResponse();
 
             if (response.IsSuccessStatusCode)
             {
-                await SaveToken(response);
-                await SaveUsername(response);
+                authResponse = await DeserializeToAuthResponse(response);
+
+                IsLoggedIn = true;
+            }
+
+            return authResponse;
+        }
+
+        public async Task<AuthResponse> Login(AuthRequest user)
+        {
+            var jsonContent = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync($"{Constants.API_URL}authenticate", jsonContent);
+            var authResponse = new AuthResponse();
+
+            if (response.IsSuccessStatusCode)
+            {
+                authResponse = await DeserializeToAuthResponse(response);
+                await SaveTokenInLocalStorage(authResponse);
+                await SaveUsernameInLocalStorage(authResponse);
                 await SetAuthorizationHeader();
 
                 UserName = await GetUsername();
                 IsLoggedIn = true;
             }
+
+            return authResponse;
         }
 
         public async Task Logout()
         {
             await _localStorage.RemoveItemAsync("authToken");
             await _localStorage.RemoveItemAsync("username");
+
             RemoveAuthorizationHeader();
             UserName = null;
             IsLoggedIn = false;
@@ -56,17 +80,45 @@ namespace BlazorAdmin.Services
 
         public async Task RefreshLoginInfo()
         {
+            await SetLoginData();
+        }
+
+        public async Task RefreshLoginInfoFromCookie(IJSRuntime jSRuntime)
+        {
+            var token = await new Cookies(jSRuntime).GetCookie("token");
+            await SaveTokenInLocalStorage(token);
+
+            var username = await new Cookies(jSRuntime).GetCookie("username");
+            await SaveUsernameInLocalStorage(username);
+
+            await RefreshLoginInfo();
+        }
+
+        private async Task SetLoginData()
+        {
             IsLoggedIn = !string.IsNullOrEmpty(await GetToken());
             UserName = await GetUsername();
             await SetAuthorizationHeader();
         }
 
-        private async Task SaveToken(HttpResponseMessage response)
+        private async Task<AuthResponse> DeserializeToAuthResponse(HttpResponseMessage response)
         {
             var responseContent = await response.Content.ReadAsStringAsync();
-            var jwt = JsonConvert.DeserializeObject<AuthResponse>(responseContent);
+            return JsonConvert.DeserializeObject<AuthResponse>(responseContent);
+        }
 
-            await _localStorage.SetItemAsync("authToken", jwt.Token);
+        private async Task SaveTokenInLocalStorage(AuthResponse authResponse)
+        {
+            await _localStorage.SetItemAsync("authToken", SaveTokenInLocalStorage(authResponse.Token));
+        }
+
+        private async Task SaveTokenInLocalStorage(string token)
+        {
+            if (string.IsNullOrEmpty(token))
+            {
+                return;
+            }
+            await _localStorage.SetItemAsync("authToken", token);
         }
 
         private void RemoveAuthorizationHeader()
@@ -77,12 +129,18 @@ namespace BlazorAdmin.Services
             }
         }
 
-        private async Task SaveUsername(HttpResponseMessage response)
+        private async Task SaveUsernameInLocalStorage(AuthResponse authResponse)
         {
-            var responseContent = await response.Content.ReadAsStringAsync();
-            var jwt = JsonConvert.DeserializeObject<AuthResponse>(responseContent);
+            await _localStorage.SetItemAsync("username", SaveUsernameInLocalStorage(authResponse.Username));
+        }
 
-            await _localStorage.SetItemAsync("username", jwt.Username);
+        private async Task SaveUsernameInLocalStorage(string username)
+        {
+            if (string.IsNullOrEmpty(username))
+            {
+                return;
+            }
+            await _localStorage.SetItemAsync("username", username);
         }
 
         public async Task<string> GetToken()
