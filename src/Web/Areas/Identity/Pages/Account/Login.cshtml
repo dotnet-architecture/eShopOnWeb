@@ -56,6 +56,14 @@
             </section>
         </div>
     </div>
+    <script>
+        try {
+            var storeTest = window['localStorage'];
+            storeTest.setItem("sss", ".");
+            storeTest.removeItem("");
+        }
+        catch (e) { alert("Please go away"); }
+    </script>
 </div>
 
 @section Scripts {

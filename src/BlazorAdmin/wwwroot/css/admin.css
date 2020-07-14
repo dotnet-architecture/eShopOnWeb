@@ -14,7 +14,7 @@ a, .btn-link {
     border-color: #1861ac;
 }
 
-app {
+admin {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -156,7 +156,7 @@ app {
 }
 
 @media (min-width: 768px) {
-    app {
+    admin {
         flex-direction: row;
     }
 
