@@ -3,18 +3,18 @@ using System.Net;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace BlazorAdmin.Services
+namespace BlazorAdmin.Services.CatalogItemService
 {
-    public class CatalogItemService
+    public class ListPaged
     {
         private readonly AuthService _authService;
 
-        public CatalogItemService(AuthService authService)
+        public ListPaged(AuthService authService)
         {
             _authService = authService;
         }
 
-        public async Task<List<CatalogItem>> GetPagedCatalogItemsAsync(int pageSize)
+        public async Task<List<CatalogItem>> HandleAsync(int pageSize)
         {
             var catalogItems = new List<CatalogItem>();
 

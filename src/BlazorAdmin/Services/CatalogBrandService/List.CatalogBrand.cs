@@ -1,6 +1,6 @@
-﻿namespace BlazorAdmin.Services
+﻿namespace BlazorAdmin.Services.CatalogBrandService
 {
-    public class CatalogType
+    public class CatalogBrand
     {
         public int Id { get; set; }
         public string Name { get; set; }

@@ -17,4 +17,16 @@
     <PackageReference Include="System.Net.Http.Json" Version="3.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Services\CatalogItem\Delete.EditCatalogItemResult.cs">
+      <DependentUpon>Delete.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Services\CatalogItem\GetById.EditCatalogItemResult.cs">
+      <DependentUpon>GetById.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Services\CatalogItem\Edit.CreateCatalogItemResult.cs">
+      <DependentUpon>Edit.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
 </Project>

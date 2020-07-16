@@ -1,0 +1,95 @@
+﻿@inject ILogger<Delete> Logger
+@inject AuthService Auth
+
+@inherits BlazorAdmin.Helpers.BlazorComponent
+
+@namespace BlazorAdmin.Pages.CatalogItemPage
+
+<div class="container">
+    <div class="row">
+        <img class="col-md-6 esh-picture" src="@($"https://localhost:44315/{_item.PictureUri}")">
+
+        <dl class="col-md-6 dl-horizontal">
+            <dt>
+                Name
+            </dt>
+
+            <dd>
+                @_item.Name
+            </dd>
+
+            <dt>
+                Description
+            </dt>
+
+            <dd>
+                @_item.Description
+            </dd>
+
+            <dt>
+                Brand
+            </dt>
+
+            <dd>
+                @Services.CatalogBrandService.List.GetBrandName(Brands, _item.CatalogBrandId)
+            </dd>
+
+            <dt>
+                Type
+            </dt>
+
+            <dd>
+                @Services.CatalogTypeService.List.GetTypeName(Types, _item.CatalogTypeId)
+            </dd>
+            <dt>
+                Price
+            </dt>
+
+            <dd>
+                @_item.Price
+            </dd>
+
+            <dt></dt>
+
+            <dd class="text-right esh-button-actions">
+                <a href="" @onclick="@(() => OnActionClick.InvokeAsync("Close"))" @onclick:preventDefault class="btn esh-button esh-button-secondary">
+                    [ Cancel ]
+                </a>
+                <button class="btn esh-button esh-button-primary" @onclick="DeleteClick">
+                    [ Delete ]
+                </button>
+            </dd>
+
+        </dl>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    [Parameter]
+    public IEnumerable<CatalogBrand> Brands { get; set; }
+    [Parameter]
+    public IEnumerable<CatalogType> Types { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnActionClick { get; set; }
+
+    private CatalogItem _item = new CatalogItem();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Logger.LogInformation("Now loading... /Catalog/Delete/{Id}", Id);
+
+        _item = await new GetById(Auth).HandleAsync(Id);
+
+        await base.OnInitializedAsync();
+    }
+
+    private async Task DeleteClick()
+    {
+        await new BlazorAdmin.Services.CatalogItemService.Delete(Auth).HandleAsync(Id);
+
+        await OnActionClick.InvokeAsync("Close");
+    }
+}

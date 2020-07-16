@@ -1,0 +1,166 @@
+﻿@page "/admin"
+
+@inject AuthService Auth
+
+@inherits BlazorAdmin.Helpers.BlazorComponent
+
+@namespace BlazorAdmin.Pages.CatalogItemPage
+
+<h1>Manage Product Catalog</h1>
+
+@if (catalogItems == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    @if (!showDetails && !showEdit && !showDelete)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Item Type</th>
+                    <th>Brand</th>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>@nameof(CatalogItem.Description)</th>
+                    <th>@nameof(CatalogItem.Price)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in catalogItems)
+                {
+                    <tr>
+                        <td>
+                            <img class="esh-thumbnail" src="@($"https://localhost:44315/{item.PictureUri}")">
+                        </td>
+                        <td>@Services.CatalogTypeService.List.GetTypeName(catalogTypes, item.CatalogTypeId)</td>
+                        <td>@Services.CatalogBrandService.List.GetBrandName(catalogBrands, item.CatalogBrandId)</td>
+                        <td>@item.Id</td>
+                        <td>@item.Name</td>
+                        <td>@item.Description</td>
+                        <td>@item.Price</td>
+                        <td>
+                            <a href="" @onclick="@(() => EditClick(item.Id))" @onclick:preventDefault class="esh-table-link">
+                                Edit
+                            </a>
+                            |
+                            <a href="" @onclick="@(() => DetailsClick(item.Id))" @onclick:preventDefault class="esh-table-link">
+                                Details
+                            </a>
+                            |
+                            <a href="" @onclick="@(() => DeleteClick(item.Id))" @onclick:preventDefault class="esh-table-link">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    @if (showDetails)
+    {
+        <Details Id="@selectedId" Brands="@catalogBrands" Types="@catalogTypes" OnActionClick="DetailsActionHandler"></Details>
+    }
+
+    @if (showEdit)
+    {
+        <Edit Id="@selectedId" Brands="@catalogBrands" Types="@catalogTypes" OnActionClick="EditActionHandler"></Edit>
+    }
+
+    @if (showDelete)
+    {
+        <Delete Id="@selectedId" Brands="@catalogBrands" Types="@catalogTypes" OnActionClick="DeleteActionHandler"></Delete>
+    }
+}
+
+@code
+{
+    private List<CatalogItem> catalogItems = new List<CatalogItem>();
+    private List<CatalogType> catalogTypes = new List<CatalogType>();
+    private List<CatalogBrand> catalogBrands = new List<CatalogBrand>();
+    private bool showDetails = false;
+    private bool showEdit = false;
+    private bool showDelete = false;
+    private int selectedId = 0;
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            catalogItems = await new BlazorAdmin.Services.CatalogItemService.ListPaged(Auth).HandleAsync(50);
+            catalogTypes = await new BlazorAdmin.Services.CatalogTypeService.List(Auth).HandleAsync();
+            catalogBrands = await new BlazorAdmin.Services.CatalogBrandService.List(Auth).HandleAsync();
+
+            CallRequestRefresh();
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private void DetailsClick(int id)
+    {
+        selectedId = id;
+        showDetails = true;
+    }
+
+    private void EditClick(int id)
+    {
+        selectedId = id;
+        showEdit = true;
+    }
+
+    private void DeleteClick(int id)
+    {
+        selectedId = id;
+        showDelete = true;
+    }
+
+    private async Task DetailsActionHandler(string action)
+    {
+        showDetails = false;
+
+        if (action.ToLower() == "close")
+        {
+
+            await ReloadCatalogItems();
+        }
+        else if (action.ToLower().Contains("edit"))
+        {
+            var parts = action.ToLower().Split(":");
+            if (parts.Length <= 1)
+            {
+                return;
+            }
+            selectedId = int.Parse(action.ToLower().Split(":")[1]);
+            showEdit = true;
+        }
+    }
+
+    private async Task EditActionHandler(string action)
+    {
+        if (action.ToLower() == "close")
+        {
+            showEdit = false;
+            await ReloadCatalogItems();
+        }
+    }
+
+    private async Task DeleteActionHandler(string action)
+    {
+        if (action.ToLower() == "close")
+        {
+            showDelete = false;
+            await ReloadCatalogItems();
+        }
+    }
+
+    private async Task ReloadCatalogItems()
+    {
+        catalogItems = await new BlazorAdmin.Services.CatalogItemService.ListPaged(Auth).HandleAsync(50);
+        StateHasChanged();
+    }
+
+}

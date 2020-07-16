@@ -1,4 +1,4 @@
-﻿namespace BlazorAdmin.Services
+﻿namespace BlazorAdmin.Services.CatalogItemService
 {
     public class CatalogItem
     {
