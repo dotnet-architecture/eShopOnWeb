@@ -83,7 +83,7 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
 
             var postResponse = await Client.PostAsync("/identity/account/login", formContent);
             Assert.Equal(HttpStatusCode.Redirect, postResponse.StatusCode);
-            Assert.Equal(new System.Uri("/", UriKind.Relative), postResponse.Headers.Location);
+            Assert.Equal(new System.Uri("/admin", UriKind.Relative), postResponse.Headers.Location);
         }
     }
 }
