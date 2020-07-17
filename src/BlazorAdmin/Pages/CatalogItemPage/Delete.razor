@@ -52,7 +52,7 @@
             <dt></dt>
 
             <dd class="text-right esh-button-actions">
-                <a href="" @onclick="@(() => OnActionClick.InvokeAsync("Close"))" @onclick:preventDefault class="btn esh-button esh-button-secondary">
+                <a href="" @onclick="@(() => OnCloseClick.InvokeAsync(null))" @onclick:preventDefault class="btn esh-button esh-button-secondary">
                     [ Cancel ]
                 </a>
                 <button class="btn esh-button esh-button-primary" @onclick="DeleteClick">
@@ -73,7 +73,7 @@
     public IEnumerable<CatalogType> Types { get; set; }
 
     [Parameter]
-    public EventCallback<string> OnActionClick { get; set; }
+    public EventCallback<string> OnCloseClick { get; set; }
 
     private CatalogItem _item = new CatalogItem();
 
@@ -90,6 +90,6 @@
     {
         await new BlazorAdmin.Services.CatalogItemService.Delete(Auth).HandleAsync(Id);
 
-        await OnActionClick.InvokeAsync("Close");
+        await OnCloseClick.InvokeAsync(null);
     }
 }

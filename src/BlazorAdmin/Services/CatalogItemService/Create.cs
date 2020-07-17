@@ -18,7 +18,7 @@ namespace BlazorAdmin.Services.CatalogItemService
             _authService = authService;
         }
 
-        public async Task<CatalogItem> HandleAsync(CatalogItem catalogItem)
+        public async Task<CatalogItem> HandleAsync(CreateCatalogItemRequest catalogItem)
         {
             var catalogItemResult = new CatalogItem();
 

@@ -61,11 +61,11 @@ else
         </div>
 
         <div class="form-actions no-color esh-link-list">
-            <a href="" @onclick="@(() => OnActionClick.InvokeAsync($"Edit:{_item.Id}"))" @onclick:preventDefault class="esh-link-item">
+            <a href="" @onclick="@(() => OnEditClick.InvokeAsync(_item.Id))" @onclick:preventDefault class="esh-link-item">
                 Edit
             </a>
             |
-            <a href="" @onclick="@(() => OnActionClick.InvokeAsync("Close"))" @onclick:preventDefault class="esh-link-item">
+            <a href="" @onclick="@(() => OnCloseClick.InvokeAsync(null))" @onclick:preventDefault class="esh-link-item">
                 Back to list
             </a>
         </div>
@@ -81,7 +81,9 @@ else
     public IEnumerable<CatalogType> Types { get; set; }
 
     [Parameter]
-    public EventCallback<string> OnActionClick { get; set; }
+    public EventCallback<string> OnCloseClick { get; set; }
+    [Parameter]
+    public EventCallback<int> OnEditClick { get; set; }
 
     private CatalogItem _item = new CatalogItem();
 

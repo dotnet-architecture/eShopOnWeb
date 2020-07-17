@@ -14,8 +14,14 @@
 }
 else
 {
-    @if (!showDetails && !showEdit && !showDelete)
+    @if (!showCreate && !showDetails && !showEdit && !showDelete)
     {
+        <p class="esh-link-wrapper">
+            <button class="btn btn-primary" @onclick="@(() => CreateClick())">
+                Create New
+            </button>
+        </p>
+
         <table class="table">
             <thead>
                 <tr>
@@ -61,17 +67,22 @@ else
     }
     @if (showDetails)
     {
-        <Details Id="@selectedId" Brands="@catalogBrands" Types="@catalogTypes" OnActionClick="DetailsActionHandler"></Details>
+        <Details Id="@selectedId" Brands="@catalogBrands" Types="@catalogTypes" OnCloseClick="CloseDetailsHandler" OnEditClick="EditDetailsHandler"></Details>
     }
 
     @if (showEdit)
     {
-        <Edit Id="@selectedId" Brands="@catalogBrands" Types="@catalogTypes" OnActionClick="EditActionHandler"></Edit>
+        <Edit Id="@selectedId" Brands="@catalogBrands" Types="@catalogTypes" OnCloseClick="CloseEditHandler"></Edit>
+    }
+
+    @if (showCreate)
+    {
+        <Create Brands="@catalogBrands" Types="@catalogTypes" OnCloseClick="CloseCreateHandler"></Create>
     }
 
     @if (showDelete)
     {
-        <Delete Id="@selectedId" Brands="@catalogBrands" Types="@catalogTypes" OnActionClick="DeleteActionHandler"></Delete>
+        <Delete Id="@selectedId" Brands="@catalogBrands" Types="@catalogTypes" OnCloseClick="CloseDeleteHandler"></Delete>
     }
 }
 
@@ -80,6 +91,7 @@ else
     private List<CatalogItem> catalogItems = new List<CatalogItem>();
     private List<CatalogType> catalogTypes = new List<CatalogType>();
     private List<CatalogBrand> catalogBrands = new List<CatalogBrand>();
+    private bool showCreate = false;
     private bool showDetails = false;
     private bool showEdit = false;
     private bool showDelete = false;
@@ -106,6 +118,11 @@ else
         showDetails = true;
     }
 
+    private void CreateClick()
+    {
+        showCreate = true;
+    }
+
     private void EditClick(int id)
     {
         selectedId = id;
@@ -118,43 +135,35 @@ else
         showDelete = true;
     }
 
-    private async Task DetailsActionHandler(string action)
+    private async Task CloseDetailsHandler(string action)
     {
         showDetails = false;
-
-        if (action.ToLower() == "close")
-        {
-
-            await ReloadCatalogItems();
-        }
-        else if (action.ToLower().Contains("edit"))
-        {
-            var parts = action.ToLower().Split(":");
-            if (parts.Length <= 1)
-            {
-                return;
-            }
-            selectedId = int.Parse(action.ToLower().Split(":")[1]);
-            showEdit = true;
-        }
+        await ReloadCatalogItems();
     }
 
-    private async Task EditActionHandler(string action)
+    private void EditDetailsHandler(int id)
     {
-        if (action.ToLower() == "close")
-        {
-            showEdit = false;
-            await ReloadCatalogItems();
-        }
+        showDetails = false;
+        selectedId = id;
+        showEdit = true;
     }
 
-    private async Task DeleteActionHandler(string action)
+    private async Task CloseEditHandler(string action)
     {
-        if (action.ToLower() == "close")
-        {
-            showDelete = false;
-            await ReloadCatalogItems();
-        }
+        showEdit = false;
+        await ReloadCatalogItems();
+    }
+
+    private async Task CloseDeleteHandler(string action)
+    {
+        showDelete = false;
+        await ReloadCatalogItems();
+    }
+    
+    private async Task CloseCreateHandler(string action)
+    {
+        showCreate = false;
+        await ReloadCatalogItems();
     }
 
     private async Task ReloadCatalogItems()

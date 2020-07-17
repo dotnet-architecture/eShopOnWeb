@@ -8,7 +8,7 @@
 <h2 class="esh-body-title">Create</h2>
 
 <div>
-    <EditForm Model="_item" OnValidSubmit="@Create_Click">
+    <EditForm Model="_item" OnValidSubmit="@CreateClick">
         <DataAnnotationsValidator />
 
         <div class="form-group">
@@ -70,7 +70,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-3 text-right esh-button-actions">
-                <a href="" @onclick="@(() => OnActionClick.InvokeAsync("Close"))" @onclick:preventDefault class="btn esh-button esh-button-secondary">
+                <a href="" @onclick="@(() => OnCloseClick.InvokeAsync(null))" @onclick:preventDefault class="btn esh-button esh-button-secondary">
                     [ Cancel ]
                 </a>
                 <button type="submit" class="btn esh-button esh-button-primary">
@@ -89,9 +89,9 @@
     public IEnumerable<CatalogType> Types { get; set; }
 
     [Parameter]
-    public EventCallback<string> OnActionClick { get; set; }
+    public EventCallback<string> OnCloseClick { get; set; }
 
-    private readonly CatalogItem _item = new CatalogItem();
+    private readonly CreateCatalogItemRequest _item = new CreateCatalogItemRequest();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -103,9 +103,9 @@
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    private async Task Create_Click()
+    private async Task CreateClick()
     {
         await new BlazorAdmin.Services.CatalogItemService.Create(Auth).HandleAsync(_item);
-        await OnActionClick.InvokeAsync("Close");
+        await OnCloseClick.InvokeAsync(null);
     }
 }
