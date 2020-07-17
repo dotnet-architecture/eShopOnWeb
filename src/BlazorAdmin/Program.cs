@@ -7,6 +7,7 @@ using BlazorAdmin.Network;
 using BlazorAdmin.Services;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlazorAdmin
 {
@@ -23,6 +24,14 @@ namespace BlazorAdmin
             builder.Services.AddSingleton<ILocalStorageService, LocalStorageService>();
             builder.Services.AddSingleton<AuthService>();
             builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+
+
+            // TODO: Sort out how to implement these with custom AuthService
+            builder.Services.AddSingleton<IAuthorizationPolicyProvider, DefaultAuthorizationPolicyProvider>();
+            builder.Services.AddSingleton<IAuthorizationService, DefaultAuthorizationService>();
+            builder.Services.AddSingleton<IAuthorizationHandlerProvider, DefaultAuthorizationHandlerProvider>();
+            builder.Services.AddSingleton<IAuthorizationHandlerContextFactory, DefaultAuthorizationHandlerContextFactory>();
+            builder.Services.AddSingleton<IAuthorizationEvaluator, DefaultAuthorizationEvaluator>();
 
             await builder.Build().RunAsync();
         }

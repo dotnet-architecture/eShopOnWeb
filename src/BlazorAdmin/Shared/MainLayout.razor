@@ -6,9 +6,11 @@
 
 @inherits BlazorAdmin.Helpers.BlazorLayoutComponent
 
-<div class="sidebar">
-    <NavMenu />
-</div>
+<AuthorizeView Roles=@Microsoft.eShopWeb.ApplicationCore.Constants.AuthorizationConstants.Roles.ADMINISTRATORS>
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+</AuthorizeView>
 
 <div class="main">
     <div class="top-row px-4">
