@@ -2,6 +2,6 @@
 {
     public class Constants
     {
-        public const string API_URL = "https://localhost:44339/api/";
+        public const string API_URL = "https://localhost:5099/api/";
     }
 }

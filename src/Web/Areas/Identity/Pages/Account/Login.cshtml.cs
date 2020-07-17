@@ -95,7 +95,7 @@ namespace Microsoft.eShopWeb.Web.Areas.Identity.Pages.Account
                     CreateAuthCookie(result);
                     _logger.LogInformation("User logged in.");
                     await TransferAnonymousBasketToUserAsync(Input.Email);
-                    return LocalRedirect("/admin");
+                    return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
                 {
