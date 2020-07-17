@@ -1,0 +1,176 @@
+﻿@page "/admin"
+
+@inject AuthService Auth
+
+@inherits BlazorAdmin.Helpers.BlazorComponent
+
+@namespace BlazorAdmin.Pages.CatalogItemPage
+
+<h1>Manage Product Catalog</h1>
+
+@if (catalogItems == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    @if (!showCreate && !showDetails && !showEdit && !showDelete)
+    {
+        <p class="esh-link-wrapper">
+            <button class="btn btn-primary" @onclick="@(() => CreateClick())">
+                Create New
+            </button>
+        </p>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Item Type</th>
+                    <th>Brand</th>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>@nameof(CatalogItem.Description)</th>
+                    <th>@nameof(CatalogItem.Price)</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in catalogItems)
+                {
+                    <tr>
+                        <td>
+                            <img class="esh-thumbnail" src="@($"https://localhost:44315/{item.PictureUri}")">
+                        </td>
+                        <td>@Services.CatalogTypeService.List.GetTypeName(catalogTypes, item.CatalogTypeId)</td>
+                        <td>@Services.CatalogBrandService.List.GetBrandName(catalogBrands, item.CatalogBrandId)</td>
+                        <td>@item.Id</td>
+                        <td>@item.Name</td>
+                        <td>@item.Description</td>
+                        <td>@item.Price</td>
+                        <td>
+                            <a href="" @onclick="@(() => EditClick(item.Id))" @onclick:preventDefault class="esh-table-link">
+                                Edit
+                            </a>
+                            |
+                            <a href="" @onclick="@(() => DetailsClick(item.Id))" @onclick:preventDefault class="esh-table-link">
+                                Details
+                            </a>
+                            |
+                            <a href="" @onclick="@(() => DeleteClick(item.Id))" @onclick:preventDefault class="esh-table-link">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    @if (showDetails)
+    {
+        <Details Id="@selectedId" Brands="@catalogBrands" Types="@catalogTypes" OnCloseClick="CloseDetailsHandler" OnEditClick="EditDetailsHandler"></Details>
+    }
+
+    @if (showEdit)
+    {
+        <Edit Id="@selectedId" Brands="@catalogBrands" Types="@catalogTypes" OnCloseClick="CloseEditHandler"></Edit>
+    }
+
+    @if (showCreate)
+    {
+        <Create Brands="@catalogBrands" Types="@catalogTypes" OnCloseClick="CloseCreateHandler"></Create>
+    }
+
+    @if (showDelete)
+    {
+        <Delete Id="@selectedId" Brands="@catalogBrands" Types="@catalogTypes" OnCloseClick="CloseDeleteHandler"></Delete>
+    }
+}
+
+@code
+{
+    private List<CatalogItem> catalogItems = new List<CatalogItem>();
+    private List<CatalogType> catalogTypes = new List<CatalogType>();
+    private List<CatalogBrand> catalogBrands = new List<CatalogBrand>();
+    private bool showCreate = false;
+    private bool showDetails = false;
+    private bool showEdit = false;
+    private bool showDelete = false;
+    private int selectedId = 0;
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            catalogItems = await new BlazorAdmin.Services.CatalogItemService.ListPaged(Auth).HandleAsync(50);
+            catalogTypes = await new BlazorAdmin.Services.CatalogTypeService.List(Auth).HandleAsync();
+            catalogBrands = await new BlazorAdmin.Services.CatalogBrandService.List(Auth).HandleAsync();
+
+            CallRequestRefresh();
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private void DetailsClick(int id)
+    {
+        selectedId = id;
+        showDetails = true;
+    }
+
+    private void CreateClick()
+    {
+        showCreate = true;
+    }
+
+    private void EditClick(int id)
+    {
+        selectedId = id;
+        showEdit = true;
+    }
+
+    private void DeleteClick(int id)
+    {
+        selectedId = id;
+        showDelete = true;
+    }
+
+    private async Task CloseDetailsHandler(string action)
+    {
+        showDetails = false;
+        await ReloadCatalogItems();
+    }
+
+    private void EditDetailsHandler(int id)
+    {
+        showDetails = false;
+        selectedId = id;
+        showEdit = true;
+    }
+
+    private async Task CloseEditHandler(string action)
+    {
+        showEdit = false;
+        await ReloadCatalogItems();
+    }
+
+    private async Task CloseDeleteHandler(string action)
+    {
+        showDelete = false;
+        await ReloadCatalogItems();
+    }
+    
+    private async Task CloseCreateHandler(string action)
+    {
+        showCreate = false;
+        await ReloadCatalogItems();
+    }
+
+    private async Task ReloadCatalogItems()
+    {
+        catalogItems = await new BlazorAdmin.Services.CatalogItemService.ListPaged(Auth).HandleAsync(50);
+        StateHasChanged();
+    }
+
+}

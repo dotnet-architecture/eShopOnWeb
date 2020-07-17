@@ -15,10 +15,12 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
     public class Create : BaseAsyncEndpoint<CreateCatalogItemRequest, CreateCatalogItemResponse>
     {
         private readonly IAsyncRepository<CatalogItem> _itemRepository;
+        private readonly IUriComposer _uriComposer;
 
-        public Create(IAsyncRepository<CatalogItem> itemRepository)
+        public Create(IAsyncRepository<CatalogItem> itemRepository, IUriComposer uriComposer)
         {
             _itemRepository = itemRepository;
+            _uriComposer = uriComposer;
         }
 
         [HttpPost("api/catalog-items")]
@@ -43,7 +45,7 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
                 CatalogTypeId = newItem.CatalogTypeId,
                 Description = newItem.Description,
                 Name = newItem.Name,
-                PictureUri = newItem.PictureUri,
+                PictureUri = _uriComposer.ComposePicUri(newItem.PictureUri),
                 Price = newItem.Price
             };
             response.CatalogItem = dto;

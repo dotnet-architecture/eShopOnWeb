@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BlazorAdmin.Services
+namespace BlazorAdmin.Services.CatalogTypeService
 {
     public class CatalogTypeResult
     {

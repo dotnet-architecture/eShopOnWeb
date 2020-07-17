@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BlazorAdmin.Services
+namespace BlazorAdmin.Services.CatalogItemService
 {
     public class PagedCatalogItemResult
     {

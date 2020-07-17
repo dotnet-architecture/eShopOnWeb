@@ -1,21 +1,22 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Newtonsoft.Json;
 
-namespace BlazorAdmin.Services
+namespace BlazorAdmin.Services.CatalogTypeService
 {
-    public class CatalogTypeService
+    public class List
     {
         private readonly AuthService _authService;
 
-        public CatalogTypeService(AuthService authService)
+        public List(AuthService authService)
         {
             _authService = authService;
         }
 
-        public async Task<List<CatalogType>> GetCatalogTypesAsync()
+        public async Task<List<CatalogType>> HandleAsync()
         {
             var types = new List<CatalogType>();
 
@@ -40,6 +41,13 @@ namespace BlazorAdmin.Services
             }
 
             return types;
+        }
+
+        public static string GetTypeName(IEnumerable<CatalogType> types, int typeId)
+        {
+            var type = types.FirstOrDefault(t => t.Id == typeId);
+
+            return type == null ? "None" : type.Name;
         }
 
     }

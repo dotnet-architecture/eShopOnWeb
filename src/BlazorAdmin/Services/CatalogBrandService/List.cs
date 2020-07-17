@@ -1,21 +1,22 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Newtonsoft.Json;
 
-namespace BlazorAdmin.Services
+namespace BlazorAdmin.Services.CatalogBrandService
 {
-    public class CatalogBrandService
+    public class List
     {
         private readonly AuthService _authService;
 
-        public CatalogBrandService(AuthService authService)
+        public List(AuthService authService)
         {
             _authService = authService;
         }
 
-        public async Task<List<CatalogBrand>> GetCatalogBrandsAsync()
+        public async Task<List<CatalogBrand>> HandleAsync()
         {
             var brands = new List<CatalogBrand>();
             if (!_authService.IsLoggedIn)
@@ -39,6 +40,13 @@ namespace BlazorAdmin.Services
             }
 
             return brands;
+        }
+
+        public static string GetBrandName(IEnumerable<CatalogBrand> brands, int brandId)
+        {
+            var type = brands.FirstOrDefault(t => t.Id == brandId);
+
+            return type == null ? "None" : type.Name;
         }
 
     }
