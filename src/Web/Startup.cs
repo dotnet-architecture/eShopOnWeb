@@ -131,6 +131,7 @@ namespace Microsoft.eShopWeb.Web
             });
 
             services.AddBlazoredLocalStorage();
+            services.AddServerSideBlazor();
             services.AddScoped<AuthService>();
 
             _services = services; // used to debug registered services

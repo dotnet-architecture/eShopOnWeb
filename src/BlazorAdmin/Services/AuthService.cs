@@ -162,7 +162,7 @@ namespace BlazorAdmin.Services
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
-        private IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
+        public IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
         {
             var claims = new List<Claim>();
             var payload = jwt.Split('.')[1];

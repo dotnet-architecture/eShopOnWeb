@@ -18,6 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ApplicationCore\ApplicationCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Services\CatalogItem\Delete.EditCatalogItemResult.cs">
       <DependentUpon>Delete.cs</DependentUpon>
     </Compile>

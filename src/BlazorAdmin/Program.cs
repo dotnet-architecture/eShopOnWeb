@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using BlazorAdmin.Network;
 using BlazorAdmin.Services;
 using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace BlazorAdmin
 {
@@ -21,6 +22,7 @@ namespace BlazorAdmin
 
             builder.Services.AddSingleton<ILocalStorageService, LocalStorageService>();
             builder.Services.AddSingleton<AuthService>();
+            builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 
             await builder.Build().RunAsync();
         }

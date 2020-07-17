@@ -1,9 +1,7 @@
 ﻿@page "/admin"
-
+@attribute [Authorize]
 @inject AuthService Auth
-
 @inherits BlazorAdmin.Helpers.BlazorComponent
-
 @namespace BlazorAdmin.Pages.CatalogItemPage
 
 <h1>Manage Product Catalog</h1>
@@ -160,7 +158,7 @@ else
         showDelete = false;
         await ReloadCatalogItems();
     }
-    
+
     private async Task CloseCreateHandler(string action)
     {
         showCreate = false;
