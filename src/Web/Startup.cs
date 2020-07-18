@@ -23,6 +23,7 @@ using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 
 namespace Microsoft.eShopWeb.Web
 {
@@ -89,6 +90,8 @@ namespace Microsoft.eShopWeb.Web
                        .AddEntityFrameworkStores<AppIdentityDbContext>()
                                        .AddDefaultTokenProviders();
 
+            services.AddScoped<ITokenClaimsService, IdentityTokenClaimService>();
+
             ConfigureCoreServices.Configure(services, Configuration);
             ConfigureWebServices.Configure(services, Configuration);
 
@@ -135,14 +138,6 @@ namespace Microsoft.eShopWeb.Web
             services.AddBlazoredLocalStorage();
             services.AddServerSideBlazor();
             services.AddScoped<AuthService>();
-
-            // add default blazor auth services
-            services.AddSingleton<IAuthorizationPolicyProvider, DefaultAuthorizationPolicyProvider>();
-            services.AddSingleton<IAuthorizationService, DefaultAuthorizationService>();
-            services.AddSingleton<IAuthorizationHandlerProvider, DefaultAuthorizationHandlerProvider>();
-            services.AddSingleton<IAuthorizationHandlerContextFactory, DefaultAuthorizationHandlerContextFactory>();
-            services.AddSingleton<IAuthorizationEvaluator, DefaultAuthorizationEvaluator>();
-
 
             _services = services; // used to debug registered services
         }

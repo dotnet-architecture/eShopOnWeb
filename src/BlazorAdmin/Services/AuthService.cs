@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
+using Shared.Authorization;
 
 namespace BlazorAdmin.Services
 {
@@ -150,6 +152,11 @@ namespace BlazorAdmin.Services
             return token;
         }
 
+        public async Task<UserInfo> GetTokenFromController()
+        {
+            return await _httpClient.GetFromJsonAsync<UserInfo>("User");
+        }
+
         public async Task<string> GetUsername()
         {
             var username = await _localStorage.GetItemAsync<string>("username");
@@ -165,6 +172,11 @@ namespace BlazorAdmin.Services
         public IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
         {
             var claims = new List<Claim>();
+            if (string.IsNullOrEmpty(jwt))
+            {
+                return claims;
+            }
+
             var payload = jwt.Split('.')[1];
             var jsonBytes = ParseBase64WithoutPadding(payload);
             var keyValuePairs = JsonConvert.DeserializeObject<Dictionary<string, object>>(Encoding.UTF8.GetString(jsonBytes));
