@@ -23,15 +23,10 @@ namespace BlazorAdmin
 
             builder.Services.AddSingleton<ILocalStorageService, LocalStorageService>();
             builder.Services.AddSingleton<AuthService>();
-            builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 
-
-            // TODO: Sort out how to implement these with custom AuthService
-            builder.Services.AddSingleton<IAuthorizationPolicyProvider, DefaultAuthorizationPolicyProvider>();
-            builder.Services.AddSingleton<IAuthorizationService, DefaultAuthorizationService>();
-            builder.Services.AddSingleton<IAuthorizationHandlerProvider, DefaultAuthorizationHandlerProvider>();
-            builder.Services.AddSingleton<IAuthorizationHandlerContextFactory, DefaultAuthorizationHandlerContextFactory>();
-            builder.Services.AddSingleton<IAuthorizationEvaluator, DefaultAuthorizationEvaluator>();
+            builder.Services.AddAuthorizationCore();
+            builder.Services.AddSingleton<AuthenticationStateProvider, CustomAuthStateProvider>();
+            builder.Services.AddSingleton(sp => (CustomAuthStateProvider)sp.GetRequiredService<AuthenticationStateProvider>());
 
             await builder.Build().RunAsync();
         }
