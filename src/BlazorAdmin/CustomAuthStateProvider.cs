@@ -17,15 +17,15 @@ namespace BlazorAdmin
     {
         private static readonly TimeSpan UserCacheRefreshInterval = TimeSpan.FromSeconds(60);
 
-        private readonly HttpClient _client;
+        private readonly AuthService _authService;
         private readonly ILogger<CustomAuthStateProvider> _logger;
 
         private DateTimeOffset _userLastCheck = DateTimeOffset.FromUnixTimeSeconds(0);
         private ClaimsPrincipal _cachedUser = new ClaimsPrincipal(new ClaimsIdentity());
 
-        public CustomAuthStateProvider(HttpClient client, ILogger<CustomAuthStateProvider> logger)
+        public CustomAuthStateProvider(AuthService authService, ILogger<CustomAuthStateProvider> logger)
         {
-            _client = client;
+            _authService = authService;
             _logger = logger;
         }
 
@@ -52,14 +52,14 @@ namespace BlazorAdmin
 
             try
             {
-                user = await _client.GetFromJsonAsync<UserInfo>("User");
+                user = await _authService.GetTokenFromController();
             }
             catch (Exception exc)
             {
                 _logger.LogWarning(exc, "Fetching user failed.");
             }
             
-            if (!user.IsAuthenticated)
+            if (user == null || !user.IsAuthenticated)
             {
                 return new ClaimsPrincipal(new ClaimsIdentity());
             }

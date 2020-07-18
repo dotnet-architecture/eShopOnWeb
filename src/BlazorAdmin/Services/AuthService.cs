@@ -152,9 +152,9 @@ namespace BlazorAdmin.Services
             return token;
         }
 
-        public async Task<string> GetTokenFromController()
+        public async Task<UserInfo> GetTokenFromController()
         {
-            return await _httpClient.GetStringAsync("User");
+            return await _httpClient.GetFromJsonAsync<UserInfo>("User");
         }
 
         public async Task<string> GetUsername()
