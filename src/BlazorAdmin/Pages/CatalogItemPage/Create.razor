@@ -5,12 +5,13 @@
 
 @namespace BlazorAdmin.Pages.CatalogItemPage
 
-<EditForm Model="_item" OnValidSubmit="@CreateClick">
-    <DataAnnotationsValidator />
 
-    <div class="modal @_modalClass" tabindex="-1" role="dialog" style="display:@_modalDisplay">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
+
+<div class="modal @_modalClass" tabindex="-1" role="dialog" style="display:@_modalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <EditForm Model="_item" OnValidSubmit="@CreateClick">
+                <DataAnnotationsValidator />
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Create</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -18,69 +19,69 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                @if (_item == null)
-                {
-                    <Spinner></Spinner>
-                }
-                else
-                {
-                    <div class="form-group">
-                        <label class="control-label col-md-2">Name</label>
-                        <div class="col-md-12">
-                            <InputText class="form-control" @bind-Value="_item.Name"/>
-                            <ValidationMessage For="(() => _item.Name)"/>
+                    @if (_item == null)
+                    {
+                        <Spinner></Spinner>
+                    }
+                    else
+                    {
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Name</label>
+                            <div class="col-md-12">
+                                <InputText class="form-control" @bind-Value="_item.Name" />
+                                <ValidationMessage For="(() => _item.Name)" />
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-md-2">Description</label>
-                        <div class="col-md-12">
-                            <InputText class="form-control" @bind-Value="_item.Description"/>
-                            <ValidationMessage For="(() => _item.Description)"/>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Description</label>
+                            <div class="col-md-12">
+                                <InputText class="form-control" @bind-Value="_item.Description" />
+                                <ValidationMessage For="(() => _item.Description)" />
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-md-2">Brand</label>
-                        <div class="col-md-12">
-                            <InputSelect @bind-Value="_item.CatalogBrandId" class="form-control">
-                                @foreach (var brand in Brands)
-                                {
-                                    <option value="@brand.Id">@brand.Name</option>
-                                }
-                            </InputSelect>
-                            <ValidationMessage For="(() => _item.CatalogBrandId)"/>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Brand</label>
+                            <div class="col-md-12">
+                                <InputSelect @bind-Value="_item.CatalogBrandId" class="form-control">
+                                    @foreach (var brand in Brands)
+                                        {
+                                        <option value="@brand.Id">@brand.Name</option>
+                                        }
+                                </InputSelect>
+                                <ValidationMessage For="(() => _item.CatalogBrandId)" />
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-md-2">Type</label>
-                        <div class="col-md-12">
-                            <InputSelect @bind-Value="_item.CatalogTypeId" class="form-control">
-                                @foreach (var type in Types)
-                                {
-                                    <option value="@type.Id">@type.Name</option>
-                                }
-                            </InputSelect>
-                            <ValidationMessage For="(() => _item.CatalogTypeId)"/>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Type</label>
+                            <div class="col-md-12">
+                                <InputSelect @bind-Value="_item.CatalogTypeId" class="form-control">
+                                    @foreach (var type in Types)
+                                        {
+                                        <option value="@type.Id">@type.Name</option>
+                                        }
+                                </InputSelect>
+                                <ValidationMessage For="(() => _item.CatalogTypeId)" />
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-md-2">Price</label>
-                        <div class="col-md-12">
-                            <InputNumber @bind-Value="_item.Price" class="form-control"/>
-                            <ValidationMessage For="(() => _item.Price)"/>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Price</label>
+                            <div class="col-md-12">
+                                <InputNumber @bind-Value="_item.Price" class="form-control" />
+                                <ValidationMessage For="(() => _item.Price)" />
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-md-2">Picture name</label>
-                        <div class="col-md-12 esh-form-information">
-                            Uploading images not allowed for this version.
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Picture name</label>
+                            <div class="col-md-12 esh-form-information">
+                                Uploading images not allowed for this version.
+                            </div>
                         </div>
-                    </div>
-                }
+                    }
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Cancel</button>
@@ -88,10 +89,11 @@
                         Create
                     </button>
                 </div>
-            </div>
+            </EditForm>
         </div>
     </div>
-</EditForm>
+</div>
+
 
 
 @if (_showCreateModal)
