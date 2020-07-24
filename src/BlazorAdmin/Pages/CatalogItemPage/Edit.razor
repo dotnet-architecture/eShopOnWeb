@@ -1,0 +1,110 @@
+﻿@inject ILogger<Edit> Logger
+@inject AuthService Auth
+
+@inherits BlazorAdmin.Helpers.BlazorComponent
+
+@namespace BlazorAdmin.Pages.CatalogItemPage
+
+<h2 class="esh-body-title">Edit</h2>
+
+<div>
+    <EditForm Model="_item" OnValidSubmit="@SaveClick">
+        <DataAnnotationsValidator />
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Name</label>
+            <div class="col-md-3">
+                <InputText class="form-control" @bind-Value="_item.Name" />
+                <ValidationMessage For="(() => _item.Name)" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Description</label>
+            <div class="col-md-3">
+                <InputText class="form-control" @bind-Value="_item.Description" />
+                <ValidationMessage For="(() => _item.Description)" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Brand</label>
+            <div class="col-md-3">
+                <InputSelect @bind-Value="_item.CatalogBrandId" class="form-control">
+                    @foreach (var brand in Brands)
+                    {
+                        <option value="@brand.Id">@brand.Name</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="(() => _item.CatalogBrandId)" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Type</label>
+            <div class="col-md-3">
+                <InputSelect @bind-Value="_item.CatalogTypeId" class="form-control">
+                    @foreach (var type in Types)
+                    {
+                        <option value="@type.Id">@type.Name</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="(() => _item.CatalogTypeId)" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Price</label>
+            <div class="col-md-3">
+                <InputNumber @bind-Value="_item.Price" class="form-control" />
+                <ValidationMessage For="(() => _item.Price)" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Picture name</label>
+            <div class="col-md-4 esh-form-information">
+                Uploading images not allowed for this version.
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-3 text-right esh-button-actions">
+                <a href="" @onclick="@(() => OnCloseClick.InvokeAsync(null))" @onclick:preventDefault class="btn btn-secondary">
+                    Cancel
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    Save
+                </button>
+            </div>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    [Parameter]
+    public IEnumerable<CatalogBrand> Brands { get; set; }
+    [Parameter]
+    public IEnumerable<CatalogType> Types { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnCloseClick { get; set; }
+
+    private CatalogItem _item = new CatalogItem();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Logger.LogInformation("Now loading... /Catalog/Edit/{Id}", Id);
+
+        _item = await new GetById(Auth).HandleAsync(Id);
+
+        await base.OnInitializedAsync();
+    }
+
+    private async Task SaveClick()
+    {
+        await new BlazorAdmin.Services.CatalogItemService.Edit(Auth).HandleAsync(_item);
+    }
+}

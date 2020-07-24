@@ -1,0 +1,42 @@
+﻿@using BlazorAdmin.Services
+@using BlazorAdmin.JavaScript
+
+@inject AuthService Auth
+@inject IJSRuntime JSRuntime
+
+@inherits BlazorAdmin.Helpers.BlazorLayoutComponent
+
+<AuthorizeView Roles=@Microsoft.eShopWeb.ApplicationCore.Constants.AuthorizationConstants.Roles.ADMINISTRATORS>
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+</AuthorizeView>
+
+<div class="main">
+    <div class="top-row px-4">
+        <a href="https://github.com/dotnet-architecture/eShopOnWeb" target="_blank" class="ml-md-auto">About eShopOnWeb</a>
+    </div>
+
+    <div class="content px-4">
+        @Body
+    </div>
+</div>
+
+@code
+{
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Auth.RefreshLoginInfoFromCookie(JSRuntime);
+            if (!Auth.IsLoggedIn)
+            {
+                await new Route(JSRuntime).RouteOutside("/Identity/Account/Login");
+            }
+            CallRequestRefresh();
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+}

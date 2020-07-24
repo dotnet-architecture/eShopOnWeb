@@ -16,10 +16,13 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
     public class Update : BaseAsyncEndpoint<UpdateCatalogItemRequest, UpdateCatalogItemResponse>
     {
         private readonly IAsyncRepository<CatalogItem> _itemRepository;
+        private readonly IUriComposer _uriComposer;
 
-        public Update(IAsyncRepository<CatalogItem> itemRepository)
+        public Update(IAsyncRepository<CatalogItem> itemRepository, IUriComposer uriComposer)
         {
             _itemRepository = itemRepository;
+            _uriComposer = uriComposer;
+
         }
 
         [HttpPut("api/catalog-items")]
@@ -48,7 +51,7 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
                 CatalogTypeId = existingItem.CatalogTypeId,
                 Description = existingItem.Description,
                 Name = existingItem.Name,
-                PictureUri = existingItem.PictureUri,
+                PictureUri = _uriComposer.ComposePicUri(existingItem.PictureUri),
                 Price = existingItem.Price
             };
             response.CatalogItem = dto;

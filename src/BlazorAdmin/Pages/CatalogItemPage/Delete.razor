@@ -1,0 +1,95 @@
+﻿@inject ILogger<Delete> Logger
+@inject AuthService Auth
+
+@inherits BlazorAdmin.Helpers.BlazorComponent
+
+@namespace BlazorAdmin.Pages.CatalogItemPage
+
+    <div class="container">
+        <div class="row">
+            <img class="col-md-6 esh-picture" src="@($"https://localhost:44315/{_item.PictureUri}")">
+
+            <dl class="col-md-6 dl-horizontal">
+                <dt>
+                    Name
+                </dt>
+
+                <dd>
+                    @_item.Name
+                </dd>
+
+                <dt>
+                    Description
+                </dt>
+
+                <dd>
+                    @_item.Description
+                </dd>
+
+                <dt>
+                    Brand
+                </dt>
+
+                <dd>
+                    @Services.CatalogBrandService.List.GetBrandName(Brands, _item.CatalogBrandId)
+                </dd>
+
+                <dt>
+                    Type
+                </dt>
+
+                <dd>
+                    @Services.CatalogTypeService.List.GetTypeName(Types, _item.CatalogTypeId)
+                </dd>
+                <dt>
+                    Price
+                </dt>
+
+                <dd>
+                    @_item.Price
+                </dd>
+            </dl>
+        </div>
+
+        <div class="form-actions no-color">
+            <a href="" @onclick="@(() => OnCloseClick.InvokeAsync(null))" @onclick:preventDefault class="btn btn-secondary">
+                Cancel
+            </a>
+            <button class="btn btn-danger" @onclick="DeleteClick">
+                Delete
+            </button>
+        </div>
+
+    </div>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    [Parameter]
+    public IEnumerable<CatalogBrand> Brands { get; set; }
+    [Parameter]
+    public IEnumerable<CatalogType> Types { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnCloseClick { get; set; }
+
+    private CatalogItem _item = new CatalogItem();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Logger.LogInformation("Now loading... /Catalog/Delete/{Id}", Id);
+
+        _item = await new GetById(Auth).HandleAsync(Id);
+
+        await base.OnInitializedAsync();
+    }
+
+    private async Task DeleteClick()
+    {
+        // TODO: Add some kind of "are you sure" check before this
+
+        await new BlazorAdmin.Services.CatalogItemService.Delete(Auth).HandleAsync(Id);
+
+        await OnCloseClick.InvokeAsync(null);
+    }
+}
