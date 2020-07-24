@@ -37,7 +37,9 @@ The goal for this sample is to demonstrate some of the principles and patterns d
 
 ## Running the sample
 
-After cloning or downloading the sample you should be able to run it using an In Memory database immediately.
+After cloning or downloading the sample you should be able to run it using an In Memory database immediately. The store's home page should look like this:
+
+![eShopOnWeb home page screenshot](https://user-images.githubusercontent.com/782127/88414268-92d83a00-cdaa-11ea-9b4c-db67d95be039.png)
 
 If you wish to use the sample with a persistent database, you will need to run its Entity Framework Core migrations before you will be able to run the app, and update the `ConfigureServices` method in `Startup.cs` (see below).
 
