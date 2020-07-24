@@ -1,6 +1,7 @@
 ﻿@page "/admin"
-@attribute [Authorize(Roles = Microsoft.eShopWeb.ApplicationCore.Constants.AuthorizationConstants.Roles.ADMINISTRATORS)]
+@attribute [Authorize(Roles = Constants.Roles.ADMINISTRATORS)]
 @inject AuthService Auth
+@using global::Shared.Authorization
 @inherits BlazorAdmin.Helpers.BlazorComponent
 @namespace BlazorAdmin.Pages.CatalogItemPage
 
