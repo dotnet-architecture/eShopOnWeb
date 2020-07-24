@@ -8,10 +8,6 @@ using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopWeb.Infrastructure.Data;
 using Microsoft.eShopWeb.Infrastructure.Identity;
-using Microsoft.eShopWeb.Infrastructure.Logging;
-using Microsoft.eShopWeb.Infrastructure.Services;
-using Microsoft.eShopWeb.Web.Interfaces;
-using Microsoft.eShopWeb.Web.Services;
 using Microsoft.eShopWeb.Web.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +16,14 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Net.Mime;
+using BlazorAdmin.Services;
+using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 
 namespace Microsoft.eShopWeb.Web
 {
@@ -87,6 +90,8 @@ namespace Microsoft.eShopWeb.Web
                        .AddEntityFrameworkStores<AppIdentityDbContext>()
                                        .AddDefaultTokenProviders();
 
+            services.AddScoped<ITokenClaimsService, IdentityTokenClaimService>();
+
             ConfigureCoreServices.Configure(services, Configuration);
             ConfigureWebServices.Configure(services, Configuration);
 
@@ -104,11 +109,11 @@ namespace Microsoft.eShopWeb.Web
                          new SlugifyParameterTransformer()));
 
             });
+            services.AddControllersWithViews();
             services.AddRazorPages(options =>
             {
                 options.Conventions.AuthorizePage("/Basket/Checkout");
             });
-            services.AddControllersWithViews();
             services.AddHttpContextAccessor();
             services.AddHealthChecks();
             services.Configure<ServiceConfig>(config =>
@@ -117,6 +122,22 @@ namespace Microsoft.eShopWeb.Web
 
                 config.Path = "/allservices";
             });
+
+            // Blazor Admin Required Services for Prerendering
+            services.AddScoped<HttpClient>(s =>
+            {
+                var navigationManager = s.GetRequiredService<NavigationManager>();
+                return new HttpClient
+                {
+                    //TODO need to do it well
+                    BaseAddress = new Uri("https://localhost:44315/")
+                    //BaseAddress = new Uri(navigationManager.BaseUri)
+                };
+            });
+
+            services.AddBlazoredLocalStorage();
+            services.AddServerSideBlazor();
+            services.AddScoped<AuthService>();
 
             _services = services; // used to debug registered services
         }
@@ -148,6 +169,7 @@ namespace Microsoft.eShopWeb.Web
                 app.UseDeveloperExceptionPage();
                 app.UseShowAllServicesMiddleware();
                 app.UseDatabaseErrorPage();
+                app.UseWebAssemblyDebugging();
             }
             else
             {
@@ -156,10 +178,11 @@ namespace Microsoft.eShopWeb.Web
                 app.UseHsts();
             }
 
+            app.UseHttpsRedirection();
+            app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
             app.UseRouting();
 
-            app.UseHttpsRedirection();
             app.UseCookiePolicy();
             app.UseAuthentication();
             app.UseAuthorization();
@@ -170,7 +193,10 @@ namespace Microsoft.eShopWeb.Web
                 endpoints.MapRazorPages();
                 endpoints.MapHealthChecks("home_page_health_check");
                 endpoints.MapHealthChecks("api_health_check");
+                //endpoints.MapBlazorHub("/admin");
+                endpoints.MapFallbackToFile("index.html");
             });
         }
     }
+
 }

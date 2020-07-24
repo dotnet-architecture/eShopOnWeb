@@ -10,10 +10,12 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
     public class GetById : BaseAsyncEndpoint<GetByIdCatalogItemRequest, GetByIdCatalogItemResponse>
     {
         private readonly IAsyncRepository<CatalogItem> _itemRepository;
+        private readonly IUriComposer _uriComposer;
 
-        public GetById(IAsyncRepository<CatalogItem> itemRepository)
+        public GetById(IAsyncRepository<CatalogItem> itemRepository, IUriComposer uriComposer)
         {
             _itemRepository = itemRepository;
+            _uriComposer = uriComposer;
         }
 
         [HttpGet("api/catalog-items/{CatalogItemId}")]
@@ -23,7 +25,7 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
             OperationId = "catalog-items.GetById",
             Tags = new[] { "CatalogItemEndpoints" })
         ]
-        public override async Task<ActionResult<GetByIdCatalogItemResponse>> HandleAsync([FromRoute]GetByIdCatalogItemRequest request)
+        public override async Task<ActionResult<GetByIdCatalogItemResponse>> HandleAsync([FromRoute] GetByIdCatalogItemRequest request)
         {
             var response = new GetByIdCatalogItemResponse(request.CorrelationId());
 
@@ -37,7 +39,7 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
                 CatalogTypeId = item.CatalogTypeId,
                 Description = item.Description,
                 Name = item.Name,
-                PictureUri = item.PictureUri,
+                PictureUri = _uriComposer.ComposePicUri(item.PictureUri),
                 Price = item.Price
             };
             return Ok(response);

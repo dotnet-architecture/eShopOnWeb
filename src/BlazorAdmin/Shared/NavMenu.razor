@@ -1,0 +1,54 @@
+﻿@inject AuthService Auth
+@inherits BlazorAdmin.Helpers.BlazorComponent
+
+@using BlazorAdmin.Services
+<div class="top-row pl-4 navbar navbar-dark">
+    <a class="navbar-brand" href="">eShopOnWeb Admin</a>
+    <button class="navbar-toggler" @onclick="ToggleNavMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <ul class="nav flex-column">
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="admin" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="manage/my-account" Match="NavLinkMatch.All">
+                <span class="oi oi-person" aria-hidden="true"></span> @Auth.UserName
+            </NavLink>
+        </li>
+
+        <li class="nav-item px-3">
+            @if (Auth.IsLoggedIn)
+            {
+                <NavLink class="nav-link" href="logout">
+                    <span class="oi oi-account-logout" aria-hidden="true"></span> Logout
+                </NavLink>
+            }
+            else
+            {
+                <NavLink class="nav-link" href="login">
+                    <span class="oi oi-account-login" aria-hidden="true"></span> Login
+                </NavLink>
+            }
+
+        </li>
+    </ul>
+</div>
+
+@code {
+
+    private bool collapseNavMenu = true;
+    public string UserName { get; set; }
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

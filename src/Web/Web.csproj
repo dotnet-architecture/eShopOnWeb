@@ -28,6 +28,7 @@
     <PackageReference Include="MediatR" Version="8.0.2" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="BuildBundlerMinifier" Version="2.9.406" Condition="'$(Configuration)'=='Release'" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="3.2.0" />
     <PackageReference Include="Microsoft.CodeAnalysis" Version="3.6.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.5" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.3" />
@@ -49,7 +50,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ApplicationCore\ApplicationCore.csproj" />
+    <ProjectReference Include="..\BlazorAdmin\BlazorAdmin.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="compilerconfig.json" />

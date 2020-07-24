@@ -27,6 +27,7 @@ namespace Microsoft.eShopWeb.PublicApi
 {
     public class Startup
     {
+        private const string CORS_POLICY = "CorsPolicy";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -120,7 +121,19 @@ namespace Microsoft.eShopWeb.PublicApi
             });
 
 
-
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: CORS_POLICY,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("http://localhost:44319",
+                                                          "https://localhost:44319",
+                                                          "http://localhost:44315",
+                                                          "https://localhost:44315");
+                                      builder.AllowAnyMethod();
+                                      builder.AllowAnyHeader();
+                                  });
+            });
 
             services.AddControllers();
             services.AddMediatR(typeof(CatalogItem).Assembly);
@@ -174,6 +187,8 @@ namespace Microsoft.eShopWeb.PublicApi
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(CORS_POLICY);
 
             app.UseAuthorization();
 

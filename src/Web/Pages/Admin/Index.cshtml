@@ -1,45 +1,67 @@
 ﻿@page
-@{
-    ViewData["Title"] = "Admin - Catalog";
-    @model IndexModel
-}
-<section class="esh-catalog-hero">
-    <div class="container">
-        <img class="esh-catalog-title" src="~/images/main_banner_text.png" />
-    </div>
-</section>
-<section class="esh-catalog-filters">
-    <div class="container">
-        <form method="get">
-            <label class="esh-catalog-label" data-title="brand">
-                <select asp-for="@Model.CatalogModel.BrandFilterApplied" asp-items="@Model.CatalogModel.Brands" class="esh-catalog-filter"></select>
-            </label>
-            <label class="esh-catalog-label" data-title="type">
-                <select asp-for="@Model.CatalogModel.TypesFilterApplied" asp-items="@Model.CatalogModel.Types" class="esh-catalog-filter"></select>
-            </label>
-            <input class="esh-catalog-send" type="image" src="images/arrow-right.svg" />
-        </form>
-    </div>
-</section>
-<div class="container">
-    @if (Model.CatalogModel.CatalogItems.Any())
-    {
-        <partial name="_pagination" for="CatalogModel.PaginationInfo" />
+@using BlazorAdmin
 
-        <div class="esh-catalog-items row">
-            @foreach (var catalogItem in Model.CatalogModel.CatalogItems)
-            {
-                <div class="esh-catalog-item col-md-4">
-                    <partial name="_editCatalog" for="@catalogItem" />
-                </div>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = null;
+    ViewData["Title"] = "Admin - Catalog";
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>@ViewData["Title"] - Microsoft.eShopOnWeb</title>
+    <base href="~/" />
+    <environment include="Development">
+        <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              asp-fallback-href="css/bootstrap/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+              crossorigin="anonymous"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
+    </environment>
+    <link href="css/admin.css" rel="stylesheet" />
+
+    <script>
+
+        window.getCookie = (cname) => {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
             }
-        </div>
-        <partial name="_pagination" for="CatalogModel.PaginationInfo" />
-    }
-    else
-    {
-        <div class="esh-catalog-items row">
-            THERE ARE NO RESULTS THAT MATCH YOUR SEARCH
-        </div>
-    }
-</div>
+
+            return "";
+        };
+
+        window.deleteCookie = (cname) => {
+            document.cookie = cname + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        };
+
+        window.routeOutside = (path) => {
+            window.location = path;
+        };
+
+    </script>
+</head>
+<body>
+    <admin>@(await Html.RenderComponentAsync<App>(RenderMode.ServerPrerendered))</admin>
+    <script src="_content/Microsoft.AspNetCore.Components.WebAssembly.Authentication/AuthenticationService.js"></script>
+    <script src="_framework/blazor.webassembly.js"></script>
+
+</body>
+</html>
+
