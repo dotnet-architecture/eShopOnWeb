@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using BlazorAdmin.JavaScript;
 using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
 using Shared.Authorization;

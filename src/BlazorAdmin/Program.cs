@@ -7,7 +7,6 @@ using BlazorAdmin.Network;
 using BlazorAdmin.Services;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Authorization;
 
 namespace BlazorAdmin
 {
