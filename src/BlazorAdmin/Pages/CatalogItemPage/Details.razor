@@ -60,13 +60,12 @@ else
             </dl>
         </div>
 
-        <div class="form-actions no-color esh-link-list">
-            <a href="" @onclick="@(() => OnEditClick.InvokeAsync(_item.Id))" @onclick:preventDefault class="esh-link-item">
-                Edit
+        <div class="form-actions no-color">
+            <a href="" @onclick="@(() => OnCloseClick.InvokeAsync(null))" @onclick:preventDefault class="btn btn-secondary">
+                Cancel
             </a>
-            |
-            <a href="" @onclick="@(() => OnCloseClick.InvokeAsync(null))" @onclick:preventDefault class="esh-link-item">
-                Back to list
+            <a href="" @onclick="@(() => OnEditClick.InvokeAsync(_item.Id))" @onclick:preventDefault class="btn btn-secondary">
+                Edit
             </a>
         </div>
 

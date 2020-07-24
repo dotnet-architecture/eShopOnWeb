@@ -136,7 +136,11 @@ admin {
     top: 0.5rem;
 }
 
-.esh-thumbnail {
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.img-thumbnail {
     max-width: 120px;
     height: auto;
 }
