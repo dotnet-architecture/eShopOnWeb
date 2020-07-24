@@ -69,11 +69,11 @@ namespace BlazorAdmin.Services
             return authResponse;
         }
 
-        public async Task Logout()
+        public async Task Logout(IJSRuntime jSRuntime)
         {
             await _localStorage.RemoveItemAsync("authToken");
             await _localStorage.RemoveItemAsync("username");
-
+            await DeleteCookies(jSRuntime);
             RemoveAuthorizationHeader();
             UserName = null;
             IsLoggedIn = false;
@@ -93,6 +93,12 @@ namespace BlazorAdmin.Services
             await SaveUsernameInLocalStorage(username);
 
             await RefreshLoginInfo();
+        }
+
+        private async Task DeleteCookies(IJSRuntime jSRuntime)
+        {
+            await new Cookies(jSRuntime).DeleteCookie("token");
+            await new Cookies(jSRuntime).DeleteCookie("username");
         }
 
         private async Task SetLoginData()
