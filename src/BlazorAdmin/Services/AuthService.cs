@@ -74,6 +74,7 @@ namespace BlazorAdmin.Services
             await _localStorage.RemoveItemAsync("authToken");
             await _localStorage.RemoveItemAsync("username");
             await DeleteCookies(jSRuntime);
+            await LogoutIdentityManager();
             RemoveAuthorizationHeader();
             UserName = null;
             IsLoggedIn = false;
@@ -93,6 +94,10 @@ namespace BlazorAdmin.Services
             await SaveUsernameInLocalStorage(username);
 
             await RefreshLoginInfo();
+        }
+        private async Task LogoutIdentityManager()
+        {
+            await _httpClient.PostAsync("Identity/Account/Logout", null);
         }
 
         private async Task DeleteCookies(IJSRuntime jSRuntime)
