@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Shared.Authorization;
+using BlazorShared.Authorization;
 
 namespace BlazorAdmin
 {

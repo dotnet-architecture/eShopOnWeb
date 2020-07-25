@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.Web.Pages.Admin
 {
-    [Authorize(Roles = AuthorizationConstants.Roles.ADMINISTRATORS)]
+    [Authorize(Roles = BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS)]
     public class EditCatalogItemModel : PageModel
     {
         private readonly ICatalogItemViewModelService _catalogItemViewModelService;

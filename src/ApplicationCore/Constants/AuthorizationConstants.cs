@@ -2,10 +2,6 @@
 {
     public class AuthorizationConstants
     {
-        public static class Roles
-        {
-            public const string ADMINISTRATORS = "Administrators";
-        }
 
         // TODO: Don't use this in production
         public const string DEFAULT_PASSWORD = "Pass@word1";
