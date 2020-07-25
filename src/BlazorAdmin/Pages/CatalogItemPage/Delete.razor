@@ -47,7 +47,7 @@
                             </dt>
 
                             <dd>
-                                @Services.CatalogBrandService.List.GetBrandName(Brands, _item.CatalogBrandId)
+                                @Services.CatalogBrandServices.List.GetBrandName(Brands, _item.CatalogBrandId)
                             </dd>
 
                             <dt>
@@ -55,7 +55,7 @@
                             </dt>
 
                             <dd>
-                                @Services.CatalogTypeService.List.GetTypeName(Types, _item.CatalogTypeId)
+                                @Services.CatalogTypeServices.List.GetTypeName(Types, _item.CatalogTypeId)
                             </dd>
                             <dt>
                                 Price
@@ -105,7 +105,7 @@
     {
         // TODO: Add some kind of "are you sure" check before this
 
-        await new BlazorAdmin.Services.CatalogItemService.Delete(Auth).HandleAsync(id);
+        await new BlazorAdmin.Services.CatalogItemServices.Delete(Auth).HandleAsync(id);
 
         await OnCloseClick.InvokeAsync(null);
         Close();

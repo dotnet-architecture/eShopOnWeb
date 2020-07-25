@@ -1,4 +1,4 @@
-﻿namespace BlazorAdmin.Services.CatalogBrandService
+﻿namespace BlazorAdmin.Services.CatalogBrandServices
 {
     public class CatalogBrand
     {

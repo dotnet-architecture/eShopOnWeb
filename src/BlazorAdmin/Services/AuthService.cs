@@ -11,7 +11,7 @@ using BlazorAdmin.JavaScript;
 using Blazored.LocalStorage;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
-using Shared.Authorization;
+using BlazorShared.Authorization;
 
 namespace BlazorAdmin.Services
 {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Shared.Authorization
+namespace BlazorShared.Authorization
 {
     public class ClaimValue
     {

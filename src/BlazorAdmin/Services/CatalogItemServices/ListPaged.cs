@@ -3,7 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace BlazorAdmin.Services.CatalogItemService
+namespace BlazorAdmin.Services.CatalogItemServices
 {
     public class ListPaged
     {

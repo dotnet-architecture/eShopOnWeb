@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Newtonsoft.Json;
 
-namespace BlazorAdmin.Services.CatalogBrandService
+namespace BlazorAdmin.Services.CatalogTypeServices
 {
     public class List
     {
@@ -16,35 +16,36 @@ namespace BlazorAdmin.Services.CatalogBrandService
             _authService = authService;
         }
 
-        public async Task<List<CatalogBrand>> HandleAsync()
+        public async Task<List<CatalogType>> HandleAsync()
         {
-            var brands = new List<CatalogBrand>();
+            var types = new List<CatalogType>();
+
             if (!_authService.IsLoggedIn)
             {
-                return brands;
+                return types;
             }
 
             try
             {
-                var result = (await _authService.GetHttpClient().GetAsync($"{Constants.API_URL}catalog-brands"));
+                var result = (await _authService.GetHttpClient().GetAsync($"{Constants.API_URL}catalog-types"));
                 if (result.StatusCode != HttpStatusCode.OK)
                 {
-                    return brands;
+                    return types;
                 }
 
-                brands = JsonConvert.DeserializeObject<CatalogBrandResult>(await result.Content.ReadAsStringAsync()).CatalogBrands;
+                types = JsonConvert.DeserializeObject<CatalogTypeResult>(await result.Content.ReadAsStringAsync()).CatalogTypes;
             }
             catch (AccessTokenNotAvailableException)
             {
-                return brands;
+                return types;
             }
 
-            return brands;
+            return types;
         }
 
-        public static string GetBrandName(IEnumerable<CatalogBrand> brands, int brandId)
+        public static string GetTypeName(IEnumerable<CatalogType> types, int typeId)
         {
-            var type = brands.FirstOrDefault(t => t.Id == brandId);
+            var type = types.FirstOrDefault(t => t.Id == typeId);
 
             return type == null ? "None" : type.Name;
         }
