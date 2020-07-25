@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BlazorShared.Authorization
 {
-    public class Constants
+    public static class Constants
     {
         public static class Roles
         {
