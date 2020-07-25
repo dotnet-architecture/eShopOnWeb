@@ -12,11 +12,11 @@ namespace BlazorAdmin.Pages.CatalogItemPage
         private List<CatalogItem> catalogItems = new List<CatalogItem>();
         private List<CatalogType> catalogTypes = new List<CatalogType>();
         private List<CatalogBrand> catalogBrands = new List<CatalogBrand>();
-        private bool showCreate = false;
-        private bool showDetails = false;
-        private bool showEdit = false;
-        private bool showDelete = false;
-        private int selectedId = 0;
+
+        private Edit EditComponent { get; set; }
+        private Delete DeleteComponent { get; set; }
+        private Details DetailsComponent { get; set; }
+        private Create CreateComponent { get; set; }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -32,58 +32,24 @@ namespace BlazorAdmin.Pages.CatalogItemPage
             await base.OnAfterRenderAsync(firstRender);
         }
 
-        private void DetailsClick(int id)
+        private async void DetailsClick(int id)
         {
-            selectedId = id;
-            showDetails = true;
+            await DetailsComponent.Open(id);
         }
 
         private void CreateClick()
         {
-            showCreate = true;
+            CreateComponent.Open();
         }
 
-        private void EditClick(int id)
+        private async Task EditClick(int id)
         {
-            selectedId = id;
-            showEdit = true;
+            await EditComponent.Open(id);
         }
 
-        private void DeleteClick(int id)
+        private async Task DeleteClick(int id)
         {
-            selectedId = id;
-            showDelete = true;
-        }
-
-        private async Task CloseDetailsHandler(string action)
-        {
-            showDetails = false;
-            await ReloadCatalogItems();
-        }
-
-        private void EditDetailsHandler(int id)
-        {
-            showDetails = false;
-            selectedId = id;
-            showEdit = true;
-        }
-
-        private async Task CloseEditHandler(string action)
-        {
-            showEdit = false;
-            await ReloadCatalogItems();
-        }
-
-        private async Task CloseDeleteHandler(string action)
-        {
-            showDelete = false;
-            await ReloadCatalogItems();
-        }
-
-        private async Task CloseCreateHandler(string action)
-        {
-            showCreate = false;
-            await ReloadCatalogItems();
+            await DeleteComponent.Open(id);
         }
 
         private async Task ReloadCatalogItems()

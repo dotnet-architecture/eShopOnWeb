@@ -5,85 +5,104 @@
 
 @namespace BlazorAdmin.Pages.CatalogItemPage
 
-<h2 class="esh-body-title">Edit</h2>
 
-<div>
-    <EditForm Model="_item" OnValidSubmit="@SaveClick">
-        <DataAnnotationsValidator />
 
-        <div class="form-group">
-            <label class="control-label col-md-2">Name</label>
-            <div class="col-md-3">
-                <InputText class="form-control" @bind-Value="_item.Name" />
-                <ValidationMessage For="(() => _item.Name)" />
-            </div>
-        </div>
+<div class="modal @_modalClass" tabindex="-1" role="dialog" style="display:@_modalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <EditForm Model="_item" OnValidSubmit="@SaveClick">
+                <DataAnnotationsValidator />
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit @_item.Name</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
 
-        <div class="form-group">
-            <label class="control-label col-md-2">Description</label>
-            <div class="col-md-3">
-                <InputText class="form-control" @bind-Value="_item.Description" />
-                <ValidationMessage For="(() => _item.Description)" />
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-2">Brand</label>
-            <div class="col-md-3">
-                <InputSelect @bind-Value="_item.CatalogBrandId" class="form-control">
-                    @foreach (var brand in Brands)
+                    @if (_item == null)
                     {
-                        <option value="@brand.Id">@brand.Name</option>
+                        <Spinner></Spinner>
                     }
-                </InputSelect>
-                <ValidationMessage For="(() => _item.CatalogBrandId)" />
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-2">Type</label>
-            <div class="col-md-3">
-                <InputSelect @bind-Value="_item.CatalogTypeId" class="form-control">
-                    @foreach (var type in Types)
+                    else
                     {
-                        <option value="@type.Id">@type.Name</option>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Name</label>
+                            <div class="col-md-12">
+                                <InputText class="form-control" @bind-Value="_item.Name" />
+                                <ValidationMessage For="(() => _item.Name)" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Description</label>
+                            <div class="col-md-12">
+                                <InputText class="form-control" @bind-Value="_item.Description" />
+                                <ValidationMessage For="(() => _item.Description)" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Brand</label>
+                            <div class="col-md-12">
+                                <InputSelect @bind-Value="_item.CatalogBrandId" class="form-control">
+                                    @foreach (var brand in Brands)
+                                        {
+                                        <option value="@brand.Id">@brand.Name</option>
+                                        }
+                                </InputSelect>
+                                <ValidationMessage For="(() => _item.CatalogBrandId)" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Type</label>
+                            <div class="col-md-12">
+                                <InputSelect @bind-Value="_item.CatalogTypeId" class="form-control">
+                                    @foreach (var type in Types)
+                                        {
+                                        <option value="@type.Id">@type.Name</option>
+                                        }
+                                </InputSelect>
+                                <ValidationMessage For="(() => _item.CatalogTypeId)" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Price</label>
+                            <div class="col-md-12">
+                                <InputNumber @bind-Value="_item.Price" class="form-control" />
+                                <ValidationMessage For="(() => _item.Price)" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Picture name</label>
+                            <div class="col-md-12 esh-form-information">
+                                Uploading images not allowed for this version.
+                            </div>
+                        </div>
                     }
-                </InputSelect>
-                <ValidationMessage For="(() => _item.CatalogTypeId)" />
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        Save
+                    </button>
+                </div>
+            </EditForm>
         </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-2">Price</label>
-            <div class="col-md-3">
-                <InputNumber @bind-Value="_item.Price" class="form-control" />
-                <ValidationMessage For="(() => _item.Price)" />
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-2">Picture name</label>
-            <div class="col-md-4 esh-form-information">
-                Uploading images not allowed for this version.
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-3 text-right esh-button-actions">
-                <a href="" @onclick="@(() => OnCloseClick.InvokeAsync(null))" @onclick:preventDefault class="btn btn-secondary">
-                    Cancel
-                </a>
-                <button type="submit" class="btn btn-primary">
-                    Save
-                </button>
-            </div>
-        </div>
-    </EditForm>
+    </div>
 </div>
 
+
+
+@if (_showEditModal)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
 @code {
-    [Parameter]
-    public int Id { get; set; }
     [Parameter]
     public IEnumerable<CatalogBrand> Brands { get; set; }
     [Parameter]
@@ -92,19 +111,33 @@
     [Parameter]
     public EventCallback<string> OnCloseClick { get; set; }
 
+    private string _modalDisplay = "none;";
+    private string _modalClass = "";
+    private bool _showEditModal = false;
     private CatalogItem _item = new CatalogItem();
-
-    protected override async Task OnInitializedAsync()
-    {
-        Logger.LogInformation("Now loading... /Catalog/Edit/{Id}", Id);
-
-        _item = await new GetById(Auth).HandleAsync(Id);
-
-        await base.OnInitializedAsync();
-    }
 
     private async Task SaveClick()
     {
         await new BlazorAdmin.Services.CatalogItemService.Edit(Auth).HandleAsync(_item);
+        Close();
+    }
+
+    public async Task Open(int id)
+    {
+        Logger.LogInformation("Now loading... /Catalog/Edit/{Id}", id);
+
+        _item = await new GetById(Auth).HandleAsync(id);
+
+        _modalDisplay = "block;";
+        _modalClass = "Show";
+        _showEditModal = true;
+    }
+
+    public void Close()
+    {
+        _modalDisplay = "none";
+        _modalClass = "";
+        _showEditModal = false;
+        OnCloseClick.InvokeAsync(null);
     }
 }

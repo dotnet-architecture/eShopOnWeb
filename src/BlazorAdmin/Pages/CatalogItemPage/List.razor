@@ -1,6 +1,7 @@
 ﻿@page "/admin"
-@attribute [Authorize(Roles = Microsoft.eShopWeb.ApplicationCore.Constants.AuthorizationConstants.Roles.ADMINISTRATORS)]
+@attribute [Authorize(Roles = Constants.Roles.ADMINISTRATORS)]
 @inject AuthService Auth
+@using global::Shared.Authorization
 @inherits BlazorAdmin.Helpers.BlazorComponent
 @namespace BlazorAdmin.Pages.CatalogItemPage
 
@@ -8,75 +9,59 @@
 
 @if (catalogItems == null)
 {
-    <p><em>Loading...</em></p>
+    <Spinner></Spinner>
 }
 else
 {
-    @if (!showCreate && !showDetails && !showEdit && !showDelete)
-    {
-        <p class="esh-link-wrapper">
-            <button class="btn btn-primary" @onclick="@(() => CreateClick())">
-                Create New
-            </button>
-        </p>
 
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Item Type</th>
-                    <th>Brand</th>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>@nameof(CatalogItem.Description)</th>
-                    <th>@nameof(CatalogItem.Price)</th>
-                    <th>Actions</th>
+    <p class="esh-link-wrapper">
+        <button class="btn btn-primary" @onclick="@(CreateClick)">
+            Create New
+        </button>
+    </p>
+
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Item Type</th>
+                <th>Brand</th>
+                <th>Id</th>
+                <th>Name</th>
+                <th>@nameof(CatalogItem.Description)</th>
+                <th>@nameof(CatalogItem.Price)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody class="cursor-pointer">
+            @foreach (var item in catalogItems)
+            {
+                <tr @onclick="@(() => DetailsClick(item.Id))">
+                    <td>
+                        <img class="img-thumbnail" src="@($"https://localhost:44315/{item.PictureUri}")">
+                    </td>
+                    <td>@Services.CatalogTypeService.List.GetTypeName(catalogTypes, item.CatalogTypeId)</td>
+                    <td>@Services.CatalogBrandService.List.GetBrandName(catalogBrands, item.CatalogBrandId)</td>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>@item.Description</td>
+                    <td>@item.Price</td>
+                    <td>
+                        <button @onclick="@(() => EditClick(item.Id))" @onclick:stopPropagation="true" class="btn btn-primary">
+                            Edit
+                        </button>
+
+                        <button @onclick="@(() => DeleteClick(item.Id))" @onclick:stopPropagation="true" class="btn btn-primary">
+                            Delete
+                        </button>
+                    </td>
                 </tr>
-            </thead>
-            <tbody class="cursor-pointer">
-                @foreach (var item in catalogItems)
-                {
-                    <tr @onclick="@(() => DetailsClick(item.Id))">
-                        <td>
-                            <img class="img-thumbnail" src="@($"https://localhost:44315/{item.PictureUri}")">
-                        </td>
-                        <td>@Services.CatalogTypeService.List.GetTypeName(catalogTypes, item.CatalogTypeId)</td>
-                        <td>@Services.CatalogBrandService.List.GetBrandName(catalogBrands, item.CatalogBrandId)</td>
-                        <td>@item.Id</td>
-                        <td>@item.Name</td>
-                        <td>@item.Description</td>
-                        <td>@item.Price</td>
-                        <td>
-                            <a href="" @onclick="@(() => EditClick(item.Id))" @onclick:preventDefault class="btn btn-primary">
-                                Edit
-                            </a>
+            }
+        </tbody>
+    </table>
 
-                            <a href="" @onclick="@(() => DeleteClick(item.Id))" @onclick:preventDefault class="btn btn-primary">
-                                Delete
-                            </a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-    @if (showDetails)
-    {
-        <Details Id="@selectedId" Brands="@catalogBrands" Types="@catalogTypes" OnCloseClick="CloseDetailsHandler" OnEditClick="EditDetailsHandler"></Details>
-    }
-
-    @if (showEdit)
-    {
-        <Edit Id="@selectedId" Brands="@catalogBrands" Types="@catalogTypes" OnCloseClick="CloseEditHandler"></Edit>
-    }
-
-    @if (showCreate)
-    {
-        <Create Brands="@catalogBrands" Types="@catalogTypes" OnCloseClick="CloseCreateHandler"></Create>
-    }
-
-    @if (showDelete)
-    {
-        <Delete Id="@selectedId" Brands="@catalogBrands" Types="@catalogTypes" OnCloseClick="CloseDeleteHandler"></Delete>
-    }
+    <Details Brands="@catalogBrands" Types="@catalogTypes" @ref="DetailsComponent" OnEditClick="EditClick"></Details>
+    <Edit Brands="@catalogBrands" Types="@catalogTypes" OnCloseClick="ReloadCatalogItems" @ref="EditComponent"></Edit>
+    <Create Brands="@catalogBrands" Types="@catalogTypes" OnCloseClick="ReloadCatalogItems" @ref="CreateComponent"></Create>
+    <Delete Brands="@catalogBrands" Types="@catalogTypes" OnCloseClick="ReloadCatalogItems" @ref="DeleteComponent"></Delete>
 }

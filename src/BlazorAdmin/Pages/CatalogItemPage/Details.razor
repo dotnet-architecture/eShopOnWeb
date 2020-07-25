@@ -5,95 +5,127 @@
 
 @namespace BlazorAdmin.Pages.CatalogItemPage
 
-@if (_item == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <h2 class="esh-body-title">Details</h2>
 
-    <div class="container">
-        <div class="row">
-            <img class="col-md-6 esh-picture" src="@($"https://localhost:44315/{_item.PictureUri}")">
 
-            <dl class="col-md-6 dl-horizontal">
-                <dt>
-                    Name
-                </dt>
+<div class="modal @_modalClass" tabindex="-1" role="dialog" style="display:@_modalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Details @_item.Name</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
 
-                <dd>
-                    @_item.Name
-                </dd>
+                @if (_item == null)
+                {
+                    <Spinner></Spinner>
+                }
+                else
+                {
+                    <div class="container">
+                        <div class="row">
+                            <img class="col-md-6 esh-picture" src="@($"https://localhost:44315/{_item.PictureUri}")">
 
-                <dt>
-                    Description
-                </dt>
+                            <dl class="col-md-6 dl-horizontal">
+                                <dt>
+                                    Name
+                                </dt>
 
-                <dd>
-                    @_item.Description
-                </dd>
+                                <dd>
+                                    @_item.Name
+                                </dd>
 
-                <dt>
-                    Brand
-                </dt>
+                                <dt>
+                                    Description
+                                </dt>
 
-                <dd>
-                    @Services.CatalogBrandService.List.GetBrandName(Brands, _item.CatalogBrandId)
-                </dd>
+                                <dd>
+                                    @_item.Description
+                                </dd>
 
-                <dt>
-                    Type
-                </dt>
+                                <dt>
+                                    Brand
+                                </dt>
 
-                <dd>
-                    @Services.CatalogTypeService.List.GetTypeName(Types, _item.CatalogTypeId)
-                </dd>
-                <dt>
-                    Price
-                </dt>
+                                <dd>
+                                    @Services.CatalogBrandService.List.GetBrandName(Brands, _item.CatalogBrandId)
+                                </dd>
 
-                <dd>
-                    @_item.Price
-                </dd>
+                                <dt>
+                                    Type
+                                </dt>
 
-            </dl>
+                                <dd>
+                                    @Services.CatalogTypeService.List.GetTypeName(Types, _item.CatalogTypeId)
+                                </dd>
+                                <dt>
+                                    Price
+                                </dt>
+
+                                <dd>
+                                    @_item.Price
+                                </dd>
+
+                            </dl>
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Close</button>
+                <button class="btn btn-danger" @onclick="EditClick">
+                    Edit
+                </button>
+            </div>
         </div>
-
-        <div class="form-actions no-color">
-            <a href="" @onclick="@(() => OnCloseClick.InvokeAsync(null))" @onclick:preventDefault class="btn btn-secondary">
-                Cancel
-            </a>
-            <a href="" @onclick="@(() => OnEditClick.InvokeAsync(_item.Id))" @onclick:preventDefault class="btn btn-secondary">
-                Edit
-            </a>
-        </div>
-
     </div>
+</div>
+
+@if (_showDetailsModal)
+{
+    <div class="modal-backdrop fade show"></div>
 }
+
 @code {
-    [Parameter]
-    public int Id { get; set; }
     [Parameter]
     public IEnumerable<CatalogBrand> Brands { get; set; }
     [Parameter]
     public IEnumerable<CatalogType> Types { get; set; }
 
     [Parameter]
-    public EventCallback<string> OnCloseClick { get; set; }
-    [Parameter]
     public EventCallback<int> OnEditClick { get; set; }
 
+    private string _modalDisplay = "none;";
+    private string _modalClass = "";
+    private bool _showDetailsModal = false;
     private CatalogItem _item = new CatalogItem();
 
-    protected override async Task OnInitializedAsync()
+    public void EditClick()
     {
-        Logger.LogInformation("Now loading... /Catalog/Details/{Id}", Id);
+        OnEditClick.InvokeAsync(_item.Id);
+        Close();
+    }
 
-        _item = await new GetById(Auth).HandleAsync(Id);
-        StateHasChanged();
+    public async Task Open(int id)
+    {
+        Logger.LogInformation("Now loading... /Catalog/Details/{Id}", id);
 
-        await base.OnInitializedAsync();
+        _item = await new GetById(Auth).HandleAsync(id);
+
+        _modalDisplay = "block;";
+        _modalClass = "Show";
+        _showDetailsModal = true;
+    }
+
+    public void Close()
+    {
+        _modalDisplay = "none";
+        _modalClass = "";
+        _showDetailsModal = false;
     }
 
 }

@@ -5,66 +5,89 @@
 
 @namespace BlazorAdmin.Pages.CatalogItemPage
 
-    <div class="container">
-        <div class="row">
-            <img class="col-md-6 esh-picture" src="@($"https://localhost:44315/{_item.PictureUri}")">
+<div class="modal @_modalClass" tabindex="-1" role="dialog" style="display:@_modalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete @_item.Name</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            @if (_item == null)
+            {
+                <Spinner></Spinner>
+            }
+            else
+            {
+                <div class="container">
+                    <div class="row">
+                        <img class="col-md-6 esh-picture" src="@($"https://localhost:44315/{_item.PictureUri}")">
 
-            <dl class="col-md-6 dl-horizontal">
-                <dt>
-                    Name
-                </dt>
+                        <dl class="col-md-6 dl-horizontal">
+                            <dt>
+                                Name
+                            </dt>
 
-                <dd>
-                    @_item.Name
-                </dd>
+                            <dd>
+                                @_item.Name
+                            </dd>
 
-                <dt>
-                    Description
-                </dt>
+                            <dt>
+                                Description
+                            </dt>
 
-                <dd>
-                    @_item.Description
-                </dd>
+                            <dd>
+                                @_item.Description
+                            </dd>
 
-                <dt>
-                    Brand
-                </dt>
+                            <dt>
+                                Brand
+                            </dt>
 
-                <dd>
-                    @Services.CatalogBrandService.List.GetBrandName(Brands, _item.CatalogBrandId)
-                </dd>
+                            <dd>
+                                @Services.CatalogBrandService.List.GetBrandName(Brands, _item.CatalogBrandId)
+                            </dd>
 
-                <dt>
-                    Type
-                </dt>
+                            <dt>
+                                Type
+                            </dt>
 
-                <dd>
-                    @Services.CatalogTypeService.List.GetTypeName(Types, _item.CatalogTypeId)
-                </dd>
-                <dt>
-                    Price
-                </dt>
+                            <dd>
+                                @Services.CatalogTypeService.List.GetTypeName(Types, _item.CatalogTypeId)
+                            </dd>
+                            <dt>
+                                Price
+                            </dt>
 
-                <dd>
-                    @_item.Price
-                </dd>
-            </dl>
+                            <dd>
+                                @_item.Price
+                            </dd>
+                        </dl>
+                    </div>
+
+                </div>
+            }
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Cancel</button>
+                <button class="btn btn-danger" @onclick="() => DeleteClick(_item.Id)">
+                    Delete
+                </button>
+            </div>
         </div>
-
-        <div class="form-actions no-color">
-            <a href="" @onclick="@(() => OnCloseClick.InvokeAsync(null))" @onclick:preventDefault class="btn btn-secondary">
-                Cancel
-            </a>
-            <button class="btn btn-danger" @onclick="DeleteClick">
-                Delete
-            </button>
-        </div>
-
     </div>
+</div>
+
+@if (_showDeleteModal)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
 
 @code {
-    [Parameter]
-    public int Id { get; set; }
     [Parameter]
     public IEnumerable<CatalogBrand> Brands { get; set; }
     [Parameter]
@@ -73,23 +96,37 @@
     [Parameter]
     public EventCallback<string> OnCloseClick { get; set; }
 
+    private string _modalDisplay = "none;";
+    private string _modalClass = "";
+    private bool _showDeleteModal = false;
     private CatalogItem _item = new CatalogItem();
 
-    protected override async Task OnInitializedAsync()
-    {
-        Logger.LogInformation("Now loading... /Catalog/Delete/{Id}", Id);
-
-        _item = await new GetById(Auth).HandleAsync(Id);
-
-        await base.OnInitializedAsync();
-    }
-
-    private async Task DeleteClick()
+    private async Task DeleteClick(int id)
     {
         // TODO: Add some kind of "are you sure" check before this
 
-        await new BlazorAdmin.Services.CatalogItemService.Delete(Auth).HandleAsync(Id);
+        await new BlazorAdmin.Services.CatalogItemService.Delete(Auth).HandleAsync(id);
 
         await OnCloseClick.InvokeAsync(null);
+        Close();
+    }
+
+    public async Task Open(int id)
+    {
+        Logger.LogInformation("Now loading... /Catalog/Delete/{Id}", id);
+
+        _item = await new GetById(Auth).HandleAsync(id);
+
+        _modalDisplay = "block;";
+        _modalClass = "Show";
+        _showDeleteModal = true;
+    }
+
+    public void Close()
+    {
+        _modalDisplay = "none";
+        _modalClass = "";
+        _showDeleteModal = false;
+        OnCloseClick.InvokeAsync(null);
     }
 }
