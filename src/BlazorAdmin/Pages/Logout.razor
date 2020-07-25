@@ -1,27 +1,15 @@
 ﻿@page "/logout"
 @inject AuthService AuthService
-@inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 @inherits BlazorAdmin.Helpers.BlazorComponent
 
 
 @code {
 
-
     protected override async Task OnInitializedAsync()
     {
         await AuthService.Logout();
-        await DeleteCookies();
-
-        CallRequestRefresh();
         await new Route(JSRuntime).RouteOutside("/Identity/Account/Login");
     }
-
-    private async Task DeleteCookies()
-    {
-        await new Cookies(JSRuntime).DeleteCookie("token");
-        await new Cookies(JSRuntime).DeleteCookie("username");
-    }
-
 
 }

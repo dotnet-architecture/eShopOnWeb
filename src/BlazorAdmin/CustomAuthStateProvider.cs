@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Net.Http;
-using System.Net.Http.Json;
 using BlazorAdmin.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
-using Microsoft.eShopWeb;
 using Microsoft.Extensions.Logging;
 using Shared.Authorization;
 

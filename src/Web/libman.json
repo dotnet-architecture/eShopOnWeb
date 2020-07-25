@@ -7,17 +7,16 @@
       "destination": "wwwroot/lib/jquery/"
     },
     {
-      "provider": "unpkg",
-      "library": "bootstrap@3.3.7",
+      "library": "twitter-bootstrap@3.3.7",
       "files": [
-        "dist/css/bootstrap.css",
-        "dist/css/bootstrap.css.map",
-        "dist/css/bootstrap.min.css",
-        "dist/css/bootstrap.min.css.map",
-        "dist/js/bootstrap.js",
-        "dist/js/bootstrap.min.js"
+        "css/bootstrap.css",
+        "css/bootstrap.css.map",
+        "css/bootstrap.min.css",
+        "css/bootstrap.min.css.map",
+        "js/bootstrap.js",
+        "js/bootstrap.min.js"
       ],
-      "destination": "wwwroot/lib/bootstrap/"
+      "destination": "wwwroot/lib/bootstrap/dist/"
     },
     {
       "library": "jquery-validation-unobtrusive@3.2.10",
@@ -36,13 +35,12 @@
       "destination": "wwwroot/lib/toastr/"
     },
     {
-      "provider": "unpkg",
-      "library": "@aspnet/signalr@1.0.3",
-      "files": [    
-        "dist/browser/signalr.js",
-        "dist/browser/signalr.min.js"
+      "library": "aspnet-signalr@1.0.3",
+      "files": [
+        "signalr.js",
+        "signalr.min.js"
       ],
-      "destination": "wwwroot/lib/@aspnet/signalr/"
+      "destination": "wwwroot/lib/@aspnet/signalr/dist/browser/"
     }
   ]
 }
