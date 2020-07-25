@@ -74,10 +74,10 @@ namespace BlazorAdmin.Services
             await _localStorage.RemoveItemAsync("authToken");
             await _localStorage.RemoveItemAsync("username");
             await DeleteCookies(jSRuntime);
-            await LogoutIdentityManager();
             RemoveAuthorizationHeader();
             UserName = null;
             IsLoggedIn = false;
+            await LogoutIdentityManager();
         }
 
         public async Task RefreshLoginInfo()
