@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BlazorAdmin.Services.CatalogItemService
+namespace BlazorAdmin.Services.CatalogItemServices
 {
     public class CatalogItem
     {

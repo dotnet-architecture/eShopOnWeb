@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlazorAdmin.Services.CatalogItemService
+namespace BlazorAdmin.Services.CatalogItemServices
 {
     public class CreateCatalogItemResult
     {
