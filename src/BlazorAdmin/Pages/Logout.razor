@@ -8,7 +8,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await AuthService.Logout(JSRuntime);
+        await AuthService.Logout();
         await new Route(JSRuntime).RouteOutside("/Identity/Account/Login");
     }
 

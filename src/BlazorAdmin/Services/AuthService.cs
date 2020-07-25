@@ -19,13 +19,15 @@ namespace BlazorAdmin.Services
     {
         private readonly HttpClient _httpClient;
         private readonly ILocalStorageService _localStorage;
+        private readonly IJSRuntime _jSRuntime;
         public bool IsLoggedIn { get; set; }
         public string UserName { get; set; }
 
-        public AuthService(HttpClient httpClient, ILocalStorageService localStorage)
+        public AuthService(HttpClient httpClient, ILocalStorageService localStorage, IJSRuntime jSRuntime)
         {
             _httpClient = httpClient;
             _localStorage = localStorage;
+            _jSRuntime = jSRuntime;
         }
 
         public HttpClient GetHttpClient()
@@ -69,11 +71,11 @@ namespace BlazorAdmin.Services
             return authResponse;
         }
 
-        public async Task Logout(IJSRuntime jSRuntime)
+        public async Task Logout()
         {
             await _localStorage.RemoveItemAsync("authToken");
             await _localStorage.RemoveItemAsync("username");
-            await DeleteCookies(jSRuntime);
+            await DeleteCookies();
             RemoveAuthorizationHeader();
             UserName = null;
             IsLoggedIn = false;
@@ -85,12 +87,12 @@ namespace BlazorAdmin.Services
             await SetLoginData();
         }
 
-        public async Task RefreshLoginInfoFromCookie(IJSRuntime jSRuntime)
+        public async Task RefreshLoginInfoFromCookie()
         {
-            var token = await new Cookies(jSRuntime).GetCookie("token");
+            var token = await new Cookies(_jSRuntime).GetCookie("token");
             await SaveTokenInLocalStorage(token);
 
-            var username = await new Cookies(jSRuntime).GetCookie("username");
+            var username = await new Cookies(_jSRuntime).GetCookie("username");
             await SaveUsernameInLocalStorage(username);
 
             await RefreshLoginInfo();
@@ -100,10 +102,10 @@ namespace BlazorAdmin.Services
             await _httpClient.PostAsync("Identity/Account/Logout", null);
         }
 
-        private async Task DeleteCookies(IJSRuntime jSRuntime)
+        private async Task DeleteCookies()
         {
-            await new Cookies(jSRuntime).DeleteCookie("token");
-            await new Cookies(jSRuntime).DeleteCookie("username");
+            await new Cookies(_jSRuntime).DeleteCookie("token");
+            await new Cookies(_jSRuntime).DeleteCookie("username");
         }
 
         private async Task SetLoginData()
