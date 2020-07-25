@@ -1,7 +1,7 @@
 ﻿@page "/admin"
-@attribute [Authorize(Roles = Constants.Roles.ADMINISTRATORS)]
+@attribute [Authorize(Roles = BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS)]
 @inject AuthService Auth
-@using global::Shared.Authorization
+@using global::BlazorShared.Authorization
 @inherits BlazorAdmin.Helpers.BlazorComponent
 @namespace BlazorAdmin.Pages.CatalogItemPage
 
@@ -40,8 +40,8 @@ else
                     <td>
                         <img class="img-thumbnail" src="@($"https://localhost:44315/{item.PictureUri}")">
                     </td>
-                    <td>@Services.CatalogTypeService.List.GetTypeName(catalogTypes, item.CatalogTypeId)</td>
-                    <td>@Services.CatalogBrandService.List.GetBrandName(catalogBrands, item.CatalogBrandId)</td>
+                    <td>@Services.CatalogTypeServices.List.GetTypeName(catalogTypes, item.CatalogTypeId)</td>
+                    <td>@Services.CatalogBrandServices.List.GetBrandName(catalogBrands, item.CatalogBrandId)</td>
                     <td>@item.Id</td>
                     <td>@item.Name</td>
                     <td>@item.Description</td>
