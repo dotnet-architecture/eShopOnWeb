@@ -20,6 +20,9 @@ namespace BlazorAdmin.Services
         private readonly HttpClient _httpClient;
         private readonly ILocalStorageService _localStorage;
         private readonly IJSRuntime _jSRuntime;
+
+        public readonly string ApiUrl = BlazorShared.Authorization.Constants.InDocker? Constants.DOCKER_API_URL: Constants.API_URL;
+
         public bool IsLoggedIn { get; set; }
         public string UserName { get; set; }
 
@@ -38,7 +41,7 @@ namespace BlazorAdmin.Services
         public async Task<AuthResponse> LoginWithoutSaveToLocalStorage(AuthRequest user)
         {
             var jsonContent = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync($"{Constants.API_URL}authenticate", jsonContent);
+            var response = await _httpClient.PostAsync($"{ApiUrl}authenticate", jsonContent);
             var authResponse = new AuthResponse();
 
             if (response.IsSuccessStatusCode)
@@ -54,7 +57,7 @@ namespace BlazorAdmin.Services
         public async Task<AuthResponse> Login(AuthRequest user)
         {
             var jsonContent = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync($"{Constants.API_URL}authenticate", jsonContent);
+            var response = await _httpClient.PostAsync($"{ApiUrl}authenticate", jsonContent);
             var authResponse = new AuthResponse();
 
             if (response.IsSuccessStatusCode)

@@ -30,6 +30,8 @@ namespace Microsoft.eShopWeb.Web
     public class Startup
     {
         private IServiceCollection _services;
+        private bool InDocker => Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -196,7 +198,10 @@ namespace Microsoft.eShopWeb.Web
                 //endpoints.MapBlazorHub("/admin");
                 endpoints.MapFallbackToFile("index.html");
             });
+
+            BlazorShared.Authorization.Constants.InDocker = InDocker;
         }
+
     }
 
 }

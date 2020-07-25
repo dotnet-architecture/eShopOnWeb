@@ -18,7 +18,7 @@ namespace BlazorAdmin.Services.CatalogItemServices
         {
             var catalogItems = new List<CatalogItem>();
 
-            var result = (await _authService.GetHttpClient().GetAsync($"{Constants.API_URL}catalog-items?PageSize={pageSize}"));
+            var result = (await _authService.GetHttpClient().GetAsync($"{_authService.ApiUrl}catalog-items?PageSize={pageSize}"));
             if (result.StatusCode != HttpStatusCode.OK)
             {
                 return catalogItems;

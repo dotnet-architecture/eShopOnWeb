@@ -10,5 +10,7 @@ namespace BlazorShared.Authorization
         {
             public const string ADMINISTRATORS = "Administrators";
         }
+
+        public static bool InDocker = false;
     }
 }

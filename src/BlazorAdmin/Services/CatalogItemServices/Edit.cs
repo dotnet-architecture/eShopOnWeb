@@ -21,7 +21,7 @@ namespace BlazorAdmin.Services.CatalogItemServices
 
             var content = new StringContent(JsonConvert.SerializeObject(catalogItem), Encoding.UTF8, "application/json");
 
-            var result = await _authService.GetHttpClient().PutAsync($"{Constants.API_URL}catalog-items", content);
+            var result = await _authService.GetHttpClient().PutAsync($"{_authService.ApiUrl}catalog-items", content);
             if (result.StatusCode != HttpStatusCode.OK)
             {
                 return catalogItemResult;
