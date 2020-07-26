@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using AutoMapper;
+using BlazorShared.Authorization;
 using MediatR;
 
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -128,10 +129,7 @@ namespace Microsoft.eShopWeb.PublicApi
                                   {
                                       builder.WithOrigins("http://localhost:44319",
                                                           "https://localhost:44319",
-                                                          "http://localhost:44315",
-                                                          "https://localhost:44315",
-                                                          "http://localhost:5106",
-                                                          "https://localhost:5106");
+                                                          Constants.GetWebUrl());
                                       builder.AllowAnyMethod();
                                       builder.AllowAnyHeader();
                                   });
