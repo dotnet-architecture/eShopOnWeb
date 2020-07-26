@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using BlazorAdmin.JavaScript;
@@ -32,11 +28,6 @@ namespace BlazorAdmin.Services
             _jSRuntime = jSRuntime;
         }
 
-        public HttpClient GetHttpClient()
-        {
-            return _httpClient;
-        }
-
         public async Task<HttpResponseMessage> HttpGet(string uri)
         {
             return await _httpClient.GetAsync($"{_apiUrl}{uri}");
@@ -49,52 +40,16 @@ namespace BlazorAdmin.Services
 
         public async Task<HttpResponseMessage> HttpPost(string uri, object dataToSend)
         {
-            var content = new StringContent(JsonConvert.SerializeObject(dataToSend), Encoding.UTF8, "application/json");
+            var content = ToJson(dataToSend);
 
             return await _httpClient.PostAsync($"{_apiUrl}{uri}", content);
         }
 
         public async Task<HttpResponseMessage> HttpPut(string uri, object dataToSend)
         {
-            var content = new StringContent(JsonConvert.SerializeObject(dataToSend), Encoding.UTF8, "application/json");
+            var content = ToJson(dataToSend);
 
             return await _httpClient.PutAsync($"{_apiUrl}{uri}", content);
-        }
-
-        public async Task<AuthResponse> LoginWithoutSaveToLocalStorage(AuthRequest user)
-        {
-            var jsonContent = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync($"{_apiUrl}authenticate", jsonContent);
-            var authResponse = new AuthResponse();
-
-            if (response.IsSuccessStatusCode)
-            {
-                authResponse = await DeserializeToAuthResponse(response);
-
-                IsLoggedIn = true;
-            }
-
-            return authResponse;
-        }
-
-        public async Task<AuthResponse> Login(AuthRequest user)
-        {
-            var jsonContent = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync($"{_apiUrl}authenticate", jsonContent);
-            var authResponse = new AuthResponse();
-
-            if (response.IsSuccessStatusCode)
-            {
-                authResponse = await DeserializeToAuthResponse(response);
-                await SaveTokenInLocalStorage(authResponse);
-                await SaveUsernameInLocalStorage(authResponse);
-                await SetAuthorizationHeader();
-
-                UserName = await GetUsername();
-                IsLoggedIn = true;
-            }
-
-            return authResponse;
         }
 
         public async Task Logout()
@@ -123,6 +78,12 @@ namespace BlazorAdmin.Services
 
             await RefreshLoginInfo();
         }
+
+        private StringContent ToJson(object obj)
+        {
+            return new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json");
+        }
+
         private async Task LogoutIdentityManager()
         {
             await _httpClient.PostAsync("Identity/Account/Logout", null);
@@ -207,52 +168,5 @@ namespace BlazorAdmin.Services
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
-        public IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
-        {
-            var claims = new List<Claim>();
-            if (string.IsNullOrEmpty(jwt))
-            {
-                return claims;
-            }
-
-            var payload = jwt.Split('.')[1];
-            var jsonBytes = ParseBase64WithoutPadding(payload);
-            var keyValuePairs = JsonConvert.DeserializeObject<Dictionary<string, object>>(Encoding.UTF8.GetString(jsonBytes));
-
-            keyValuePairs.TryGetValue(ClaimTypes.Role, out object roles);
-
-            if (roles != null)
-            {
-                if (roles.ToString().Trim().StartsWith("["))
-                {
-                    var parsedRoles = JsonConvert.DeserializeObject<string[]>(roles.ToString());
-
-                    foreach (var parsedRole in parsedRoles)
-                    {
-                        claims.Add(new Claim(ClaimTypes.Role, parsedRole));
-                    }
-                }
-                else
-                {
-                    claims.Add(new Claim(ClaimTypes.Role, roles.ToString()));
-                }
-
-                keyValuePairs.Remove(ClaimTypes.Role);
-            }
-
-            claims.AddRange(keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString())));
-
-            return claims;
-        }
-
-        private byte[] ParseBase64WithoutPadding(string base64)
-        {
-            switch (base64.Length % 4)
-            {
-                case 2: base64 += "=="; break;
-                case 3: base64 += "="; break;
-            }
-            return Convert.FromBase64String(base64);
-        }
     }
 }
