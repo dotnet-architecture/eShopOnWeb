@@ -90,8 +90,8 @@ namespace Microsoft.eShopWeb.Web
             if (BlazorShared.Authorization.Constants.IN_DOCKER)
             {
                 services.AddDataProtection()
-                    .SetApplicationName("eshopwebmvc")
-                    .PersistKeysToFileSystem(new DirectoryInfo(@"./"));
+                .SetApplicationName("eshopwebmvc")
+                .PersistKeysToFileSystem(new DirectoryInfo(@"./"));
             }
             
             services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -138,9 +138,7 @@ namespace Microsoft.eShopWeb.Web
                 var navigationManager = s.GetRequiredService<NavigationManager>();
                 return new HttpClient
                 {
-                    //TODO need to do it well
-                    BaseAddress = new Uri("https://localhost:44315/")
-                    //BaseAddress = new Uri(navigationManager.BaseUri)
+                    BaseAddress = new Uri(BlazorShared.Authorization.Constants.GetWebUrl())
                 };
             });
 
