@@ -4,8 +4,6 @@ using System.Text;
 using AutoMapper;
 using BlazorShared.Authorization;
 using MediatR;
-
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
