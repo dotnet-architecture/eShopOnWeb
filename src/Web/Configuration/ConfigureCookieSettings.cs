@@ -14,7 +14,7 @@ namespace Microsoft.eShopWeb.Web.Configuration
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 //TODO need to check that.
                 //options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
+                options.MinimumSameSitePolicy = SameSiteMode.Strict;
             });
             services.ConfigureApplicationCookie(options =>
             {

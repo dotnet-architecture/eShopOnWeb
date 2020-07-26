@@ -21,7 +21,7 @@ using System.Net.Http;
 using System.Net.Mime;
 using BlazorAdmin.Services;
 using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 
@@ -84,8 +84,7 @@ namespace Microsoft.eShopWeb.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //TODO: Need to check and uncomment as it is make docker not login
-            //ConfigureCookieSettings.Configure(services);
+            ConfigureCookieSettings.Configure(services);
 
             if (BlazorShared.Authorization.Constants.IN_DOCKER)
             {
@@ -93,7 +92,15 @@ namespace Microsoft.eShopWeb.Web
                 .SetApplicationName("eshopwebmvc")
                 .PersistKeysToFileSystem(new DirectoryInfo(@"./"));
             }
-            
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.Cookie.HttpOnly = true;
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                    options.Cookie.SameSite = SameSiteMode.Lax;
+                });
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
                        .AddDefaultUI()
                        .AddEntityFrameworkStores<AppIdentityDbContext>()
@@ -133,13 +140,9 @@ namespace Microsoft.eShopWeb.Web
             });
 
             // Blazor Admin Required Services for Prerendering
-            services.AddScoped<HttpClient>(s =>
+            services.AddScoped<HttpClient>(s => new HttpClient
             {
-                var navigationManager = s.GetRequiredService<NavigationManager>();
-                return new HttpClient
-                {
-                    BaseAddress = new Uri(BlazorShared.Authorization.Constants.GetWebUrl())
-                };
+                BaseAddress = new Uri(BlazorShared.Authorization.Constants.GetWebUrl())
             });
 
             services.AddBlazoredLocalStorage();
