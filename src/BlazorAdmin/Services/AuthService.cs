@@ -20,8 +20,7 @@ namespace BlazorAdmin.Services
         private readonly HttpClient _httpClient;
         private readonly ILocalStorageService _localStorage;
         private readonly IJSRuntime _jSRuntime;
-
-        public readonly string ApiUrl = BlazorShared.Authorization.Constants.InDocker? Constants.DOCKER_API_URL: Constants.API_URL;
+        private readonly string _apiUrl = Constants.GetApiUrl();
 
         public bool IsLoggedIn { get; set; }
         public string UserName { get; set; }
@@ -38,10 +37,34 @@ namespace BlazorAdmin.Services
             return _httpClient;
         }
 
+        public async Task<HttpResponseMessage> HttpGet(string uri)
+        {
+            return await _httpClient.GetAsync($"{_apiUrl}{uri}");
+        }
+
+        public async Task<HttpResponseMessage> HttpDelete(string uri, int id)
+        {
+            return await _httpClient.DeleteAsync($"{_apiUrl}{uri}/{id}");
+        }
+
+        public async Task<HttpResponseMessage> HttpPost(string uri, object dataToSend)
+        {
+            var content = new StringContent(JsonConvert.SerializeObject(dataToSend), Encoding.UTF8, "application/json");
+
+            return await _httpClient.PostAsync($"{_apiUrl}{uri}", content);
+        }
+
+        public async Task<HttpResponseMessage> HttpPut(string uri, object dataToSend)
+        {
+            var content = new StringContent(JsonConvert.SerializeObject(dataToSend), Encoding.UTF8, "application/json");
+
+            return await _httpClient.PutAsync($"{_apiUrl}{uri}", content);
+        }
+
         public async Task<AuthResponse> LoginWithoutSaveToLocalStorage(AuthRequest user)
         {
             var jsonContent = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync($"{ApiUrl}authenticate", jsonContent);
+            var response = await _httpClient.PostAsync($"{_apiUrl}authenticate", jsonContent);
             var authResponse = new AuthResponse();
 
             if (response.IsSuccessStatusCode)
@@ -57,7 +80,7 @@ namespace BlazorAdmin.Services
         public async Task<AuthResponse> Login(AuthRequest user)
         {
             var jsonContent = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync($"{ApiUrl}authenticate", jsonContent);
+            var response = await _httpClient.PostAsync($"{_apiUrl}authenticate", jsonContent);
             var authResponse = new AuthResponse();
 
             if (response.IsSuccessStatusCode)

@@ -27,7 +27,7 @@ namespace BlazorAdmin.Services.CatalogTypeServices
 
             try
             {
-                var result = (await _authService.GetHttpClient().GetAsync($"{_authService.ApiUrl}catalog-types"));
+                var result = await _authService.HttpGet("catalog-types");
                 if (result.StatusCode != HttpStatusCode.OK)
                 {
                     return types;

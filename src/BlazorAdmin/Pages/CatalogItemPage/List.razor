@@ -38,7 +38,7 @@ else
             {
                 <tr @onclick="@(() => DetailsClick(item.Id))">
                     <td>
-                        <img class="img-thumbnail" src="@($"https://localhost:44315/{item.PictureUri}")">
+                        <img class="img-thumbnail" src="@($"{Constants.GetWebUrl()}{item.PictureUri}")">
                     </td>
                     <td>@Services.CatalogTypeServices.List.GetTypeName(catalogTypes, item.CatalogTypeId)</td>
                     <td>@Services.CatalogBrandServices.List.GetBrandName(catalogBrands, item.CatalogBrandId)</td>

@@ -129,7 +129,9 @@ namespace Microsoft.eShopWeb.PublicApi
                                       builder.WithOrigins("http://localhost:44319",
                                                           "https://localhost:44319",
                                                           "http://localhost:44315",
-                                                          "https://localhost:44315");
+                                                          "https://localhost:44315",
+                                                          "http://localhost:5106",
+                                                          "https://localhost:5106");
                                       builder.AllowAnyMethod();
                                       builder.AllowAnyHeader();
                                   });

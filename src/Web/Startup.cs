@@ -15,14 +15,14 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Mime;
 using BlazorAdmin.Services;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 
 namespace Microsoft.eShopWeb.Web
@@ -30,7 +30,6 @@ namespace Microsoft.eShopWeb.Web
     public class Startup
     {
         private IServiceCollection _services;
-        private bool InDocker => Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
 
         public Startup(IConfiguration configuration)
         {
@@ -85,8 +84,16 @@ namespace Microsoft.eShopWeb.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            ConfigureCookieSettings.Configure(services);
+            //TODO: Need to check and uncomment as it is make docker not login
+            //ConfigureCookieSettings.Configure(services);
 
+            if (BlazorShared.Authorization.Constants.IN_DOCKER)
+            {
+                services.AddDataProtection()
+                    .SetApplicationName("eshopwebmvc")
+                    .PersistKeysToFileSystem(new DirectoryInfo(@"./"));
+            }
+            
             services.AddIdentity<ApplicationUser, IdentityRole>()
                        .AddDefaultUI()
                        .AddEntityFrameworkStores<AppIdentityDbContext>()
@@ -198,8 +205,6 @@ namespace Microsoft.eShopWeb.Web
                 //endpoints.MapBlazorHub("/admin");
                 endpoints.MapFallbackToFile("index.html");
             });
-
-            BlazorShared.Authorization.Constants.InDocker = InDocker;
         }
 
     }
