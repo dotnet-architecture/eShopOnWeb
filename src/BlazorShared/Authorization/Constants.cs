@@ -16,6 +16,9 @@ namespace BlazorShared.Authorization
         public static string GetWebUrl() =>
             IN_DOCKER ? DOCKER_WEB_URL : WEB_URL;
 
+        public static string GetOriginWebUrl() =>
+            GetWebUrl().TrimEnd('/');
+
         public const bool IN_DOCKER = false;
 
         private const string API_URL = "https://localhost:5099/api/";
