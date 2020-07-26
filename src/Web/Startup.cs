@@ -84,7 +84,7 @@ namespace Microsoft.eShopWeb.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            ConfigureCookieSettings.Configure(services);
+            services.AddCookieSettings();
 
             if (BlazorShared.Authorization.Constants.IN_DOCKER)
             {
@@ -108,8 +108,8 @@ namespace Microsoft.eShopWeb.Web
 
             services.AddScoped<ITokenClaimsService, IdentityTokenClaimService>();
 
-            ConfigureCoreServices.Configure(services, Configuration);
-            ConfigureWebServices.Configure(services, Configuration);
+            services.AddCoreServices(Configuration);
+            services.AddWebServices(Configuration);
 
             // Add memory cache services
             services.AddMemoryCache();
