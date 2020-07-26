@@ -30,6 +30,7 @@ namespace Microsoft.eShopWeb.Web
     public class Startup
     {
         private IServiceCollection _services;
+        public static bool InDocker => Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
 
         public Startup(IConfiguration configuration)
         {
@@ -86,7 +87,7 @@ namespace Microsoft.eShopWeb.Web
         {
             services.AddCookieSettings();
 
-            if (BlazorShared.Authorization.Constants.IN_DOCKER)
+            if (InDocker)
             {
                 services.AddDataProtection()
                 .SetApplicationName("eshopwebmvc")
@@ -142,7 +143,7 @@ namespace Microsoft.eShopWeb.Web
             // Blazor Admin Required Services for Prerendering
             services.AddScoped<HttpClient>(s => new HttpClient
             {
-                BaseAddress = new Uri(BlazorShared.Authorization.Constants.GetWebUrl())
+                BaseAddress = new Uri(BlazorShared.Authorization.Constants.GetWebUrl(InDocker))
             });
 
             services.AddBlazoredLocalStorage();

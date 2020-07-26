@@ -10,16 +10,14 @@ namespace BlazorShared.Authorization
         {
             public const string ADMINISTRATORS = "Administrators";
         }
-        public static string GetApiUrl() =>
-            IN_DOCKER ? DOCKER_API_URL : API_URL;
+        public static string GetApiUrl(bool inDocker) =>
+            inDocker ? DOCKER_API_URL : API_URL;
 
-        public static string GetWebUrl() =>
-            IN_DOCKER ? DOCKER_WEB_URL : WEB_URL;
+        public static string GetWebUrl(bool inDocker) =>
+            inDocker ? DOCKER_WEB_URL : WEB_URL;
 
-        public static string GetOriginWebUrl() =>
-            GetWebUrl().TrimEnd('/');
-
-        public const bool IN_DOCKER = false;
+        public static string GetOriginWebUrl(bool inDocker) =>
+            GetWebUrl(inDocker).TrimEnd('/');
 
         private const string API_URL = "https://localhost:5099/api/";
         private const string DOCKER_API_URL = "http://localhost:5200/api/";
