@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using AutoMapper;
+using BlazorShared.Authorization;
 using MediatR;
-
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,6 +27,8 @@ namespace Microsoft.eShopWeb.PublicApi
     public class Startup
     {
         private const string CORS_POLICY = "CorsPolicy";
+        public static bool InDocker => Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -128,8 +129,7 @@ namespace Microsoft.eShopWeb.PublicApi
                                   {
                                       builder.WithOrigins("http://localhost:44319",
                                                           "https://localhost:44319",
-                                                          "http://localhost:44315",
-                                                          "https://localhost:44315");
+                                                          Constants.GetOriginWebUrl(InDocker));
                                       builder.AllowAnyMethod();
                                       builder.AllowAnyHeader();
                                   });

@@ -15,14 +15,14 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Mime;
 using BlazorAdmin.Services;
 using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Components;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 
 namespace Microsoft.eShopWeb.Web
@@ -30,6 +30,8 @@ namespace Microsoft.eShopWeb.Web
     public class Startup
     {
         private IServiceCollection _services;
+        public static bool InDocker => Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -83,7 +85,22 @@ namespace Microsoft.eShopWeb.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            ConfigureCookieSettings.Configure(services);
+            services.AddCookieSettings();
+
+            if (InDocker)
+            {
+                services.AddDataProtection()
+                .SetApplicationName("eshopwebmvc")
+                .PersistKeysToFileSystem(new DirectoryInfo(@"./"));
+            }
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.Cookie.HttpOnly = true;
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                    options.Cookie.SameSite = SameSiteMode.Lax;
+                });
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                        .AddDefaultUI()
@@ -92,8 +109,8 @@ namespace Microsoft.eShopWeb.Web
 
             services.AddScoped<ITokenClaimsService, IdentityTokenClaimService>();
 
-            ConfigureCoreServices.Configure(services, Configuration);
-            ConfigureWebServices.Configure(services, Configuration);
+            services.AddCoreServices(Configuration);
+            services.AddWebServices(Configuration);
 
             // Add memory cache services
             services.AddMemoryCache();
@@ -124,15 +141,9 @@ namespace Microsoft.eShopWeb.Web
             });
 
             // Blazor Admin Required Services for Prerendering
-            services.AddScoped<HttpClient>(s =>
+            services.AddScoped<HttpClient>(s => new HttpClient
             {
-                var navigationManager = s.GetRequiredService<NavigationManager>();
-                return new HttpClient
-                {
-                    //TODO need to do it well
-                    BaseAddress = new Uri("https://localhost:44315/")
-                    //BaseAddress = new Uri(navigationManager.BaseUri)
-                };
+                BaseAddress = new Uri(BlazorShared.Authorization.Constants.GetWebUrl(InDocker))
             });
 
             services.AddBlazoredLocalStorage();
@@ -197,6 +208,7 @@ namespace Microsoft.eShopWeb.Web
                 endpoints.MapFallbackToFile("index.html");
             });
         }
+
     }
 
 }

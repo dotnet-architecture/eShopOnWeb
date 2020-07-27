@@ -8,7 +8,7 @@ namespace Microsoft.eShopWeb.Web.Configuration
 {
     public static class ConfigureWebServices
     {
-        public static void Configure(IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddWebServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddMediatR(typeof(BasketViewModelService).Assembly);
             services.AddScoped<IBasketViewModelService, BasketViewModelService>();
@@ -16,6 +16,8 @@ namespace Microsoft.eShopWeb.Web.Configuration
             services.AddScoped<ICatalogItemViewModelService, CatalogItemViewModelService>();
             services.Configure<CatalogSettings>(configuration);
             services.AddScoped<ICatalogViewModelService, CachedCatalogViewModelService>();
+
+            return services;
         }
     }
 }

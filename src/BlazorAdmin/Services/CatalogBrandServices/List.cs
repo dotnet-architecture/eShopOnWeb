@@ -26,7 +26,7 @@ namespace BlazorAdmin.Services.CatalogBrandServices
 
             try
             {
-                var result = (await _authService.GetHttpClient().GetAsync($"{Constants.API_URL}catalog-brands"));
+                var result = await _authService.HttpGet("catalog-brands");
                 if (result.StatusCode != HttpStatusCode.OK)
                 {
                     return brands;

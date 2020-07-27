@@ -17,7 +17,7 @@ namespace BlazorAdmin.Services.CatalogItemServices
         {
             var catalogItemResult = string.Empty;
 
-            var result = await _authService.GetHttpClient().DeleteAsync($"{Constants.API_URL}catalog-items/{catalogItemId}");
+            var result = await _authService.HttpDelete("catalog-items", catalogItemId);
             if (result.StatusCode != HttpStatusCode.OK)
             {
                 return catalogItemResult;
