@@ -1,6 +1,4 @@
 ﻿using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
@@ -19,9 +17,7 @@ namespace BlazorAdmin.Services.CatalogItemServices
         {
             var catalogItemResult = new CatalogItem();
 
-            var content = new StringContent(JsonConvert.SerializeObject(catalogItem), Encoding.UTF8, "application/json");
-
-            var result = await _authService.GetHttpClient().PostAsync($"{Constants.API_URL}catalog-items", content);
+            var result = await _authService.HttpPost("catalog-items", catalogItem);
             if (result.StatusCode != HttpStatusCode.OK)
             {
                 return catalogItemResult;

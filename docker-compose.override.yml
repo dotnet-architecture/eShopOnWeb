@@ -4,6 +4,7 @@ services:
    environment:
      - ASPNETCORE_ENVIRONMENT=Development
      - ASPNETCORE_URLS=http://+:80
+     - DOTNET_RUNNING_IN_CONTAINER=true
    ports:
      - "5106:80"
    volumes:
@@ -13,6 +14,7 @@ services:
    environment:
      - ASPNETCORE_ENVIRONMENT=Development
      - ASPNETCORE_URLS=http://+:80
+     - DOTNET_RUNNING_IN_CONTAINER=true
    ports:
      - "5200:80"
    volumes:
