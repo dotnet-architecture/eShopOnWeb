@@ -10,9 +10,7 @@ namespace Microsoft.eShopWeb.Web.Controllers
     [ApiController]
     public class FileController : ControllerBase
     {
-
         [HttpPost]
-        [Authorize]
         [AllowAnonymous]
         public IActionResult Upload(FileViewModel fileViewModel)
         {
