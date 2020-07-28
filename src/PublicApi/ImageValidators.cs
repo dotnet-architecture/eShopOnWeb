@@ -5,11 +5,11 @@ namespace Microsoft.eShopWeb.PublicApi
 {
     public static class ImageValidators
     {
-        private const int ImageMinimumBytes = 512000;
+        private const int ImageMaximumBytes = 512000;
 
         public static bool IsValidImage(this byte[] postedFile, string fileName)
         {
-            return postedFile != null && postedFile.Length > 0 && postedFile.Length <= ImageMinimumBytes && IsExtensionValid(fileName);
+            return postedFile != null && postedFile.Length > 0 && postedFile.Length <= ImageMaximumBytes && IsExtensionValid(fileName);
         }
 
         private static bool IsExtensionValid(string fileName)
