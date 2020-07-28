@@ -20,7 +20,7 @@ namespace Microsoft.eShopWeb.Web.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet()]
+        [HttpGet]
         public async Task<IActionResult> MyOrders()
         {
             var viewModel = await _mediator.Send(new GetMyOrders(User.Identity.Name));
