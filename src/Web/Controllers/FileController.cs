@@ -14,7 +14,7 @@ namespace Microsoft.eShopWeb.Web.Controllers
         [AllowAnonymous]
         public IActionResult Upload(FileViewModel fileViewModel)
         {
-            if (!Request.Headers.ContainsKey("auth-key") || Request.Headers["auth-key"].ToString() != Constants.AUTH_KEY)
+            if (!Request.Headers.ContainsKey("auth-key") || Request.Headers["auth-key"].ToString() != ApplicationCore.Constants.AuthorizationConstants.AUTH_KEY)
             {
                 return Unauthorized();
             }
