@@ -16,17 +16,7 @@ namespace BlazorAdmin.Services.CatalogItemServices
 
         public async Task<List<CatalogItem>> HandleAsync(int pageSize)
         {
-            var catalogItems = new List<CatalogItem>();
-
-            var result = await _authService.HttpGet($"catalog-items?PageSize={pageSize}");
-            if (result.StatusCode != HttpStatusCode.OK)
-            {
-                return catalogItems;
-            }
-
-            catalogItems = JsonSerializer.Deserialize<PagedCatalogItemResult>(await result.Content.ReadAsStringAsync()).CatalogItems;
-
-            return catalogItems;
+            return (await _authService.HttpGet<PagedCatalogItemResult>($"catalog-items?PageSize={pageSize}")).CatalogItems;
         }
 
     }

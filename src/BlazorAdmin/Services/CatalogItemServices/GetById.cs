@@ -15,17 +15,7 @@ namespace BlazorAdmin.Services.CatalogItemServices
 
         public async Task<CatalogItem> HandleAsync(int catalogItemId)
         {
-            var catalogItemResult = new CatalogItem();
-
-            var result = await _authService.HttpGet($"catalog-items/{catalogItemId}");
-            if (result.StatusCode != HttpStatusCode.OK)
-            {
-                return catalogItemResult;
-            }
-
-            catalogItemResult = JsonSerializer.Deserialize<EditCatalogItemResult>(await result.Content.ReadAsStringAsync()).CatalogItem;
-
-            return catalogItemResult;
+            return (await _authService.HttpGet<EditCatalogItemResult>($"catalog-items/{catalogItemId}")).CatalogItem;
         }
     }
 }

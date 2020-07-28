@@ -32,9 +32,16 @@ namespace BlazorAdmin.Services
             _jSRuntime = jSRuntime;
         }
 
-        public async Task<HttpResponseMessage> HttpGet(string uri)
+        public async Task<T> HttpGet<T>(string uri) 
+            where T : new()
         {
-            return await _httpClient.GetAsync($"{ApiUrl}{uri}");
+            var result = await _httpClient.GetAsync($"{ApiUrl}{uri}");
+            if (!result.IsSuccessStatusCode)
+            {
+                return new T();
+            }
+
+            return await FromHttpResponseMessage<T>(result);
         }
 
         public async Task<HttpResponseMessage> HttpDelete(string uri, int id)
@@ -111,6 +118,14 @@ namespace BlazorAdmin.Services
         private StringContent ToJson(object obj)
         {
             return new StringContent(JsonSerializer.Serialize(obj), Encoding.UTF8, "application/json");
+        }
+
+        private async Task<T> FromHttpResponseMessage<T>(HttpResponseMessage result)
+        {
+            return JsonSerializer.Deserialize<T>(await result.Content.ReadAsStringAsync(), new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
         }
 
         private async Task LogoutIdentityManager()
