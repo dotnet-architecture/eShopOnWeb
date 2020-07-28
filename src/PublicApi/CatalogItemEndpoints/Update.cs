@@ -50,7 +50,7 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
             else
             {
                 var picName = $"{existingItem.Id}{Path.GetExtension(request.PictureName)}";
-                if (await WebFileSystem.SavePicture($"{picName}", request.PictureBase64))
+                if (await new WebFileSystem().SavePicture($"{picName}", request.PictureBase64))
                 {
                     existingItem.UpdatePictureUri(picName);
                 }

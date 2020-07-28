@@ -14,14 +14,24 @@ namespace Microsoft.eShopWeb.PublicApi
         private readonly string _url;
         public const string AUTH_KEY = "AuthKeyOfDoomThatMustBeAMinimumNumberOfBytes";
 
-        public WebFileSystem(string url)
+        public WebFileSystem()
         {
+            _url = $"{BlazorShared.Authorization.Constants.GetWebUrlInternal(Startup.InDocker)}File";
             _httpClient = new HttpClient();
             _httpClient.DefaultRequestHeaders.Add("auth-key", AUTH_KEY);
-            _url = url;
         }
 
-        public async Task<bool> UploadFile(string fileName, byte[] fileData)
+        public async Task<bool> SavePicture(string pictureName, string pictureBase64)
+        {
+            if (!await UploadFile(pictureName, Convert.FromBase64String(pictureBase64)))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private async Task<bool> UploadFile(string fileName, byte[] fileData)
         {
             if (!fileData.IsValidImage(fileName))
             {
@@ -29,17 +39,6 @@ namespace Microsoft.eShopWeb.PublicApi
             }
 
             return await UploadToWeb(fileName, fileData);
-        }
-
-        public static async Task<bool> SavePicture(string pictureName, string pictureBase64)
-        {
-            IFileSystem fileSystem = new WebFileSystem($"{BlazorShared.Authorization.Constants.GetWebUrlInternal(Startup.InDocker)}File");
-            if (!await fileSystem.UploadFile(pictureName, Convert.FromBase64String(pictureBase64)))
-            {
-                return false;
-            }
-
-            return true;
         }
 
         private async Task<bool> UploadToWeb(string fileName, byte[] fileData)

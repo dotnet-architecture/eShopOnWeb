@@ -8,6 +8,6 @@ namespace Microsoft.eShopWeb.PublicApi
 {
     public interface IFileSystem
     {
-        Task<bool> UploadFile(string fileName, byte[] file);
+        Task<bool> SavePicture(string pictureName, string pictureBase64);
     }
 }
