@@ -1,45 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text.Json;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace BlazorAdmin.Services.CatalogBrandServices
 {
     public class List
     {
         private readonly AuthService _authService;
+        private readonly HttpClient _httpClient;
 
-        public List(AuthService authService)
+        public List(AuthService authService, HttpClient httpClient)
         {
             _authService = authService;
+            _httpClient = httpClient;
         }
 
         public async Task<List<CatalogBrand>> HandleAsync()
         {
-            var brands = new List<CatalogBrand>();
-            if (!_authService.IsLoggedIn)
-            {
-                return brands;
-            }
-
-            try
-            {
-                var result = await _authService.HttpGet("catalog-brands");
-                if (result.StatusCode != HttpStatusCode.OK)
-                {
-                    return brands;
-                }
-
-                brands = JsonSerializer.Deserialize<CatalogBrandResult>(await result.Content.ReadAsStringAsync()).CatalogBrands;
-            }
-            catch (AccessTokenNotAvailableException)
-            {
-                return brands;
-            }
-
-            return brands;
+            return await _httpClient.GetFromJsonAsync<List<CatalogBrand>>($"{_authService.ApiUrl}catalog-brands");
         }
 
         public static string GetBrandName(IEnumerable<CatalogBrand> brands, int brandId)
