@@ -37,9 +37,9 @@ namespace BlazorAdmin.Pages.CatalogItemPage
             await DetailsComponent.Open(id);
         }
 
-        private void CreateClick()
+        private async Task CreateClick()
         {
-            CreateComponent.Open();
+            await CreateComponent.Open();
         }
 
         private async Task EditClick(int id)

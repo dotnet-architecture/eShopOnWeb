@@ -19,7 +19,7 @@ namespace BlazorAdmin.Services.CatalogTypeServices
 
         public async Task<List<CatalogType>> HandleAsync()
         {
-            return await _httpClient.GetFromJsonAsync<List<CatalogType>>($"{_authService.ApiUrl}catalog-types");
+            return (await _httpClient.GetFromJsonAsync<CatalogTypeResult>($"{_authService.ApiUrl}catalog-types"))?.CatalogTypes;
         }
 
         public static string GetTypeName(IEnumerable<CatalogType> types, int typeId)

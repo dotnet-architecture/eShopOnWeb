@@ -19,7 +19,7 @@ namespace BlazorAdmin.Services.CatalogBrandServices
 
         public async Task<List<CatalogBrand>> HandleAsync()
         {
-            return await _httpClient.GetFromJsonAsync<List<CatalogBrand>>($"{_authService.ApiUrl}catalog-brands");
+            return (await _httpClient.GetFromJsonAsync<CatalogBrandResult>($"{_authService.ApiUrl}catalog-brands"))?.CatalogBrands;
         }
 
         public static string GetBrandName(IEnumerable<CatalogBrand> brands, int brandId)
