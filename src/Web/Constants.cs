@@ -6,5 +6,6 @@
         public const int ITEMS_PER_PAGE = 10;
         public const string DEFAULT_USERNAME = "Guest";
         public const string BASKET_ID = "BasketId";
+        public const string AUTH_KEY = "AuthKeyOfDoomThatMustBeAMinimumNumberOfBytes";
     }
 }

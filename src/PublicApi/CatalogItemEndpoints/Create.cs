@@ -1,4 +1,6 @@
-﻿using Ardalis.ApiEndpoints;
+﻿using System;
+using System.IO;
+using Ardalis.ApiEndpoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -34,9 +36,19 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
         {
             var response = new CreateCatalogItemResponse(request.CorrelationId());
 
-            CatalogItem newItem = new CatalogItem(request.CatalogTypeId, request.CatalogBrandId, request.Description, request.Name, request.Price, request.PictureUri);
+            var newItem = new CatalogItem(request.CatalogTypeId, request.CatalogBrandId, request.Description, request.Name, request.Price, request.PictureUri);
 
             newItem = await _itemRepository.AddAsync(newItem);
+
+            if (newItem.Id != 0)
+            {
+                var picName = $"{newItem.Id}{Path.GetExtension(request.PictureName)}";
+                if (await WebFileSystem.SavePicture(picName, request.PictureBase64))
+                {
+                    newItem.UpdatePictureUri(picName);
+                    await _itemRepository.UpdateAsync(newItem);
+                }
+            }
 
             var dto = new CatalogItemDto
             {
@@ -51,5 +63,7 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
             response.CatalogItem = dto;
             return response;
         }
+
+        
     }
 }

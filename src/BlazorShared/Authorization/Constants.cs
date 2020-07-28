@@ -11,6 +11,9 @@
 
         public static string GetWebUrl(bool inDocker) =>
             inDocker ? DOCKER_WEB_URL : WEB_URL;
+        
+        public static string GetWebUrlInternal(bool inDocker) =>
+            inDocker ? DOCKER_WEB_URL.Replace("localhost", "host.docker.internal") : WEB_URL;
 
         public static string GetOriginWebUrl(bool inDocker) =>
             GetWebUrl(inDocker).TrimEnd('/');

@@ -8,6 +8,7 @@ using Microsoft.eShopWeb.ApplicationCore.Exceptions;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
@@ -41,6 +42,19 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
             existingItem.UpdateDetails(request.Name, request.Description, request.Price);
             existingItem.UpdateBrand(request.CatalogBrandId);
             existingItem.UpdateType(request.CatalogTypeId);
+
+            if (string.IsNullOrEmpty(request.PictureBase64))
+            {
+                existingItem.UpdatePictureUri(string.Empty);
+            }
+            else
+            {
+                var picName = $"{existingItem.Id}{Path.GetExtension(request.PictureName)}";
+                if (await WebFileSystem.SavePicture($"{picName}", request.PictureBase64))
+                {
+                    existingItem.UpdatePictureUri(picName);
+                }
+            }
 
             await _itemRepository.UpdateAsync(existingItem);
 

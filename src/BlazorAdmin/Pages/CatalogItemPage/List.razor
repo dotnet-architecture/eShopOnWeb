@@ -50,7 +50,7 @@ else
                             Edit
                         </button>
 
-                        <button @onclick="@(() => DeleteClick(item.Id))" @onclick:stopPropagation="true" class="btn btn-primary">
+                        <button @onclick="@(() => DeleteClick(item.Id))" @onclick:stopPropagation="true" class="btn btn-danger">
                             Delete
                         </button>
                     </td>
@@ -59,7 +59,7 @@ else
         </tbody>
     </table>
 
-    <Details Brands="@catalogBrands" Types="@catalogTypes" @ref="DetailsComponent" OnEditClick="EditClick"></Details>
+    <Details Brands="@catalogBrands" Types="@catalogTypes" OnEditClick="EditClick" @ref="DetailsComponent"></Details>
     <Edit Brands="@catalogBrands" Types="@catalogTypes" OnCloseClick="ReloadCatalogItems" @ref="EditComponent"></Edit>
     <Create Brands="@catalogBrands" Types="@catalogTypes" OnCloseClick="ReloadCatalogItems" @ref="CreateComponent"></Create>
     <Delete Brands="@catalogBrands" Types="@catalogTypes" OnCloseClick="ReloadCatalogItems" @ref="DeleteComponent"></Delete>

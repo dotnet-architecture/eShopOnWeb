@@ -5,8 +5,6 @@
 
 @namespace BlazorAdmin.Pages.CatalogItemPage
 
-
-
 <div class="modal @_modalClass" tabindex="-1" role="dialog" style="display:@_modalDisplay">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -26,9 +24,13 @@
                 {
                     <div class="container">
                         <div class="row">
-                            <img class="col-md-6 esh-picture" src="@($"{Auth.WebUrl}{_item.PictureUri}")">
+                            @if (HasPicture)
+                            {
+                                <img class="col-md-6 esh-picture" src="@($"{Auth.WebUrl}{_item.PictureUri}")">
+                            }
 
-                            <dl class="col-md-6 dl-horizontal">
+
+                            <dl class="col-md-@(HasPicture?"6":"12") dl-horizontal">
                                 <dt>
                                     Name
                                 </dt>
@@ -77,7 +79,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Close</button>
-                <button class="btn btn-danger" @onclick="EditClick">
+                <button class="btn btn-primary" @onclick="EditClick">
                     Edit
                 </button>
             </div>
@@ -99,6 +101,7 @@
     [Parameter]
     public EventCallback<int> OnEditClick { get; set; }
 
+    private bool HasPicture => !string.IsNullOrEmpty(_item.PictureUri);
     private string _modalDisplay = "none;";
     private string _modalClass = "";
     private bool _showDetailsModal = false;
@@ -112,6 +115,7 @@
 
     public async Task Open(int id)
     {
+
         Logger.LogInformation("Now loading... /Catalog/Details/{Id}", id);
 
         _item = await new GetById(Auth).HandleAsync(id);
@@ -119,6 +123,8 @@
         _modalDisplay = "block;";
         _modalClass = "Show";
         _showDetailsModal = true;
+
+        StateHasChanged();
     }
 
     public void Close()

@@ -23,9 +23,11 @@
             {
                 <div class="container">
                     <div class="row">
-                        <img class="col-md-6 esh-picture" src="@($"{Auth.WebUrl}{_item.PictureUri}")">
-
-                        <dl class="col-md-6 dl-horizontal">
+                        @if (HasPicture)
+                        {
+                            <img class="col-md-6 esh-picture" src="@($"{Auth.WebUrl}{_item.PictureUri}")">
+                        }
+                        <dl class="col-md-@(HasPicture ? "6" : "12") dl-horizontal">
                             <dt>
                                 Name
                             </dt>
@@ -96,6 +98,7 @@
     [Parameter]
     public EventCallback<string> OnCloseClick { get; set; }
 
+    private bool HasPicture => !string.IsNullOrEmpty(_item.PictureUri);
     private string _modalDisplay = "none;";
     private string _modalClass = "";
     private bool _showDeleteModal = false;
@@ -108,7 +111,7 @@
         await new BlazorAdmin.Services.CatalogItemServices.Delete(Auth).HandleAsync(id);
 
         await OnCloseClick.InvokeAsync(null);
-        Close();
+        await Close();
     }
 
     public async Task Open(int id)
@@ -120,13 +123,15 @@
         _modalDisplay = "block;";
         _modalClass = "Show";
         _showDeleteModal = true;
+
+        StateHasChanged();
     }
 
-    public void Close()
+    private async Task Close()
     {
         _modalDisplay = "none";
         _modalClass = "";
         _showDeleteModal = false;
-        OnCloseClick.InvokeAsync(null);
+        await OnCloseClick.InvokeAsync(null);
     }
 }
