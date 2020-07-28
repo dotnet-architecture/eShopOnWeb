@@ -23,8 +23,8 @@ namespace BlazorAdmin.Pages.CatalogItemPage
             if (firstRender)
             {
                 catalogItems = await new BlazorAdmin.Services.CatalogItemServices.ListPaged(Auth).HandleAsync(50);
-                catalogTypes = await new BlazorAdmin.Services.CatalogTypeServices.List(Auth).HandleAsync();
-                catalogBrands = await new BlazorAdmin.Services.CatalogBrandServices.List(Auth).HandleAsync();
+                catalogTypes = await new BlazorAdmin.Services.CatalogTypeServices.List(Auth, HttpClient).HandleAsync();
+                catalogBrands = await new BlazorAdmin.Services.CatalogBrandServices.List(Auth, HttpClient).HandleAsync();
 
                 CallRequestRefresh();
             }
