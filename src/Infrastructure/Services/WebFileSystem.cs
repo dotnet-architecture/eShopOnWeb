@@ -24,7 +24,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Services
 
         public async Task<bool> SavePicture(string pictureName, string pictureBase64)
         {
-            if (!await UploadFile(pictureName, Convert.FromBase64String(pictureBase64)))
+            if (string.IsNullOrEmpty(pictureBase64) || !await UploadFile(pictureName, Convert.FromBase64String(pictureBase64)))
             {
                 return false;
             }
