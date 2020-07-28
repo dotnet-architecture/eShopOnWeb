@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net;
+using System.Text.Json;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace BlazorAdmin.Services.CatalogItemServices
 {
@@ -24,7 +24,7 @@ namespace BlazorAdmin.Services.CatalogItemServices
                 return catalogItems;
             }
 
-            catalogItems = JsonConvert.DeserializeObject<PagedCatalogItemResult>(await result.Content.ReadAsStringAsync()).CatalogItems;
+            catalogItems = JsonSerializer.Deserialize<PagedCatalogItemResult>(await result.Content.ReadAsStringAsync()).CatalogItems;
 
             return catalogItems;
         }

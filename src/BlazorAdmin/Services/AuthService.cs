@@ -2,11 +2,11 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using BlazorAdmin.JavaScript;
 using Blazored.LocalStorage;
 using Microsoft.JSInterop;
-using Newtonsoft.Json;
 using BlazorShared.Authorization;
 
 namespace BlazorAdmin.Services
@@ -110,7 +110,7 @@ namespace BlazorAdmin.Services
 
         private StringContent ToJson(object obj)
         {
-            return new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json");
+            return new StringContent(JsonSerializer.Serialize(obj), Encoding.UTF8, "application/json");
         }
 
         private async Task LogoutIdentityManager()

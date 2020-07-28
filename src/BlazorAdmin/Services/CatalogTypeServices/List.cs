@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-using Newtonsoft.Json;
 
 namespace BlazorAdmin.Services.CatalogTypeServices
 {
@@ -33,7 +33,7 @@ namespace BlazorAdmin.Services.CatalogTypeServices
                     return types;
                 }
 
-                types = JsonConvert.DeserializeObject<CatalogTypeResult>(await result.Content.ReadAsStringAsync()).CatalogTypes;
+                types = JsonSerializer.Deserialize<CatalogTypeResult>(await result.Content.ReadAsStringAsync()).CatalogTypes;
             }
             catch (AccessTokenNotAvailableException)
             {

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-using Newtonsoft.Json;
 
 namespace BlazorAdmin.Services.CatalogBrandServices
 {
@@ -32,7 +32,7 @@ namespace BlazorAdmin.Services.CatalogBrandServices
                     return brands;
                 }
 
-                brands = JsonConvert.DeserializeObject<CatalogBrandResult>(await result.Content.ReadAsStringAsync()).CatalogBrands;
+                brands = JsonSerializer.Deserialize<CatalogBrandResult>(await result.Content.ReadAsStringAsync()).CatalogBrands;
             }
             catch (AccessTokenNotAvailableException)
             {

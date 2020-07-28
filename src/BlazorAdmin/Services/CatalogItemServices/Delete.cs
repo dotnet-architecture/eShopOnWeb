@@ -1,6 +1,6 @@
 ﻿using System.Net;
+using System.Text.Json;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace BlazorAdmin.Services.CatalogItemServices
 {
@@ -23,7 +23,7 @@ namespace BlazorAdmin.Services.CatalogItemServices
                 return catalogItemResult;
             }
 
-            catalogItemResult = JsonConvert.DeserializeObject<DeleteCatalogItemResult>(await result.Content.ReadAsStringAsync()).Status;
+            catalogItemResult = JsonSerializer.Deserialize<DeleteCatalogItemResult>(await result.Content.ReadAsStringAsync()).Status;
 
             return catalogItemResult;
         }
