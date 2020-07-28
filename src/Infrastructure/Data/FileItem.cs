@@ -1,6 +1,6 @@
-﻿namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
+﻿namespace Microsoft.eShopWeb.Infrastructure.Data
 {
-    public class FileItemDto
+    public class FileItem
     {
         public string FileName { get; set; }
         public string Url { get; set; }

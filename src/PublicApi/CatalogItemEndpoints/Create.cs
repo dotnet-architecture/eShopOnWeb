@@ -18,11 +18,13 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
     {
         private readonly IAsyncRepository<CatalogItem> _itemRepository;
         private readonly IUriComposer _uriComposer;
+        private readonly IFileSystem _webFileSystem;
 
-        public Create(IAsyncRepository<CatalogItem> itemRepository, IUriComposer uriComposer)
+        public Create(IAsyncRepository<CatalogItem> itemRepository, IUriComposer uriComposer, IFileSystem webFileSystem)
         {
             _itemRepository = itemRepository;
             _uriComposer = uriComposer;
+            _webFileSystem = webFileSystem;
         }
 
         [HttpPost("api/catalog-items")]
@@ -43,7 +45,7 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
             if (newItem.Id != 0)
             {
                 var picName = $"{newItem.Id}{Path.GetExtension(request.PictureName)}";
-                if (await new WebFileSystem().SavePicture(picName, request.PictureBase64))
+                if (await _webFileSystem.SavePicture(picName, request.PictureBase64))
                 {
                     newItem.UpdatePictureUri(picName);
                     await _itemRepository.UpdateAsync(newItem);

@@ -1,12 +1,13 @@
 ﻿using System;
+using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
-using Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints;
+using Microsoft.eShopWeb.Infrastructure.Data;
 using Newtonsoft.Json;
 
-namespace Microsoft.eShopWeb.PublicApi
+namespace Microsoft.eShopWeb.Infrastructure.Services
 {
     public class WebFileSystem: IFileSystem
     {
@@ -14,9 +15,9 @@ namespace Microsoft.eShopWeb.PublicApi
         private readonly string _url;
         public const string AUTH_KEY = "AuthKeyOfDoomThatMustBeAMinimumNumberOfBytes";
 
-        public WebFileSystem()
+        public WebFileSystem(string url)
         {
-            _url = $"{BlazorShared.Authorization.Constants.GetWebUrlInternal(Startup.InDocker)}File";
+            _url = url;
             _httpClient = new HttpClient();
             _httpClient.DefaultRequestHeaders.Add("auth-key", AUTH_KEY);
         }
@@ -43,7 +44,7 @@ namespace Microsoft.eShopWeb.PublicApi
 
         private async Task<bool> UploadToWeb(string fileName, byte[] fileData)
         {
-            var request = new FileItemDto
+            var request = new FileItem
             {
                 DataBase64 = Convert.ToBase64String(fileData), 
                 FileName = fileName
@@ -57,6 +58,26 @@ namespace Microsoft.eShopWeb.PublicApi
             }
 
             return true;
+        }
+    }
+
+    public static class ImageValidators
+    {
+        private const int ImageMaximumBytes = 512000;
+
+        public static bool IsValidImage(this byte[] postedFile, string fileName)
+        {
+            return postedFile != null && postedFile.Length > 0 && postedFile.Length <= ImageMaximumBytes && IsExtensionValid(fileName);
+        }
+
+        private static bool IsExtensionValid(string fileName)
+        {
+            var extension = Path.GetExtension(fileName);
+
+            return string.Equals(extension, ".jpg", StringComparison.OrdinalIgnoreCase) ||
+                   string.Equals(extension, ".png", StringComparison.OrdinalIgnoreCase) ||
+                   string.Equals(extension, ".gif", StringComparison.OrdinalIgnoreCase) ||
+                   string.Equals(extension, ".jpeg", StringComparison.OrdinalIgnoreCase);
         }
     }
 }
