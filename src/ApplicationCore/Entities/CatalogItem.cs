@@ -1,4 +1,5 @@
-﻿using Ardalis.GuardClauses;
+﻿using System;
+using Ardalis.GuardClauses;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using System.Collections.Generic;
 
@@ -53,6 +54,16 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities
         {
             Guard.Against.Zero(catalogTypeId, nameof(catalogTypeId));
             CatalogTypeId = catalogTypeId;
+        }
+
+        public void UpdatePictureUri(string pictureName)
+        {
+            if (string.IsNullOrEmpty(pictureName))
+            {
+                PictureUri = string.Empty;
+                return;
+            }
+            PictureUri = $"images\\products\\{pictureName}?{new DateTime().Ticks}";
         }
     }
 }

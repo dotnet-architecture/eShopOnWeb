@@ -27,7 +27,7 @@
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
     </environment>
     <link href="css/admin.css" rel="stylesheet" />
-
+    <script src="_content/BlazorInputFile/inputfile.js"></script>
     <script>
 
         window.getCookie = (cname) => {
@@ -53,6 +53,14 @@
 
         window.routeOutside = (path) => {
             window.location = path;
+        };
+
+        window.hideBodyOverflow = () => {
+            document.body.classList.add("body-no-overflow");
+        };
+
+        window.showBodyOverflow = () => {
+            document.body.classList.remove("body-no-overflow");
         };
 
     </script>
