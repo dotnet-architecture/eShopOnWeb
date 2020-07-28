@@ -118,7 +118,7 @@
 
     private async Task CreateClick()
     {
-        await new BlazorAdmin.Services.CatalogItemService.Create(Auth).HandleAsync(_item);
+        await new BlazorAdmin.Services.CatalogItemServices.Create(Auth).HandleAsync(_item);
         await OnCloseClick.InvokeAsync(null);
         Close();
     }

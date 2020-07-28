@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>BlazorShared</RootNamespace>
+    <AssemblyName>BlazorShared</AssemblyName>
+  </PropertyGroup>
+
+</Project>

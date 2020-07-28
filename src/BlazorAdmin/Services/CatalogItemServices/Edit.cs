@@ -2,22 +2,22 @@
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace BlazorAdmin.Services.CatalogItemService
+namespace BlazorAdmin.Services.CatalogItemServices
 {
-    public class GetById
+    public class Edit
     {
         private readonly AuthService _authService;
 
-        public GetById(AuthService authService)
+        public Edit(AuthService authService)
         {
             _authService = authService;
         }
 
-        public async Task<CatalogItem> HandleAsync(int catalogItemId)
+        public async Task<CatalogItem> HandleAsync(CatalogItem catalogItem)
         {
             var catalogItemResult = new CatalogItem();
 
-            var result = await _authService.GetHttpClient().GetAsync($"{Constants.API_URL}catalog-items/{catalogItemId}");
+            var result = await _authService.HttpPut("catalog-items", catalogItem);
             if (result.StatusCode != HttpStatusCode.OK)
             {
                 return catalogItemResult;

@@ -1,7 +1,7 @@
 ﻿using BlazorAdmin.Helpers;
-using BlazorAdmin.Services.CatalogBrandService;
-using BlazorAdmin.Services.CatalogItemService;
-using BlazorAdmin.Services.CatalogTypeService;
+using BlazorAdmin.Services.CatalogBrandServices;
+using BlazorAdmin.Services.CatalogItemServices;
+using BlazorAdmin.Services.CatalogTypeServices;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -22,9 +22,9 @@ namespace BlazorAdmin.Pages.CatalogItemPage
         {
             if (firstRender)
             {
-                catalogItems = await new BlazorAdmin.Services.CatalogItemService.ListPaged(Auth).HandleAsync(50);
-                catalogTypes = await new BlazorAdmin.Services.CatalogTypeService.List(Auth).HandleAsync();
-                catalogBrands = await new BlazorAdmin.Services.CatalogBrandService.List(Auth).HandleAsync();
+                catalogItems = await new BlazorAdmin.Services.CatalogItemServices.ListPaged(Auth).HandleAsync(50);
+                catalogTypes = await new BlazorAdmin.Services.CatalogTypeServices.List(Auth).HandleAsync();
+                catalogBrands = await new BlazorAdmin.Services.CatalogBrandServices.List(Auth).HandleAsync();
 
                 CallRequestRefresh();
             }
@@ -54,7 +54,7 @@ namespace BlazorAdmin.Pages.CatalogItemPage
 
         private async Task ReloadCatalogItems()
         {
-            catalogItems = await new BlazorAdmin.Services.CatalogItemService.ListPaged(Auth).HandleAsync(50);
+            catalogItems = await new BlazorAdmin.Services.CatalogItemServices.ListPaged(Auth).HandleAsync(50);
             StateHasChanged();
         }
     }

@@ -89,7 +89,7 @@ namespace Microsoft.eShopWeb.Web.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     var token = await _tokenClaimsService.GetTokenAsync(Input.Email);
-                    CreateAuthCookie(Input.Email, token);
+                    CreateAuthCookie(Input.Email, token, Startup.InDocker);
                     _logger.LogInformation("User logged in.");
                     await TransferAnonymousBasketToUserAsync(Input.Email);
                     return LocalRedirect(returnUrl);
@@ -114,12 +114,13 @@ namespace Microsoft.eShopWeb.Web.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private void CreateAuthCookie(string username, string token)
+        private void CreateAuthCookie(string username, string token, bool inDocker)
         {
             var cookieOptions = new CookieOptions();
             cookieOptions.Expires = DateTime.Today.AddYears(10);
             Response.Cookies.Append("token", token, cookieOptions);
             Response.Cookies.Append("username", username, cookieOptions);
+            Response.Cookies.Append("inDocker", inDocker.ToString(), cookieOptions);
         }
 
         private async Task TransferAnonymousBasketToUserAsync(string userName)

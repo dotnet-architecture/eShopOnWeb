@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
 {
-    [Authorize(Roles = AuthorizationConstants.Roles.ADMINISTRATORS, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(Roles = BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class Delete : BaseAsyncEndpoint<DeleteCatalogItemRequest, DeleteCatalogItemResponse>
     {
         private readonly IAsyncRepository<CatalogItem> _itemRepository;
