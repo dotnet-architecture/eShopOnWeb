@@ -2,12 +2,10 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.eShopWeb.ApplicationCore.Constants;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
-using Microsoft.eShopWeb.ApplicationCore.Exceptions;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
-using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
@@ -17,11 +15,13 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
     {
         private readonly IAsyncRepository<CatalogItem> _itemRepository;
         private readonly IUriComposer _uriComposer;
+        private readonly IFileSystem _webFileSystem;
 
-        public Update(IAsyncRepository<CatalogItem> itemRepository, IUriComposer uriComposer)
+        public Update(IAsyncRepository<CatalogItem> itemRepository, IUriComposer uriComposer, IFileSystem webFileSystem)
         {
             _itemRepository = itemRepository;
             _uriComposer = uriComposer;
+            _webFileSystem = webFileSystem;
 
         }
 
@@ -41,6 +41,19 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
             existingItem.UpdateDetails(request.Name, request.Description, request.Price);
             existingItem.UpdateBrand(request.CatalogBrandId);
             existingItem.UpdateType(request.CatalogTypeId);
+
+            if (string.IsNullOrEmpty(request.PictureBase64))
+            {
+                existingItem.UpdatePictureUri(string.Empty);
+            }
+            else
+            {
+                var picName = $"{existingItem.Id}{Path.GetExtension(request.PictureName)}";
+                if (await _webFileSystem.SavePicture($"{picName}", request.PictureBase64))
+                {
+                    existingItem.UpdatePictureUri(picName);
+                }
+            }
 
             await _itemRepository.UpdateAsync(existingItem);
 

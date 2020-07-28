@@ -150,6 +150,10 @@ admin {
     width: 100%;
 }
 
+.body-no-overflow {
+    overflow: hidden !important;
+}
+
 @media (max-width: 767.98px) {
     .main .top-row:not(.auth) {
         display: none;

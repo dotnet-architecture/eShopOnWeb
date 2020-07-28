@@ -1,5 +1,6 @@
 ﻿@inject ILogger<Delete> Logger
 @inject AuthService Auth
+@inject IJSRuntime JSRuntime
 
 @inherits BlazorAdmin.Helpers.BlazorComponent
 
@@ -15,60 +16,62 @@
                 </button>
             </div>
             <div class="modal-body">
-            @if (_item == null)
-            {
-                <Spinner></Spinner>
-            }
-            else
-            {
-                <div class="container">
-                    <div class="row">
-                        <img class="col-md-6 esh-picture" src="@($"{Auth.WebUrl}{_item.PictureUri}")">
+                @if (_item == null)
+                {
+                    <Spinner></Spinner>
+                }
+                else
+                {
+                    <div class="container">
+                        <div class="row">
+                            @if (HasPicture)
+                            {
+                                <img class="col-md-6 esh-picture" src="@($"{Auth.WebUrl}{_item.PictureUri}")">
+                            }
+                            <dl class="col-md-@(HasPicture ? "6" : "12") dl-horizontal">
+                                <dt>
+                                    Name
+                                </dt>
 
-                        <dl class="col-md-6 dl-horizontal">
-                            <dt>
-                                Name
-                            </dt>
+                                <dd>
+                                    @_item.Name
+                                </dd>
 
-                            <dd>
-                                @_item.Name
-                            </dd>
+                                <dt>
+                                    Description
+                                </dt>
 
-                            <dt>
-                                Description
-                            </dt>
+                                <dd>
+                                    @_item.Description
+                                </dd>
 
-                            <dd>
-                                @_item.Description
-                            </dd>
+                                <dt>
+                                    Brand
+                                </dt>
 
-                            <dt>
-                                Brand
-                            </dt>
+                                <dd>
+                                    @Services.CatalogBrandServices.List.GetBrandName(Brands, _item.CatalogBrandId)
+                                </dd>
 
-                            <dd>
-                                @Services.CatalogBrandServices.List.GetBrandName(Brands, _item.CatalogBrandId)
-                            </dd>
+                                <dt>
+                                    Type
+                                </dt>
 
-                            <dt>
-                                Type
-                            </dt>
+                                <dd>
+                                    @Services.CatalogTypeServices.List.GetTypeName(Types, _item.CatalogTypeId)
+                                </dd>
+                                <dt>
+                                    Price
+                                </dt>
 
-                            <dd>
-                                @Services.CatalogTypeServices.List.GetTypeName(Types, _item.CatalogTypeId)
-                            </dd>
-                            <dt>
-                                Price
-                            </dt>
+                                <dd>
+                                    @_item.Price
+                                </dd>
+                            </dl>
+                        </div>
 
-                            <dd>
-                                @_item.Price
-                            </dd>
-                        </dl>
                     </div>
-
-                </div>
-            }
+                }
 
             </div>
             <div class="modal-footer">
@@ -96,6 +99,7 @@
     [Parameter]
     public EventCallback<string> OnCloseClick { get; set; }
 
+    private bool HasPicture => !string.IsNullOrEmpty(_item.PictureUri);
     private string _modalDisplay = "none;";
     private string _modalClass = "";
     private bool _showDeleteModal = false;
@@ -108,25 +112,30 @@
         await new BlazorAdmin.Services.CatalogItemServices.Delete(Auth).HandleAsync(id);
 
         await OnCloseClick.InvokeAsync(null);
-        Close();
+        await Close();
     }
 
     public async Task Open(int id)
     {
         Logger.LogInformation("Now loading... /Catalog/Delete/{Id}", id);
 
+        await new Css(JSRuntime).HideBodyOverflow();
+
         _item = await new GetById(Auth).HandleAsync(id);
 
         _modalDisplay = "block;";
         _modalClass = "Show";
         _showDeleteModal = true;
+
+        StateHasChanged();
     }
 
-    public void Close()
+    private async Task Close()
     {
+        await new Css(JSRuntime).ShowBodyOverflow();
         _modalDisplay = "none";
         _modalClass = "";
         _showDeleteModal = false;
-        OnCloseClick.InvokeAsync(null);
+        await OnCloseClick.InvokeAsync(null);
     }
 }

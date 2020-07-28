@@ -20,5 +20,8 @@ namespace BlazorAdmin.Services.CatalogItemServices
         public decimal Price { get; set; } = 0;
 
         public string PictureUri { get; set; } = string.Empty;
+        public string PictureBase64 { get; set; } = string.Empty;
+        public string PictureName { get; set; } = string.Empty;
+
     }
 }

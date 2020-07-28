@@ -1,5 +1,6 @@
 ﻿@inject ILogger<Create> Logger
 @inject AuthService Auth
+@inject IJSRuntime JSRuntime
 
 @inherits BlazorAdmin.Helpers.BlazorComponent
 
@@ -25,60 +26,80 @@
                     }
                     else
                     {
-                        <div class="form-group">
-                            <label class="control-label col-md-2">Name</label>
-                            <div class="col-md-12">
-                                <InputText class="form-control" @bind-Value="_item.Name" />
-                                <ValidationMessage For="(() => _item.Name)" />
-                            </div>
-                        </div>
+                        <div class="container">
+                            <div class="row">
+                                @if (HasPicture)
+                                {
+                                    <img class="col-md-6 esh-picture" src="@LoadPicture">
+                                }
+                                <div class="col-md-@(HasPicture?"6":"12")">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-6">Name</label>
+                                        <div class="col-md-12">
+                                            <InputText class="form-control" @bind-Value="_item.Name" />
+                                            <ValidationMessage For="(() => _item.Name)" />
+                                        </div>
+                                    </div>
 
-                        <div class="form-group">
-                            <label class="control-label col-md-2">Description</label>
-                            <div class="col-md-12">
-                                <InputText class="form-control" @bind-Value="_item.Description" />
-                                <ValidationMessage For="(() => _item.Description)" />
-                            </div>
-                        </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-6">Description</label>
+                                        <div class="col-md-12">
+                                            <InputText class="form-control" @bind-Value="_item.Description" />
+                                            <ValidationMessage For="(() => _item.Description)" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-6">Brand</label>
+                                        <div class="col-md-12">
+                                            <InputSelect @bind-Value="_item.CatalogBrandId" class="form-control">
+                                                @foreach (var brand in Brands)
+                                                    {
+                                                    <option value="@brand.Id">@brand.Name</option>
+                                                    }
+                                            </InputSelect>
+                                            <ValidationMessage For="(() => _item.CatalogBrandId)" />
+                                        </div>
+                                    </div>
 
-                        <div class="form-group">
-                            <label class="control-label col-md-2">Brand</label>
-                            <div class="col-md-12">
-                                <InputSelect @bind-Value="_item.CatalogBrandId" class="form-control">
-                                    @foreach (var brand in Brands)
-                                        {
-                                        <option value="@brand.Id">@brand.Name</option>
-                                        }
-                                </InputSelect>
-                                <ValidationMessage For="(() => _item.CatalogBrandId)" />
-                            </div>
-                        </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-6">Type</label>
+                                        <div class="col-md-12">
+                                            <InputSelect @bind-Value="_item.CatalogTypeId" class="form-control">
+                                                @foreach (var type in Types)
+                                                    {
+                                                    <option value="@type.Id">@type.Name</option>
+                                                    }
+                                            </InputSelect>
+                                            <ValidationMessage For="(() => _item.CatalogTypeId)" />
+                                        </div>
+                                    </div>
 
-                        <div class="form-group">
-                            <label class="control-label col-md-2">Type</label>
-                            <div class="col-md-12">
-                                <InputSelect @bind-Value="_item.CatalogTypeId" class="form-control">
-                                    @foreach (var type in Types)
-                                        {
-                                        <option value="@type.Id">@type.Name</option>
-                                        }
-                                </InputSelect>
-                                <ValidationMessage For="(() => _item.CatalogTypeId)" />
-                            </div>
-                        </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-6">Price</label>
+                                        <div class="col-md-12">
+                                            <InputNumber @bind-Value="_item.Price" class="form-control" />
+                                            <ValidationMessage For="(() => _item.Price)" />
+                                        </div>
+                                    </div>
 
-                        <div class="form-group">
-                            <label class="control-label col-md-2">Price</label>
-                            <div class="col-md-12">
-                                <InputNumber @bind-Value="_item.Price" class="form-control" />
-                                <ValidationMessage For="(() => _item.Price)" />
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="control-label col-md-2">Picture name</label>
-                            <div class="col-md-12 esh-form-information">
-                                Uploading images not allowed for this version.
+                                    <div class="form-group">
+                                        <label class="control-label col-md-6">@_item.PictureName</label>
+                                        <div class="row">
+                                            <div class="col-md-6 esh-form-information">
+                                                <InputFile OnChange="AddFile" />
+                                            </div>
+                                            <div class="col-md-6 esh-form-information">
+                                                @if (HasPicture)
+                                                {
+                                                    <button type="button" class="btn btn-danger" @onclick="RemoveImage">Remove Picture</button>
+                                                }
+                                            </div>
+                                            <span class="col-md-12" style="color: red;"> @_badFileMessage </span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     }
@@ -111,35 +132,68 @@
     [Parameter]
     public EventCallback<string> OnCloseClick { get; set; }
 
+    private string LoadPicture => string.IsNullOrEmpty(_item.PictureBase64) ? string.Empty : $"data:image/png;base64, {_item.PictureBase64}";
+    private bool HasPicture => !string.IsNullOrEmpty(_item.PictureBase64);
+    private string _badFileMessage = string.Empty;
     private string _modalDisplay = "none;";
     private string _modalClass = "";
     private bool _showCreateModal = false;
-    private readonly CreateCatalogItemRequest _item = new CreateCatalogItemRequest();
+    private CreateCatalogItemRequest _item = new CreateCatalogItemRequest();
 
     private async Task CreateClick()
     {
         await new BlazorAdmin.Services.CatalogItemServices.Create(Auth).HandleAsync(_item);
         await OnCloseClick.InvokeAsync(null);
-        Close();
+        await Close();
     }
 
-    public void Open()
+    public async Task Open()
     {
         Logger.LogInformation("Now loading... /Catalog/Create");
 
-        _item.CatalogTypeId = Types.First().Id;
-        _item.CatalogBrandId = Brands.First().Id;
+        await new Css(JSRuntime).HideBodyOverflow();
+
+        _item = new CreateCatalogItemRequest
+        {
+            CatalogTypeId = Types.First().Id,
+            CatalogBrandId = Brands.First().Id
+        };
 
         _modalDisplay = "block;";
         _modalClass = "Show";
         _showCreateModal = true;
+
+        StateHasChanged();
     }
 
-    public void Close()
+    private async Task Close()
     {
+        await new Css(JSRuntime).ShowBodyOverflow();
         _modalDisplay = "none";
         _modalClass = "";
         _showCreateModal = false;
-        OnCloseClick.InvokeAsync(null);
+        await OnCloseClick.InvokeAsync(null);
+    }
+
+    private async Task AddFile(IFileListEntry[] files)
+    {
+        _badFileMessage = string.Empty;
+
+        var file = files.FirstOrDefault();
+        _item.PictureName = file?.Name;
+        _item.PictureBase64 = await CatalogItem.DataToBase64(file);
+
+        _badFileMessage = CatalogItem.IsValidImage(_item.PictureName, _item.PictureBase64);
+        if (!string.IsNullOrEmpty(_badFileMessage))
+        {
+            _item.PictureName = null;
+            _item.PictureBase64 = null;
+        }
+    }
+
+    private void RemoveImage()
+    {
+        _item.PictureName = null;
+        _item.PictureBase64 = null;
     }
 }
