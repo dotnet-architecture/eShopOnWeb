@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using BlazorAdmin.JavaScript;
 using Blazored.LocalStorage;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
-using Shared.Authorization;
+using BlazorShared.Authorization;
 
 namespace BlazorAdmin.Services
 {
@@ -20,6 +16,12 @@ namespace BlazorAdmin.Services
         private readonly HttpClient _httpClient;
         private readonly ILocalStorageService _localStorage;
         private readonly IJSRuntime _jSRuntime;
+
+        public string ApiUrl => Constants.GetApiUrl(InDocker);
+        public string WebUrl => Constants.GetWebUrl(InDocker);
+
+        private static bool InDocker { get; set; }
+
         public bool IsLoggedIn { get; set; }
         public string UserName { get; set; }
 
@@ -30,51 +32,33 @@ namespace BlazorAdmin.Services
             _jSRuntime = jSRuntime;
         }
 
-        public HttpClient GetHttpClient()
+        public async Task<HttpResponseMessage> HttpGet(string uri)
         {
-            return _httpClient;
+            return await _httpClient.GetAsync($"{ApiUrl}{uri}");
         }
 
-        public async Task<AuthResponse> LoginWithoutSaveToLocalStorage(AuthRequest user)
+        public async Task<HttpResponseMessage> HttpDelete(string uri, int id)
         {
-            var jsonContent = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync($"{Constants.API_URL}authenticate", jsonContent);
-            var authResponse = new AuthResponse();
-
-            if (response.IsSuccessStatusCode)
-            {
-                authResponse = await DeserializeToAuthResponse(response);
-
-                IsLoggedIn = true;
-            }
-
-            return authResponse;
+            return await _httpClient.DeleteAsync($"{ApiUrl}{uri}/{id}");
         }
 
-        public async Task<AuthResponse> Login(AuthRequest user)
+        public async Task<HttpResponseMessage> HttpPost(string uri, object dataToSend)
         {
-            var jsonContent = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync($"{Constants.API_URL}authenticate", jsonContent);
-            var authResponse = new AuthResponse();
+            var content = ToJson(dataToSend);
 
-            if (response.IsSuccessStatusCode)
-            {
-                authResponse = await DeserializeToAuthResponse(response);
-                await SaveTokenInLocalStorage(authResponse);
-                await SaveUsernameInLocalStorage(authResponse);
-                await SetAuthorizationHeader();
+            return await _httpClient.PostAsync($"{ApiUrl}{uri}", content);
+        }
 
-                UserName = await GetUsername();
-                IsLoggedIn = true;
-            }
+        public async Task<HttpResponseMessage> HttpPut(string uri, object dataToSend)
+        {
+            var content = ToJson(dataToSend);
 
-            return authResponse;
+            return await _httpClient.PutAsync($"{ApiUrl}{uri}", content);
         }
 
         public async Task Logout()
         {
-            await _localStorage.RemoveItemAsync("authToken");
-            await _localStorage.RemoveItemAsync("username");
+            await DeleteLocalStorage();
             await DeleteCookies();
             RemoveAuthorizationHeader();
             UserName = null;
@@ -95,66 +79,10 @@ namespace BlazorAdmin.Services
             var username = await new Cookies(_jSRuntime).GetCookie("username");
             await SaveUsernameInLocalStorage(username);
 
+            var inDocker = await new Cookies(_jSRuntime).GetCookie("inDocker");
+            await SaveInDockerInLocalStorage(inDocker);
+
             await RefreshLoginInfo();
-        }
-        private async Task LogoutIdentityManager()
-        {
-            await _httpClient.PostAsync("Identity/Account/Logout", null);
-        }
-
-        private async Task DeleteCookies()
-        {
-            await new Cookies(_jSRuntime).DeleteCookie("token");
-            await new Cookies(_jSRuntime).DeleteCookie("username");
-        }
-
-        private async Task SetLoginData()
-        {
-            IsLoggedIn = !string.IsNullOrEmpty(await GetToken());
-            UserName = await GetUsername();
-            await SetAuthorizationHeader();
-        }
-
-        private async Task<AuthResponse> DeserializeToAuthResponse(HttpResponseMessage response)
-        {
-            var responseContent = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<AuthResponse>(responseContent);
-        }
-
-        private async Task SaveTokenInLocalStorage(AuthResponse authResponse)
-        {
-            await _localStorage.SetItemAsync("authToken", SaveTokenInLocalStorage(authResponse.Token));
-        }
-
-        private async Task SaveTokenInLocalStorage(string token)
-        {
-            if (string.IsNullOrEmpty(token))
-            {
-                return;
-            }
-            await _localStorage.SetItemAsync("authToken", token);
-        }
-
-        private void RemoveAuthorizationHeader()
-        {
-            if (_httpClient.DefaultRequestHeaders.Contains("Authorization"))
-            {
-                _httpClient.DefaultRequestHeaders.Remove("Authorization");
-            }
-        }
-
-        private async Task SaveUsernameInLocalStorage(AuthResponse authResponse)
-        {
-            await _localStorage.SetItemAsync("username", SaveUsernameInLocalStorage(authResponse.Username));
-        }
-
-        private async Task SaveUsernameInLocalStorage(string username)
-        {
-            if (string.IsNullOrEmpty(username))
-            {
-                return;
-            }
-            await _localStorage.SetItemAsync("username", username);
         }
 
         public async Task<string> GetToken()
@@ -175,58 +103,83 @@ namespace BlazorAdmin.Services
             return username;
         }
 
+        public async Task<bool> GetInDocker()
+        {
+            return (await _localStorage.GetItemAsync<string>("inDocker")).ToLower() == "true";
+        }
+
+        private StringContent ToJson(object obj)
+        {
+            return new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json");
+        }
+
+        private async Task LogoutIdentityManager()
+        {
+            await _httpClient.PostAsync("Identity/Account/Logout", null);
+        }
+
+        private async Task DeleteLocalStorage()
+        {
+            await _localStorage.RemoveItemAsync("authToken");
+            await _localStorage.RemoveItemAsync("username");
+            await _localStorage.RemoveItemAsync("inDocker");
+        }
+
+        private async Task DeleteCookies()
+        {
+            await new Cookies(_jSRuntime).DeleteCookie("token");
+            await new Cookies(_jSRuntime).DeleteCookie("username");
+            await new Cookies(_jSRuntime).DeleteCookie("inDocker");
+        }
+
+        private async Task SetLoginData()
+        {
+            IsLoggedIn = !string.IsNullOrEmpty(await GetToken());
+            UserName = await GetUsername();
+            InDocker = await GetInDocker();
+            await SetAuthorizationHeader();
+        }
+
+        private void RemoveAuthorizationHeader()
+        {
+            if (_httpClient.DefaultRequestHeaders.Contains("Authorization"))
+            {
+                _httpClient.DefaultRequestHeaders.Remove("Authorization");
+            }
+        }
+
+        private async Task SaveTokenInLocalStorage(string token)
+        {
+            if (string.IsNullOrEmpty(token))
+            {
+                return;
+            }
+            await _localStorage.SetItemAsync("authToken", token);
+        }
+
+        private async Task SaveUsernameInLocalStorage(string username)
+        {
+            if (string.IsNullOrEmpty(username))
+            {
+                return;
+            }
+            await _localStorage.SetItemAsync("username", username);
+        }
+
+        private async Task SaveInDockerInLocalStorage(string inDocker)
+        {
+            if (string.IsNullOrEmpty(inDocker))
+            {
+                return;
+            }
+            await _localStorage.SetItemAsync("inDocker", inDocker);
+        }
+
         private async Task SetAuthorizationHeader()
         {
             var token = await GetToken();
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
-        public IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
-        {
-            var claims = new List<Claim>();
-            if (string.IsNullOrEmpty(jwt))
-            {
-                return claims;
-            }
-
-            var payload = jwt.Split('.')[1];
-            var jsonBytes = ParseBase64WithoutPadding(payload);
-            var keyValuePairs = JsonConvert.DeserializeObject<Dictionary<string, object>>(Encoding.UTF8.GetString(jsonBytes));
-
-            keyValuePairs.TryGetValue(ClaimTypes.Role, out object roles);
-
-            if (roles != null)
-            {
-                if (roles.ToString().Trim().StartsWith("["))
-                {
-                    var parsedRoles = JsonConvert.DeserializeObject<string[]>(roles.ToString());
-
-                    foreach (var parsedRole in parsedRoles)
-                    {
-                        claims.Add(new Claim(ClaimTypes.Role, parsedRole));
-                    }
-                }
-                else
-                {
-                    claims.Add(new Claim(ClaimTypes.Role, roles.ToString()));
-                }
-
-                keyValuePairs.Remove(ClaimTypes.Role);
-            }
-
-            claims.AddRange(keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString())));
-
-            return claims;
-        }
-
-        private byte[] ParseBase64WithoutPadding(string base64)
-        {
-            switch (base64.Length % 4)
-            {
-                case 2: base64 += "=="; break;
-                case 3: base64 += "="; break;
-            }
-            return Convert.FromBase64String(base64);
-        }
     }
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Newtonsoft.Json;
 
-namespace BlazorAdmin.Services.CatalogBrandService
+namespace BlazorAdmin.Services.CatalogBrandServices
 {
     public class List
     {
@@ -26,7 +26,7 @@ namespace BlazorAdmin.Services.CatalogBrandService
 
             try
             {
-                var result = (await _authService.GetHttpClient().GetAsync($"{Constants.API_URL}catalog-brands"));
+                var result = await _authService.HttpGet("catalog-brands");
                 if (result.StatusCode != HttpStatusCode.OK)
                 {
                     return brands;

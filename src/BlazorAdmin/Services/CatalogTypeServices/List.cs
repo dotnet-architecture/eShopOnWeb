@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Newtonsoft.Json;
 
-namespace BlazorAdmin.Services.CatalogTypeService
+namespace BlazorAdmin.Services.CatalogTypeServices
 {
     public class List
     {
@@ -27,7 +27,7 @@ namespace BlazorAdmin.Services.CatalogTypeService
 
             try
             {
-                var result = (await _authService.GetHttpClient().GetAsync($"{Constants.API_URL}catalog-types"));
+                var result = await _authService.HttpGet("catalog-types");
                 if (result.StatusCode != HttpStatusCode.OK)
                 {
                     return types;

@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace BlazorAdmin.Services.CatalogItemService
+namespace BlazorAdmin.Services.CatalogItemServices
 {
     public class Delete
     {
@@ -17,7 +17,7 @@ namespace BlazorAdmin.Services.CatalogItemService
         {
             var catalogItemResult = string.Empty;
 
-            var result = await _authService.GetHttpClient().DeleteAsync($"{Constants.API_URL}catalog-items/{catalogItemId}");
+            var result = await _authService.HttpDelete("catalog-items", catalogItemId);
             if (result.StatusCode != HttpStatusCode.OK)
             {
                 return catalogItemResult;

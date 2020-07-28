@@ -118,7 +118,7 @@
 
     private async Task SaveClick()
     {
-        await new BlazorAdmin.Services.CatalogItemService.Edit(Auth).HandleAsync(_item);
+        await new BlazorAdmin.Services.CatalogItemServices.Edit(Auth).HandleAsync(_item);
         Close();
     }
 

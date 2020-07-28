@@ -3,7 +3,7 @@
 
 @inherits BlazorAdmin.Helpers.BlazorLayoutComponent
 
-<AuthorizeView Roles=@Constants.Roles.ADMINISTRATORS>
+<AuthorizeView Roles=@BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS>
     <div class="sidebar">
         <NavMenu />
     </div>

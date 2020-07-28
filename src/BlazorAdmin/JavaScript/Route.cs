@@ -14,7 +14,7 @@ namespace BlazorAdmin.JavaScript
 
         public async Task RouteOutside(string path)
         {
-            await _jsRuntime.InvokeAsync<string>("routeOutside", path);
+            await _jsRuntime.InvokeAsync<string>(JSInteropConstants.RouteOutside, path);
         }
     }
 }
