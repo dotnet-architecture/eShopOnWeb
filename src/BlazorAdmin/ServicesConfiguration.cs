@@ -5,7 +5,7 @@ namespace BlazorAdmin
 {
     public static class ServicesConfiguration
     {
-        public static IServiceCollection AddServices(this IServiceCollection service)
+        public static IServiceCollection AddBlazorServices(this IServiceCollection service)
         {
             service.AddScoped<Create>();
             service.AddScoped<ListPaged>();
