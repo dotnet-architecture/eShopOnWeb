@@ -1,6 +1,4 @@
-﻿using System.Net;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace BlazorAdmin.Services.CatalogItemServices
 {
