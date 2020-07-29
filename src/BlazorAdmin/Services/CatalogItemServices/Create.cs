@@ -4,16 +4,16 @@ namespace BlazorAdmin.Services.CatalogItemServices
 {
     public class Create
     {
-        private readonly AuthService _authService;
+        private readonly HttpService _httpService;
 
         public Create(AuthService authService)
         {
-            _authService = authService;
+            _httpService = new HttpService(authService.GetHttpClient(), authService.ApiUrl);
         }
 
         public async Task<CatalogItem> HandleAsync(CreateCatalogItemRequest catalogItem)
         {
-            return (await _authService.HttpPost<CreateCatalogItemResult>("catalog-items", catalogItem)).CatalogItem;
+            return (await _httpService.HttpPost<CreateCatalogItemResult>("catalog-items", catalogItem)).CatalogItem;
         }
     }
 }

@@ -1,8 +1,6 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using BlazorAdmin.JavaScript;
 using Blazored.LocalStorage;
@@ -16,12 +14,10 @@ namespace BlazorAdmin.Services
         private readonly HttpClient _httpClient;
         private readonly ILocalStorageService _localStorage;
         private readonly IJSRuntime _jSRuntime;
+        private static bool InDocker { get; set; }
 
         public string ApiUrl => Constants.GetApiUrl(InDocker);
         public string WebUrl => Constants.GetWebUrl(InDocker);
-
-        private static bool InDocker { get; set; }
-
         public bool IsLoggedIn { get; set; }
         public string UserName { get; set; }
 
@@ -32,56 +28,9 @@ namespace BlazorAdmin.Services
             _jSRuntime = jSRuntime;
         }
 
-        public async Task<T> HttpGet<T>(string uri) 
-            where T : new()
+        public HttpClient GetHttpClient()
         {
-            var result = await _httpClient.GetAsync($"{ApiUrl}{uri}");
-            if (!result.IsSuccessStatusCode)
-            {
-                return new T();
-            }
-
-            return await FromHttpResponseMessage<T>(result);
-        }
-
-        public async Task<T> HttpDelete<T>(string uri, int id)
-            where T : new()
-        {
-            var result = await _httpClient.DeleteAsync($"{ApiUrl}{uri}/{id}");
-            if (!result.IsSuccessStatusCode)
-            {
-                return new T();
-            }
-
-            return await FromHttpResponseMessage<T>(result);
-        }
-
-        public async Task<T> HttpPost<T>(string uri, object dataToSend)
-            where T : new()
-        {
-            var content = ToJson(dataToSend);
-
-            var result = await _httpClient.PostAsync($"{ApiUrl}{uri}", content);
-            if (!result.IsSuccessStatusCode)
-            {
-                return new T();
-            }
-
-            return await FromHttpResponseMessage<T>(result);
-        }
-
-        public async Task<T> HttpPut<T>(string uri, object dataToSend)
-            where T : new()
-        {
-            var content = ToJson(dataToSend);
-
-            var result = await _httpClient.PutAsync($"{ApiUrl}{uri}", content);
-            if (!result.IsSuccessStatusCode)
-            {
-                return new T();
-            }
-
-            return await FromHttpResponseMessage<T>(result);
+            return _httpClient;
         }
 
         public async Task Logout()
@@ -134,19 +83,6 @@ namespace BlazorAdmin.Services
         public async Task<bool> GetInDocker()
         {
             return (await _localStorage.GetItemAsync<string>("inDocker")).ToLower() == "true";
-        }
-
-        private StringContent ToJson(object obj)
-        {
-            return new StringContent(JsonSerializer.Serialize(obj), Encoding.UTF8, "application/json");
-        }
-
-        private async Task<T> FromHttpResponseMessage<T>(HttpResponseMessage result)
-        {
-            return JsonSerializer.Deserialize<T>(await result.Content.ReadAsStringAsync(), new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
         }
 
         private async Task LogoutIdentityManager()

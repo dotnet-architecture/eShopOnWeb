@@ -5,16 +5,16 @@ namespace BlazorAdmin.Services.CatalogItemServices
 {
     public class ListPaged
     {
-        private readonly AuthService _authService;
+        private readonly HttpService _httpService;
 
         public ListPaged(AuthService authService)
         {
-            _authService = authService;
+            _httpService = new HttpService(authService.GetHttpClient(), authService.ApiUrl);
         }
 
         public async Task<List<CatalogItem>> HandleAsync(int pageSize)
         {
-            return (await _authService.HttpGet<PagedCatalogItemResult>($"catalog-items?PageSize={pageSize}")).CatalogItems;
+            return (await _httpService.HttpGet<PagedCatalogItemResult>($"catalog-items?PageSize={pageSize}")).CatalogItems;
         }
 
     }

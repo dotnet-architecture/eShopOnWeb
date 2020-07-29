@@ -4,16 +4,16 @@ namespace BlazorAdmin.Services.CatalogItemServices
 {
     public class Edit
     {
-        private readonly AuthService _authService;
+        private readonly HttpService _httpService;
 
         public Edit(AuthService authService)
         {
-            _authService = authService;
+            _httpService = new HttpService(authService.GetHttpClient(), authService.ApiUrl);
         }
 
         public async Task<CatalogItem> HandleAsync(CatalogItem catalogItem)
         {
-            return (await _authService.HttpPut<EditCatalogItemResult>("catalog-items", catalogItem)).CatalogItem;
+            return (await _httpService.HttpPut<EditCatalogItemResult>("catalog-items", catalogItem)).CatalogItem;
         }
     }
 }
