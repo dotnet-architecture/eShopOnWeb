@@ -26,7 +26,7 @@
                         <div class="row">
                             @if (HasPicture)
                             {
-                                <img class="col-md-6 esh-picture" src="@($"{Auth.WebUrl}{_item.PictureUri}")">
+                                <img class="col-md-6 esh-picture" src="@($"{_item.PictureUri}")">
                             }
                             <dl class="col-md-@(HasPicture ? "6" : "12") dl-horizontal">
                                 <dt>

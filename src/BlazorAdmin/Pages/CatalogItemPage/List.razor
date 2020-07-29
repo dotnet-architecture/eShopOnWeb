@@ -40,7 +40,7 @@ else
             {
                 <tr @onclick="@(() => DetailsClick(item.Id))">
                     <td>
-                        <img class="img-thumbnail" src="@($"{Auth.WebUrl}{item.PictureUri}")">
+                        <img class="img-thumbnail" src="@($"{item.PictureUri}")">
                     </td>
                     <td>@GetTypeName(catalogTypes, item.CatalogTypeId)</td>
                     <td>@GetBrandName(catalogBrands, item.CatalogBrandId)</td>
