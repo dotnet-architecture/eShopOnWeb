@@ -1,6 +1,9 @@
 ﻿@page "/admin"
 @attribute [Authorize(Roles = BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS)]
 @inject AuthService Auth
+@inject BlazorAdmin.Services.CatalogItemServices.ListPaged CatalogItemListPaged
+@inject BlazorAdmin.Services.CatalogTypeServices.List TypeList
+@inject BlazorAdmin.Services.CatalogBrandServices.List BrandList
 @inherits BlazorAdmin.Helpers.BlazorComponent
 @namespace BlazorAdmin.Pages.CatalogItemPage
 

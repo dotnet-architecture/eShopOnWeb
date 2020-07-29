@@ -1,12 +1,10 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text;
 using System.Threading.Tasks;
 using BlazorAdmin.JavaScript;
 using Blazored.LocalStorage;
 using Microsoft.JSInterop;
-using Newtonsoft.Json;
 using BlazorShared.Authorization;
 
 namespace BlazorAdmin.Services
@@ -16,12 +14,10 @@ namespace BlazorAdmin.Services
         private readonly HttpClient _httpClient;
         private readonly ILocalStorageService _localStorage;
         private readonly IJSRuntime _jSRuntime;
+        private static bool InDocker { get; set; }
 
         public string ApiUrl => Constants.GetApiUrl(InDocker);
         public string WebUrl => Constants.GetWebUrl(InDocker);
-
-        private static bool InDocker { get; set; }
-
         public bool IsLoggedIn { get; set; }
         public string UserName { get; set; }
 
@@ -32,28 +28,9 @@ namespace BlazorAdmin.Services
             _jSRuntime = jSRuntime;
         }
 
-        public async Task<HttpResponseMessage> HttpGet(string uri)
+        public HttpClient GetHttpClient()
         {
-            return await _httpClient.GetAsync($"{ApiUrl}{uri}");
-        }
-
-        public async Task<HttpResponseMessage> HttpDelete(string uri, int id)
-        {
-            return await _httpClient.DeleteAsync($"{ApiUrl}{uri}/{id}");
-        }
-
-        public async Task<HttpResponseMessage> HttpPost(string uri, object dataToSend)
-        {
-            var content = ToJson(dataToSend);
-
-            return await _httpClient.PostAsync($"{ApiUrl}{uri}", content);
-        }
-
-        public async Task<HttpResponseMessage> HttpPut(string uri, object dataToSend)
-        {
-            var content = ToJson(dataToSend);
-
-            return await _httpClient.PutAsync($"{ApiUrl}{uri}", content);
+            return _httpClient;
         }
 
         public async Task Logout()
@@ -106,11 +83,6 @@ namespace BlazorAdmin.Services
         public async Task<bool> GetInDocker()
         {
             return (await _localStorage.GetItemAsync<string>("inDocker")).ToLower() == "true";
-        }
-
-        private StringContent ToJson(object obj)
-        {
-            return new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json");
         }
 
         private async Task LogoutIdentityManager()

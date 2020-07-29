@@ -19,6 +19,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Mime;
+using BlazorAdmin;
 using BlazorAdmin.Services;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -149,6 +150,7 @@ namespace Microsoft.eShopWeb.Web
             services.AddBlazoredLocalStorage();
             services.AddServerSideBlazor();
             services.AddScoped<AuthService>();
+            services.AddBlazorServices();
 
             _services = services; // used to debug registered services
         }

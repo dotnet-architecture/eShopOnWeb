@@ -2,10 +2,10 @@
 using System.IO;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.Infrastructure.Data;
-using Newtonsoft.Json;
 
 namespace Microsoft.eShopWeb.Infrastructure.Services
 {
@@ -49,7 +49,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Services
                 DataBase64 = Convert.ToBase64String(fileData), 
                 FileName = fileName
             };
-            var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+            var content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
             using var message = await _httpClient.PostAsync(_url, content);
             if (!message.IsSuccessStatusCode)

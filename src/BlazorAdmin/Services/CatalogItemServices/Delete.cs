@@ -1,31 +1,19 @@
-﻿using System.Net;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using System.Threading.Tasks;
 
 namespace BlazorAdmin.Services.CatalogItemServices
 {
     public class Delete
     {
-        private readonly AuthService _authService;
+        private readonly HttpService _httpService;
 
         public Delete(AuthService authService)
         {
-            _authService = authService;
+            _httpService = new HttpService(authService.GetHttpClient(), authService.ApiUrl);
         }
 
         public async Task<string> HandleAsync(int catalogItemId)
         {
-            var catalogItemResult = string.Empty;
-
-            var result = await _authService.HttpDelete("catalog-items", catalogItemId);
-            if (result.StatusCode != HttpStatusCode.OK)
-            {
-                return catalogItemResult;
-            }
-
-            catalogItemResult = JsonConvert.DeserializeObject<DeleteCatalogItemResult>(await result.Content.ReadAsStringAsync()).Status;
-
-            return catalogItemResult;
+            return (await _httpService.HttpDelete<DeleteCatalogItemResult>("catalog-items", catalogItemId)).Status;
         }
     }
 }

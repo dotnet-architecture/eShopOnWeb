@@ -1,32 +1,20 @@
 ﻿using System.Collections.Generic;
-using System.Net;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace BlazorAdmin.Services.CatalogItemServices
 {
     public class ListPaged
     {
-        private readonly AuthService _authService;
+        private readonly HttpService _httpService;
 
         public ListPaged(AuthService authService)
         {
-            _authService = authService;
+            _httpService = new HttpService(authService.GetHttpClient(), authService.ApiUrl);
         }
 
         public async Task<List<CatalogItem>> HandleAsync(int pageSize)
         {
-            var catalogItems = new List<CatalogItem>();
-
-            var result = await _authService.HttpGet($"catalog-items?PageSize={pageSize}");
-            if (result.StatusCode != HttpStatusCode.OK)
-            {
-                return catalogItems;
-            }
-
-            catalogItems = JsonConvert.DeserializeObject<PagedCatalogItemResult>(await result.Content.ReadAsStringAsync()).CatalogItems;
-
-            return catalogItems;
+            return (await _httpService.HttpGet<PagedCatalogItemResult>($"catalog-items?PageSize={pageSize}")).CatalogItems;
         }
 
     }

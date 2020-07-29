@@ -22,9 +22,9 @@ namespace BlazorAdmin.Pages.CatalogItemPage
         {
             if (firstRender)
             {
-                catalogItems = await new BlazorAdmin.Services.CatalogItemServices.ListPaged(Auth).HandleAsync(50);
-                catalogTypes = await new BlazorAdmin.Services.CatalogTypeServices.List(Auth).HandleAsync();
-                catalogBrands = await new BlazorAdmin.Services.CatalogBrandServices.List(Auth).HandleAsync();
+                catalogItems = await CatalogItemListPaged.HandleAsync(50);
+                catalogTypes = await TypeList.HandleAsync();
+                catalogBrands = await BrandList.HandleAsync();
 
                 CallRequestRefresh();
             }
@@ -37,9 +37,9 @@ namespace BlazorAdmin.Pages.CatalogItemPage
             await DetailsComponent.Open(id);
         }
 
-        private void CreateClick()
+        private async Task CreateClick()
         {
-            CreateComponent.Open();
+            await CreateComponent.Open();
         }
 
         private async Task EditClick(int id)
