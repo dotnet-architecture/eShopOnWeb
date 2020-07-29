@@ -17,7 +17,6 @@ namespace BlazorAdmin.Services
         private static bool InDocker { get; set; }
 
         public string ApiUrl => Constants.GetApiUrl(InDocker);
-        public string WebUrl => Constants.GetWebUrl(InDocker);
         public bool IsLoggedIn { get; set; }
         public string UserName { get; set; }
 
