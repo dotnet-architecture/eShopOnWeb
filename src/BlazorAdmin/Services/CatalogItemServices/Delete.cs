@@ -15,17 +15,7 @@ namespace BlazorAdmin.Services.CatalogItemServices
 
         public async Task<string> HandleAsync(int catalogItemId)
         {
-            var catalogItemResult = string.Empty;
-
-            var result = await _authService.HttpDelete("catalog-items", catalogItemId);
-            if (result.StatusCode != HttpStatusCode.OK)
-            {
-                return catalogItemResult;
-            }
-
-            catalogItemResult = JsonSerializer.Deserialize<DeleteCatalogItemResult>(await result.Content.ReadAsStringAsync()).Status;
-
-            return catalogItemResult;
+            return (await _authService.HttpDelete<DeleteCatalogItemResult>("catalog-items", catalogItemId)).Status;
         }
     }
 }

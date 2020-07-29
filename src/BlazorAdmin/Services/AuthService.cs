@@ -44,23 +44,44 @@ namespace BlazorAdmin.Services
             return await FromHttpResponseMessage<T>(result);
         }
 
-        public async Task<HttpResponseMessage> HttpDelete(string uri, int id)
+        public async Task<T> HttpDelete<T>(string uri, int id)
+            where T : new()
         {
-            return await _httpClient.DeleteAsync($"{ApiUrl}{uri}/{id}");
+            var result = await _httpClient.DeleteAsync($"{ApiUrl}{uri}/{id}");
+            if (!result.IsSuccessStatusCode)
+            {
+                return new T();
+            }
+
+            return await FromHttpResponseMessage<T>(result);
         }
 
-        public async Task<HttpResponseMessage> HttpPost(string uri, object dataToSend)
+        public async Task<T> HttpPost<T>(string uri, object dataToSend)
+            where T : new()
         {
             var content = ToJson(dataToSend);
 
-            return await _httpClient.PostAsync($"{ApiUrl}{uri}", content);
+            var result = await _httpClient.PostAsync($"{ApiUrl}{uri}", content);
+            if (!result.IsSuccessStatusCode)
+            {
+                return new T();
+            }
+
+            return await FromHttpResponseMessage<T>(result);
         }
 
-        public async Task<HttpResponseMessage> HttpPut(string uri, object dataToSend)
+        public async Task<T> HttpPut<T>(string uri, object dataToSend)
+            where T : new()
         {
             var content = ToJson(dataToSend);
 
-            return await _httpClient.PutAsync($"{ApiUrl}{uri}", content);
+            var result = await _httpClient.PutAsync($"{ApiUrl}{uri}", content);
+            if (!result.IsSuccessStatusCode)
+            {
+                return new T();
+            }
+
+            return await FromHttpResponseMessage<T>(result);
         }
 
         public async Task Logout()
