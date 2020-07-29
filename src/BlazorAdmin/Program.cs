@@ -20,6 +20,7 @@ namespace BlazorAdmin
 
             builder.Services.AddScoped<ILocalStorageService, LocalStorageService>();
             builder.Services.AddScoped<AuthService>();
+            builder.Services.AddScoped<HttpService>();
 
             builder.Services.AddAuthorizationCore();
             builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
@@ -29,5 +30,11 @@ namespace BlazorAdmin
 
             await builder.Build().RunAsync();
         }
+    }
+
+    public class BaseUrls
+    {
+        public string ApiBase { get; set; }
+        public string WebBase { get; set; }
     }
 }

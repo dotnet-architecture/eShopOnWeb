@@ -1,6 +1,7 @@
 ﻿@inject ILogger<Edit> Logger
 @inject AuthService Auth
 @inject IJSRuntime JSRuntime
+@inject GetById GetByIdService
 
 @inherits BlazorAdmin.Helpers.BlazorComponent
 
@@ -152,7 +153,7 @@
 
         await new Css(JSRuntime).HideBodyOverflow();
 
-        _item = await new GetById(Auth).HandleAsync(id);
+        _item = await GetByIdService.HandleAsync(id);
 
         _modalDisplay = "block;";
         _modalClass = "Show";

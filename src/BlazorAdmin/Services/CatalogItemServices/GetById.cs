@@ -6,14 +6,16 @@ namespace BlazorAdmin.Services.CatalogItemServices
     {
         private readonly HttpService _httpService;
 
-        public GetById(AuthService authService)
+        public GetById(HttpService httpService)
         {
-            _httpService = new HttpService(authService.GetHttpClient(), authService.ApiUrl);
+            // _httpService = new HttpService(authService.GetHttpClient(), authService.ApiUrl);
+            _httpService = httpService;
         }
 
         public async Task<CatalogItem> HandleAsync(int catalogItemId)
         {
-            return (await _httpService.HttpGet<EditCatalogItemResult>($"catalog-items/{catalogItemId}")).CatalogItem;
+            var catalogItem = (await _httpService.HttpGet<EditCatalogItemResult>($"catalog-items/{catalogItemId}")).CatalogItem;
+            return catalogItem;
         }
     }
 }
