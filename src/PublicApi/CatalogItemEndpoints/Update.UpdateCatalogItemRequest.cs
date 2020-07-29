@@ -15,6 +15,7 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
         [Required]
         public string Name { get; set; }
         public string PictureBase64 { get; set; }
+        public string PictureUri { get; set; }
         public string PictureName { get; set; }
         [Range(0.01, 10000)]
         public decimal Price { get; set; }

@@ -1,31 +1,19 @@
-﻿using System.Net;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using System.Threading.Tasks;
 
 namespace BlazorAdmin.Services.CatalogItemServices
 {
     public class GetById
     {
-        private readonly AuthService _authService;
+        private readonly HttpService _httpService;
 
         public GetById(AuthService authService)
         {
-            _authService = authService;
+            _httpService = new HttpService(authService.GetHttpClient(), authService.ApiUrl);
         }
 
         public async Task<CatalogItem> HandleAsync(int catalogItemId)
         {
-            var catalogItemResult = new CatalogItem();
-
-            var result = await _authService.HttpGet($"catalog-items/{catalogItemId}");
-            if (result.StatusCode != HttpStatusCode.OK)
-            {
-                return catalogItemResult;
-            }
-
-            catalogItemResult = JsonConvert.DeserializeObject<EditCatalogItemResult>(await result.Content.ReadAsStringAsync()).CatalogItem;
-
-            return catalogItemResult;
+            return (await _httpService.HttpGet<EditCatalogItemResult>($"catalog-items/{catalogItemId}")).CatalogItem;
         }
     }
 }

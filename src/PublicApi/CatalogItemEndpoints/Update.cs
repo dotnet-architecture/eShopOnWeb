@@ -42,7 +42,7 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
             existingItem.UpdateBrand(request.CatalogBrandId);
             existingItem.UpdateType(request.CatalogTypeId);
 
-            if (string.IsNullOrEmpty(request.PictureBase64))
+            if (string.IsNullOrEmpty(request.PictureBase64) && string.IsNullOrEmpty(request.PictureUri))
             {
                 existingItem.UpdatePictureUri(string.Empty);
             }
