@@ -132,7 +132,7 @@
     [Parameter]
     public EventCallback<string> OnCloseClick { get; set; }
 
-    private string LoadPicture => string.IsNullOrEmpty(_item.PictureBase64) ? string.IsNullOrEmpty(_item.PictureUri) ? string.Empty : $"{Auth.WebUrl}{_item.PictureUri}" : $"data:image/png;base64, {_item.PictureBase64}";
+    private string LoadPicture => string.IsNullOrEmpty(_item.PictureBase64) ? string.IsNullOrEmpty(_item.PictureUri) ? string.Empty : $"{_item.PictureUri}" : $"data:image/png;base64, {_item.PictureBase64}";
     private bool HasPicture => !(string.IsNullOrEmpty(_item.PictureBase64) && string.IsNullOrEmpty(_item.PictureUri));
     private string _badFileMessage = string.Empty;
     private string _modalDisplay = "none;";
