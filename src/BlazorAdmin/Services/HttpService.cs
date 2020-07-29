@@ -17,52 +17,52 @@ namespace BlazorAdmin.Services
         }
 
         public async Task<T> HttpGet<T>(string uri)
-            where T : new()
+            where T : class
         {
             var result = await _httpClient.GetAsync($"{_apiUrl}{uri}");
             if (!result.IsSuccessStatusCode)
             {
-                return new T();
+                return null;
             }
 
             return await FromHttpResponseMessage<T>(result);
         }
 
         public async Task<T> HttpDelete<T>(string uri, int id)
-            where T : new()
+            where T : class
         {
             var result = await _httpClient.DeleteAsync($"{_apiUrl}{uri}/{id}");
             if (!result.IsSuccessStatusCode)
             {
-                return new T();
+                return null;
             }
 
             return await FromHttpResponseMessage<T>(result);
         }
 
         public async Task<T> HttpPost<T>(string uri, object dataToSend)
-            where T : new()
+            where T : class
         {
             var content = ToJson(dataToSend);
 
             var result = await _httpClient.PostAsync($"{_apiUrl}{uri}", content);
             if (!result.IsSuccessStatusCode)
             {
-                return new T();
+                return null;
             }
 
             return await FromHttpResponseMessage<T>(result);
         }
 
         public async Task<T> HttpPut<T>(string uri, object dataToSend)
-            where T : new()
+            where T : class
         {
             var content = ToJson(dataToSend);
 
             var result = await _httpClient.PutAsync($"{_apiUrl}{uri}", content);
             if (!result.IsSuccessStatusCode)
             {
-                return new T();
+                return null;
             }
 
             return await FromHttpResponseMessage<T>(result);
