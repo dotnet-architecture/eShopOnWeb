@@ -11,8 +11,10 @@ namespace BlazorAdmin.Services.CatalogItemServices
         public int Id { get; set; }
 
         public int CatalogTypeId { get; set; }
+        public string CatalogType { get; set; }
 
         public int CatalogBrandId { get; set; }
+        public string CatalogBrand { get; set; }
 
         [Required(ErrorMessage = "The Name field is required")]
         public string Name { get; set; }

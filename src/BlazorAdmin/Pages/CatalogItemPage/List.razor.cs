@@ -3,6 +3,7 @@ using BlazorAdmin.Services.CatalogBrandServices;
 using BlazorAdmin.Services.CatalogItemServices;
 using BlazorAdmin.Services.CatalogTypeServices;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BlazorAdmin.Pages.CatalogItemPage
@@ -57,5 +58,20 @@ namespace BlazorAdmin.Pages.CatalogItemPage
             catalogItems = await new BlazorAdmin.Services.CatalogItemServices.ListPaged(Auth).HandleAsync(50);
             StateHasChanged();
         }
+
+        public string GetBrandName(IEnumerable<CatalogBrand> brands, int brandId)
+        {
+            var type = brands.FirstOrDefault(t => t.Id == brandId);
+
+            return type == null ? "None" : type.Name;
+        }
+
+        public static string GetTypeName(IEnumerable<CatalogType> types, int typeId)
+        {
+            var type = types.FirstOrDefault(t => t.Id == typeId);
+
+            return type == null ? "None" : type.Name;
+        }
+
     }
 }

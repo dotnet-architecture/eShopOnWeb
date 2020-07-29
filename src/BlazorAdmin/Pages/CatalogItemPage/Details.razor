@@ -108,10 +108,10 @@
     private bool _showDetailsModal = false;
     private CatalogItem _item = new CatalogItem();
 
-    public void EditClick()
+    public async Task EditClick()
     {
         OnEditClick.InvokeAsync(_item.Id);
-        Close();
+        await Close();
     }
 
     public async Task Open(int id)

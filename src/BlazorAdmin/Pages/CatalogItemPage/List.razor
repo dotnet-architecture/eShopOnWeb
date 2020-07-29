@@ -42,8 +42,8 @@ else
                     <td>
                         <img class="img-thumbnail" src="@($"{Auth.WebUrl}{item.PictureUri}")">
                     </td>
-                    <td>@Services.CatalogTypeServices.List.GetTypeName(catalogTypes, item.CatalogTypeId)</td>
-                    <td>@Services.CatalogBrandServices.List.GetBrandName(catalogBrands, item.CatalogBrandId)</td>
+                    <td>@GetTypeName(catalogTypes, item.CatalogTypeId)</td>
+                    <td>@GetBrandName(catalogBrands, item.CatalogBrandId)</td>
                     <td>@item.Id</td>
                     <td>@item.Name</td>
                     <td>@item.Description</td>

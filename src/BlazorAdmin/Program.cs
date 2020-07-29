@@ -16,14 +16,14 @@ namespace BlazorAdmin
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("admin");
 
-            builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-            builder.Services.AddSingleton<ILocalStorageService, LocalStorageService>();
-            builder.Services.AddSingleton<AuthService>();
+            builder.Services.AddScoped<ILocalStorageService, LocalStorageService>();
+            builder.Services.AddScoped<AuthService>();
 
             builder.Services.AddAuthorizationCore();
-            builder.Services.AddSingleton<AuthenticationStateProvider, CustomAuthStateProvider>();
-            builder.Services.AddSingleton(sp => (CustomAuthStateProvider)sp.GetRequiredService<AuthenticationStateProvider>());
+            builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+            builder.Services.AddScoped(sp => (CustomAuthStateProvider)sp.GetRequiredService<AuthenticationStateProvider>());
 
             builder.Services.AddBlazorServices();
 
