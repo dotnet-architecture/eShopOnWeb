@@ -25,7 +25,7 @@ namespace BlazorAdmin
             builder.Services.AddSingleton<AuthenticationStateProvider, CustomAuthStateProvider>();
             builder.Services.AddSingleton(sp => (CustomAuthStateProvider)sp.GetRequiredService<AuthenticationStateProvider>());
 
-            builder.Services.AddServices();
+            builder.Services.AddBlazorServices();
 
             await builder.Build().RunAsync();
         }
