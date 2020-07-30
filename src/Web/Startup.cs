@@ -25,6 +25,7 @@ using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
+using BlazorShared;
 
 namespace Microsoft.eShopWeb.Web
 {
@@ -147,9 +148,15 @@ namespace Microsoft.eShopWeb.Web
                 BaseAddress = new Uri(BlazorShared.Authorization.Constants.GetWebUrl(InDocker))
             });
 
+            // add blazor services
             services.AddBlazoredLocalStorage();
             services.AddServerSideBlazor();
             services.AddScoped<AuthService>();
+            var baseUrlConfig = new BaseUrlConfiguration();
+            Configuration.Bind(BaseUrlConfiguration.CONFIG_NAME, baseUrlConfig);
+            services.AddScoped<BaseUrlConfiguration>(sp => baseUrlConfig);
+
+            services.AddScoped<HttpService>();
             services.AddBlazorServices();
 
             _services = services; // used to debug registered services

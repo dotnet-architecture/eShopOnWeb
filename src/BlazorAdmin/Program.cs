@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using BlazorAdmin.Services;
 using Blazored.LocalStorage;
+using BlazorShared;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Configuration;
 
@@ -35,13 +36,5 @@ namespace BlazorAdmin
 
             await builder.Build().RunAsync();
         }
-    }
-
-    public class BaseUrlConfiguration
-    {
-        public const string CONFIG_NAME = "baseUrls";
-
-        public string ApiBase { get; set; }
-        public string WebBase { get; set; }
     }
 }

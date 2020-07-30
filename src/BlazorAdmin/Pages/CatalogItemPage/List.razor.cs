@@ -10,15 +10,12 @@ namespace BlazorAdmin.Pages.CatalogItemPage
 {
     public partial class List : BlazorComponent
     {
-        public List(ListPaged listPaged)
-        {
-            _listPaged = listPaged;
-        }
+        [Microsoft.AspNetCore.Components.Inject]
+        public ListPaged ListPagedService { get; set; }
 
         private List<CatalogItem> catalogItems = new List<CatalogItem>();
         private List<CatalogType> catalogTypes = new List<CatalogType>();
         private List<CatalogBrand> catalogBrands = new List<CatalogBrand>();
-        private readonly ListPaged _listPaged;
 
         private Edit EditComponent { get; set; }
         private Delete DeleteComponent { get; set; }
@@ -61,7 +58,7 @@ namespace BlazorAdmin.Pages.CatalogItemPage
 
         private async Task ReloadCatalogItems()
         {
-            catalogItems = await _listPaged.HandleAsync(50);
+            catalogItems = await ListPagedService.HandleAsync(50);
             StateHasChanged();
         }
 

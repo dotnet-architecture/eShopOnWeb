@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using BlazorShared;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -10,16 +11,12 @@ namespace BlazorAdmin.Services
         private readonly HttpClient _httpClient;
         private readonly string _apiUrl;
 
-        public HttpService()
-        {
-            _httpClient = new HttpClient();
-        }
 
-        //public HttpService(HttpClient httpClient)//, BaseUrlConfiguration baseUrlConfiguration)
-        //{
-        //    _httpClient = httpClient;
-        //    _apiUrl = ""; // baseUrlConfiguration.ApiBase;
-        //}
+        public HttpService(HttpClient httpClient, BaseUrlConfiguration baseUrlConfiguration)
+        {
+            _httpClient = httpClient;
+            _apiUrl = baseUrlConfiguration.ApiBase;
+        }
 
         public async Task<T> HttpGet<T>(string uri)
             where T : class
