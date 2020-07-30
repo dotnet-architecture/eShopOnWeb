@@ -46,10 +46,11 @@ namespace BlazorAdmin
             var host = builder.Build();
 
             // add bearer token to httpclient
-            var httpClient = host.Services.GetRequiredService<HttpClient>();
-            var jsRuntime = host.Services.GetRequiredService<IJSRuntime>();
-            var token = await new Cookies(jsRuntime).GetCookie("token");
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            // MOVED TO CustomAuthStateProvider called from MainLayout
+            //var httpClient = host.Services.GetRequiredService<HttpClient>();
+            //var jsRuntime = host.Services.GetRequiredService<IJSRuntime>();
+            //var token = await new Cookies(jsRuntime).GetCookie("token");
+            //httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             host.RunAsync();
         }

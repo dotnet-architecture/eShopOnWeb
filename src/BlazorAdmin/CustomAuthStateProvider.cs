@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ namespace BlazorAdmin
         private ClaimsPrincipal _cachedUser = new ClaimsPrincipal(new ClaimsIdentity());
 
         public CustomAuthStateProvider(AuthService authService,
-            HttpClient httpClient, 
+            HttpClient httpClient,
             ILogger<CustomAuthStateProvider> logger)
         {
             _authService = authService;
@@ -38,7 +39,6 @@ namespace BlazorAdmin
 
         private async ValueTask<ClaimsPrincipal> GetUser(bool useCache = false)
         {
-            // TODO: get token from User endpoint instead of from cookie at login
             var now = DateTimeOffset.Now;
             if (useCache && now < _userLastCheck + UserCacheRefreshInterval)
             {
@@ -63,11 +63,10 @@ namespace BlazorAdmin
             {
                 _logger.LogWarning(exc, "Fetching user failed.");
             }
-            
+
             if (user == null || !user.IsAuthenticated)
             {
                 return null;
-                //return new ClaimsPrincipal(new ClaimsIdentity());
             }
 
             var identity = new ClaimsIdentity(
@@ -82,6 +81,8 @@ namespace BlazorAdmin
                     identity.AddClaim(new Claim(claim.Type, claim.Value));
                 }
             }
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", user.Token);
 
             return new ClaimsPrincipal(identity);
         }
