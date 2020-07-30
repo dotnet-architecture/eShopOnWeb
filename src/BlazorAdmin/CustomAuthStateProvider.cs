@@ -13,6 +13,7 @@ namespace BlazorAdmin
 {
     public class CustomAuthStateProvider : AuthenticationStateProvider
     {
+        // TODO: Get Default Cache Duration from Config
         private static readonly TimeSpan UserCacheRefreshInterval = TimeSpan.FromSeconds(60);
 
         private readonly AuthService _authService;
@@ -33,7 +34,6 @@ namespace BlazorAdmin
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            _logger.LogWarning("Calling GetAuthenticationStateAsync");
             return new AuthenticationState(await GetUser(useCache: true));
         }
 
@@ -57,6 +57,7 @@ namespace BlazorAdmin
 
             try
             {
+                _logger.LogInformation("Fetching user details from web api.");
                 user = await _httpClient.GetFromJsonAsync<UserInfo>("User");
             }
             catch (Exception exc)
