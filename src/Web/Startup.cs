@@ -50,6 +50,11 @@ namespace Microsoft.eShopWeb.Web
             //ConfigureProductionServices(services);
         }
 
+        public void ConfigureDockerServices(IServiceCollection services)
+        {
+            ConfigureDevelopmentServices(services);
+        }
+
         private void ConfigureInMemoryDatabases(IServiceCollection services)
         {
             // use in-memory database
@@ -142,19 +147,20 @@ namespace Microsoft.eShopWeb.Web
                 config.Path = "/allservices";
             });
 
+            
+            var baseUrlConfig = new BaseUrlConfiguration();
+            Configuration.Bind(BaseUrlConfiguration.CONFIG_NAME, baseUrlConfig);
+            services.AddScoped<BaseUrlConfiguration>(sp => baseUrlConfig);
             // Blazor Admin Required Services for Prerendering
             services.AddScoped<HttpClient>(s => new HttpClient
             {
-                BaseAddress = new Uri(BlazorShared.Authorization.Constants.GetWebUrl(InDocker))
+                BaseAddress = new Uri(baseUrlConfig.WebBase)
             });
 
             // add blazor services
             services.AddBlazoredLocalStorage();
             services.AddServerSideBlazor();
             services.AddScoped<AuthService>();
-            var baseUrlConfig = new BaseUrlConfiguration();
-            Configuration.Bind(BaseUrlConfiguration.CONFIG_NAME, baseUrlConfig);
-            services.AddScoped<BaseUrlConfiguration>(sp => baseUrlConfig);
 
             services.AddScoped<HttpService>();
             services.AddBlazorServices();
