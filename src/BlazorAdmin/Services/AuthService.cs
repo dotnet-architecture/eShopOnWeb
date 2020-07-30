@@ -25,16 +25,9 @@ namespace BlazorAdmin.Services
 
         public async Task Logout()
         {
-            await DeleteLocalStorage();
             await DeleteCookies();
             IsLoggedIn = false;
             await LogoutIdentityManager();
-        }
-
-        public async Task RefreshLoginInfoFromCookie()
-        {
-            var inDocker = await new Cookies(_jSRuntime).GetCookie("inDocker");
-            await SaveInDockerInLocalStorage(inDocker);
         }
 
         private async Task LogoutIdentityManager()
@@ -42,23 +35,9 @@ namespace BlazorAdmin.Services
             await _httpClient.PostAsync("Identity/Account/Logout", null);
         }
 
-        private async Task DeleteLocalStorage()
-        {
-            await _localStorage.RemoveItemAsync("inDocker");
-        }
-
         private async Task DeleteCookies()
         {
             await new Cookies(_jSRuntime).DeleteCookie("token");
-        }
-
-        private async Task SaveInDockerInLocalStorage(string inDocker)
-        {
-            if (string.IsNullOrEmpty(inDocker))
-            {
-                return;
-            }
-            await _localStorage.SetItemAsync("inDocker", inDocker);
         }
     }
 }
