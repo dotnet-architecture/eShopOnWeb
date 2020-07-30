@@ -1,8 +1,7 @@
 ﻿@inject ILogger<Delete> Logger
 @inject AuthService Auth
-@inject BlazorAdmin.Services.CatalogItemServices.Delete DeleteService
 @inject IJSRuntime JSRuntime
-@inject GetById GetByIdService
+@inject ICatalogItemService CatalogItemService
 
 @inherits BlazorAdmin.Helpers.BlazorComponent
 
@@ -111,7 +110,7 @@
     {
         // TODO: Add some kind of "are you sure" check before this
 
-        await DeleteService.HandleAsync(id);
+        await CatalogItemService.Delete(id);
 
         await OnCloseClick.InvokeAsync(null);
         await Close();
@@ -123,7 +122,7 @@
 
         await new Css(JSRuntime).HideBodyOverflow();
 
-        _item = await GetByIdService.HandleAsync(id);
+        _item = await CatalogItemService.GetById(id);
 
         _modalDisplay = "block;";
         _modalClass = "Show";
