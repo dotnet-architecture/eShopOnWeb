@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BlazorAdmin.Services.CatalogItemServices
+namespace BlazorShared.Models
 {
     public class CreateCatalogItemRequest
     {

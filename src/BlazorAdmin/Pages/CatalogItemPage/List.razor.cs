@@ -1,8 +1,7 @@
 ﻿using BlazorAdmin.Helpers;
-using BlazorAdmin.Services.CatalogItemServices;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using BlazorShared.Interfaces;
 using BlazorShared.Models;
 
 namespace BlazorAdmin.Pages.CatalogItemPage
@@ -10,7 +9,13 @@ namespace BlazorAdmin.Pages.CatalogItemPage
     public partial class List : BlazorComponent
     {
         [Microsoft.AspNetCore.Components.Inject]
-        public ListPaged ListPagedService { get; set; }
+        public ICatalogItemService CatalogItemService { get; set; }
+
+        [Microsoft.AspNetCore.Components.Inject]
+        public ICatalogBrandService CatalogBrandService { get; set; }
+
+        [Microsoft.AspNetCore.Components.Inject]
+        public ICatalogTypeService CatalogTypeService { get; set; }
 
         private List<CatalogItem> catalogItems = new List<CatalogItem>();
         private List<CatalogType> catalogTypes = new List<CatalogType>();
@@ -25,7 +30,7 @@ namespace BlazorAdmin.Pages.CatalogItemPage
         {
             if (firstRender)
             {
-                catalogItems = await CatalogItemListPaged.HandleAsync(50);
+                catalogItems = await CatalogItemService.List();
                 catalogTypes = await CatalogTypeService.List();
                 catalogBrands = await CatalogBrandService.List();
 
@@ -57,7 +62,7 @@ namespace BlazorAdmin.Pages.CatalogItemPage
 
         private async Task ReloadCatalogItems()
         {
-            catalogItems = await ListPagedService.HandleAsync(50);
+            catalogItems = await CatalogItemService.List();
             StateHasChanged();
         }
     }

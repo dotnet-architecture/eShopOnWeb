@@ -4,7 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using BlazorInputFile;
 
-namespace BlazorAdmin.Services.CatalogItemServices
+namespace BlazorShared.Models
 {
     public class CatalogItem
     {
@@ -62,14 +62,17 @@ namespace BlazorAdmin.Services.CatalogItemServices
 
         public static async Task<string> DataToBase64(IFileListEntry fileItem)
         {
-            using var reader = new StreamReader(fileItem.Data);
+            using ( var reader = new StreamReader(fileItem.Data))
+            {
+                using (var memStream = new MemoryStream())
+                {
+                    await reader.BaseStream.CopyToAsync(memStream);
+                    var fileData = memStream.ToArray();
+                    var encodedBase64 = Convert.ToBase64String(fileData);
 
-            await using var memStream = new MemoryStream();
-            await reader.BaseStream.CopyToAsync(memStream);
-            var fileData = memStream.ToArray();
-            var encodedBase64 = Convert.ToBase64String(fileData);
-
-            return encodedBase64;
+                    return encodedBase64;
+                }
+            }
         }
 
         private static bool IsExtensionValid(string fileName)
