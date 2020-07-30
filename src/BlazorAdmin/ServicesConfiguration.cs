@@ -15,7 +15,7 @@ namespace BlazorAdmin
             services.AddScoped<Edit>();
             services.AddScoped<GetById>();
 
-            services.AddScoped<ICatalogBrandService, LocalCatalogBrandService>();
+            services.AddScoped<ICatalogBrandService, CachedCatalogBrandServiceDecorator>();
             services.AddScoped<CatalogBrandService>();
             services.AddScoped<BlazorAdmin.Services.CatalogTypeServices.List>();
 

@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 
 namespace BlazorAdmin.Services
 {
-    // TODO: Implement timeout to periodically refresh from server
     public class CatalogBrandService : ICatalogBrandService
     {
         private readonly HttpClient _httpClient;

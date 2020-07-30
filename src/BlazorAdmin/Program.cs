@@ -37,12 +37,12 @@ namespace BlazorAdmin
 
             builder.Logging.SetMinimumLevel(LogLevel.Warning);
 
-            await ClearLocalStorage(builder.Services);
+            await ClearLocalStorageCache(builder.Services);
 
             await builder.Build().RunAsync();
         }
 
-        private static async Task ClearLocalStorage(IServiceCollection services)
+        private static async Task ClearLocalStorageCache(IServiceCollection services)
         {
             var sp = services.BuildServiceProvider();
             var localStorageService = sp.GetRequiredService<ILocalStorageService>();
