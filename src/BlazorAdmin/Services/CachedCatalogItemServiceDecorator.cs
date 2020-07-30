@@ -37,7 +37,7 @@ namespace BlazorAdmin.Services
                 }
                 else
                 {
-                    _logger.LogInformation("Cache expired; removing types from local storage.");
+                    _logger.LogInformation($"Loading {key} from local storage.");
                     await _localStorageService.RemoveItemAsync(key);
                 }
             }
@@ -61,7 +61,7 @@ namespace BlazorAdmin.Services
                 }
                 else
                 {
-                    _logger.LogInformation("Cache expired; removing items from local storage.");
+                    _logger.LogInformation($"Loading {key} from local storage.");
                     await _localStorageService.RemoveItemAsync(key);
                 }
             }
