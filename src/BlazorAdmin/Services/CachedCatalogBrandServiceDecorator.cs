@@ -11,19 +11,18 @@ namespace BlazorAdmin.Services
 {
     public class CachedCatalogBrandServiceDecorator : ICatalogBrandService
     {
-        // TODO: Implement timeout to periodically refresh from server
-
+        // TODO: Make a generic decorator for any LookupData type
         private readonly ILocalStorageService _localStorageService;
         private readonly CatalogBrandService _catalogBrandService;
         private ILogger<CachedCatalogBrandServiceDecorator> _logger;
 
         public CachedCatalogBrandServiceDecorator(ILocalStorageService localStorageService,
             CatalogBrandService catalogBrandService,
-            ILoggerFactory loggerFactory)
+            ILogger<CachedCatalogBrandServiceDecorator> logger)
         {
             _localStorageService = localStorageService;
             _catalogBrandService = catalogBrandService;
-            _logger = loggerFactory.CreateLogger<CachedCatalogBrandServiceDecorator>();
+            _logger = logger;
 
         }
 
@@ -38,38 +37,23 @@ namespace BlazorAdmin.Services
             var cacheEntry = await _localStorageService.GetItemAsync<CacheEntry<List<CatalogBrand>>>(key);
             if (cacheEntry != null)
             {
-                _logger.LogWarning("Loading brands from local storage.");
+                _logger.LogInformation("Loading brands from local storage.");
+                // TODO: Get Default Cache Duration from Config
                 if (cacheEntry.DateCreated.AddMinutes(1) > DateTime.UtcNow)
                 {
                     return cacheEntry.Value;
                 }
                 else
                 {
-                    _logger.LogWarning("Cache expired; removing brands from local storage.");
+                    _logger.LogInformation("Cache expired; removing brands from local storage.");
                     await _localStorageService.RemoveItemAsync(key);
                 }
             }
 
-            _logger.LogWarning("Loading brands from web API.");
             var brands = await _catalogBrandService.List();
             var entry = new CacheEntry<List<CatalogBrand>>(brands);
             await _localStorageService.SetItemAsync(key, entry);
             return brands;
         }
-    }
-
-    public class CacheEntry<T>
-    {
-        public CacheEntry(T item)
-        {
-            Value = item;
-        }
-        public CacheEntry()
-        {
-
-        }
-
-        public T Value { get; set; }
-        public DateTime DateCreated { get; set; } = DateTime.UtcNow;
     }
 }

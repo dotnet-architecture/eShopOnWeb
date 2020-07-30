@@ -2,8 +2,8 @@
 @attribute [Authorize(Roles = BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS)]
 @inject AuthService Auth
 @inject BlazorAdmin.Services.CatalogItemServices.ListPaged CatalogItemListPaged
-@inject BlazorAdmin.Services.CatalogTypeServices.List TypeList
 @inject BlazorShared.Interfaces.ICatalogBrandService CatalogBrandService
+@inject BlazorShared.Interfaces.ICatalogTypeService CatalogTypeService
 @inherits BlazorAdmin.Helpers.BlazorComponent
 @namespace BlazorAdmin.Pages.CatalogItemPage
 
@@ -42,7 +42,7 @@ else
                     <td>
                         <img class="img-thumbnail" src="@($"{item.PictureUri}")">
                     </td>
-                    <td>@GetTypeName(catalogTypes, item.CatalogTypeId)</td>
+                    <td>@item.CatalogType</td>
                     <td>@item.CatalogBrand</td>
                     <td>@item.Id</td>
                     <td>@item.Name</td>

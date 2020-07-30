@@ -1,4 +1,3 @@
-using BlazorAdmin.JavaScript;
 using BlazorAdmin.Services;
 using Blazored.LocalStorage;
 using BlazorShared;
@@ -7,10 +6,8 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.JSInterop;
 using System;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace BlazorAdmin
@@ -39,19 +36,11 @@ namespace BlazorAdmin
 
             builder.Services.AddBlazorServices();
 
-            builder.Logging.SetMinimumLevel(LogLevel.Warning);
+            builder.Logging.SetMinimumLevel(LogLevel.Information);
 
             await ClearLocalStorageCache(builder.Services);
 
-            var host = builder.Build();
-
-            // add bearer token to httpclient
-            var httpClient = host.Services.GetRequiredService<HttpClient>();
-            var jsRuntime = host.Services.GetRequiredService<IJSRuntime>();
-            var token = await new Cookies(jsRuntime).GetCookie("token");
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            host.RunAsync();
+            builder.Build().RunAsync();
         }
 
         private static async Task ClearLocalStorageCache(IServiceCollection services)
