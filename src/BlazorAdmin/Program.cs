@@ -8,6 +8,7 @@ using Blazored.LocalStorage;
 using BlazorShared;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace BlazorAdmin
 {
@@ -34,7 +35,20 @@ namespace BlazorAdmin
 
             builder.Services.AddBlazorServices();
 
+            builder.Logging.SetMinimumLevel(LogLevel.Warning);
+
+            await ClearLocalStorage(builder.Services);
+
             await builder.Build().RunAsync();
+        }
+
+        private static async Task ClearLocalStorage(IServiceCollection services)
+        {
+            var sp = services.BuildServiceProvider();
+            var localStorageService = sp.GetRequiredService<ILocalStorageService>();
+
+            await localStorageService.RemoveItemAsync("brands");
+            
         }
     }
 }
