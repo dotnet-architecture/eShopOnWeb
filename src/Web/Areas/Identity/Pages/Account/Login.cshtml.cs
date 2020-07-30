@@ -119,7 +119,7 @@ namespace Microsoft.eShopWeb.Web.Areas.Identity.Pages.Account
             var cookieOptions = new CookieOptions();
             cookieOptions.Expires = DateTime.Today.AddYears(10);
             Response.Cookies.Append("token", token, cookieOptions);
-            Response.Cookies.Append("username", username, cookieOptions);
+            //Response.Cookies.Append("username", username, cookieOptions);
             Response.Cookies.Append("inDocker", inDocker.ToString(), cookieOptions);
         }
 

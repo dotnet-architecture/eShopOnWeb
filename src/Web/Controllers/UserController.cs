@@ -4,6 +4,8 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using BlazorShared.Authorization;
+using Microsoft.eShopWeb.ApplicationCore.Interfaces;
+using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.Web.Controllers
 {
@@ -11,13 +13,20 @@ namespace Microsoft.eShopWeb.Web.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        private readonly ITokenClaimsService _tokenClaimsService;
+
+        public UserController(ITokenClaimsService tokenClaimsService)
+        {
+            _tokenClaimsService = tokenClaimsService;
+        }
+
         [HttpGet]
         [Authorize]
         [AllowAnonymous]
-        public IActionResult GetCurrentUser() =>
-            Ok(User.Identity.IsAuthenticated ? CreateUserInfo(User) : UserInfo.Anonymous);
+        public async Task<IActionResult> GetCurrentUser() =>
+            Ok(User.Identity.IsAuthenticated ? await CreateUserInfo(User) : UserInfo.Anonymous);
 
-        private UserInfo CreateUserInfo(ClaimsPrincipal claimsPrincipal)
+        private async Task<UserInfo> CreateUserInfo(ClaimsPrincipal claimsPrincipal)
         {
             if (!claimsPrincipal.Identity.IsAuthenticated)
             {
@@ -56,6 +65,9 @@ namespace Microsoft.eShopWeb.Web.Controllers
 
                 userInfo.Claims = claims;
             }
+
+            var token = await _tokenClaimsService.GetTokenAsync(claimsPrincipal.Identity.Name);
+            userInfo.Token = token;
 
             return userInfo;
         }

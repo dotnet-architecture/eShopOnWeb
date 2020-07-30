@@ -1,14 +1,17 @@
-using System;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.DependencyInjection;
+using BlazorAdmin.JavaScript;
 using BlazorAdmin.Services;
 using Blazored.LocalStorage;
 using BlazorShared;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.JSInterop;
+using System;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace BlazorAdmin
 {
@@ -23,7 +26,8 @@ namespace BlazorAdmin
             builder.Configuration.Bind(BaseUrlConfiguration.CONFIG_NAME, baseUrlConfig);
             builder.Services.AddScoped<BaseUrlConfiguration>(sp => baseUrlConfig);
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddScoped(sp => new HttpClient() { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
             builder.Services.AddScoped<HttpService>();
 
             builder.Services.AddScoped<ILocalStorageService, LocalStorageService>();
@@ -39,7 +43,15 @@ namespace BlazorAdmin
 
             await ClearLocalStorageCache(builder.Services);
 
-            await builder.Build().RunAsync();
+            var host = builder.Build();
+
+            // add bearer token to httpclient
+            var httpClient = host.Services.GetRequiredService<HttpClient>();
+            var jsRuntime = host.Services.GetRequiredService<IJSRuntime>();
+            var token = await new Cookies(jsRuntime).GetCookie("token");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            host.RunAsync();
         }
 
         private static async Task ClearLocalStorageCache(IServiceCollection services)
@@ -48,7 +60,6 @@ namespace BlazorAdmin
             var localStorageService = sp.GetRequiredService<ILocalStorageService>();
 
             await localStorageService.RemoveItemAsync("brands");
-            
         }
     }
 }

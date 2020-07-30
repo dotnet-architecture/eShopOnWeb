@@ -111,7 +111,7 @@
 
     public async Task EditClick()
     {
-        OnEditClick.InvokeAsync(_item.Id);
+        await OnEditClick.InvokeAsync(_item.Id);
         await Close();
     }
 

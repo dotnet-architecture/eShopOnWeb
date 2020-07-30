@@ -1,4 +1,4 @@
-﻿@inject AuthService Auth
+﻿@inject AuthenticationStateProvider AuthStateProvider
 @inject IJSRuntime JSRuntime
 
 @inherits BlazorAdmin.Helpers.BlazorLayoutComponent
@@ -25,8 +25,9 @@
     {
         if (firstRender)
         {
-            await Auth.RefreshLoginInfoFromCookie();
-            if (!Auth.IsLoggedIn)
+            var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+
+            if(authState.User == null)
             {
                 await new Route(JSRuntime).RouteOutside("/Identity/Account/Login");
             }
@@ -35,5 +36,4 @@
 
         await base.OnAfterRenderAsync(firstRender);
     }
-
 }

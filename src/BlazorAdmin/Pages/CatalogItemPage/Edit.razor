@@ -56,12 +56,12 @@
                                     <div class="form-group">
                                         <label class="control-label col-md-6">Brand</label>
                                         <div class="col-md-12">
-                                            <InputSelect @bind-Value="_item.CatalogBrandId" class="form-control">
+                                            <CustomInputSelect @bind-Value="_item.CatalogBrandId" class="form-control">
                                                 @foreach (var brand in Brands)
                                                     {
-                                                    <option value="@brand.Id">@brand.Name</option>
+                                                    <option value="@brand.Id.ToString()">@brand.Name</option>
                                                     }
-                                            </InputSelect>
+                                            </CustomInputSelect>
                                             <ValidationMessage For="(() => _item.CatalogBrandId)" />
                                         </div>
                                     </div>
@@ -69,12 +69,12 @@
                                     <div class="form-group">
                                         <label class="control-label col-md-6">Type</label>
                                         <div class="col-md-12">
-                                            <InputSelect @bind-Value="_item.CatalogTypeId" class="form-control">
+                                            <CustomInputSelect @bind-Value="_item.CatalogTypeId" class="form-control">
                                                 @foreach (var type in Types)
                                                     {
                                                     <option value="@type.Id">@type.Name</option>
                                                     }
-                                            </InputSelect>
+                                            </CustomInputSelect>
                                             <ValidationMessage For="(() => _item.CatalogTypeId)" />
                                         </div>
                                     </div>
