@@ -20,7 +20,9 @@ namespace BlazorAdmin.Services
         public bool IsLoggedIn { get; set; }
         public string UserName { get; set; }
 
-        public AuthService(HttpClient httpClient, ILocalStorageService localStorage, IJSRuntime jSRuntime)
+        public AuthService(HttpClient httpClient, 
+            ILocalStorageService localStorage, 
+            IJSRuntime jSRuntime)
         {
             _httpClient = httpClient;
             _localStorage = localStorage;

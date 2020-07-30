@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using BlazorAdmin.Services;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Extensions.Configuration;
 
 namespace BlazorAdmin
 {
@@ -16,11 +17,15 @@ namespace BlazorAdmin
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("admin");
 
+            var baseUrlConfig = new BaseUrlConfiguration();
+            builder.Configuration.Bind(BaseUrlConfiguration.CONFIG_NAME, baseUrlConfig);
+            builder.Services.AddScoped<BaseUrlConfiguration>(sp => baseUrlConfig);
+
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddScoped<HttpService>();
 
             builder.Services.AddScoped<ILocalStorageService, LocalStorageService>();
             builder.Services.AddScoped<AuthService>();
-            builder.Services.AddScoped<HttpService>();
 
             builder.Services.AddAuthorizationCore();
             builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
@@ -32,8 +37,10 @@ namespace BlazorAdmin
         }
     }
 
-    public class BaseUrls
+    public class BaseUrlConfiguration
     {
+        public const string CONFIG_NAME = "baseUrls";
+
         public string ApiBase { get; set; }
         public string WebBase { get; set; }
     }

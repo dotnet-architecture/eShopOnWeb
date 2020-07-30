@@ -2,6 +2,7 @@
 @inject AuthService Auth
 @inject IJSRuntime JSRuntime
 @inject GetById GetByIdService
+@inject BlazorAdmin.Services.CatalogItemServices.Edit EditService
 
 @inherits BlazorAdmin.Helpers.BlazorComponent
 
@@ -143,7 +144,7 @@
 
     private async Task SaveClick()
     {
-        await new BlazorAdmin.Services.CatalogItemServices.Edit(Auth).HandleAsync(_item);
+        await EditService.HandleAsync(_item);
         await Close();
     }
 

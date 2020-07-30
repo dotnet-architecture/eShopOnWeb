@@ -10,11 +10,16 @@ namespace BlazorAdmin.Services
         private readonly HttpClient _httpClient;
         private readonly string _apiUrl;
 
-        public HttpService(HttpClient httpClient, string apiUrl)
+        public HttpService()
         {
-            _httpClient = httpClient;
-            _apiUrl = apiUrl;
+            _httpClient = new HttpClient();
         }
+
+        //public HttpService(HttpClient httpClient)//, BaseUrlConfiguration baseUrlConfiguration)
+        //{
+        //    _httpClient = httpClient;
+        //    _apiUrl = ""; // baseUrlConfiguration.ApiBase;
+        //}
 
         public async Task<T> HttpGet<T>(string uri)
             where T : class

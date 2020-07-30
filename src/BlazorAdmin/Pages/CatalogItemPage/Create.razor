@@ -1,5 +1,6 @@
 ﻿@inject ILogger<Create> Logger
 @inject AuthService Auth
+@inject BlazorAdmin.Services.CatalogItemServices.Create CreateService
 @inject IJSRuntime JSRuntime
 
 @inherits BlazorAdmin.Helpers.BlazorComponent
@@ -142,7 +143,7 @@
 
     private async Task CreateClick()
     {
-        await new BlazorAdmin.Services.CatalogItemServices.Create(Auth).HandleAsync(_item);
+        await CreateService.HandleAsync(_item);
         await OnCloseClick.InvokeAsync(null);
         await Close();
     }

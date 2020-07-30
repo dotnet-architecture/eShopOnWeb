@@ -7,9 +7,9 @@ namespace BlazorAdmin.Services.CatalogItemServices
     {
         private readonly HttpService _httpService;
 
-        public ListPaged(AuthService authService)
+        public ListPaged(HttpService httpService)
         {
-            _httpService = new HttpService(authService.GetHttpClient(), authService.ApiUrl);
+            _httpService = httpService;
         }
 
         public async Task<List<CatalogItem>> HandleAsync(int pageSize)

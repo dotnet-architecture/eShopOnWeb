@@ -6,9 +6,9 @@ namespace BlazorAdmin.Services.CatalogItemServices
     {
         private readonly HttpService _httpService;
 
-        public Delete(AuthService authService)
+        public Delete(HttpService httpService)
         {
-            _httpService = new HttpService(authService.GetHttpClient(), authService.ApiUrl);
+            _httpService = httpService;
         }
 
         public async Task<string> HandleAsync(int catalogItemId)

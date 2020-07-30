@@ -1,5 +1,6 @@
 ﻿@inject ILogger<Delete> Logger
 @inject AuthService Auth
+@inject BlazorAdmin.Services.CatalogItemServices.Delete DeleteService
 @inject IJSRuntime JSRuntime
 @inject GetById GetByIdService
 
@@ -110,7 +111,7 @@
     {
         // TODO: Add some kind of "are you sure" check before this
 
-        await new BlazorAdmin.Services.CatalogItemServices.Delete(Auth).HandleAsync(id);
+        await DeleteService.HandleAsync(id);
 
         await OnCloseClick.InvokeAsync(null);
         await Close();
