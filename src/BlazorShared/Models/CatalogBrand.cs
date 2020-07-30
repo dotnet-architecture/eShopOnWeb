@@ -1,4 +1,4 @@
-﻿namespace BlazorAdmin.Services.CatalogBrandServices
+﻿namespace BlazorShared.Models
 {
     public class CatalogBrand
     {

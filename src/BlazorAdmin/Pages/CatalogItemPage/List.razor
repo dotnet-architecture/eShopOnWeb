@@ -3,7 +3,7 @@
 @inject AuthService Auth
 @inject BlazorAdmin.Services.CatalogItemServices.ListPaged CatalogItemListPaged
 @inject BlazorAdmin.Services.CatalogTypeServices.List TypeList
-@inject BlazorAdmin.Services.CatalogBrandServices.List BrandList
+@inject BlazorAdmin.Services.CatalogBrandService CatalogBrandService
 @inherits BlazorAdmin.Helpers.BlazorComponent
 @namespace BlazorAdmin.Pages.CatalogItemPage
 
@@ -43,7 +43,7 @@ else
                         <img class="img-thumbnail" src="@($"{item.PictureUri}")">
                     </td>
                     <td>@GetTypeName(catalogTypes, item.CatalogTypeId)</td>
-                    <td>@GetBrandName(catalogBrands, item.CatalogBrandId)</td>
+                    <td>@item.CatalogBrand</td>
                     <td>@item.Id</td>
                     <td>@item.Name</td>
                     <td>@item.Description</td>

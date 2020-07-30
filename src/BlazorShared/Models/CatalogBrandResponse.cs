@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace BlazorAdmin.Services.CatalogBrandServices
+namespace BlazorShared.Models
 {
-    public class CatalogBrandResult
+    public class CatalogBrandResponse
     {
         public List<CatalogBrand> CatalogBrands { get; set; } = new List<CatalogBrand>();
     }

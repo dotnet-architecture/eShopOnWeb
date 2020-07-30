@@ -1,22 +1,25 @@
 ﻿using BlazorAdmin.Services.CatalogItemServices;
+using BlazorAdmin.Services;
+using BlazorShared.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BlazorAdmin
 {
     public static class ServicesConfiguration
     {
-        public static IServiceCollection AddBlazorServices(this IServiceCollection service)
+        public static IServiceCollection AddBlazorServices(this IServiceCollection services)
         {
-            service.AddScoped<Create>();
-            service.AddScoped<ListPaged>();
-            service.AddScoped<Delete>();
-            service.AddScoped<Edit>();
-            service.AddScoped<GetById>();
+            services.AddScoped<Create>();
+            services.AddScoped<ListPaged>();
+            services.AddScoped<Delete>();
+            services.AddScoped<Edit>();
+            services.AddScoped<GetById>();
 
-            service.AddScoped<BlazorAdmin.Services.CatalogBrandServices.List>();
-            service.AddScoped<BlazorAdmin.Services.CatalogTypeServices.List>();
+            services.AddScoped<ICatalogBrandService, CatalogBrandService>();
+            services.AddScoped<CatalogBrandService>();
+            services.AddScoped<BlazorAdmin.Services.CatalogTypeServices.List>();
 
-            return service;
+            return services;
         }
     }
 }
