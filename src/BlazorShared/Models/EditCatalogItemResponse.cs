@@ -1,4 +1,4 @@
-﻿namespace BlazorAdmin.Services.CatalogItemServices
+﻿namespace BlazorShared.Models
 {
     public class EditCatalogItemResult
     {

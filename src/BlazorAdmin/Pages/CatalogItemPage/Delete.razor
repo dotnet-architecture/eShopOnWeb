@@ -1,6 +1,7 @@
 ﻿@inject ILogger<Delete> Logger
 @inject AuthService Auth
 @inject IJSRuntime JSRuntime
+@inject ICatalogItemService CatalogItemService
 
 @inherits BlazorAdmin.Helpers.BlazorComponent
 
@@ -50,7 +51,7 @@
                                 </dt>
 
                                 <dd>
-                                    @Services.CatalogBrandServices.List.GetBrandName(Brands, _item.CatalogBrandId)
+                                    @_item.CatalogBrand
                                 </dd>
 
                                 <dt>
@@ -58,7 +59,7 @@
                                 </dt>
 
                                 <dd>
-                                    @Services.CatalogTypeServices.List.GetTypeName(Types, _item.CatalogTypeId)
+                                    @_item.CatalogType
                                 </dd>
                                 <dt>
                                     Price
@@ -97,7 +98,7 @@
     public IEnumerable<CatalogType> Types { get; set; }
 
     [Parameter]
-    public EventCallback<string> OnCloseClick { get; set; }
+    public EventCallback<string> OnSaveClick { get; set; }
 
     private bool HasPicture => !string.IsNullOrEmpty(_item.PictureUri);
     private string _modalDisplay = "none;";
@@ -109,9 +110,9 @@
     {
         // TODO: Add some kind of "are you sure" check before this
 
-        await new BlazorAdmin.Services.CatalogItemServices.Delete(Auth).HandleAsync(id);
+        await CatalogItemService.Delete(id);
 
-        await OnCloseClick.InvokeAsync(null);
+        await OnSaveClick.InvokeAsync(null);
         await Close();
     }
 
@@ -121,7 +122,7 @@
 
         await new Css(JSRuntime).HideBodyOverflow();
 
-        _item = await new GetById(Auth).HandleAsync(id);
+        _item = await CatalogItemService.GetById(id);
 
         _modalDisplay = "block;";
         _modalClass = "Show";
@@ -136,6 +137,5 @@
         _modalDisplay = "none";
         _modalClass = "";
         _showDeleteModal = false;
-        await OnCloseClick.InvokeAsync(null);
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using AutoMapper;
+using BlazorShared;
 using BlazorShared.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -28,7 +29,6 @@ namespace Microsoft.eShopWeb.PublicApi
     public class Startup
     {
         private const string CORS_POLICY = "CorsPolicy";
-        public static bool InDocker => Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
 
         public Startup(IConfiguration configuration)
         {
@@ -44,6 +44,11 @@ namespace Microsoft.eShopWeb.PublicApi
 
             // use real database
             //ConfigureProductionServices(services);
+        }
+
+        public void ConfigureDockerServices(IServiceCollection services)
+        {
+            ConfigureDevelopmentServices(services);
         }
 
         private void ConfigureInMemoryDatabases(IServiceCollection services)
@@ -90,7 +95,10 @@ namespace Microsoft.eShopWeb.PublicApi
             services.AddSingleton<IUriComposer>(new UriComposer(Configuration.Get<CatalogSettings>()));
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
             services.AddScoped<ITokenClaimsService, IdentityTokenClaimService>();
-            services.AddScoped<IFileSystem, WebFileSystem>(x => new WebFileSystem($"{Constants.GetWebUrlInternal(Startup.InDocker)}File"));
+
+            var baseUrlConfig = new BaseUrlConfiguration();
+            Configuration.Bind(BaseUrlConfiguration.CONFIG_NAME, baseUrlConfig);
+            services.AddScoped<IFileSystem, WebFileSystem>(x => new WebFileSystem($"{baseUrlConfig.WebBase}File"));
 
             services.AddMemoryCache();
 
@@ -112,15 +120,12 @@ namespace Microsoft.eShopWeb.PublicApi
                 };
             });
 
-
             services.AddCors(options =>
             {
                 options.AddPolicy(name: CORS_POLICY,
                                   builder =>
                                   {
-                                      builder.WithOrigins("http://localhost:44319",
-                                                          "https://localhost:44319",
-                                                          Constants.GetOriginWebUrl(InDocker));
+                                      builder.WithOrigins(baseUrlConfig.WebBase.Replace("host.docker.internal", "localhost").TrimEnd('/'));
                                       builder.AllowAnyMethod();
                                       builder.AllowAnyHeader();
                                   });
