@@ -98,7 +98,7 @@
     public IEnumerable<CatalogType> Types { get; set; }
 
     [Parameter]
-    public EventCallback<string> OnCloseClick { get; set; }
+    public EventCallback<string> OnSaveClick { get; set; }
 
     private bool HasPicture => !string.IsNullOrEmpty(_item.PictureUri);
     private string _modalDisplay = "none;";
@@ -112,7 +112,7 @@
 
         await CatalogItemService.Delete(id);
 
-        await OnCloseClick.InvokeAsync(null);
+        await OnSaveClick.InvokeAsync(null);
         await Close();
     }
 
@@ -137,6 +137,5 @@
         _modalDisplay = "none";
         _modalClass = "";
         _showDeleteModal = false;
-        await OnCloseClick.InvokeAsync(null);
     }
 }

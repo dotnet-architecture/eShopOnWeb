@@ -131,7 +131,7 @@
     public IEnumerable<CatalogType> Types { get; set; }
 
     [Parameter]
-    public EventCallback<string> OnCloseClick { get; set; }
+    public EventCallback<string> OnSaveClick { get; set; }
 
     private string LoadPicture => string.IsNullOrEmpty(_item.PictureBase64) ? string.Empty : $"data:image/png;base64, {_item.PictureBase64}";
     private bool HasPicture => !string.IsNullOrEmpty(_item.PictureBase64);
@@ -144,7 +144,7 @@
     private async Task CreateClick()
     {
         await CatalogItemService.Create(_item);
-        await OnCloseClick.InvokeAsync(null);
+        await OnSaveClick.InvokeAsync(null);
         await Close();
     }
 
@@ -173,7 +173,6 @@
         _modalDisplay = "none";
         _modalClass = "";
         _showCreateModal = false;
-        await OnCloseClick.InvokeAsync(null);
     }
 
     private async Task AddFile(IFileListEntry[] files)
