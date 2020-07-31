@@ -32,7 +32,6 @@ namespace Microsoft.eShopWeb.Web
     public class Startup
     {
         private IServiceCollection _services;
-        public static bool InDocker => Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
 
         public Startup(IConfiguration configuration)
         {
@@ -48,6 +47,15 @@ namespace Microsoft.eShopWeb.Web
 
             // use real database
             //ConfigureProductionServices(services);
+        }
+
+        public void ConfigureDockerServices(IServiceCollection services)
+        {
+            services.AddDataProtection()
+                .SetApplicationName("eshopwebmvc")
+                .PersistKeysToFileSystem(new DirectoryInfo(@"./"));
+
+            ConfigureDevelopmentServices(services);
         }
 
         private void ConfigureInMemoryDatabases(IServiceCollection services)
@@ -89,12 +97,6 @@ namespace Microsoft.eShopWeb.Web
         {
             services.AddCookieSettings();
 
-            if (InDocker)
-            {
-                services.AddDataProtection()
-                .SetApplicationName("eshopwebmvc")
-                .PersistKeysToFileSystem(new DirectoryInfo(@"./"));
-            }
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
@@ -142,19 +144,20 @@ namespace Microsoft.eShopWeb.Web
                 config.Path = "/allservices";
             });
 
+            
+            var baseUrlConfig = new BaseUrlConfiguration();
+            Configuration.Bind(BaseUrlConfiguration.CONFIG_NAME, baseUrlConfig);
+            services.AddScoped<BaseUrlConfiguration>(sp => baseUrlConfig);
             // Blazor Admin Required Services for Prerendering
             services.AddScoped<HttpClient>(s => new HttpClient
             {
-                BaseAddress = new Uri(BlazorShared.Authorization.Constants.GetWebUrl(InDocker))
+                BaseAddress = new Uri(baseUrlConfig.WebBase)
             });
 
             // add blazor services
             services.AddBlazoredLocalStorage();
             services.AddServerSideBlazor();
             services.AddScoped<AuthService>();
-            var baseUrlConfig = new BaseUrlConfiguration();
-            Configuration.Bind(BaseUrlConfiguration.CONFIG_NAME, baseUrlConfig);
-            services.AddScoped<BaseUrlConfiguration>(sp => baseUrlConfig);
 
             services.AddScoped<HttpService>();
             services.AddBlazorServices();

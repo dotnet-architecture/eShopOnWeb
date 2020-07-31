@@ -84,7 +84,6 @@ namespace Microsoft.eShopWeb.Web.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-                    CreateAuthCookie(Input.Email, Startup.InDocker);
                     _logger.LogInformation("User logged in.");
                     await TransferAnonymousBasketToUserAsync(Input.Email);
                     return LocalRedirect(returnUrl);
@@ -107,13 +106,6 @@ namespace Microsoft.eShopWeb.Web.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
-        }
-
-        private void CreateAuthCookie(string username, bool inDocker)
-        {
-            var cookieOptions = new CookieOptions();
-            cookieOptions.Expires = DateTime.Today.AddDays(10);
-            Response.Cookies.Append("inDocker", inDocker.ToString(), cookieOptions);
         }
 
         private async Task TransferAnonymousBasketToUserAsync(string userName)

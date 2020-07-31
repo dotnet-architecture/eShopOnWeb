@@ -60,7 +60,7 @@ else
     </table>
 
     <Details Brands="@catalogBrands" Types="@catalogTypes" OnEditClick="EditClick" @ref="DetailsComponent"></Details>
-    <Edit Brands="@catalogBrands" Types="@catalogTypes" OnCloseClick="ReloadCatalogItems" @ref="EditComponent"></Edit>
-    <Create Brands="@catalogBrands" Types="@catalogTypes" OnCloseClick="ReloadCatalogItems" @ref="CreateComponent"></Create>
-    <Delete Brands="@catalogBrands" Types="@catalogTypes" OnCloseClick="ReloadCatalogItems" @ref="DeleteComponent"></Delete>
+    <Edit Brands="@catalogBrands" Types="@catalogTypes" OnSaveClick="ReloadCatalogItems" @ref="EditComponent"></Edit>
+    <Create Brands="@catalogBrands" Types="@catalogTypes" OnSaveClick="ReloadCatalogItems" @ref="CreateComponent"></Create>
+    <Delete Brands="@catalogBrands" Types="@catalogTypes" OnSaveClick="ReloadCatalogItems" @ref="DeleteComponent"></Delete>
 }
