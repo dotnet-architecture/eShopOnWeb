@@ -36,7 +36,7 @@ namespace BlazorAdmin
 
             builder.Services.AddBlazorServices();
 
-            builder.Logging.SetMinimumLevel(LogLevel.Information);
+            builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
 
             await ClearLocalStorageCache(builder.Services);
 
