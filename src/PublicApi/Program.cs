@@ -13,7 +13,7 @@ namespace Microsoft.eShopWeb.PublicApi
 {
     public class Program
     {
-        public async static Task Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args)
                         .Build();
@@ -44,13 +44,6 @@ namespace Microsoft.eShopWeb.PublicApi
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration((builderContext, config) =>
-                {
-                    var env = builderContext.HostingEnvironment;
-                    config
-                        .AddJsonFile("appsettings.json")
-                        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
-                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
