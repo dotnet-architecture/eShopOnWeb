@@ -157,7 +157,6 @@ namespace Microsoft.eShopWeb.Web
             // add blazor services
             services.AddBlazoredLocalStorage();
             services.AddServerSideBlazor();
-            services.AddScoped<AuthService>();
 
             services.AddScoped<HttpService>();
             services.AddBlazorServices();

@@ -28,7 +28,6 @@ namespace BlazorAdmin
             builder.Services.AddScoped<HttpService>();
 
             builder.Services.AddScoped<ILocalStorageService, LocalStorageService>();
-            builder.Services.AddScoped<AuthService>();
 
             builder.Services.AddAuthorizationCore();
             builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
