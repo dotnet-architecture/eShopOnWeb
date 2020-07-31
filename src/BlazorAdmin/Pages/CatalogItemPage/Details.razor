@@ -1,6 +1,7 @@
 ﻿@inject ILogger<Details> Logger
 @inject AuthService Auth
 @inject IJSRuntime JSRuntime
+@inject ICatalogItemService CatalogItemService
 
 @inherits BlazorAdmin.Helpers.BlazorComponent
 
@@ -53,7 +54,7 @@
                                 </dt>
 
                                 <dd>
-                                    @Services.CatalogBrandServices.List.GetBrandName(Brands, _item.CatalogBrandId)
+                                    @_item.CatalogBrand
                                 </dd>
 
                                 <dt>
@@ -61,7 +62,7 @@
                                 </dt>
 
                                 <dd>
-                                    @Services.CatalogTypeServices.List.GetTypeName(Types, _item.CatalogTypeId)
+                                    @_item.CatalogType
                                 </dd>
                                 <dt>
                                     Price
@@ -108,10 +109,10 @@
     private bool _showDetailsModal = false;
     private CatalogItem _item = new CatalogItem();
 
-    public void EditClick()
+    public async Task EditClick()
     {
-        OnEditClick.InvokeAsync(_item.Id);
-        Close();
+        await OnEditClick.InvokeAsync(_item.Id);
+        await Close();
     }
 
     public async Task Open(int id)
@@ -121,7 +122,7 @@
 
         await new Css(JSRuntime).HideBodyOverflow();
 
-        _item = await new GetById(Auth).HandleAsync(id);
+        _item = await CatalogItemService.GetById(id);
 
         _modalDisplay = "block;";
         _modalClass = "Show";

@@ -6,4 +6,8 @@
     <AssemblyName>BlazorShared</AssemblyName>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="BlazorInputFile" Version="0.2.0" />
+  </ItemGroup>
+
 </Project>
