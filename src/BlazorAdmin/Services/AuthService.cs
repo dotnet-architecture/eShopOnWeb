@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using BlazorAdmin.JavaScript;
 using Blazored.LocalStorage;
 using Microsoft.JSInterop;
-using BlazorShared.Authorization;
 
 namespace BlazorAdmin.Services
 {
