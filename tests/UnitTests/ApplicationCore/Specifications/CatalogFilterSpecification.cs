@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace Microsoft.eShopWeb.UnitTests
+namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Specifications
 {
     public class CatalogFilterSpecification
     {
@@ -21,7 +21,7 @@ namespace Microsoft.eShopWeb.UnitTests
 
             var result = GetTestItemCollection()
                 .AsQueryable()
-                .Where(spec.Criterias.FirstOrDefault());
+                .Where(spec.WhereExpressions.FirstOrDefault());
 
             Assert.Equal(expectedCount, result.Count());
         }
