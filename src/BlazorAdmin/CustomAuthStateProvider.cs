@@ -16,18 +16,15 @@ namespace BlazorAdmin
         // TODO: Get Default Cache Duration from Config
         private static readonly TimeSpan UserCacheRefreshInterval = TimeSpan.FromSeconds(60);
 
-        private readonly AuthService _authService;
         private readonly HttpClient _httpClient;
         private readonly ILogger<CustomAuthStateProvider> _logger;
 
         private DateTimeOffset _userLastCheck = DateTimeOffset.FromUnixTimeSeconds(0);
         private ClaimsPrincipal _cachedUser = new ClaimsPrincipal(new ClaimsIdentity());
 
-        public CustomAuthStateProvider(AuthService authService,
-            HttpClient httpClient,
+        public CustomAuthStateProvider(HttpClient httpClient,
             ILogger<CustomAuthStateProvider> logger)
         {
-            _authService = authService;
             _httpClient = httpClient;
             _logger = logger;
         }
