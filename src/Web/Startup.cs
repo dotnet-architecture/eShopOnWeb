@@ -32,7 +32,6 @@ namespace Microsoft.eShopWeb.Web
     public class Startup
     {
         private IServiceCollection _services;
-        public static bool InDocker => Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
 
         public Startup(IConfiguration configuration)
         {
@@ -52,6 +51,10 @@ namespace Microsoft.eShopWeb.Web
 
         public void ConfigureDockerServices(IServiceCollection services)
         {
+            services.AddDataProtection()
+                .SetApplicationName("eshopwebmvc")
+                .PersistKeysToFileSystem(new DirectoryInfo(@"./"));
+
             ConfigureDevelopmentServices(services);
         }
 
@@ -94,12 +97,6 @@ namespace Microsoft.eShopWeb.Web
         {
             services.AddCookieSettings();
 
-            if (InDocker)
-            {
-                services.AddDataProtection()
-                .SetApplicationName("eshopwebmvc")
-                .PersistKeysToFileSystem(new DirectoryInfo(@"./"));
-            }
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
