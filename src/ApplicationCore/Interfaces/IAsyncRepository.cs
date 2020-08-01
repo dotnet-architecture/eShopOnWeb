@@ -16,5 +16,6 @@ namespace Microsoft.eShopWeb.ApplicationCore.Interfaces
         Task<int> CountAsync(ISpecification<T> spec);
         Task<T> FirstAsync(ISpecification<T> spec);
         Task<T> FirstOrDefaultAsync(ISpecification<T> spec);
+        Task<IReadOnlyDictionary<int,T>> DictAsync(ISpecification<T> spec);
     }
 }

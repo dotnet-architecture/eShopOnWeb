@@ -64,11 +64,11 @@ namespace Microsoft.eShopWeb.Web.Services
         private async Task<List<BasketItemViewModel>> GetBasketItems(IReadOnlyCollection<BasketItem> basketItems)
         {
             var catalogItemsSpecification = new CatalogItemsSpecification(basketItems.Select(b => b.CatalogItemId).ToArray());
-            var catalogItems = await _itemRepository.ListAsync(catalogItemsSpecification);
+            var catalogItemsDict = await _itemRepository.DictAsync(catalogItemsSpecification);
 
             var items = basketItems.Select(basketItem =>
             {
-                var catalogItem = catalogItems.First(c => c.Id == basketItem.CatalogItemId);
+                catalogItemsDict.TryGetValue(basketItem.Id, out var catalogItem);
 
                 var basketItemViewModel = new BasketItemViewModel
                 {

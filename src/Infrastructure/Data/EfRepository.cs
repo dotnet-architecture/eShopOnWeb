@@ -77,6 +77,12 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
             return await specificationResult.FirstOrDefaultAsync();
         }
 
+        public async Task<IReadOnlyDictionary<int, T>> DictAsync(ISpecification<T> spec)
+        {
+            var specificationResult = ApplySpecification(spec);
+            return (await specificationResult.ToDictionaryAsync(x => x.Id, x => x));
+        }
+
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)
         {
             var evaluator = new SpecificationEvaluator<T>();

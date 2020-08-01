@@ -11,5 +11,12 @@ namespace Microsoft.eShopWeb.ApplicationCore.Specifications
                 .Include(o => o.OrderItems)
                     .ThenInclude(i => i.ItemOrdered);
         }
+
+        public CustomerOrdersWithItemsSpecification(string buyerId, int orderId)
+        {
+            Query.Where(o => o.BuyerId == buyerId && o.Id == orderId)
+                .Include(o => o.OrderItems)
+                .ThenInclude(i => i.ItemOrdered);
+        }
     }
 }
