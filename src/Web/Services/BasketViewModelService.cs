@@ -68,7 +68,7 @@ namespace Microsoft.eShopWeb.Web.Services
 
             var items = basketItems.Select(basketItem =>
             {
-                catalogItemsDict.TryGetValue(basketItem.Id, out var catalogItem);
+                catalogItemsDict.TryGetValue(basketItem.CatalogItemId, out var catalogItem);
 
                 var basketItemViewModel = new BasketItemViewModel
                 {
