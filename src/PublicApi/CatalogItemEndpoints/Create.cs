@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading;
 using Ardalis.ApiEndpoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -32,7 +33,7 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
             OperationId = "catalog-items.create",
             Tags = new[] { "CatalogItemEndpoints" })
         ]
-        public override async Task<ActionResult<CreateCatalogItemResponse>> HandleAsync(CreateCatalogItemRequest request)
+        public override async Task<ActionResult<CreateCatalogItemResponse>> HandleAsync(CreateCatalogItemRequest request, CancellationToken cancellationToken)
         {
             var response = new CreateCatalogItemResponse(request.CorrelationId());
 
