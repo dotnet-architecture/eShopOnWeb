@@ -1,16 +1,10 @@
 ﻿using Ardalis.ApiEndpoints;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.eShopWeb.ApplicationCore.Constants;
-using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.Infrastructure.Identity;
-using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Annotations;
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.PublicApi.AuthEndpoints
@@ -34,7 +28,7 @@ namespace Microsoft.eShopWeb.PublicApi.AuthEndpoints
             OperationId = "auth.authenticate",
             Tags = new[] { "AuthEndpoints" })
         ]
-        public override async Task<ActionResult<AuthenticateResponse>> HandleAsync(AuthenticateRequest request)
+        public override async Task<ActionResult<AuthenticateResponse>> HandleAsync(AuthenticateRequest request, CancellationToken cancellationToken)
         {
             var response = new AuthenticateResponse(request.CorrelationId());
 

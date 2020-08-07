@@ -5,6 +5,7 @@ using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.PublicApi.CatalogBrandEndpoints
@@ -28,7 +29,7 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogBrandEndpoints
             OperationId = "catalog-brands.List",
             Tags = new[] { "CatalogBrandEndpoints" })
         ]
-        public override async Task<ActionResult<ListCatalogBrandsResponse>> HandleAsync()
+        public override async Task<ActionResult<ListCatalogBrandsResponse>> HandleAsync(CancellationToken cancellationToken)
         {
             var response = new ListCatalogBrandsResponse();
 

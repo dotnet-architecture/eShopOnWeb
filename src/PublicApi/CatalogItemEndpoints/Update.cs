@@ -6,6 +6,7 @@ using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
@@ -32,7 +33,7 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
             OperationId = "catalog-items.update",
             Tags = new[] { "CatalogItemEndpoints" })
         ]
-        public override async Task<ActionResult<UpdateCatalogItemResponse>> HandleAsync(UpdateCatalogItemRequest request)
+        public override async Task<ActionResult<UpdateCatalogItemResponse>> HandleAsync(UpdateCatalogItemRequest request, CancellationToken cancellationToken)
         {
             var response = new UpdateCatalogItemResponse(request.CorrelationId());
 
