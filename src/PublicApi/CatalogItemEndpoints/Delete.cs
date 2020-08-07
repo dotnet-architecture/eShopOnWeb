@@ -1,4 +1,5 @@
-﻿using Ardalis.ApiEndpoints;
+﻿using System.Threading;
+using Ardalis.ApiEndpoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,7 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
             OperationId = "catalog-items.Delete",
             Tags = new[] { "CatalogItemEndpoints" })
         ]
-        public override async Task<ActionResult<DeleteCatalogItemResponse>> HandleAsync([FromRoute]DeleteCatalogItemRequest request)
+        public override async Task<ActionResult<DeleteCatalogItemResponse>> HandleAsync([FromRoute]DeleteCatalogItemRequest request, CancellationToken cancellationToken)
         {
             var response = new DeleteCatalogItemResponse(request.CorrelationId());
 

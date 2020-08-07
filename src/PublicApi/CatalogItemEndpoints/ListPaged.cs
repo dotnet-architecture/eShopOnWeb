@@ -7,6 +7,7 @@ using Microsoft.eShopWeb.ApplicationCore.Specifications;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
@@ -33,7 +34,7 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
             OperationId = "catalog-items.ListPaged",
             Tags = new[] { "CatalogItemEndpoints" })
         ]
-        public override async Task<ActionResult<ListPagedCatalogItemResponse>> HandleAsync([FromQuery]ListPagedCatalogItemRequest request)
+        public override async Task<ActionResult<ListPagedCatalogItemResponse>> HandleAsync([FromQuery]ListPagedCatalogItemRequest request, CancellationToken cancellationToken)
         {
             var response = new ListPagedCatalogItemResponse(request.CorrelationId());
 
