@@ -13,6 +13,7 @@ namespace Microsoft.eShopWeb.Web
 {
     public class Program
     {
+        // This is a conflict
         public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args)
