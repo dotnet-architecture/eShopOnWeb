@@ -1,0 +1,12 @@
+{
+  "run": [
+    {
+      "tool": "require-dotnetcoresdk"
+    },
+    {
+      "tool": "dotnet-toolinstall",
+      "input": "dotnet-ef",
+      "additionalOptions": "--global"
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+{
+  "postCreateCommand": "Powershell.exe -ExecutionPolicy unrestricted -File postCloneSetup.ps1"
+}
