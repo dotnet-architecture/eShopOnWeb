@@ -1,8 +1,12 @@
-﻿using Ardalis.GuardClauses;
+﻿using System;
+using Ardalis.GuardClauses;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
+using System.Collections.Generic;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Entities
 {
+
+
     public class CatalogItem : BaseEntity, IAggregateRoot
     {
         public string Name { get; private set; }
@@ -14,7 +18,12 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities
         public int CatalogBrandId { get; private set; }
         public CatalogBrand CatalogBrand { get; private set; }
 
-        public CatalogItem(int catalogTypeId, int catalogBrandId, string description, string name, decimal price, string pictureUri)
+        public CatalogItem(int catalogTypeId, 
+            int catalogBrandId, 
+            string description, 
+            string name, 
+            decimal price, 
+            string pictureUri)
         {
             CatalogTypeId = catalogTypeId;
             CatalogBrandId = catalogBrandId;
@@ -24,11 +33,37 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities
             PictureUri = pictureUri;
         }
 
-        public void Update(string name, decimal price)
+        public void UpdateDetails(string name, string description, decimal price)
         {
             Guard.Against.NullOrEmpty(name, nameof(name));
+            Guard.Against.NullOrEmpty(description, nameof(description));
+            Guard.Against.NegativeOrZero(price, nameof(price));
+
             Name = name;
+            Description = description;
             Price = price;
+        }
+
+        public void UpdateBrand(int catalogBrandId)
+        {
+            Guard.Against.Zero(catalogBrandId, nameof(catalogBrandId));
+            CatalogBrandId = catalogBrandId;
+        }
+
+        public void UpdateType(int catalogTypeId)
+        {
+            Guard.Against.Zero(catalogTypeId, nameof(catalogTypeId));
+            CatalogTypeId = catalogTypeId;
+        }
+
+        public void UpdatePictureUri(string pictureName)
+        {
+            if (string.IsNullOrEmpty(pictureName))
+            {
+                PictureUri = string.Empty;
+                return;
+            }
+            PictureUri = $"images\\products\\{pictureName}?{new DateTime().Ticks}";
         }
     }
 }

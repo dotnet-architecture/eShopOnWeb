@@ -1,4 +1,5 @@
-﻿using Microsoft.eShopWeb.ApplicationCore.Entities;
+﻿using Ardalis.Specification;
+using Microsoft.eShopWeb.ApplicationCore.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,5 +14,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Interfaces
         Task UpdateAsync(T entity);
         Task DeleteAsync(T entity);
         Task<int> CountAsync(ISpecification<T> spec);
+        Task<T> FirstAsync(ISpecification<T> spec);
+        Task<T> FirstOrDefaultAsync(ISpecification<T> spec);
     }
 }

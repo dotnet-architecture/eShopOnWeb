@@ -2,11 +2,6 @@
 {
     public class AuthorizationConstants
     {
-        public static class Roles
-        {
-            public const string ADMINISTRATORS = "Administrators";
-        }
-
         public const string AUTH_KEY = "AuthKeyOfDoomThatMustBeAMinimumNumberOfBytes";
 
         // TODO: Don't use this in production

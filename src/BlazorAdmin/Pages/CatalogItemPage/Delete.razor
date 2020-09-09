@@ -1,0 +1,140 @@
+﻿@inject ILogger<Delete> Logger
+@inject IJSRuntime JSRuntime
+@inject ICatalogItemService CatalogItemService
+
+@inherits BlazorAdmin.Helpers.BlazorComponent
+
+@namespace BlazorAdmin.Pages.CatalogItemPage
+
+<div class="modal @_modalClass" tabindex="-1" role="dialog" style="display:@_modalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete @_item.Name</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @if (_item == null)
+                {
+                    <Spinner></Spinner>
+                }
+                else
+                {
+                    <div class="container">
+                        <div class="row">
+                            @if (HasPicture)
+                            {
+                                <img class="col-md-6 esh-picture" src="@($"{_item.PictureUri}")">
+                            }
+                            <dl class="col-md-@(HasPicture ? "6" : "12") dl-horizontal">
+                                <dt>
+                                    Name
+                                </dt>
+
+                                <dd>
+                                    @_item.Name
+                                </dd>
+
+                                <dt>
+                                    Description
+                                </dt>
+
+                                <dd>
+                                    @_item.Description
+                                </dd>
+
+                                <dt>
+                                    Brand
+                                </dt>
+
+                                <dd>
+                                    @_item.CatalogBrand
+                                </dd>
+
+                                <dt>
+                                    Type
+                                </dt>
+
+                                <dd>
+                                    @_item.CatalogType
+                                </dd>
+                                <dt>
+                                    Price
+                                </dt>
+
+                                <dd>
+                                    @_item.Price
+                                </dd>
+                            </dl>
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Cancel</button>
+                <button class="btn btn-danger" @onclick="() => DeleteClick(_item.Id)">
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (_showDeleteModal)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+
+@code {
+    [Parameter]
+    public IEnumerable<CatalogBrand> Brands { get; set; }
+    [Parameter]
+    public IEnumerable<CatalogType> Types { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnSaveClick { get; set; }
+
+    private bool HasPicture => !string.IsNullOrEmpty(_item.PictureUri);
+    private string _modalDisplay = "none;";
+    private string _modalClass = "";
+    private bool _showDeleteModal = false;
+    private CatalogItem _item = new CatalogItem();
+
+    private async Task DeleteClick(int id)
+    {
+        // TODO: Add some kind of "are you sure" check before this
+
+        await CatalogItemService.Delete(id);
+
+        await OnSaveClick.InvokeAsync(null);
+        await Close();
+    }
+
+    public async Task Open(int id)
+    {
+        Logger.LogInformation("Now loading... /Catalog/Delete/{Id}", id);
+
+        await new Css(JSRuntime).HideBodyOverflow();
+
+        _item = await CatalogItemService.GetById(id);
+
+        _modalDisplay = "block;";
+        _modalClass = "Show";
+        _showDeleteModal = true;
+
+        StateHasChanged();
+    }
+
+    private async Task Close()
+    {
+        await new Css(JSRuntime).ShowBodyOverflow();
+        _modalDisplay = "none";
+        _modalClass = "";
+        _showDeleteModal = false;
+    }
+}

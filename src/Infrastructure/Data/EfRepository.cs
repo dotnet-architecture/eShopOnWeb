@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Ardalis.Specification;
+using Ardalis.Specification.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using System.Collections.Generic;
@@ -33,12 +35,14 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
 
         public async Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec)
         {
-            return await ApplySpecification(spec).ToListAsync();
+            var specificationResult = ApplySpecification(spec);
+            return await specificationResult.ToListAsync();
         }
 
         public async Task<int> CountAsync(ISpecification<T> spec)
         {
-            return await ApplySpecification(spec).CountAsync();
+            var specificationResult = ApplySpecification(spec);
+            return await specificationResult.CountAsync();
         }
 
         public async Task<T> AddAsync(T entity)
@@ -61,9 +65,22 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task<T> FirstAsync(ISpecification<T> spec)
+        {
+            var specificationResult = ApplySpecification(spec);
+            return await specificationResult.FirstAsync();
+        }
+
+        public async Task<T> FirstOrDefaultAsync(ISpecification<T> spec)
+        {
+            var specificationResult = ApplySpecification(spec);
+            return await specificationResult.FirstOrDefaultAsync();
+        }
+
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)
         {
-            return SpecificationEvaluator<T>.GetQuery(_dbContext.Set<T>().AsQueryable(), spec);
+            var evaluator = new SpecificationEvaluator<T>();
+            return evaluator.GetQuery(_dbContext.Set<T>().AsQueryable(), spec);
         }
     }
 }

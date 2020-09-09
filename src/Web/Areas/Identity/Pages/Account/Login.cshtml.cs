@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using BlazorAdmin.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.Extensions.Logging;
+using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 
 namespace Microsoft.eShopWeb.Web.Areas.Identity.Pages.Account
 {
@@ -18,11 +21,13 @@ namespace Microsoft.eShopWeb.Web.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly IBasketService _basketService;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, IBasketService basketService)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _basketService = basketService;
         }
 
         [BindProperty]
@@ -74,10 +79,13 @@ namespace Microsoft.eShopWeb.Web.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+                //var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, false, true);
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+                    await TransferAnonymousBasketToUserAsync(Input.Email);
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -98,6 +106,16 @@ namespace Microsoft.eShopWeb.Web.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+
+        private async Task TransferAnonymousBasketToUserAsync(string userName)
+        {
+            if (Request.Cookies.ContainsKey(Constants.BASKET_COOKIENAME))
+            {
+                var anonymousId = Request.Cookies[Constants.BASKET_COOKIENAME];
+                await _basketService.TransferBasketAsync(anonymousId, userName);
+                Response.Cookies.Delete(Constants.BASKET_COOKIENAME);
+            }
         }
     }
 }
