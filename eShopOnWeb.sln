@@ -23,11 +23,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunctionalTests", "tests\Fu
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0BD72BEA-EF42-4B72-8B69-12A39EC76FBA}"
 	ProjectSection(SolutionItems) = preProject
+		.devcontainer.json = .devcontainer.json
+		.devinit.json = .devinit.json
 		docker-compose.override.yml = docker-compose.override.yml
 		docker-compose.yml = docker-compose.yml
+		postCloneSetup.ps1 = postCloneSetup.ps1
 		README.md = README.md
 	EndProjectSection
 EndProject
+
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "src\Web\Web.csproj", "{227CF035-29B0-448D-97E4-944F9EA850E5}"
+
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{1FCBE191-34FE-4B2E-8915-CA81553958AD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublicApi", "src\PublicApi\PublicApi.csproj", "{B5E4F33C-4667-4A55-AF6A-740F84C4CF3A}"
@@ -35,6 +41,7 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorAdmin", "src\BlazorAdmin\BlazorAdmin.csproj", "{71368733-80A4-4869-B215-3A7001878577}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorShared", "src\BlazorShared\BlazorShared.csproj", "{715CF7AF-A1EE-40A6-94A0-8DA3F3B2CAE9}"
+
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,6 +73,12 @@ Global
 		{7EFB5482-F942-4C3D-94B0-9B70596E6D0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EFB5482-F942-4C3D-94B0-9B70596E6D0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7EFB5482-F942-4C3D-94B0-9B70596E6D0A}.Release|Any CPU.Build.0 = Release|Any CPU
+
+		{227CF035-29B0-448D-97E4-944F9EA850E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{227CF035-29B0-448D-97E4-944F9EA850E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{227CF035-29B0-448D-97E4-944F9EA850E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{227CF035-29B0-448D-97E4-944F9EA850E5}.Release|Any CPU.Build.0 = Release|Any CPU
+
 		{1FCBE191-34FE-4B2E-8915-CA81553958AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1FCBE191-34FE-4B2E-8915-CA81553958AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1FCBE191-34FE-4B2E-8915-CA81553958AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -82,6 +95,7 @@ Global
 		{715CF7AF-A1EE-40A6-94A0-8DA3F3B2CAE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{715CF7AF-A1EE-40A6-94A0-8DA3F3B2CAE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{715CF7AF-A1EE-40A6-94A0-8DA3F3B2CAE9}.Release|Any CPU.Build.0 = Release|Any CPU
+
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
