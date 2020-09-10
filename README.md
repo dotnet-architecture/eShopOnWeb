@@ -5,7 +5,7 @@
 
 ## Getting started
 
-1. Use Visual Studio Codespaces to create an environment
+1. Use GitHub Codespaces to create an environment
 1. Hit F5!
 
 Sample ASP.NET Core reference application, powered by Microsoft, demonstrating a single-process (monolithic) application architecture and deployment model. If you're new to .NET development, read the [Getting Started for Beginners](https://github.com/dotnet-architecture/eShopOnWeb/wiki/Getting-Started-for-Beginners) guide.
