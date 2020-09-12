@@ -17,3 +17,7 @@ jobs:
       run: dotnet build ./eShopOnWeb.sln --configuration Release
     - name: Test with dotnet
       run: dotnet test ./eShopOnWeb.sln --configuration Release
+    - name: Catalog SQL Script
+      run: dotnet ef migrations script -c catalogcontext -i -p ./src/Infrastructure/Infrastructure.csproj -s ./src/Web/Web.csproj -o ./scripts/catalog.sql
+    - name: Identity SQL Script
+      run: dotnet ef migrations script -c appidentitydbcontext  -i -p ./src/Infrastructure/Infrastructure.csproj -s ./src/Web/Web.csproj -o ./scripts/catalog.sql
