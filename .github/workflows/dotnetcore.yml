@@ -22,7 +22,7 @@ jobs:
       run: dotnet test ./eShopOnWeb.sln --configuration $build_config
     - name: Publish site
       working-directory: ./src/Web
-      run: dotnet publish -c Release -o ../../web
+      run: dotnet publish -c Release -o ../../web_publish
     - name: Catalog SQL Script
       run: dotnet ef migrations script -c catalogcontext -i -p ./src/Infrastructure/Infrastructure.csproj -s ./src/Web/Web.csproj -o ./scripts/catalog.sql
     - name: Identity SQL Script
@@ -35,5 +35,17 @@ jobs:
     - name: Upload site
       uses: actions/upload-artifact@v2
       with:
-        name: web
-        path: ./web
+        name: web_site
+        path: ./web_publish
+  deploy:
+    needs: build
+    runs-on: windows-latest
+    steps:
+    - name: Download scripts
+      uses: actions/download-artifact@v2
+      with:
+        name: sql_scripts
+    - name: Download site
+      uses: actions/download-artifact@v2
+      with:
+        name: web_site
