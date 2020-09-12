@@ -1,4 +1,4 @@
-name: eShopOnWeb Build and Test
+name: CI/CD .Net Core
 
 on: [push]
 
