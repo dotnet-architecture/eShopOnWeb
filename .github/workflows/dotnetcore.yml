@@ -45,7 +45,9 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: sql_scripts
+        path: sql_scripts
     - name: Download site
       uses: actions/download-artifact@v2
       with:
         name: web_site
+        path: web_site
