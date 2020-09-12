@@ -6,7 +6,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    env:
+      build_config: Release
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
@@ -16,9 +17,9 @@ jobs:
     - name: Install dotnet tools
       run: dotnet tool restore
     - name: Build with dotnet
-      run: dotnet build ./eShopOnWeb.sln --configuration Release
+      run: dotnet build ./eShopOnWeb.sln --configuration $build_config
     - name: Test with dotnet
-      run: dotnet test ./eShopOnWeb.sln --configuration Release
+      run: dotnet test ./eShopOnWeb.sln --configuration $build_config
     - name: Catalog SQL Script
       run: dotnet ef migrations script -c catalogcontext -i -p ./src/Infrastructure/Infrastructure.csproj -s ./src/Web/Web.csproj -o ./scripts/catalog.sql
     - name: Identity SQL Script
