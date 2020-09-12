@@ -20,6 +20,9 @@ jobs:
       run: dotnet build ./eShopOnWeb.sln --configuration $build_config
     - name: Test with dotnet
       run: dotnet test ./eShopOnWeb.sln --configuration $build_config
+    - name: Publish site
+      working-directory: ./src/Web
+      run: dotnet publish -c Release -o ../../web
     - name: Catalog SQL Script
       run: dotnet ef migrations script -c catalogcontext -i -p ./src/Infrastructure/Infrastructure.csproj -s ./src/Web/Web.csproj -o ./scripts/catalog.sql
     - name: Identity SQL Script
@@ -29,3 +32,8 @@ jobs:
       with:
         name: sql_scripts
         path: ./scripts
+    - name: Upload site
+      uses: actions/upload-artifact@v2
+      with:
+        name: web
+        path: ./web
