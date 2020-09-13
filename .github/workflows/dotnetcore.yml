@@ -63,3 +63,18 @@ jobs:
         # Name of the Azure Web App
         app-name: netcoregithub      
         package: web_site
+    
+    - name: Azure SQL Deploy
+      uses: Azure/sql-action@v1
+      with:
+        server-name: netcoregithub.database.windows.net
+        connection-string: ${{ secrets.CATALOG_DB_CONNSTRING }}
+        sql-file: sql_scripts/catalog.sql
+        
+    - name: Azure SQL Deploy
+      uses: Azure/sql-action@v1
+      with:
+        server-name: netcoregithub.database.windows.net
+        connection-string: ${{ secrets.IDENTITY_DB_CONNSTRING }}
+        sql-file: sql_scripts/identity.sql
+
