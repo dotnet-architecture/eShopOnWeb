@@ -20,6 +20,7 @@ jobs:
     - name: Test with dotnet
       run: dotnet test ./eShopOnWeb.sln --configuration $build_config
     - name: Publish site
+      if: github.ref == 'refs/head/master'
       working-directory: ./src/Web
       run: dotnet publish -c $build_config -o ../../web_publish
     - name: Catalog SQL Script
