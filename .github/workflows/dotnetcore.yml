@@ -4,7 +4,6 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     env:
       build_config: Release
@@ -37,6 +36,7 @@ jobs:
       with:
         name: web_site
         path: ./web_publish
+
   deploy:
     needs: build
     runs-on: windows-latest
