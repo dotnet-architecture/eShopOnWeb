@@ -4,16 +4,104 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
+    env:
+      build_config: Release
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.201
+        dotnet-version: 3.1.402
+    - name: Install dotnet tools
+      run: dotnet tool restore
     - name: Build with dotnet
-      run: dotnet build ./eShopOnWeb.sln --configuration Release
+      run: dotnet build ./eShopOnWeb.sln --configuration $build_config
     - name: Test with dotnet
-      run: dotnet test ./eShopOnWeb.sln --configuration Release
+      run: dotnet test ./eShopOnWeb.sln --configuration $build_config
+    - name: Publish site
+      working-directory: ./src/Web
+      run: dotnet publish -c $build_config -o ../../web_publish
+    - name: Catalog SQL Script
+      run: dotnet ef migrations script -c catalogcontext -i -p ./src/Infrastructure/Infrastructure.csproj -s ./src/Web/Web.csproj -o ./scripts/catalog.sql
+    - name: Identity SQL Script
+      run: dotnet ef migrations script -c appidentitydbcontext  -i -p ./src/Infrastructure/Infrastructure.csproj -s ./src/Web/Web.csproj -o ./scripts/identity.sql
+    - name: Upload scripts
+      uses: actions/upload-artifact@v2
+      with:
+        name: sql_scripts
+        path: ./scripts
+    - name: Upload site
+      uses: actions/upload-artifact@v2
+      with:
+        name: web_site
+        path: ./web_publish
+    - name: Upload ARM
+      uses: actions/upload-artifact@v2
+      with:
+        name: arm_template
+        path: arm
+        
+  deploy:
+    needs: build
+    runs-on: windows-latest
+    steps:
+    - name: Download scripts
+      uses: actions/download-artifact@v2
+      with:
+        name: sql_scripts
+        path: sql_scripts
+    - name: Download site
+      uses: actions/download-artifact@v2
+      with:
+        name: web_site
+        path: web_site
+    - name: Download arm
+      uses: actions/download-artifact@v2
+      with:
+        name: arm_template
+        path: arm_template
+    
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        
+    - name: Deploy Azure Resource Manager (ARM) Template
+      uses: Azure/arm-deploy@v1
+      with:        
+        scope: resourcegroup
+        subscriptionId: '3ec68e6f-178a-4e3d-8a62-38fc6d03a7e6'        
+        resourceGroupName: 'NetCore_GIthubCI_CD_RG'
+        # Specify the path or URL to the Azure Resource Manager template.
+        template: arm_template/netcore_rg_arm.json       
+        deploymentMode: Incremental
+        deploymentName: deploy-${{ github.run_id }}
+        parameters: sites_netcoregithub_name=netcoregithub sqlserver_password=${{ secrets.DB_PASSWORD }}
+
+    - name: Azure WebApp
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: netcoregithub      
+        package: web_site
+
+    - name: Azure App Service Settings
+      uses: Azure/appservice-settings@v1
+      with:
+        app-name: netcoregithub
+        connection-strings-json: ${{ secrets.CONNSTRING_JSON }}
+        
+    - name: Azure SQL Deploy
+      uses: Azure/sql-action@v1
+      with:
+        server-name: netcoregithub.database.windows.net
+        connection-string: ${{ secrets.CATALOG_DB_CONNSTRING }}
+        sql-file: sql_scripts/catalog.sql
+        
+    - name: Azure SQL Deploy
+      uses: Azure/sql-action@v1
+      with:
+        server-name: netcoregithub.database.windows.net
+        connection-string: ${{ secrets.IDENTITY_DB_CONNSTRING }}
+        sql-file: sql_scripts/identity.sql
+
