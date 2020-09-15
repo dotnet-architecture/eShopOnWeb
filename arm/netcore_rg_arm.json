@@ -1,0 +1,238 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "sites_netcoregithub_name": {
+        "defaultValue": "netcoregithub",
+        "type": "String"
+      },
+      "servers_netcoregithub_name": {
+        "defaultValue": "netcoregithub",
+        "type": "String"
+      },
+      "serverfarms_netcoregithubplan_name": {
+        "defaultValue": "netcoregithubplan",
+        "type": "String"
+      },       
+      "sqlserver_password": {
+        "type": "securestring"
+      }
+    },
+    "variables": {},
+    "resources": [
+      {
+        "apiVersion": "2018-05-01-preview",
+        "name": "[parameters('sites_netcoregithub_name')]",
+        "type": "microsoft.insights/components",
+        "location": "westeurope",
+        "properties": {
+          "ApplicationId": "[parameters('sites_netcoregithub_name')]"
+        }
+      },
+      {
+        "type": "Microsoft.Sql/servers",
+        "apiVersion": "2019-06-01-preview",
+        "name": "[parameters('servers_netcoregithub_name')]",
+        "location": "westeurope",
+        "kind": "v12.0",
+        "properties": {
+          "administratorLogin": "[concat(parameters('servers_netcoregithub_name'), 'admin')]",
+          "administratorLoginPassword": "[parameters('sqlserver_password')]",
+          "version": "12.0",
+          "publicNetworkAccess": "Enabled"
+        }
+      },
+      {
+        "type": "Microsoft.Sql/servers/firewallRules",
+        "apiVersion": "2015-05-01-preview",
+        "name": "[concat(parameters('servers_netcoregithub_name'), '/AllowAllWindowsAzureIps')]",
+        "dependsOn": [
+          "[resourceId('Microsoft.Sql/servers', parameters('servers_netcoregithub_name'))]"
+        ],
+        "properties": {
+          "startIpAddress": "0.0.0.0",
+          "endIpAddress": "0.0.0.0"
+        }
+      },
+      {
+        "type": "Microsoft.Web/serverfarms",
+        "apiVersion": "2018-02-01",
+        "name": "[parameters('serverfarms_netcoregithubplan_name')]",
+        "location": "West Europe",
+        "sku": {
+          "name": "D1",
+          "tier": "Shared",
+          "size": "D1",
+          "family": "D",
+          "capacity": 0
+        },
+        "kind": "app",
+        "properties": {
+          "perSiteScaling": false,
+          "maximumElasticWorkerCount": 1,
+          "isSpot": false,
+          "reserved": false,
+          "isXenon": false,
+          "hyperV": false,
+          "targetWorkerCount": 0,
+          "targetWorkerSizeId": 0
+        }
+      },
+  
+  
+      {
+        "type": "Microsoft.Sql/servers/databases",
+        "apiVersion": "2019-06-01-preview",
+        "name": "[concat(parameters('servers_netcoregithub_name'), '/eShopOnWeb.CatalogDb')]",
+        "location": "westeurope",
+        "dependsOn": [
+          "[resourceId('Microsoft.Sql/servers', parameters('servers_netcoregithub_name'))]"
+        ],
+        "sku": {
+          "name": "GP_S_Gen5",
+          "tier": "GeneralPurpose",
+          "family": "Gen5",
+          "capacity": 1
+        },
+        "kind": "v12.0,user,vcore,serverless",
+        "properties": {
+          "collation": "SQL_Latin1_General_CP1_CI_AS",
+          "maxSizeBytes": 1073741824,
+          "catalogCollation": "SQL_Latin1_General_CP1_CI_AS",
+          "zoneRedundant": false,
+          "readScale": "Disabled",
+          "readReplicaCount": 0,
+          "autoPauseDelay": 60,
+          "storageAccountType": "GRS",
+          "minCapacity": 0.5
+        }
+      },
+      {
+        "type": "Microsoft.Sql/servers/databases",
+        "apiVersion": "2019-06-01-preview",
+        "name": "[concat(parameters('servers_netcoregithub_name'), '/eShopOnWeb.Identity')]",
+        "location": "westeurope",
+        "dependsOn": [
+          "[resourceId('Microsoft.Sql/servers', parameters('servers_netcoregithub_name'))]"
+        ],
+        "sku": {
+          "name": "GP_S_Gen5",
+          "tier": "GeneralPurpose",
+          "family": "Gen5",
+          "capacity": 1
+        },
+        "kind": "v12.0,user,vcore,serverless",
+        "properties": {
+          "collation": "SQL_Latin1_General_CP1_CI_AS",
+          "maxSizeBytes": 1073741824,
+          "catalogCollation": "SQL_Latin1_General_CP1_CI_AS",
+          "zoneRedundant": false,
+          "readScale": "Disabled",
+          "readReplicaCount": 0,
+          "autoPauseDelay": 60,
+          "storageAccountType": "GRS",
+          "minCapacity": 0.5
+        }
+      },
+  
+      {
+        "type": "Microsoft.Web/sites",
+        "apiVersion": "2018-11-01",
+        "name": "[parameters('sites_netcoregithub_name')]",
+        "location": "West Europe",
+        "dependsOn": [
+          "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_netcoregithubplan_name'))]",
+          "[resourceId('Microsoft.Insights/components/', parameters('sites_netcoregithub_name'))]"
+        ],
+        "kind": "app",
+        "properties": {
+          "enabled": true,
+          "hostNameSslStates": [
+            {
+              "name": "[concat(parameters('sites_netcoregithub_name'), '.azurewebsites.net')]",
+              "sslState": "Disabled",
+              "hostType": "Standard"
+            },
+            {
+              "name": "[concat(parameters('sites_netcoregithub_name'), '.scm.azurewebsites.net')]",
+              "sslState": "Disabled",
+              "hostType": "Repository"
+            }
+          ],
+          "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_netcoregithubplan_name'))]",
+          "reserved": false,
+          "isXenon": false,
+          "hyperV": false,
+          "scmSiteAlsoStopped": false,
+          "clientAffinityEnabled": true,
+          "clientCertEnabled": false,
+          "hostNamesDisabled": false,
+          "containerSize": 0,
+          "dailyMemoryTimeQuota": 0,
+          "httpsOnly": false,
+          "redundancyMode": "None",
+          "siteConfig": {
+            "appSettings": [
+              {
+                "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                "value": "[reference(resourceId('microsoft.insights/components/', parameters('sites_netcoregithub_name')), '2018-05-01-preview').InstrumentationKey]"
+              },
+              {
+                "name": "ApplicationInsightsAgent_EXTENSION_VERSION",
+                "value": "~2"
+              },
+              {
+                "name": "XDT_MicrosoftApplicationInsights_Mode",
+                "value": "default"
+              },
+              {
+                "name": "DiagnosticServices_EXTENSION_VERSION",
+                "value": "disabled"
+              },
+              {
+                "name": "APPINSIGHTS_PROFILERFEATURE_VERSION",
+                "value": "disabled"
+              },
+              {
+                "name": "APPINSIGHTS_SNAPSHOTFEATURE_VERSION",
+                "value": "disabled"
+              },
+              {
+                "name": "InstrumentationEngine_EXTENSION_VERSION",
+                "value": "disabled"
+              },
+              {
+                "name": "SnapshotDebugger_EXTENSION_VERSION",
+                "value": "disabled"
+              },
+              {
+                "name": "XDT_MicrosoftApplicationInsights_BaseExtensions",
+                "value": "disabled"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "Microsoft.Web/sites/config",
+        "apiVersion": "2018-11-01",
+        "name": "[concat(parameters('sites_netcoregithub_name'), '/web')]",
+        "location": "West Europe",
+        "dependsOn": [
+          "[resourceId('Microsoft.Web/sites', parameters('sites_netcoregithub_name'))]"
+        ],
+        "properties": {
+          "numberOfWorkers": 1,
+          "netFrameworkVersion": "v4.0",
+          "requestTracingEnabled": false,
+          "remoteDebuggingEnabled": false,
+          "remoteDebuggingVersion": "VS2019",
+          "httpLoggingEnabled": false,
+          "logsDirectorySizeLimit": 35,
+          "detailedErrorLoggingEnabled": false
+         
+        }
+      
+      }
+    ]
+  }
