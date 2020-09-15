@@ -43,7 +43,7 @@ jobs:
         path: arm
         
   deploy:
-    if: github.head_ref == 'master'
+    if: github.head_ref == 'refs/head/master'
     needs: build
     runs-on: windows-latest
     steps:
