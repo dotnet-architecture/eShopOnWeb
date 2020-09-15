@@ -8,6 +8,8 @@ jobs:
     env:
       build_config: Release
     steps:
+    - name: show ref
+      run: echo ${{ github.head_ref }}
     - uses: actions/checkout@v2
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
@@ -42,8 +44,7 @@ jobs:
         name: arm_template
         path: arm
         
-  deploy:
-    if: github.head_ref == 'refs/head/master'
+  deploy:   
     needs: build
     runs-on: windows-latest
     steps:
