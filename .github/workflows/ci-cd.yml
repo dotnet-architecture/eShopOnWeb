@@ -2,16 +2,17 @@ name: CI/CD (master) .Net Core
 
 on: [push]
 
+env:
+  is_master: ${{ github.ref == 'refs/heads/master' }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
       build_config: Release
     steps:
-    - name: test ref
-      run: echo ${{ github.ref == 'refs/heads/master' }}
-    - name: ref
-      run: echo ${{ github.ref }}
+    - name: is master
+      run: echo $is_master
     - uses: actions/checkout@v2
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
@@ -24,7 +25,7 @@ jobs:
     - name: Test with dotnet
       run: dotnet test ./eShopOnWeb.sln --configuration $build_config
     - name: Publish site
-      if: github.ref == 'refs/head/master'
+      if: is_master
       working-directory: ./src/Web
       run: dotnet publish -c $build_config -o ../../web_publish
     - name: Catalog SQL Script
@@ -48,7 +49,7 @@ jobs:
         path: arm
         
   deploy:
-    if: github.ref == 'refs/heads/master'
+    if: is_master
     needs: build
     runs-on: windows-latest
     steps:
@@ -79,7 +80,6 @@ jobs:
         scope: resourcegroup
         subscriptionId: '3ec68e6f-178a-4e3d-8a62-38fc6d03a7e6'        
         resourceGroupName: 'NetCore_GIthubCI_CD_RG'
-        # Specify the path or URL to the Azure Resource Manager template.
         template: arm_template/netcore_rg_arm.json       
         deploymentMode: Incremental
         deploymentName: deploy-${{ github.run_id }}
