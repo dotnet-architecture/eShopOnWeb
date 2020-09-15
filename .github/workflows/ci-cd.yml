@@ -9,7 +9,7 @@ jobs:
       build_config: Release
     steps:
     - name: show ref
-      run: echo ${{ github.head_ref }}
+      run: echo ${{ github.ref }}
     - uses: actions/checkout@v2
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
