@@ -8,6 +8,10 @@ jobs:
     env:
       build_config: Release
     steps:
+    - name: test ref
+      run: echo ${{ github.ref == 'refs/head/master' }}
+    - name: ref
+      run: echo ${{ github.ref }}
     - uses: actions/checkout@v2
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
