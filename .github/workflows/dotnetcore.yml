@@ -59,8 +59,8 @@ jobs:
     - name: Download arm
       uses: actions/download-artifact@v2
       with:
-        name: arm
-        path: arm
+        name: arm_template
+        path: arm_template
     
     - name: 'Login via Azure CLI'
       uses: azure/login@v1
@@ -74,7 +74,7 @@ jobs:
         subscriptionId: '3ec68e6f-178a-4e3d-8a62-38fc6d03a7e6'        
         resourceGroupName: 'NetCore_GIthubCI_CD_RG'
         # Specify the path or URL to the Azure Resource Manager template.
-        template: arm/netcore_rg_arm.json       
+        template: arm_template/netcore_rg_arm.json       
         deploymentMode: Incremental
         deploymentName: deploy-${{ github.run_id }}
         parameters: sites_netcoregithub_name=netcoregithub sqlserver_password=${{ secrets.DB_PASSWORD }}
