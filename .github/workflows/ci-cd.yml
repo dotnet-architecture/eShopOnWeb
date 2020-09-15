@@ -49,7 +49,6 @@ jobs:
         path: arm
         
   deploy:
-    if: env.is_master
     needs: build
     runs-on: windows-latest
     steps:
