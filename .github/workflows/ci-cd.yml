@@ -9,7 +9,7 @@ jobs:
       build_config: Release
     steps:
     - name: test ref
-      run: echo ${{ github.ref == 'refs/head/master' }}
+      run: echo ${{ github.ref == 'refs/heads/master' }}
     - name: ref
       run: echo ${{ github.ref }}
     - uses: actions/checkout@v2
@@ -48,7 +48,7 @@ jobs:
         path: arm
         
   deploy:
-    if: github.ref == 'refs/head/master'
+    if: github.ref == 'refs/heads/master'
     needs: build
     runs-on: windows-latest
     steps:
