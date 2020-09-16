@@ -2,9 +2,6 @@ name: CI/CD (master) .Net Core
 
 on: [push]
 
-env:
-  is_master: ${{ github.ref == 'refs/heads/master' }}
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -24,8 +21,7 @@ jobs:
       run: dotnet build ./eShopOnWeb.sln --configuration $build_config
     - name: Test with dotnet
       run: dotnet test ./eShopOnWeb.sln --configuration $build_config
-    - name: Publish site
-      if: env.is_master
+    - name: Publish site      
       working-directory: ./src/Web
       run: dotnet publish -c $build_config -o ../../web_publish
     - name: Catalog SQL Script
@@ -48,10 +44,8 @@ jobs:
         name: arm_template
         path: arm
         
-  deploy:    
-    env:
-      is_master: ${{ github.ref == 'refs/heads/master' }}
-    if: env.is_master
+  deploy:       
+    if: github.ref == 'refs/heads/master' 
     needs: build
     runs-on: windows-latest
     steps:
