@@ -48,7 +48,9 @@ jobs:
         name: arm_template
         path: arm
         
-  deploy:
+  deploy:    
+    env:
+      is_master: ${{ github.ref == 'refs/heads/master' }}
     if: env.is_master
     needs: build
     runs-on: windows-latest
