@@ -1,6 +1,6 @@
 name: CI/CD (master) .Net Core
 
-on: [push]
+on: [workflow_dispatch]
 
 jobs:
   build:
