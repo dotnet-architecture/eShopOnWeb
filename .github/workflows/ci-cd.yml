@@ -16,7 +16,10 @@ jobs:
       # You may pin to the exact commit or the version.
       # uses: docker/build-push-action@ab83648e2e224cfeeab899e23b639660765c3a89
       uses: docker/build-push-action@v1.1.1
-      with:   
+      with:
+        registry: lfraile.azurecr.io
+        username: ${{ secrets.ACR_USER_NAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
         repository: eshop-web   
         tags: ${{ github.run_number }}
         tag_with_ref: true        
@@ -24,9 +27,13 @@ jobs:
         path: .
         dockerfile: src/Web/Dockerfile
         add_git_labels: true
-        # Whether to push the image
-        push: false
-    
+        
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.402
+    - name: Install dotnet tools
+      run: dotnet tool restore
     - name: Catalog SQL Script
       run: dotnet ef migrations script -c catalogcontext -i -p ./src/Infrastructure/Infrastructure.csproj -s ./src/Web/Web.csproj -o ./scripts/catalog.sql
     - name: Identity SQL Script
