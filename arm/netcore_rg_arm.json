@@ -141,7 +141,7 @@
         "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_netcoregithubplan_name'))]",
         "[resourceId('Microsoft.Insights/components/', parameters('sites_netcoregithub_name'))]"
       ],
-      "kind": "app",
+      "kind": "app,linux,container",
       "properties": {
         "enabled": true,
         "hostNameSslStates": [
