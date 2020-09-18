@@ -23,10 +23,10 @@ jobs:
       # uses: docker/build-push-action@ab83648e2e224cfeeab899e23b639660765c3a89
       uses: docker/build-push-action@v1.1.1
       with:
-        registry: ${{ env.registry_name }}
+        registry: ${registry_name}
         username: ${{ secrets.ACR_USER_NAME }}
         password: ${{ secrets.ACR_PASSWORD }}
-        repository: ${{ env.repository }}  
+        repository: ${{env.repository}}  
         tags: ${{ github.run_number }}
         path: .
         dockerfile: src/Web/Dockerfile
