@@ -16,6 +16,22 @@
     },
     "sqlserver_password": {
       "type": "securestring"
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "westeurope"
+    },
+    "dockerRegistryPassword": {
+      "type": "string",
+      "defaultValue": ""
+    },
+    "dockerRegistryUsername": {
+      "type": "string",
+      "defaultValue": ""
+    },
+    "dockerRegistryUrl": {
+      "type": "string",
+      "defaultValue": "https://index.docker.io"
     }
   },
   "variables": {},
@@ -54,30 +70,7 @@
         "endIpAddress": "0.0.0.0"
       }
     },
-    {
-      "type": "Microsoft.Web/serverfarms",
-      "apiVersion": "2018-02-01",
-      "name": "[parameters('serverfarms_netcoregithubplan_name')]",
-      "location": "West Europe",
-      "sku": {
-        "name": "B1",
-        "tier": "Basic",
-        "size": "B1",
-        "family": "B",
-        "capacity": 1
-      },
-      "kind": "linux",
-      "properties": {
-        "perSiteScaling": false,
-        "maximumElasticWorkerCount": 1,
-        "isSpot": false,
-        "reserved": false,
-        "isXenon": false,
-        "hyperV": false,
-        "targetWorkerCount": 0,
-        "targetWorkerSizeId": 0
-      }
-    },
+
     {
       "type": "Microsoft.Sql/servers/databases",
       "apiVersion": "2019-06-01-preview",
@@ -135,98 +128,62 @@
     {
       "type": "Microsoft.Web/sites",
       "apiVersion": "2018-11-01",
-      "name": "[parameters('sites_netcoregithub_name')]",
-      "location": "West Europe",
+      "name": "[parameters('servers_netcoregithub_name')]",
+      "location": "[parameters('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_netcoregithubplan_name'))]",
-        "[resourceId('Microsoft.Insights/components/', parameters('sites_netcoregithub_name'))]"
+        "[concat('Microsoft.Web/serverfarms/', parameters('serverfarms_netcoregithubplan_name'))]"
       ],
-      "kind": "app,linux,container",
       "properties": {
-        "enabled": true,
-        "hostNameSslStates": [
-          {
-            "name": "[concat(parameters('sites_netcoregithub_name'), '.azurewebsites.net')]",
-            "sslState": "Disabled",
-            "hostType": "Standard"
-          },
-          {
-            "name": "[concat(parameters('sites_netcoregithub_name'), '.scm.azurewebsites.net')]",
-            "sslState": "Disabled",
-            "hostType": "Repository"
-          }
-        ],
-        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_netcoregithubplan_name'))]",
-        "reserved": false,
-        "isXenon": false,
-        "hyperV": false,
-        "scmSiteAlsoStopped": false,
-        "clientAffinityEnabled": true,
-        "clientCertEnabled": false,
-        "hostNamesDisabled": false,
-        "containerSize": 0,
-        "dailyMemoryTimeQuota": 0,
-        "httpsOnly": false,
-        "redundancyMode": "None",
+        "name": "[parameters('servers_netcoregithub_name')]",
         "siteConfig": {
           "appSettings": [
             {
-              "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-              "value": "[reference(resourceId('microsoft.insights/components/', parameters('sites_netcoregithub_name')), '2018-05-01-preview').InstrumentationKey]"
+              "name": "DOCKER_REGISTRY_SERVER_URL",
+              "value": "[parameters('dockerRegistryUrl')]"
             },
             {
-              "name": "ApplicationInsightsAgent_EXTENSION_VERSION",
-              "value": "~2"
+              "name": "DOCKER_REGISTRY_SERVER_USERNAME",
+              "value": "[parameters('dockerRegistryUsername')]"
             },
             {
-              "name": "XDT_MicrosoftApplicationInsights_Mode",
-              "value": "default"
+              "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
+              "value": "[parameters('dockerRegistryPassword')]"
             },
             {
-              "name": "DiagnosticServices_EXTENSION_VERSION",
-              "value": "disabled"
-            },
-            {
-              "name": "APPINSIGHTS_PROFILERFEATURE_VERSION",
-              "value": "disabled"
-            },
-            {
-              "name": "APPINSIGHTS_SNAPSHOTFEATURE_VERSION",
-              "value": "disabled"
-            },
-            {
-              "name": "InstrumentationEngine_EXTENSION_VERSION",
-              "value": "disabled"
-            },
-            {
-              "name": "SnapshotDebugger_EXTENSION_VERSION",
-              "value": "disabled"
-            },
-            {
-              "name": "XDT_MicrosoftApplicationInsights_BaseExtensions",
-              "value": "disabled"
+              "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
+              "value": "false"
             }
-          ]
-        }
+          ],
+          "linuxFxVersion": "DOCKER|nginx"
+
+        },
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_netcoregithubplan_name'))]",
+        "clientAffinityEnabled": false
       }
     },
     {
-      "type": "Microsoft.Web/sites/config",
+      "type": "Microsoft.Web/serverfarms",
       "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_netcoregithub_name'), '/web')]",
-      "location": "West Europe",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_netcoregithub_name'))]"
-      ],
+      "name": "[parameters('serverfarms_netcoregithubplan_name')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [],
+      "sku": {
+        "name": "B1",
+        "tier": "Basic",
+        "size": "B1",
+        "family": "B",
+        "capacity": 1
+      },
+      "kind": "linux",
       "properties": {
-        "numberOfWorkers": 1,
-        "netFrameworkVersion": "v4.0",
-        "requestTracingEnabled": false,
-        "remoteDebuggingEnabled": false,
-        "remoteDebuggingVersion": "VS2019",
-        "httpLoggingEnabled": false,
-        "logsDirectorySizeLimit": 35,
-        "detailedErrorLoggingEnabled": false
+        "perSiteScaling": false,
+        "maximumElasticWorkerCount": 1,
+        "isSpot": false,
+        "reserved": true,
+        "isXenon": false,
+        "hyperV": false,
+        "targetWorkerCount": 0,
+        "targetWorkerSizeId": 0
       }
     }
   ]
