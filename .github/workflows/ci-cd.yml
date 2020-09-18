@@ -1,7 +1,10 @@
 name: CI/CD (master) .Net Core
 
 on: [push]
-
+env:
+  registry_name: lfraile.azurecr.io
+  respository: eshop-web
+  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,13 +20,11 @@ jobs:
       # uses: docker/build-push-action@ab83648e2e224cfeeab899e23b639660765c3a89
       uses: docker/build-push-action@v1.1.1
       with:
-        registry: lfraile.azurecr.io
+        registry: ${{ env.registry_name }}
         username: ${{ secrets.ACR_USER_NAME }}
         password: ${{ secrets.ACR_PASSWORD }}
-        repository: eshop-web   
+        repository: ${{ env.repository }}  
         tags: ${{ github.run_number }}
-        tag_with_ref: true        
-        tag_with_sha: true
         path: .
         dockerfile: src/Web/Dockerfile
         add_git_labels: true
@@ -55,7 +56,7 @@ jobs:
         path: arm
         
   deploy:       
-    if: github.ref == 'refs/heads/master' 
+   # if: github.ref == 'refs/heads/master' 
     needs: build
     runs-on: windows-latest
     steps:
@@ -96,6 +97,13 @@ jobs:
       with:
         app-name: netcoregithub      
         package: web_site
+
+    - name: Azure WebApp
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: netcoregithub        
+        #slot-name: # optional, default is production
+        images: ${{ env.registry_name }}/${{ env.respository }}:${{ github.run_number }}
 
     - name: Azure App Service Settings
       uses: Azure/appservice-settings@v1
