@@ -30,7 +30,7 @@
     "dockerRegistryUrl": {
       "type": "string"
     },
-    "dockerImage" {
+    "dockerImage": {
       "type": "string"
     }
   },
