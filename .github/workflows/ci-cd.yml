@@ -93,12 +93,6 @@ jobs:
     - name: Azure WebApp
       uses: Azure/webapps-deploy@v2
       with:
-        app-name: netcoregithub      
-        package: web_site
-
-    - name: Azure WebApp
-      uses: Azure/webapps-deploy@v2
-      with:
         app-name: netcoregithub        
         #slot-name: # optional, default is production
         images: ${{ env.registry_name }}/${{ env.respository_name }}:${{ github.run_number }}
