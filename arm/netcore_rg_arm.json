@@ -22,16 +22,16 @@
       "defaultValue": "westeurope"
     },
     "dockerRegistryPassword": {
-      "type": "string",
-      "defaultValue": ""
+      "type": "string"
     },
     "dockerRegistryUsername": {
-      "type": "string",
-      "defaultValue": ""
+      "type": "string"
     },
     "dockerRegistryUrl": {
-      "type": "string",
-      "defaultValue": "https://index.docker.io"
+      "type": "string"
+    },
+    "dockerImage" {
+      "type": "string"
     }
   },
   "variables": {},
@@ -154,7 +154,7 @@
               "value": "false"
             }
           ],
-          "linuxFxVersion": "DOCKER|nginx"
+          "linuxFxVersion": "[concat('DOCKER|',parameters('dockerImage'))]"
 
         },
         "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_netcoregithubplan_name'))]",
