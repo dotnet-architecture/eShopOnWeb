@@ -11,8 +11,6 @@ jobs:
     env:
       build_config: Release
     steps:
-    - name: is master
-      run: echo $is_master
     - uses: actions/checkout@v2
     
     - name: Build docker image
@@ -33,22 +31,22 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.402
+    
     - name: Install dotnet tools
       run: dotnet tool restore
+    
     - name: Catalog SQL Script
       run: dotnet ef migrations script -c catalogcontext -i -p ./src/Infrastructure/Infrastructure.csproj -s ./src/Web/Web.csproj -o ./scripts/catalog.sql
+    
     - name: Identity SQL Script
       run: dotnet ef migrations script -c appidentitydbcontext  -i -p ./src/Infrastructure/Infrastructure.csproj -s ./src/Web/Web.csproj -o ./scripts/identity.sql
+    
     - name: Upload scripts
       uses: actions/upload-artifact@v2
       with:
         name: sql_scripts
         path: ./scripts
-    - name: Upload site
-      uses: actions/upload-artifact@v2
-      with:
-        name: web_site
-        path: ./web_publish
+
     - name: Upload ARM
       uses: actions/upload-artifact@v2
       with:
@@ -60,16 +58,13 @@ jobs:
     needs: build
     runs-on: windows-latest
     steps:
+      
     - name: Download scripts
       uses: actions/download-artifact@v2
       with:
         name: sql_scripts
         path: sql_scripts
-    - name: Download site
-      uses: actions/download-artifact@v2
-      with:
-        name: web_site
-        path: web_site
+
     - name: Download arm
       uses: actions/download-artifact@v2
       with:
