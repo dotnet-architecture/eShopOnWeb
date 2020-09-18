@@ -15,8 +15,6 @@ jobs:
     - uses: actions/checkout@v2
           
     - name: Build docker image
-      # You may pin to the exact commit or the version.
-      # uses: docker/build-push-action@ab83648e2e224cfeeab899e23b639660765c3a89
       uses: docker/build-push-action@v1.1.1
       with:
         registry: ${{ env.registry_name }}
