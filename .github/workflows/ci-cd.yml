@@ -2,14 +2,15 @@ name: CI/CD (master) .Net Core
 
 on: [push]
 
+env:
+  build_config: Release      
+  registry_name: lfraile.azurecr.io
+  respository_name: eshop-web
   
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      build_config: Release      
-      registry_name: lfraile.azurecr.io
-      respository_name: eshop-web
+
     steps:
     - uses: actions/checkout@v2
           
@@ -102,7 +103,7 @@ jobs:
       with:
         app-name: netcoregithub        
         #slot-name: # optional, default is production
-        images: ${{ env.registry_name }}/${{ env.respository }}:${{ github.run_number }}
+        images: ${{ env.registry_name }}/${{ env.respository_name }}:${{ github.run_number }}
 
     - name: Azure App Service Settings
       uses: Azure/appservice-settings@v1
