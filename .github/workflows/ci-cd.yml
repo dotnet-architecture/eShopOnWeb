@@ -26,7 +26,7 @@ jobs:
         registry: ${{ env.registry_name }}
         username: ${{ secrets.ACR_USER_NAME }}
         password: ${{ secrets.ACR_PASSWORD }}
-        repository: ${{ env.repository }}  
+        repository: eshop-web 
         tags: ${{ github.run_number }}
         path: .
         dockerfile: src/Web/Dockerfile
