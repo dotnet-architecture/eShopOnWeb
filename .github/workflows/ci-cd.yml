@@ -16,8 +16,9 @@ jobs:
       # You may pin to the exact commit or the version.
       # uses: docker/build-push-action@ab83648e2e224cfeeab899e23b639660765c3a89
       uses: docker/build-push-action@v1.1.1
-      with:      
-        tags: eshop-web:${{ github.run_number }}
+      with:   
+        repository: eshop-web   
+        tags: ${{ github.run_number }}
         tag_with_ref: true        
         tag_with_sha: true
         path: .
