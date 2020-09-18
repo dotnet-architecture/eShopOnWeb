@@ -9,13 +9,8 @@ jobs:
     env:
       build_config: Release      
       registry_name: lfraile.azurecr.io
-      respository: eshop-web
+      respository_name: eshop-web
     steps:
-    - name: testing
-      run: echo $repo
-      env:
-        repo: ${{ env.respository }}
-        
     - uses: actions/checkout@v2
           
     - name: Build docker image
@@ -26,7 +21,7 @@ jobs:
         registry: ${{ env.registry_name }}
         username: ${{ secrets.ACR_USER_NAME }}
         password: ${{ secrets.ACR_PASSWORD }}
-        repository: eshop-web 
+        repository: ${{ env.respository_name }}
         tags: ${{ github.run_number }}
         path: .
         dockerfile: src/Web/Dockerfile
