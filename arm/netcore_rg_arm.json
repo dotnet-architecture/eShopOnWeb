@@ -32,6 +32,12 @@
     },
     "dockerImage": {
       "type": "string"
+    },
+    "catalogConnstring": {
+      "type": "securestring"
+    },
+    "identityConnstring": {
+      "type": "securestring"
     }
   },
   "variables": {},
@@ -128,14 +134,26 @@
     {
       "type": "Microsoft.Web/sites",
       "apiVersion": "2018-11-01",
-      "name": "[parameters('servers_netcoregithub_name')]",
+      "name": "[parameters('sites_netcoregithub_name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
         "[concat('Microsoft.Web/serverfarms/', parameters('serverfarms_netcoregithubplan_name'))]"
       ],
       "properties": {
-        "name": "[parameters('servers_netcoregithub_name')]",
-        "siteConfig": {         
+        "name": "[parameters('sites_netcoregithub_name')]",
+        "siteConfig": {  
+          "connectionStrings": [
+            {
+              "connectionString": "[parameters("catalogConnstring")]",
+              "name": "CatalogConnection",
+              "type": "SQLAzure"
+            },
+             {
+              "connectionString": "[parameters("identityConnstring")]",
+              "name": "IdentityConnection",
+              "type": "SQLAzure"
+            }
+          ],       
           "appSettings": [
             {
               "name": "DOCKER_REGISTRY_SERVER_URL",
