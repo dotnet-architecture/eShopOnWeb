@@ -1,6 +1,6 @@
 name: CI/CD .Net Core
 
-on: [push]
+on: [workflow_dispatch]
 
 env:
   build_config: Release      
