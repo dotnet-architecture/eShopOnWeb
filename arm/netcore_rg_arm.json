@@ -144,12 +144,12 @@
         "siteConfig": {  
           "connectionStrings": [
             {
-              "connectionString": "[parameters("catalogConnstring")]",
+              "connectionString": "[parameters('catalogConnstring')]",
               "name": "CatalogConnection",
               "type": "SQLAzure"
             },
              {
-              "connectionString": "[parameters("identityConnstring")]",
+              "connectionString": "[parameters('identityConnstring')]",
               "name": "IdentityConnection",
               "type": "SQLAzure"
             }
