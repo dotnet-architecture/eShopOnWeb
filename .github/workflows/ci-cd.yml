@@ -7,6 +7,7 @@ env:
   registry_name: lfraile.azurecr.io
   respository_name: eshop-web
   
+  
 jobs:
   build:
     runs-on: ubuntu-latest
