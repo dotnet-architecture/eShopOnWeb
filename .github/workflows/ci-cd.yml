@@ -17,9 +17,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-
+        key: ${{ runner.os }}-buildx-${{ hashFiles('src/Web/Dockerfile') }}
 
     - uses: actions/checkout@v2
           
