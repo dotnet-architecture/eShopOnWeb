@@ -1,4 +1,4 @@
-name: CI/CD (master) .Net Core
+name: CI/CD .Net Core
 
 on: [workflow_dispatch]
 
