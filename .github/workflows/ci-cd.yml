@@ -1,4 +1,4 @@
-name: CI/CD (master) .Net Core
+name: CI/CD (master) .Net Core (Docker)
 
 on: [push]
 
