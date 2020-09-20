@@ -135,7 +135,7 @@
       ],
       "properties": {
         "name": "[parameters('servers_netcoregithub_name')]",
-        "siteConfig": {
+        "siteConfig": {         
           "appSettings": [
             {
               "name": "DOCKER_REGISTRY_SERVER_URL",
@@ -168,10 +168,10 @@
       "location": "[parameters('location')]",
       "dependsOn": [],
       "sku": {
-        "name": "B1",
-        "tier": "Basic",
-        "size": "B1",
-        "family": "B",
+        "name": "P1v2",
+        "tier": "PremiumV2",
+        "size": "P1v2",
+        "family": "Pv2",
         "capacity": 1
       },
       "kind": "linux",
