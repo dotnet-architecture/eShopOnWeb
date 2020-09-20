@@ -20,7 +20,10 @@ jobs:
       with:
         path: /tmp/.buildx-cache
         key: ${{ runner.os }}-buildx-${{ hashFiles('src/Web/Dockerfile') }}
-
+    
+    - name: Test with dotnet
+      run: dotnet test ./eShopOnWeb.sln --configuration $build_config
+    
     - name: Build docker image
       uses: docker/build-push-action@v1.1.1
       with:
