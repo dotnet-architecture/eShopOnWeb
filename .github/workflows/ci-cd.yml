@@ -12,7 +12,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      
+    - name: test hash
+      run: echo hash $testHash
+      env:
+        testHash: ${{ hashFiles('src/Web/Dockerfile') }}
     - name: Cache Docker layers
       uses: actions/cache@v2
       with:
