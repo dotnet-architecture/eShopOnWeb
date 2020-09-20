@@ -12,18 +12,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: test hash
-      run: echo hash $testHash
-      env:
-        testHash: ${{ hashFiles('src/Web/Dockerfile') }}
+    - uses: actions/checkout@v2
+    
     - name: Cache Docker layers
       uses: actions/cache@v2
       with:
         path: /tmp/.buildx-cache
         key: ${{ runner.os }}-buildx-${{ hashFiles('src/Web/Dockerfile') }}
 
-    - uses: actions/checkout@v2
-          
     - name: Build docker image
       uses: docker/build-push-action@v1.1.1
       with:
