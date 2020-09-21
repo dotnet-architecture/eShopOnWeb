@@ -79,7 +79,7 @@ jobs:
         template: arm_template/netcore_rg_arm.json       
         deploymentMode: Incremental
         deploymentName: deploy-${{ github.run_id }}
-        parameters: sites_netcoregithub_name=netcoregithub sqlserver_password=${{ secrets.DB_PASSWORD }} serverfarms_netcoregithubplan_name=netcoregithubplan
+        parameters: sites_netcoregithub_name=netcoregithub sqlserver_password=${{ secrets.DB_PASSWORD }}
 
     - name: Azure WebApp
       uses: Azure/webapps-deploy@v2
