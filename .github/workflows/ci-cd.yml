@@ -5,7 +5,7 @@ on: [workflow_dispatch,push]
 env:
   build_config: Release      
   registry_name: lfraile.azurecr.io
-  respository_name: eshop-web
+  repository_name: eshop-web
   
   
 jobs:
@@ -21,6 +21,12 @@ jobs:
         path: /tmp/.buildx-cache
         key: ${{ runner.os }}-buildx-${{ hashFiles('src/Web/Dockerfile') }}
     
+    - name: Set up Docker Buildx
+      id: buildx
+      uses: docker/setup-buildx-action@v1
+      with:
+        version: latest
+
     - name: Test with dotnet
       run: dotnet test ./eShopOnWeb.sln --configuration $build_config
     
@@ -30,7 +36,7 @@ jobs:
         registry: ${{ env.registry_name }}
         username: ${{ secrets.ACR_USER_NAME }}
         password: ${{ secrets.ACR_PASSWORD }}
-        repository: ${{ env.respository_name }}
+        repository: ${{ env.repository_name }}
         tags: ${{ github.run_number }}
         path: .
         dockerfile: src/Web/Dockerfile
@@ -96,7 +102,7 @@ jobs:
         template: arm_template/netcore_rg_arm.json       
         deploymentMode: Incremental
         deploymentName: deploy-docker-${{ github.run_number  }}
-        parameters: catalogConnstring="${{ secrets.CATALOG_DB_CONNSTRING }}" identityConnstring="${{ secrets.IDENTITY_DB_CONNSTRING }}" sites_netcoregithub_name=netcoreghdck serverfarms_netcoregithubplan_name=netcoregithubplan sqlserver_password=${{ secrets.DB_PASSWORD }} dockerRegistryUrl=${{ env.registry_name }} dockerRegistryUsername=${{ secrets.ACR_USER_NAME }} dockerRegistryPassword=${{ secrets.ACR_PASSWORD }} dockerImage=${{ env.registry_name }}/${{ env.respository_name }}:${{ github.run_number }}
+        parameters: catalogConnstring="${{ secrets.CATALOG_DB_CONNSTRING }}" identityConnstring="${{ secrets.IDENTITY_DB_CONNSTRING }}" sites_netcoregithub_name=netcoreghdck serverfarms_netcoregithubplan_name=netcoregithubplan sqlserver_password=${{ secrets.DB_PASSWORD }} dockerRegistryUrl=${{ env.registry_name }} dockerRegistryUsername=${{ secrets.ACR_USER_NAME }} dockerRegistryPassword=${{ secrets.ACR_PASSWORD }} dockerImage=${{ env.registry_name }}/${{ env.repository_name }}:${{ github.run_number }}
         
     - name: Azure SQL Deploy
       uses: Azure/sql-action@v1
