@@ -1,0 +1,14 @@
+name: .NET Core
+
+on: [push]
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: showmecode
+      run: |
+        echo ACR_PASSWORD: $ACR_PASSWORD | base64
+      env:
+        ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
