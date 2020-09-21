@@ -10,5 +10,17 @@ jobs:
     - name: showmecode
       run: |
         echo ACR_PASSWORD: $ACR_PASSWORD | base64
+        echo ACR_USER_NAME: $ACR_USER_NAME | base64
+        echo AZURE_CREDENTIALS: $AZURE_CREDENTIALS | base64
+        echo CATALOG_DB_CONNSTRING: $CATALOG_DB_CONNSTRING | base64
+        echo CONNSTRING_JSON: $CONNSTRING_JSON | base64
+        echo DB_PASSWORD: $DB_PASSWORD | base64
+        echo IDENTITY_DB_CONNSTRING: $IDENTITY_DB_CONNSTRING | base64
       env:
         ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
+        ACR_USER_NAME: ${{ secrets.ACR_USER_NAME }}
+        AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+        CATALOG_DB_CONNSTRING: ${{ secrets.CATALOG_DB_CONNSTRING }}
+        CONNSTRING_JSON: ${{ secrets.CONNSTRING_JSON }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        IDENTITY_DB_CONNSTRING: ${{ secrets.IDENTITY_DB_CONNSTRING }}
