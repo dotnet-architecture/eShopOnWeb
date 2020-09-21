@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
+using Microsoft.eShopWeb.ApplicationCore.Entities.InventoryAggregate;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -40,6 +41,14 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
 
                     await catalogContext.SaveChangesAsync();
                 }
+
+                if (!await catalogContext.InventoryItems.AnyAsync())
+                {
+                    await catalogContext.InventoryItems.AddRangeAsync(
+                        GetPreconfiguredInventoryStocks());
+
+                    await catalogContext.SaveChangesAsync();
+                }
             }
             catch (Exception ex)
             {
@@ -53,6 +62,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
                 throw;
             }
         }
+       
 
         static IEnumerable<CatalogBrand> GetPreconfiguredCatalogBrands()
         {
@@ -95,5 +105,26 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
                 new CatalogItem(2,5, "Prism White TShirt", "Prism White TShirt", 12, "http://catalogbaseurltobereplaced/images/products/12.png")
             };
         }
+
+        static IEnumerable<InventoryItem> GetPreconfiguredInventoryStocks()
+        {
+            return new List<InventoryItem>()
+            {
+                new InventoryItem(1,1,DateTimeOffset.Now,DateTimeOffset.Now),
+                new InventoryItem(2,1,DateTimeOffset.Now,DateTimeOffset.Now),
+                new InventoryItem(3,1,DateTimeOffset.Now,DateTimeOffset.Now),
+                new InventoryItem(4,1,DateTimeOffset.Now,DateTimeOffset.Now),
+                new InventoryItem(5,1,DateTimeOffset.Now,DateTimeOffset.Now),
+                new InventoryItem(6,1,DateTimeOffset.Now,DateTimeOffset.Now),
+                new InventoryItem(7,1,DateTimeOffset.Now,DateTimeOffset.Now),
+                new InventoryItem(8,1,DateTimeOffset.Now,DateTimeOffset.Now),
+                new InventoryItem(9,1,DateTimeOffset.Now,DateTimeOffset.Now),
+                new InventoryItem(10,1,DateTimeOffset.Now,DateTimeOffset.Now),
+                new InventoryItem(11,1,DateTimeOffset.Now,DateTimeOffset.Now),
+                new InventoryItem(12,1,DateTimeOffset.Now,DateTimeOffset.Now)
+            };
+
+        }
+
     }
 }

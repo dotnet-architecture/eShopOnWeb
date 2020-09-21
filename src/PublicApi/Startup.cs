@@ -40,10 +40,10 @@ namespace Microsoft.eShopWeb.PublicApi
         public void ConfigureDevelopmentServices(IServiceCollection services)
         {
             // use in-memory database
-            ConfigureInMemoryDatabases(services);
+            //ConfigureInMemoryDatabases(services);
 
             // use real database
-            //ConfigureProductionServices(services);
+            ConfigureProductionServices(services);
         }
 
         public void ConfigureDockerServices(IServiceCollection services)
@@ -95,6 +95,9 @@ namespace Microsoft.eShopWeb.PublicApi
             services.AddSingleton<IUriComposer>(new UriComposer(Configuration.Get<CatalogSettings>()));
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
             services.AddScoped<ITokenClaimsService, IdentityTokenClaimService>();
+
+            // Configure Inventory Service
+            services.AddScoped<IInventoryService, InventoryService>();
 
             var baseUrlConfig = new BaseUrlConfiguration();
             Configuration.Bind(BaseUrlConfiguration.CONFIG_NAME, baseUrlConfig);

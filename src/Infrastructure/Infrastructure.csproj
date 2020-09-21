@@ -19,6 +19,6 @@
 		<ProjectReference Include="..\ApplicationCore\ApplicationCore.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-		<Folder Include="Data\Migrations\" />
+	  <Folder Include="Data\Migrations\" />
 	</ItemGroup>
 </Project>

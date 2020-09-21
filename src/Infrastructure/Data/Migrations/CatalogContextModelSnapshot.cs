@@ -15,11 +15,12 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.0.0")
+                .HasAnnotation("ProductVersion", "3.1.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("Relational:Sequence:.catalog_brand_hilo", "'catalog_brand_hilo', '', '1', '10', '', '', 'Int64', 'False'")
                 .HasAnnotation("Relational:Sequence:.catalog_hilo", "'catalog_hilo', '', '1', '10', '', '', 'Int64', 'False'")
                 .HasAnnotation("Relational:Sequence:.catalog_type_hilo", "'catalog_type_hilo', '', '1', '10', '', '', 'Int64', 'False'")
+                .HasAnnotation("Relational:Sequence:.inventory_hilo", "'inventory_hilo', '', '1', '10', '', '', 'Int64', 'False'")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate.Basket", b =>
@@ -136,6 +137,31 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CatalogTypes");
+                });
+
+            modelBuilder.Entity("Microsoft.eShopWeb.ApplicationCore.Entities.InventoryAggregate.InventoryItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:HiLoSequenceName", "inventory_hilo")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
+
+                    b.Property<int>("CatalogItemId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("ModifiedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("InventoryItems");
                 });
 
             modelBuilder.Entity("Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate.Order", b =>
