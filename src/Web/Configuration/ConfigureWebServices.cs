@@ -12,10 +12,12 @@ namespace Microsoft.eShopWeb.Web.Configuration
         {
             services.AddMediatR(typeof(BasketViewModelService).Assembly);
             services.AddScoped<IBasketViewModelService, BasketViewModelService>();
-            services.AddScoped<CatalogViewModelService>();
-            services.AddScoped<ICatalogItemViewModelService, CatalogItemViewModelService>();
+            //services.AddScoped<CatalogViewModelService>();
+            services.AddTransient<ICatalogViewModelService,CatalogViewModelService>();
+            //services.AddScoped<ICatalogItemViewModelService, CatalogItemViewModelService>();
+            services.AddTransient<ICatalogItemViewModelService, CatalogItemViewModelService>();
             services.Configure<CatalogSettings>(configuration);
-            services.AddScoped<ICatalogViewModelService, CachedCatalogViewModelService>();
+            //services.AddScoped<ICatalogViewModelService, CachedCatalogViewModelService>();            
 
             return services;
         }

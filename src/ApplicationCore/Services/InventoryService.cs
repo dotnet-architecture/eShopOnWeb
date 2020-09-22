@@ -19,7 +19,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
             _inventoryItemRepository = inventoryItemRepository;
             _logger = logger;
         }
-        
+
         public async Task<InventoryItem> AddInventoryItem(int catalogItemId, int quantities)
         {
             Guard.Against.NegativeOrZero(catalogItemId, nameof(catalogItemId));
@@ -38,6 +38,8 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
 
         public async Task<InventoryItem> GetInventoryItemAsync(int catalogItemId)
         {
+            Guard.Against.NegativeOrZero(catalogItemId, nameof(catalogItemId));
+
             var inventoryItem = await _inventoryItemRepository.GetByIdAsync(catalogItemId);
 
             return inventoryItem;
@@ -56,5 +58,43 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
 
             return existingInventoryItem;
         }
+
+        /// <summary>
+        ///  This method is only used to reset back the API to original value.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<string> UpdateAllInventoryItem()
+        {
+            var allExistingInventoryItems = await _inventoryItemRepository.ListAllAsync();
+
+            foreach (var inventoryItem in allExistingInventoryItems)
+            {
+                if (inventoryItem.CatalogItemId == 1)
+                {
+                    inventoryItem.UpdateQuantity(0);
+                }
+                else if (inventoryItem.CatalogItemId == 2)
+                {
+                    inventoryItem.UpdateQuantity(1);
+                }
+                else if (inventoryItem.CatalogItemId == 3)
+                {
+                    inventoryItem.UpdateQuantity(2);
+                }
+                else
+                {
+                    inventoryItem.UpdateQuantity(5);
+                }
+
+                inventoryItem.UpdateCreatedDate(DateTimeOffset.Now);
+                inventoryItem.UpdateModifiedDate(DateTimeOffset.Now);
+
+                await _inventoryItemRepository.UpdateAsync(inventoryItem);
+            }
+
+            return "Done";
+        }
+
+
     }
 }

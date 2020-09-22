@@ -18,6 +18,7 @@ using Microsoft.eShopWeb.Infrastructure.Data;
 using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.eShopWeb.Infrastructure.Logging;
 using Microsoft.eShopWeb.Infrastructure.Services;
+using Microsoft.eShopWeb.PublicApi.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -74,6 +75,10 @@ namespace Microsoft.eShopWeb.PublicApi
             services.AddDbContext<AppIdentityDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
 
+            // Automatically perform database migration
+            services.BuildServiceProvider().GetService<CatalogContext>().Database.Migrate();
+            services.BuildServiceProvider().GetService<AppIdentityDbContext>().Database.Migrate();
+
             ConfigureServices(services);
         }
 
@@ -105,23 +110,8 @@ namespace Microsoft.eShopWeb.PublicApi
 
             services.AddMemoryCache();
 
-            var key = Encoding.ASCII.GetBytes(AuthorizationConstants.JWT_SECRET_KEY);
-            services.AddAuthentication(config =>
-            {
-                config.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(config =>
-            {
-                config.RequireHttpsMetadata = false;
-                config.SaveToken = true;
-                config.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-            });
+            // Extensions method to load the authorization.
+            services.ConfigureServiceAuth(Configuration);
 
             services.AddCors(options =>
             {

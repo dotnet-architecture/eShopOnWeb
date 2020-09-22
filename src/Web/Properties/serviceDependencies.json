@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "type": "mssql",
+      "connectionId": "CatalogConnection"
+    },
+    "mssql2": {
+      "type": "mssql",
+      "connectionId": "IdentityConnection"
+    }
+  }
+}

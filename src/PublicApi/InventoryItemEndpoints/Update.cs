@@ -1,4 +1,6 @@
 ﻿using Ardalis.ApiEndpoints;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
@@ -10,6 +12,8 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.PublicApi.InventoryItemEndpoints
 {
+
+    [Authorize(Roles = BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class Update : BaseAsyncEndpoint<UpdateInventoryItemRequest, UpdateInventoryItemResponse>
     {
         private readonly IInventoryService _inventoryService;
@@ -43,6 +47,20 @@ namespace Microsoft.eShopWeb.PublicApi.InventoryItemEndpoints
 
             return Ok(response);
 
+        }
+
+        [HttpPut("api/inventory-items/reset")]
+        [SwaggerOperation(
+            Summary = "Update All Inventory Items",
+            Description = "Update All Inventory Items",
+            OperationId = "inventory-items.reset",
+            Tags = new[] { "InventoryItemEndpoints" })
+        ]
+        public async Task<ActionResult<string>> HandleAsync()
+        {
+            var response = await _inventoryService.UpdateAllInventoryItem();
+            
+            return Ok(response);
         }
     }
 }

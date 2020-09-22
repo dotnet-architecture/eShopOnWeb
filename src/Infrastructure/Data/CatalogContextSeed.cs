@@ -62,7 +62,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
                 throw;
             }
         }
-       
+
 
         static IEnumerable<CatalogBrand> GetPreconfiguredCatalogBrands()
         {
@@ -110,18 +110,18 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
         {
             return new List<InventoryItem>()
             {
-                new InventoryItem(1,1,DateTimeOffset.Now,DateTimeOffset.Now),
+                new InventoryItem(1,0,DateTimeOffset.Now,DateTimeOffset.Now),
                 new InventoryItem(2,1,DateTimeOffset.Now,DateTimeOffset.Now),
-                new InventoryItem(3,1,DateTimeOffset.Now,DateTimeOffset.Now),
-                new InventoryItem(4,1,DateTimeOffset.Now,DateTimeOffset.Now),
-                new InventoryItem(5,1,DateTimeOffset.Now,DateTimeOffset.Now),
-                new InventoryItem(6,1,DateTimeOffset.Now,DateTimeOffset.Now),
-                new InventoryItem(7,1,DateTimeOffset.Now,DateTimeOffset.Now),
-                new InventoryItem(8,1,DateTimeOffset.Now,DateTimeOffset.Now),
-                new InventoryItem(9,1,DateTimeOffset.Now,DateTimeOffset.Now),
-                new InventoryItem(10,1,DateTimeOffset.Now,DateTimeOffset.Now),
-                new InventoryItem(11,1,DateTimeOffset.Now,DateTimeOffset.Now),
-                new InventoryItem(12,1,DateTimeOffset.Now,DateTimeOffset.Now)
+                new InventoryItem(3,2,DateTimeOffset.Now,DateTimeOffset.Now),
+                new InventoryItem(4,5,DateTimeOffset.Now,DateTimeOffset.Now),
+                new InventoryItem(5,5,DateTimeOffset.Now,DateTimeOffset.Now),
+                new InventoryItem(6,5,DateTimeOffset.Now,DateTimeOffset.Now),
+                new InventoryItem(7,5,DateTimeOffset.Now,DateTimeOffset.Now),
+                new InventoryItem(8,5,DateTimeOffset.Now,DateTimeOffset.Now),
+                new InventoryItem(9,5,DateTimeOffset.Now,DateTimeOffset.Now),
+                new InventoryItem(10,5,DateTimeOffset.Now,DateTimeOffset.Now),
+                new InventoryItem(11,5,DateTimeOffset.Now,DateTimeOffset.Now),
+                new InventoryItem(12,5,DateTimeOffset.Now,DateTimeOffset.Now)
             };
 
         }

@@ -9,5 +9,8 @@
 
         // TODO: Change this to an environment variable
         public const string JWT_SECRET_KEY = "SecretKeyOfDoomThatMustBeAMinimumNumberOfBytes";
+
+        public const string AUTH_TYPE_AZURE_AD = "AzureAD";
+
     }
 }

@@ -15,17 +15,17 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities.InventoryAggregate
 
         public DateTimeOffset CreatedDate { get; set; }
 
-        public DateTimeOffset ModifiedDate { get;  set; }
+        public DateTimeOffset ModifiedDate { get; set; }
 
         public InventoryItem()
-        {            
+        {
         }
 
         public InventoryItem(int catalogItemId, int quantity, DateTimeOffset createdDate, DateTimeOffset modifiedDate)
         {
             Guard.Against.NegativeOrZero(catalogItemId, nameof(catalogItemId));
             Guard.Against.Negative(quantity, nameof(quantity));
-            
+
             CatalogItemId = catalogItemId;
             CreatedDate = createdDate;
             ModifiedDate = modifiedDate;
@@ -37,12 +37,18 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities.InventoryAggregate
         {
             Guard.Against.OutOfRange(quantity, nameof(quantity), 0, int.MaxValue);
 
-            Quantity += quantity;
+            //Quantity += quantity;
+            SetQuantity(quantity);
         }
 
         public void UpdateModifiedDate(DateTimeOffset modifiedDate)
         {
             ModifiedDate = modifiedDate;
+        }
+
+        public void UpdateCreatedDate(DateTimeOffset createdDate)
+        {
+            CreatedDate = createdDate;
         }
 
         public void SetQuantity(int quantity)

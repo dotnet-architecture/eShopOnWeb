@@ -13,5 +13,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Interfaces
         Task<InventoryItem> AddInventoryItem(int catalogItemId, int quantities);
 
         Task<InventoryItem> GetInventoryItemAsync(int catalogItemId);
+
+        Task<string> UpdateAllInventoryItem();
     }
 }

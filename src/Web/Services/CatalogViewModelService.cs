@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
+using Microsoft.eShopWeb.ApplicationCore.Entities.InventoryAggregate;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.ApplicationCore.Specifications;
 using Microsoft.eShopWeb.Web.ViewModels;
@@ -21,6 +22,7 @@ namespace Microsoft.eShopWeb.Web.Services
         private readonly IAsyncRepository<CatalogItem> _itemRepository;
         private readonly IAsyncRepository<CatalogBrand> _brandRepository;
         private readonly IAsyncRepository<CatalogType> _typeRepository;
+        private readonly IAsyncRepository<InventoryItem> _inventoryItemRepository;
         private readonly IUriComposer _uriComposer;
 
         public CatalogViewModelService(
@@ -28,12 +30,14 @@ namespace Microsoft.eShopWeb.Web.Services
             IAsyncRepository<CatalogItem> itemRepository,
             IAsyncRepository<CatalogBrand> brandRepository,
             IAsyncRepository<CatalogType> typeRepository,
+            IAsyncRepository<InventoryItem> inventoryItemRepository,
             IUriComposer uriComposer)
         {
             _logger = loggerFactory.CreateLogger<CatalogViewModelService>();
             _itemRepository = itemRepository;
             _brandRepository = brandRepository;
             _typeRepository = typeRepository;
+            _inventoryItemRepository = inventoryItemRepository;
             _uriComposer = uriComposer;
         }
 
@@ -48,6 +52,7 @@ namespace Microsoft.eShopWeb.Web.Services
             // the implementation below using ForEach and Count. We need a List.
             var itemsOnPage = await _itemRepository.ListAsync(filterPaginatedSpecification);
             var totalItems = await _itemRepository.CountAsync(filterSpecification);
+            var allInventoryItems = await _inventoryItemRepository.ListAllAsync();
 
             var vm = new CatalogIndexViewModel()
             {
@@ -56,7 +61,8 @@ namespace Microsoft.eShopWeb.Web.Services
                     Id = i.Id,
                     Name = i.Name,
                     PictureUri = _uriComposer.ComposePicUri(i.PictureUri),
-                    Price = i.Price
+                    Price = i.Price,
+                    Stock = allInventoryItems.FirstOrDefault(item => item.CatalogItemId == i.Id).Quantity
                 }).ToList(),
                 Brands = (await GetBrands()).ToList(),
                 Types = (await GetTypes()).ToList(),

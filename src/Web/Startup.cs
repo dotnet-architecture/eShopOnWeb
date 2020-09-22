@@ -43,10 +43,10 @@ namespace Microsoft.eShopWeb.Web
         public void ConfigureDevelopmentServices(IServiceCollection services)
         {
             // use in-memory database
-            ConfigureInMemoryDatabases(services);
+            //ConfigureInMemoryDatabases(services);
 
             // use real database
-            //ConfigureProductionServices(services);
+            ConfigureProductionServices(services);
         }
 
         public void ConfigureDockerServices(IServiceCollection services)
@@ -117,7 +117,7 @@ namespace Microsoft.eShopWeb.Web
             services.AddWebServices(Configuration);
 
             // Add memory cache services
-            services.AddMemoryCache();
+            // services.AddMemoryCache();
             services.AddRouting(options =>
             {
                 // Replace the type and the name used to refer to it with your own

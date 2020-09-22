@@ -1,16 +1,51 @@
 ﻿@model CatalogItemViewModel
 
+@{ var stockValue = @Model.Stock;
+    var displayMessage = "";
+    var cssClassValue = "";
+
+    if (stockValue == 0)
+    {
+        displayMessage = "Out of Stock";
+        cssClassValue = "esh-catalog-out-of-stock";
+    }
+    else if (stockValue > 0 && stockValue <= 2)
+    {
+        displayMessage = $"Only {stockValue.ToString()} left in stock";
+        cssClassValue = "esh-catalog-less-in-stock";
+    }
+    else
+    {
+        displayMessage = "";
+        cssClassValue = "esh-catalog-not-show-stock";
+    }
+}
+
 <form asp-page="/Basket/Index" method="post">
     <img class="esh-catalog-thumbnail" src="@Model.PictureUri" />
-    <input class="esh-catalog-button" type="submit" value="[ ADD TO BASKET ]" />
+
+    @{ if (stockValue == 0)
+        {
+            <input class="esh-catalog-button is-disabled" type="submit" value="[ ADD TO BASKET ]" />
+        }
+        else
+        {
+            <input class="esh-catalog-button" type="submit" value="[ ADD TO BASKET ]" />
+        }
+    }
+
     <div class="esh-catalog-name">
         <span>@Model.Name</span>
     </div>
     <div class="esh-catalog-price">
         <span>@Model.Price.ToString("N2")</span>
     </div>
+    <div class=@cssClassValue>
+        <span>@displayMessage</span>
+    </div>
     <input type="hidden" asp-for="@Model.Id" name="id" />
     <input type="hidden" asp-for="@Model.Name" name="name" />
     <input type="hidden" asp-for="@Model.PictureUri" name="pictureUri" />
     <input type="hidden" asp-for="@Model.Price" name="price" />
+    <input type="hidden" asp-for="@Model.Stock" name="stock" />
 </form>

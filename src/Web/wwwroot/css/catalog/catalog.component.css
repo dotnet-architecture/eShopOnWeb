@@ -95,7 +95,9 @@
   width: 80%; }
   .esh-catalog-button.is-disabled {
     opacity: .5;
-    pointer-events: none; }
+    pointer-events: none;
+    background-color: #cccccc;
+  }
   .esh-catalog-button:hover {
     background-color: #4a760f;
     transition: all 0.35s; }
@@ -113,3 +115,30 @@
   text-align: center; }
   .esh-catalog-price::before {
     content: '$'; }
+
+.esh-catalog-stock {
+    font-size: 28px;
+    font-weight: 900;
+    text-align: center;
+    color: #414141;
+}
+    .esh-catalog-stock::before {
+        content: 'Stock :';
+    }
+.esh-catalog-out-of-stock {
+    font-size: 9px;
+    font-weight: 900;
+    color: red;
+    text-align: center;
+}
+
+.esh-catalog-less-in-stock {
+    font-size: 9px;
+    font-weight: 900;
+    color: orange;
+    text-align: center;
+}
+
+.esh-catalog-not-show-stock{
+    display:none;
+}
