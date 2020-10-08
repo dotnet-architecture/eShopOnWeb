@@ -8,6 +8,7 @@ using Microsoft.eShopWeb.Web.Interfaces;
 using Microsoft.eShopWeb.Web.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.Web.Pages.Basket
@@ -15,19 +16,15 @@ namespace Microsoft.eShopWeb.Web.Pages.Basket
     public class IndexModel : PageModel
     {
         private readonly IBasketService _basketService;
-        private const string _basketSessionKey = "basketId";
-        private readonly IUriComposer _uriComposer;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private string _username = null;
         private readonly IBasketViewModelService _basketViewModelService;
 
         public IndexModel(IBasketService basketService,
             IBasketViewModelService basketViewModelService,
-            IUriComposer uriComposer,
             SignInManager<ApplicationUser> signInManager)
         {
             _basketService = basketService;
-            _uriComposer = uriComposer;
             _signInManager = signInManager;
             _basketViewModelService = basketViewModelService;
         }
@@ -47,17 +44,24 @@ namespace Microsoft.eShopWeb.Web.Pages.Basket
             }
             await SetBasketModelAsync();
 
-            await _basketService.AddItemToBasket(BasketModel.Id, productDetails.Id, productDetails.Price, 1);
+            await _basketService.AddItemToBasket(BasketModel.Id, productDetails.Id, productDetails.Price);
 
             await SetBasketModelAsync();
 
             return RedirectToPage();
         }
 
-        public async Task OnPostUpdate(Dictionary<string, int> items)
+        public async Task OnPostUpdate(IEnumerable<BasketItemViewModel> items)
         {
             await SetBasketModelAsync();
-            await _basketService.SetQuantities(BasketModel.Id, items);
+
+            if (!ModelState.IsValid)
+            {
+                return;
+            }
+
+            var updateModel = items.ToDictionary(b => b.Id.ToString(), b => b.Quantity);
+            await _basketService.SetQuantities(BasketModel.Id, updateModel);
 
             await SetBasketModelAsync();
         }

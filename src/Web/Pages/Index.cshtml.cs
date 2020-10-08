@@ -20,7 +20,5 @@ namespace Microsoft.eShopWeb.Web.Pages
         {
             CatalogModel = await _catalogViewModelService.GetCatalogItems(pageId ?? 0, Constants.ITEMS_PER_PAGE, catalogModel.BrandFilterApplied, catalogModel.TypesFilterApplied);
         }
-
-
     }
 }

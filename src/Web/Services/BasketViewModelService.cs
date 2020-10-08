@@ -28,7 +28,7 @@ namespace Microsoft.eShopWeb.Web.Services
         public async Task<BasketViewModel> GetOrCreateBasketForUser(string userName)
         {
             var basketSpec = new BasketWithItemsSpecification(userName);
-            var basket = (await _basketRepository.ListAsync(basketSpec)).FirstOrDefault();
+            var basket = (await _basketRepository.FirstOrDefaultAsync(basketSpec));
 
             if (basket == null)
             {
@@ -39,43 +39,48 @@ namespace Microsoft.eShopWeb.Web.Services
 
         private async Task<BasketViewModel> CreateViewModelFromBasket(Basket basket)
         {
-            var viewModel = new BasketViewModel();
-            viewModel.Id = basket.Id;
-            viewModel.BuyerId = basket.BuyerId;
-            viewModel.Items = await GetBasketItems(basket.Items); ;
+            var viewModel = new BasketViewModel
+            {
+                Id = basket.Id,
+                BuyerId = basket.BuyerId,
+                Items = await GetBasketItems(basket.Items)
+            };
+            
             return viewModel;
         }
 
         private async Task<BasketViewModel> CreateBasketForUser(string userId)
         {
-            var basket = new Basket() { BuyerId = userId };
+            var basket = new Basket(userId);
             await _basketRepository.AddAsync(basket);
 
             return new BasketViewModel()
             {
                 BuyerId = basket.BuyerId,
                 Id = basket.Id,
-                Items = new List<BasketItemViewModel>()
             };
         }
 
         private async Task<List<BasketItemViewModel>> GetBasketItems(IReadOnlyCollection<BasketItem> basketItems)
         {
-            var items = new List<BasketItemViewModel>();
-            foreach (var item in basketItems)
+            var catalogItemsSpecification = new CatalogItemsSpecification(basketItems.Select(b => b.CatalogItemId).ToArray());
+            var catalogItems = await _itemRepository.ListAsync(catalogItemsSpecification);
+
+            var items = basketItems.Select(basketItem =>
             {
-                var itemModel = new BasketItemViewModel
+                var catalogItem = catalogItems.First(c => c.Id == basketItem.CatalogItemId);
+
+                var basketItemViewModel = new BasketItemViewModel
                 {
-                    Id = item.Id,
-                    UnitPrice = item.UnitPrice,
-                    Quantity = item.Quantity,
-                    CatalogItemId = item.CatalogItemId
+                    Id = basketItem.Id,
+                    UnitPrice = basketItem.UnitPrice,
+                    Quantity = basketItem.Quantity,
+                    CatalogItemId = basketItem.CatalogItemId,
+                    PictureUrl = _uriComposer.ComposePicUri(catalogItem.PictureUri),
+                    ProductName = catalogItem.Name
                 };
-                var catalogItem = await _itemRepository.GetByIdAsync(item.CatalogItemId);
-                itemModel.PictureUrl = _uriComposer.ComposePicUri(catalogItem.PictureUri);
-                itemModel.ProductName = catalogItem.Name;
-                items.Add(itemModel);
-            }
+                return basketItemViewModel;
+            }).ToList();
 
             return items;
         }

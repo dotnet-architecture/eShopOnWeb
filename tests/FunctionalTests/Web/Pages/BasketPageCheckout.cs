@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.eShopWeb.FunctionalTests.Web.Controllers;
-using Microsoft.eShopWeb.Web;
+using Microsoft.eShopWeb.FunctionalTests.Web;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -11,9 +9,10 @@ using Xunit;
 
 namespace Microsoft.eShopWeb.FunctionalTests.WebRazorPages
 {
-    public class BasketPageCheckout : IClassFixture<CustomWebApplicationFactory<Startup>>
+    [Collection("Sequential")]
+    public class BasketPageCheckout : IClassFixture<WebTestFixture>
     {
-        public BasketPageCheckout(CustomWebApplicationFactory<Startup> factory)
+        public BasketPageCheckout(WebTestFixture factory)
         {
             Client = factory.CreateClient(new WebApplicationFactoryClientOptions
             {
@@ -28,7 +27,7 @@ namespace Microsoft.eShopWeb.FunctionalTests.WebRazorPages
             string regexpression = @"name=""__RequestVerificationToken"" type=""hidden"" value=""([-A-Za-z0-9+=/\\_]+?)""";
             var regex = new Regex(regexpression);
             var match = regex.Match(input);
-            return match.Groups.LastOrDefault().Value;
+            return match.Groups.Values.LastOrDefault().Value;
         }
 
         [Fact]

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.eShopWeb.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +10,10 @@ using Xunit;
 
 namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
 {
-    public class AccountControllerSignIn : IClassFixture<CustomWebApplicationFactory<Startup>>
+    [Collection("Sequential")]
+    public class AccountControllerSignIn : IClassFixture<WebTestFixture>
     {
-        public AccountControllerSignIn(CustomWebApplicationFactory<Startup> factory)
+        public AccountControllerSignIn(WebTestFixture factory)
         {
             Client = factory.CreateClient(new WebApplicationFactoryClientOptions
             {
@@ -42,7 +42,7 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
             string regexpression = @"name=""__RequestVerificationToken"" type=""hidden"" value=""([-A-Za-z0-9+=/\\_]+?)""";
             var regex = new Regex(regexpression);
             var match = regex.Match(input);
-            var group = match.Groups.LastOrDefault();
+            var group = match.Groups.Values.LastOrDefault();
             Assert.NotNull(group);
             Assert.True(group.Value.Length > 50);
         }
@@ -63,7 +63,7 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
             string regexpression = @"name=""__RequestVerificationToken"" type=""hidden"" value=""([-A-Za-z0-9+=/\\_]+?)""";
             var regex = new Regex(regexpression);
             var match = regex.Match(input);
-            return match.Groups.LastOrDefault().Value;
+            return match.Groups.Values.LastOrDefault().Value;
         }
 
         [Fact]
@@ -81,7 +81,7 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
             keyValues.Add(new KeyValuePair<string, string>("__RequestVerificationToken", token));
             var formContent = new FormUrlEncodedContent(keyValues);
 
-            var postResponse = await Client.PostAsync("/account/sign-in", formContent);
+            var postResponse = await Client.PostAsync("/identity/account/login", formContent);
             Assert.Equal(HttpStatusCode.Redirect, postResponse.StatusCode);
             Assert.Equal(new System.Uri("/", UriKind.Relative), postResponse.Headers.Location);
         }
