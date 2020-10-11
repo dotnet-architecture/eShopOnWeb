@@ -1,12 +1,12 @@
-﻿using System.IO;
-using System.Threading;
-using Ardalis.ApiEndpoints;
+﻿using Ardalis.ApiEndpoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
+using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
@@ -39,15 +39,15 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
 
             var newItem = new CatalogItem(request.CatalogTypeId, request.CatalogBrandId, request.Description, request.Name, request.Price, request.PictureUri);
 
-            newItem = await _itemRepository.AddAsync(newItem);
+            newItem = await _itemRepository.AddAsync(newItem, cancellationToken);
 
             if (newItem.Id != 0)
             {
                 var picName = $"{newItem.Id}{Path.GetExtension(request.PictureName)}";
-                if (await _webFileSystem.SavePicture(picName, request.PictureBase64))
+                if (await _webFileSystem.SavePicture(picName, request.PictureBase64, cancellationToken))
                 {
                     newItem.UpdatePictureUri(picName);
-                    await _itemRepository.UpdateAsync(newItem);
+                    await _itemRepository.UpdateAsync(newItem, cancellationToken);
                 }
             }
 
@@ -65,6 +65,6 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
             return response;
         }
 
-        
+
     }
 }
