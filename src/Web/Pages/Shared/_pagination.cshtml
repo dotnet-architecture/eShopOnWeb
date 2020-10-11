@@ -1,34 +1,43 @@
 ﻿@model PaginationInfoViewModel
-
+@{
+    var prevRouteData = Context.Request.Query.ToDictionary(x => x.Key, x => x.Value.ToString());
+    if (prevRouteData.ContainsKey("pageId"))
+        prevRouteData.Remove("pageId");
+    prevRouteData.Add("pageId", (Model.ActualPage - 1).ToString());
+    var nextRouteData = Context.Request.Query.ToDictionary(x => x.Key, x => x.Value.ToString());
+    if (nextRouteData.ContainsKey("pageId"))
+        nextRouteData.Remove("pageId");
+    nextRouteData.Add("pageId", (Model.ActualPage + 1).ToString());
+}
 <div class="esh-pager">
-	<div class="container-fluid">
-		<article class="esh-pager-wrapper row">
-			<nav>
-				<div class="col-md-2 col-xs-12">
-					<a class="esh-pager-item-left esh-pager-item--navigable esh-pager-item @Model.Previous"
-					   id="Previous"
-					   asp-route-pageid="@(Model.ActualPage - 1)"
-					   aria-label="Previous">
-						Previous
-					</a>
-				</div>
-				
-				<div class="col-md-8 col-xs-12">
-					<span class="esh-pager-item">
-						Showing @Model.ItemsPerPage of @Model.TotalItems products - Page @(Model.ActualPage + 1) - @Model.TotalPages
-					</span>
-				</div>
-		        
-				<div class="col-md-2 col-xs-12">
-					<a class="esh-pager-item-right esh-pager-item--navigable esh-pager-item @Model.Next"
-					   id="Next"
-					   asp-route-pageid="@(Model.ActualPage + 1)"
-					   aria-label="Next">
-						Next
-					</a>
-				</div>
-			</nav>
-		</article>
-	</div>
+    <div class="container-fluid">
+        <article class="esh-pager-wrapper row">
+            <nav>
+                <div class="col-md-2 col-xs-12">
+                    <a class="esh-pager-item-left esh-pager-item--navigable esh-pager-item @Model.Previous"
+                       id="Previous"
+                       asp-all-route-data="prevRouteData"
+                       aria-label="Previous">
+                        Previous
+                    </a>
+                </div>
+
+                <div class="col-md-8 col-xs-12">
+                    <span class="esh-pager-item">
+                        Showing @Model.ItemsPerPage of @Model.TotalItems products - Page @(Model.ActualPage + 1) - @Model.TotalPages
+                    </span>
+                </div>
+
+                <div class="col-md-2 col-xs-12">
+                    <a class="esh-pager-item-right esh-pager-item--navigable esh-pager-item @Model.Next"
+                       id="Next"
+                       asp-all-route-data="nextRouteData"
+                       aria-label="Next">
+                        Next
+                    </a>
+                </div>
+            </nav>
+        </article>
+    </div>
 </div>
 

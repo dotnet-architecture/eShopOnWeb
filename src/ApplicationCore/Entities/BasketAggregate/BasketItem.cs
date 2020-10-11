@@ -1,4 +1,7 @@
-﻿namespace Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate
+﻿using Ardalis.GuardClauses;
+using System;
+
+namespace Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate
 {
     public class BasketItem : BaseEntity
     {
@@ -11,17 +14,21 @@
         public BasketItem(int catalogItemId, int quantity, decimal unitPrice)
         {
             CatalogItemId = catalogItemId;
-            Quantity = quantity;
             UnitPrice = unitPrice;
+            SetQuantity(quantity);
         }
 
         public void AddQuantity(int quantity)
         {
+            Guard.Against.OutOfRange(quantity, nameof(quantity), 0, int.MaxValue);
+
             Quantity += quantity;
         }
 
-        public void SetNewQuantity(int quantity)
+        public void SetQuantity(int quantity)
         {
+            Guard.Against.OutOfRange(quantity, nameof(quantity), 0, int.MaxValue);
+
             Quantity = quantity;
         }
     }

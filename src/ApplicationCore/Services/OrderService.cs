@@ -33,6 +33,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
             var basket = await _basketRepository.FirstOrDefaultAsync(basketSpec);
 
             Guard.Against.NullBasket(basketId, basket);
+            Guard.Against.EmptyBasketOnCheckout(basket.Items);
 
             var catalogItemsSpecification = new CatalogItemsSpecification(basket.Items.Select(item => item.CatalogItemId).ToArray());
             var catalogItems = await _itemRepository.ListAsync(catalogItemsSpecification);

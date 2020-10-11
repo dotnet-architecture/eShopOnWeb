@@ -1,8 +1,8 @@
-﻿<environment include="Development">
+﻿<environment include="Development,Docker">
     <script src="~/Identity/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script src="~/Identity/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
 </environment>
-<environment exclude="Development">
+<environment exclude="Development,Docker">
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"
             asp-fallback-src="~/Identity/lib/jquery-validation/dist/jquery.validate.min.js"
             asp-fallback-test="window.jQuery && window.jQuery.validator"

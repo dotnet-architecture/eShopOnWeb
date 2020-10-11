@@ -1,0 +1,44 @@
+﻿@inherits BlazorAdmin.Helpers.BlazorComponent
+<div class="top-row pl-4 navbar navbar-dark">
+    <a class="navbar-brand" href="">eShopOnWeb Admin</a>
+    <button class="navbar-toggler" @onclick="ToggleNavMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <ul class="nav flex-column">
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="admin" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+        </li>
+        <AuthorizeView>
+            <Authorized>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="manage/my-account" Match="NavLinkMatch.All">
+                        <span class="oi oi-person" aria-hidden="true"></span>                         @context.User.Identity.Name
+
+                    </NavLink>
+                </li>
+                <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="logout">
+                            <span class="oi oi-account-logout" aria-hidden="true"></span> Logout
+                        </NavLink>
+                </li>
+            </Authorized>
+        </AuthorizeView>
+    </ul>
+</div>
+
+@code {
+
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

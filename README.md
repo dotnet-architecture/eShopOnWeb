@@ -1,4 +1,4 @@
-![Build Status](https://github.com/dotnet-architecture/eShopOnWeb/workflows/eShopOnWeb%20Build%20and%20Test/badge.svg)
+[![Build Status](https://github.com/dotnet-architecture/eShopOnWeb/workflows/eShopOnWeb%20Build%20and%20Test/badge.svg)](https://github.com/dotnet-architecture/eShopOnWeb/actions)
 
 # Microsoft eShopOnWeb ASP.NET Core Reference Application
 
@@ -37,7 +37,11 @@ The goal for this sample is to demonstrate some of the principles and patterns d
 
 ## Running the sample
 
-After cloning or downloading the sample you should be able to run it using an In Memory database immediately.
+After cloning or downloading the sample you should be able to run it using an In Memory database immediately. The store's home page should look like this:
+
+![eShopOnWeb home page screenshot](https://user-images.githubusercontent.com/782127/88414268-92d83a00-cdaa-11ea-9b4c-db67d95be039.png)
+
+Most of the site's functionality works with just the web application running. However, the site's Admin page relies on Blazor WebAssembly running in the browser, and it must communicate with the server using the site's PublicApi web application. You'll need to also run this project. You can configure Visual Studio to start multiple projects, or just go to the PublicApi folder in a terminal window and run `dotnet run` from there. Note that if you use this approach, you'll need to stop the application manually in order to build the solution (otherwise you'll get file locking errors).
 
 If you wish to use the sample with a persistent database, you will need to run its Entity Framework Core migrations before you will be able to run the app, and update the `ConfigureServices` method in `Startup.cs` (see below).
 
@@ -99,9 +103,9 @@ You can run the Web sample by running these commands from the root folder (where
     docker-compose up
 ```
 
-You should be able to make requests to localhost:5106 once these commands complete.
+You should be able to make requests to localhost:5106 for the Web project, and localhost:5200 for the Public API project once these commands complete. If you have any problems, especially with login, try from a new guest or incognito browser instance.
 
-You can also run the Web application by using the instructions located in its `Dockerfile` file in the root of the project. Again, run these commands from the root of the solution (where the .sln file is located).
+You can also run the applications by using the instructions located in their `Dockerfile` file in the root of each project. Again, run these commands from the root of the solution (where the .sln file is located).
 
 ## Community Extensions
 We have some great contributions from the community, and while these aren't maintained by Microsoft we still want to highlight them.
