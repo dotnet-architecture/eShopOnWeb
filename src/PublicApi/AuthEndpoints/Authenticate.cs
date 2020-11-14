@@ -42,7 +42,11 @@ namespace Microsoft.eShopWeb.PublicApi.AuthEndpoints
             response.IsNotAllowed = result.IsNotAllowed;
             response.RequiresTwoFactor = result.RequiresTwoFactor;
             response.Username = request.Username;
-            response.Token = await _tokenClaimsService.GetTokenAsync(request.Username);
+
+            if (result.Succeeded)
+            {
+                response.Token = await _tokenClaimsService.GetTokenAsync(request.Username);
+            }
 
             return response;
         }
