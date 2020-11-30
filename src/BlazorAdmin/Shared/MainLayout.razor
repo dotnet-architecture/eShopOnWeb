@@ -3,23 +3,21 @@
 
 @inherits BlazorAdmin.Helpers.BlazorLayoutComponent
 
-    <div class="page">
-        <AuthorizeView Roles=@BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS>
-            <div class="sidebar">
-                <NavMenu />
-            </div>
-        </AuthorizeView>
-
-        <div class="main">
-            <div class="top-row px-4">
-                <a href="https://github.com/dotnet-architecture/eShopOnWeb" target="_blank" class="ml-md-auto">About eShopOnWeb</a>
-            </div>
-
-            <div class="content px-4">
-                @Body
-            </div>
-        </div>
+<AuthorizeView Roles=@BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS>
+    <div class="sidebar">
+        <NavMenu />
     </div>
+</AuthorizeView>
+
+<div class="main">
+    <div class="top-row px-4">
+        <a href="https://github.com/dotnet-architecture/eShopOnWeb" target="_blank" class="ml-md-auto">About eShopOnWeb</a>
+    </div>
+
+    <div class="content px-4">
+        @Body
+    </div>
+</div>
     @code
 {
         protected override async Task OnAfterRenderAsync(bool firstRender)
