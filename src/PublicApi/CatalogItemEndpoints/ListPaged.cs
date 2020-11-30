@@ -34,12 +34,12 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
             OperationId = "catalog-items.ListPaged",
             Tags = new[] { "CatalogItemEndpoints" })
         ]
-        public override async Task<ActionResult<ListPagedCatalogItemResponse>> HandleAsync([FromQuery]ListPagedCatalogItemRequest request, CancellationToken cancellationToken)
+        public override async Task<ActionResult<ListPagedCatalogItemResponse>> HandleAsync([FromQuery] ListPagedCatalogItemRequest request, CancellationToken cancellationToken)
         {
             var response = new ListPagedCatalogItemResponse(request.CorrelationId());
 
             var filterSpec = new CatalogFilterSpecification(request.CatalogBrandId, request.CatalogTypeId);
-            int totalItems = await _itemRepository.CountAsync(filterSpec);
+            int totalItems = await _itemRepository.CountAsync(filterSpec, cancellationToken);
 
             var pagedSpec = new CatalogFilterPaginatedSpecification(
                 skip: request.PageIndex * request.PageSize,
@@ -47,7 +47,7 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
                 brandId: request.CatalogBrandId,
                 typeId: request.CatalogTypeId);
 
-            var items = await _itemRepository.ListAsync(pagedSpec);
+            var items = await _itemRepository.ListAsync(pagedSpec, cancellationToken);
 
             response.CatalogItems.AddRange(items.Select(_mapper.Map<CatalogItemDto>));
             foreach (CatalogItemDto item in response.CatalogItems)

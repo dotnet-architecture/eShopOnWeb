@@ -37,7 +37,7 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
         {
             var response = new UpdateCatalogItemResponse(request.CorrelationId());
 
-            var existingItem = await _itemRepository.GetByIdAsync(request.Id);
+            var existingItem = await _itemRepository.GetByIdAsync(request.Id, cancellationToken);
 
             existingItem.UpdateDetails(request.Name, request.Description, request.Price);
             existingItem.UpdateBrand(request.CatalogBrandId);
@@ -50,13 +50,13 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
             else
             {
                 var picName = $"{existingItem.Id}{Path.GetExtension(request.PictureName)}";
-                if (await _webFileSystem.SavePicture($"{picName}", request.PictureBase64))
+                if (await _webFileSystem.SavePicture($"{picName}", request.PictureBase64, cancellationToken))
                 {
                     existingItem.UpdatePictureUri(picName);
                 }
             }
 
-            await _itemRepository.UpdateAsync(existingItem);
+            await _itemRepository.UpdateAsync(existingItem, cancellationToken);
 
             var dto = new CatalogItemDto
             {

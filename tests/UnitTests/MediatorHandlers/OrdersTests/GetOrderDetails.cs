@@ -21,7 +21,7 @@ namespace Microsoft.eShopWeb.UnitTests.MediatorHandlers.OrdersTests
             Order order = new Order("buyerId", address, new List<OrderItem> { item });
 
             _mockOrderRepository = new Mock<IOrderRepository>();
-            _mockOrderRepository.Setup(x => x.ListAsync(It.IsAny<ISpecification<Order>>())).ReturnsAsync(new List<Order> { order });
+            _mockOrderRepository.Setup(x => x.ListAsync(It.IsAny<ISpecification<Order>>(),default)).ReturnsAsync(new List<Order> { order });
         }
 
         [Fact]
