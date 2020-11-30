@@ -33,7 +33,7 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogBrandEndpoints
         {
             var response = new ListCatalogBrandsResponse();
 
-            var items = await _catalogBrandRepository.ListAllAsync();
+            var items = await _catalogBrandRepository.ListAllAsync(cancellationToken);
 
             response.CatalogBrands.AddRange(items.Select(_mapper.Map<CatalogBrandDto>));
 

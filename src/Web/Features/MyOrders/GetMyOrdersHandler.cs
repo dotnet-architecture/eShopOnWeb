@@ -21,7 +21,7 @@ namespace Microsoft.eShopWeb.Web.Features.MyOrders
         public async Task<IEnumerable<OrderViewModel>> Handle(GetMyOrders request, CancellationToken cancellationToken)
         {
             var specification = new CustomerOrdersWithItemsSpecification(request.UserName);
-            var orders = await _orderRepository.ListAsync(specification);
+            var orders = await _orderRepository.ListAsync(specification, cancellationToken);
 
             return orders.Select(o => new OrderViewModel
             {

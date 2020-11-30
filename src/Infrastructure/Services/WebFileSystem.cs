@@ -1,15 +1,16 @@
-﻿using System;
+﻿using Microsoft.eShopWeb.ApplicationCore.Interfaces;
+using Microsoft.eShopWeb.Infrastructure.Data;
+using System;
 using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.eShopWeb.ApplicationCore.Interfaces;
-using Microsoft.eShopWeb.Infrastructure.Data;
 
 namespace Microsoft.eShopWeb.Infrastructure.Services
 {
-    public class WebFileSystem: IFileSystem
+    public class WebFileSystem : IFileSystem
     {
         private readonly HttpClient _httpClient;
         private readonly string _url;
@@ -22,9 +23,9 @@ namespace Microsoft.eShopWeb.Infrastructure.Services
             _httpClient.DefaultRequestHeaders.Add("auth-key", AUTH_KEY);
         }
 
-        public async Task<bool> SavePicture(string pictureName, string pictureBase64)
+        public async Task<bool> SavePicture(string pictureName, string pictureBase64, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrEmpty(pictureBase64) || !await UploadFile(pictureName, Convert.FromBase64String(pictureBase64)))
+            if (string.IsNullOrEmpty(pictureBase64) || !await UploadFile(pictureName, Convert.FromBase64String(pictureBase64), cancellationToken))
             {
                 return false;
             }
@@ -32,26 +33,26 @@ namespace Microsoft.eShopWeb.Infrastructure.Services
             return true;
         }
 
-        private async Task<bool> UploadFile(string fileName, byte[] fileData)
+        private async Task<bool> UploadFile(string fileName, byte[] fileData, CancellationToken cancellationToken)
         {
             if (!fileData.IsValidImage(fileName))
             {
                 return false;
             }
 
-            return await UploadToWeb(fileName, fileData);
+            return await UploadToWeb(fileName, fileData, cancellationToken);
         }
 
-        private async Task<bool> UploadToWeb(string fileName, byte[] fileData)
+        private async Task<bool> UploadToWeb(string fileName, byte[] fileData, CancellationToken cancellationToken)
         {
             var request = new FileItem
             {
-                DataBase64 = Convert.ToBase64String(fileData), 
+                DataBase64 = Convert.ToBase64String(fileData),
                 FileName = fileName
             };
             var content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-            using var message = await _httpClient.PostAsync(_url, content);
+            using var message = await _httpClient.PostAsync(_url, content, cancellationToken);
             if (!message.IsSuccessStatusCode)
             {
                 return false;
