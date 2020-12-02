@@ -167,10 +167,7 @@ a, .btn-link {
     }
 }
 
-@media (min-width: 768px) {
-    /*admin {
-        flex-direction: row;
-    }*/
+@media (min-width: 768px) {    
 
     .sidebar {
         width: 250px;
