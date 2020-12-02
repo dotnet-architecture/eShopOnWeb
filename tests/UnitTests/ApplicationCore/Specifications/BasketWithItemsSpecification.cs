@@ -1,10 +1,10 @@
-﻿using Microsoft.eShopWeb.ApplicationCore.Specifications;
+﻿using Ardalis.Specification.EntityFrameworkCore;
 using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
+using Microsoft.eShopWeb.ApplicationCore.Specifications;
+using Moq;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
-using Moq;
-using Ardalis.Specification.EntityFrameworkCore;
 
 namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Specifications
 {
