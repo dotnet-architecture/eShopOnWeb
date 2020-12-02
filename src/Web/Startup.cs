@@ -161,6 +161,8 @@ namespace Microsoft.eShopWeb.Web
             services.AddScoped<HttpService>();
             services.AddBlazorServices();
 
+            services.AddDatabaseDeveloperPageExceptionFilter();
+
             _services = services; // used to debug registered services
         }
 
@@ -189,8 +191,8 @@ namespace Microsoft.eShopWeb.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseShowAllServicesMiddleware();
-                app.UseDatabaseErrorPage();
+                app.UseShowAllServicesMiddleware();                                
+                app.UseMigrationsEndPoint();
                 app.UseWebAssemblyDebugging();
             }
             else
