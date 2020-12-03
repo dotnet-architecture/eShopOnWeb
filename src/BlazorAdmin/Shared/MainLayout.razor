@@ -18,22 +18,21 @@
         @Body
     </div>
 </div>
-
-@code
+    @code
 {
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            var authState = await AuthStateProvider.GetAuthenticationStateAsync();
-
-            if(authState.User == null)
+            if (firstRender)
             {
-                await new Route(JSRuntime).RouteOutside("/Identity/Account/Login");
-            }
-            CallRequestRefresh();
-        }
+                var authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
-        await base.OnAfterRenderAsync(firstRender);
+                if (authState.User == null)
+                {
+                    await new Route(JSRuntime).RouteOutside("/Identity/Account/Login");
+                }
+                CallRequestRefresh();
+            }
+
+            await base.OnAfterRenderAsync(firstRender);
+        }
     }
-}

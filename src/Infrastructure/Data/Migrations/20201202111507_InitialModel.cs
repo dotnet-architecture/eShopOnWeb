@@ -1,10 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using System;
 
 namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -25,8 +24,8 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    BuyerId = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BuyerId = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -34,7 +33,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CatalogBrand",
+                name: "CatalogBrands",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
@@ -42,11 +41,11 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CatalogBrand", x => x.Id);
+                    table.PrimaryKey("PK_CatalogBrands", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "CatalogType",
+                name: "CatalogTypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
@@ -54,7 +53,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CatalogType", x => x.Id);
+                    table.PrimaryKey("PK_CatalogTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -62,14 +61,14 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     BuyerId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OrderDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    ShipToAddress_City = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ShipToAddress_Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ShipToAddress_State = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ShipToAddress_Street = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ShipToAddress_ZipCode = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ShipToAddress_Street = table.Column<string>(type: "nvarchar(180)", maxLength: 180, nullable: true),
+                    ShipToAddress_City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    ShipToAddress_State = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
+                    ShipToAddress_Country = table.Column<string>(type: "nvarchar(90)", maxLength: 90, nullable: true),
+                    ShipToAddress_ZipCode = table.Column<string>(type: "nvarchar(18)", maxLength: 18, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -77,25 +76,25 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BasketItem",
+                name: "BasketItems",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    BasketId = table.Column<int>(type: "int", nullable: true),
-                    CatalogItemId = table.Column<int>(type: "int", nullable: false),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    UnitPrice = table.Column<decimal>(type: "decimal(18, 2)", nullable: false)
+                    CatalogItemId = table.Column<int>(type: "int", nullable: false),
+                    BasketId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BasketItem", x => x.Id);
+                    table.PrimaryKey("PK_BasketItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BasketItem_Baskets_BasketId",
+                        name: "FK_BasketItems_Baskets_BasketId",
                         column: x => x.BasketId,
                         principalTable: "Baskets",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -103,26 +102,26 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
-                    CatalogBrandId = table.Column<int>(type: "int", nullable: false),
-                    CatalogTypeId = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     PictureUri = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Price = table.Column<decimal>(type: "decimal(18, 2)", nullable: false)
+                    CatalogTypeId = table.Column<int>(type: "int", nullable: false),
+                    CatalogBrandId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Catalog", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Catalog_CatalogBrand_CatalogBrandId",
+                        name: "FK_Catalog_CatalogBrands_CatalogBrandId",
                         column: x => x.CatalogBrandId,
-                        principalTable: "CatalogBrand",
+                        principalTable: "CatalogBrands",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Catalog_CatalogType_CatalogTypeId",
+                        name: "FK_Catalog_CatalogTypes_CatalogTypeId",
                         column: x => x.CatalogTypeId,
-                        principalTable: "CatalogType",
+                        principalTable: "CatalogTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -132,13 +131,13 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    OrderId = table.Column<int>(type: "int", nullable: true),
-                    UnitPrice = table.Column<decimal>(type: "decimal(18, 2)", nullable: false),
-                    Units = table.Column<int>(type: "int", nullable: false),
-                    ItemOrdered_CatalogItemId = table.Column<int>(type: "int", nullable: false),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ItemOrdered_CatalogItemId = table.Column<int>(type: "int", nullable: true),
+                    ItemOrdered_ProductName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     ItemOrdered_PictureUri = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ItemOrdered_ProductName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Units = table.Column<int>(type: "int", nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -152,8 +151,8 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_BasketItem_BasketId",
-                table: "BasketItem",
+                name: "IX_BasketItems_BasketId",
+                table: "BasketItems",
                 column: "BasketId");
 
             migrationBuilder.CreateIndex(
@@ -175,7 +174,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BasketItem");
+                name: "BasketItems");
 
             migrationBuilder.DropTable(
                 name: "Catalog");
@@ -187,10 +186,10 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                 name: "Baskets");
 
             migrationBuilder.DropTable(
-                name: "CatalogBrand");
+                name: "CatalogBrands");
 
             migrationBuilder.DropTable(
-                name: "CatalogType");
+                name: "CatalogTypes");
 
             migrationBuilder.DropTable(
                 name: "Orders");

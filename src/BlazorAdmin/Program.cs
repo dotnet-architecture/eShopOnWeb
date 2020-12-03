@@ -17,7 +17,7 @@ namespace BlazorAdmin
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
-            builder.RootComponents.Add<App>("admin");
+            builder.RootComponents.Add<App>("#admin");
 
             var baseUrlConfig = new BaseUrlConfiguration();
             builder.Configuration.Bind(BaseUrlConfiguration.CONFIG_NAME, baseUrlConfig);
@@ -39,7 +39,7 @@ namespace BlazorAdmin
 
             await ClearLocalStorageCache(builder.Services);
 
-            builder.Build().RunAsync();
+            await builder.Build().RunAsync();
         }
 
         private static async Task ClearLocalStorageCache(IServiceCollection services)
