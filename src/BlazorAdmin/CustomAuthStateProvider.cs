@@ -1,5 +1,4 @@
-﻿using BlazorAdmin.Services;
-using BlazorShared.Authorization;
+﻿using BlazorShared.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Logging;
 using System;
