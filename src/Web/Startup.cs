@@ -1,11 +1,18 @@
 ﻿using Ardalis.ListStartupServices;
+using BlazorAdmin;
+using BlazorAdmin.Services;
+using Blazored.LocalStorage;
+using BlazorShared;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.Infrastructure.Data;
 using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.eShopWeb.Web.Configuration;
@@ -19,13 +26,6 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Mime;
-using BlazorAdmin;
-using BlazorAdmin.Services;
-using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.DataProtection;
-using Microsoft.eShopWeb.ApplicationCore.Interfaces;
-using BlazorShared;
 
 namespace Microsoft.eShopWeb.Web
 {
