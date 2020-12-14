@@ -1,8 +1,8 @@
-﻿using System;
-using System.IO;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopWeb.Web.ViewModels.File;
+using System;
+using System.IO;
 
 namespace Microsoft.eShopWeb.Web.Controllers
 {

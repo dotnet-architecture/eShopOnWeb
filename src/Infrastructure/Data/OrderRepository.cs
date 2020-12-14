@@ -1,8 +1,7 @@
-﻿using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
-using Ardalis.Specification;
 
 namespace Microsoft.eShopWeb.Infrastructure.Data
 {

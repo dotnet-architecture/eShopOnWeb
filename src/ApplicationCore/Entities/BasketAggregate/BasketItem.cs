@@ -1,5 +1,4 @@
 ﻿using Ardalis.GuardClauses;
-using System;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate
 {
