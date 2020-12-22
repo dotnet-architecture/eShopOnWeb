@@ -34,7 +34,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Specifications
                 new CatalogItem(2, 1, "Description", "Name", 0, "FakePath"),
                 new CatalogItem(3, 1, "Description", "Name", 0, "FakePath"),
                 new CatalogItem(1, 2, "Description", "Name", 0, "FakePath"),
-                new CatalogItem(2, 2, "Description", "Name", 0, "FakePath"),  
+                new CatalogItem(2, 2, "Description", "Name", 0, "FakePath"),
             };
         }
     }

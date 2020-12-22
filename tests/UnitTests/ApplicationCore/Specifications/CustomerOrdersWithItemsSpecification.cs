@@ -48,9 +48,9 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Specifications
         {
             var ordersList = new List<Order>();
 
-            ordersList.Add(new Order(_buyerId, _shipToAddress, 
-                new List<OrderItem> 
-                { 
+            ordersList.Add(new Order(_buyerId, _shipToAddress,
+                new List<OrderItem>
+                {
                     new OrderItem(new CatalogItemOrdered(1, "Product1", "testurl"), 10.50m, 1)
                 }));
             ordersList.Add(new Order(_buyerId, _shipToAddress,
