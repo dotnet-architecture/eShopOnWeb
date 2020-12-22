@@ -16,9 +16,9 @@ namespace Microsoft.eShopWeb.PublicApi
         {
             var extension = Path.GetExtension(fileName);
 
-            return string.Equals(extension, ".jpg", StringComparison.OrdinalIgnoreCase) || 
-                   string.Equals(extension, ".png", StringComparison.OrdinalIgnoreCase) || 
-                   string.Equals(extension, ".gif", StringComparison.OrdinalIgnoreCase) || 
+            return string.Equals(extension, ".jpg", StringComparison.OrdinalIgnoreCase) ||
+                   string.Equals(extension, ".png", StringComparison.OrdinalIgnoreCase) ||
+                   string.Equals(extension, ".gif", StringComparison.OrdinalIgnoreCase) ||
                    string.Equals(extension, ".jpeg", StringComparison.OrdinalIgnoreCase);
         }
     }
