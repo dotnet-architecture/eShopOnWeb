@@ -27,8 +27,8 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
         [InlineData("baduser@microsoft.com", "badpassword", false)]
         public async Task ReturnsExpectedResultGivenCredentials(string testUsername, string testPassword, bool expectedResult)
         {
-            var request = new AuthenticateRequest() 
-            { 
+            var request = new AuthenticateRequest()
+            {
                 Username = testUsername,
                 Password = testPassword
             };
@@ -39,6 +39,6 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
             var model = stringResponse.FromJson<AuthenticateResponse>();
 
             Assert.Equal(expectedResult, model.Result);
-        }        
+        }
     }
 }

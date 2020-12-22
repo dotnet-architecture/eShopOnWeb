@@ -19,7 +19,7 @@ namespace Microsoft.eShopWeb.FunctionalTests.PublicApi
 
             builder.ConfigureServices(services =>
             {
-                 services.AddEntityFrameworkInMemoryDatabase();
+                services.AddEntityFrameworkInMemoryDatabase();
 
                 // Create a new service provider.
                 var provider = services
