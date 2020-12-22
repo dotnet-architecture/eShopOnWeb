@@ -45,7 +45,7 @@ namespace Microsoft.eShopWeb.Web.Services
                 BuyerId = basket.BuyerId,
                 Items = await GetBasketItems(basket.Items)
             };
-            
+
             return viewModel;
         }
 

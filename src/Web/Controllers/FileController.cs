@@ -19,7 +19,7 @@ namespace Microsoft.eShopWeb.Web.Controllers
                 return Unauthorized();
             }
 
-            if(fileViewModel == null || string.IsNullOrEmpty(fileViewModel.DataBase64)) return BadRequest();
+            if (fileViewModel == null || string.IsNullOrEmpty(fileViewModel.DataBase64)) return BadRequest();
 
             var fileData = Convert.FromBase64String(fileViewModel.DataBase64);
             if (fileData.Length <= 0) return BadRequest();
@@ -33,6 +33,6 @@ namespace Microsoft.eShopWeb.Web.Controllers
 
             return Ok();
         }
-        
+
     }
 }
