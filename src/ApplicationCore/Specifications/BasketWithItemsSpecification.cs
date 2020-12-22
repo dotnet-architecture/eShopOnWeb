@@ -5,7 +5,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Specifications
 {
     public sealed class BasketWithItemsSpecification : Specification<Basket>
     {
-        public BasketWithItemsSpecification(int basketId) 
+        public BasketWithItemsSpecification(int basketId)
         {
             Query
                 .Where(b => b.Id == basketId)
