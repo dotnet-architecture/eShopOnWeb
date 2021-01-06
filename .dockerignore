@@ -7,3 +7,5 @@
 */bin
 */obj
 **/.toolstarget
+gcp
+.idea
