@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
 {
-    public class GetById : BaseAsyncEndpoint<GetByIdCatalogItemRequest, GetByIdCatalogItemResponse>
+    public class GetById : BaseAsyncEndpoint
+        .WithRequest<GetByIdCatalogItemRequest>
+        .WithResponse<GetByIdCatalogItemResponse>
     {
         private readonly IAsyncRepository<CatalogItem> _itemRepository;
         private readonly IUriComposer _uriComposer;
