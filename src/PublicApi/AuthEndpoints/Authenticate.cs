@@ -9,7 +9,9 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.PublicApi.AuthEndpoints
 {
-    public class Authenticate : BaseAsyncEndpoint<AuthenticateRequest, AuthenticateResponse>
+    public class Authenticate : BaseAsyncEndpoint
+        .WithRequest<AuthenticateRequest>
+        .WithResponse<AuthenticateResponse>
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ITokenClaimsService _tokenClaimsService;
@@ -42,7 +44,11 @@ namespace Microsoft.eShopWeb.PublicApi.AuthEndpoints
             response.IsNotAllowed = result.IsNotAllowed;
             response.RequiresTwoFactor = result.RequiresTwoFactor;
             response.Username = request.Username;
-            response.Token = await _tokenClaimsService.GetTokenAsync(request.Username);
+
+            if (result.Succeeded)
+            {
+                response.Token = await _tokenClaimsService.GetTokenAsync(request.Username);
+            }
 
             return response;
         }

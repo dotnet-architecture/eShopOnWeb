@@ -19,7 +19,7 @@ namespace Microsoft.eShopWeb.Web.Features.OrderDetails
 
         public async Task<OrderViewModel> Handle(GetOrderDetails request, CancellationToken cancellationToken)
         {
-            var customerOrders = await _orderRepository.ListAsync(new CustomerOrdersWithItemsSpecification(request.UserName));
+            var customerOrders = await _orderRepository.ListAsync(new CustomerOrdersWithItemsSpecification(request.UserName), cancellationToken);
             var order = customerOrders.FirstOrDefault(o => o.Id == request.OrderId);
 
             if (order == null)

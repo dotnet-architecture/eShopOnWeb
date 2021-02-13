@@ -1,6 +1,6 @@
 name: eShopOnWeb Build and Test
 
-on: [push]
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build:
@@ -9,11 +9,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Setup .NET Core
+    - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.201
+        dotnet-version: '5.0.x'
+
     - name: Build with dotnet
       run: dotnet build ./eShopOnWeb.sln --configuration Release
+    
     - name: Test with dotnet
       run: dotnet test ./eShopOnWeb.sln --configuration Release

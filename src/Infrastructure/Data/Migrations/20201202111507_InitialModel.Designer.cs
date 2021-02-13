@@ -10,31 +10,37 @@ using Microsoft.eShopWeb.Infrastructure.Data;
 namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(CatalogContext))]
-    [Migration("20191105161820_AddressAndCatalogItemOrderedChanges")]
-    partial class AddressAndCatalogItemOrderedChanges
+    [Migration("20201202111507_InitialModel")]
+    partial class InitialModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.0.0")
+                .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("Relational:Sequence:.catalog_brand_hilo", "'catalog_brand_hilo', '', '1', '10', '', '', 'Int64', 'False'")
-                .HasAnnotation("Relational:Sequence:.catalog_hilo", "'catalog_hilo', '', '1', '10', '', '', 'Int64', 'False'")
-                .HasAnnotation("Relational:Sequence:.catalog_type_hilo", "'catalog_type_hilo', '', '1', '10', '', '', 'Int64', 'False'")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "5.0.0");
+
+            modelBuilder.HasSequence("catalog_brand_hilo")
+                .IncrementsBy(10);
+
+            modelBuilder.HasSequence("catalog_hilo")
+                .IncrementsBy(10);
+
+            modelBuilder.HasSequence("catalog_type_hilo")
+                .IncrementsBy(10);
 
             modelBuilder.Entity("Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate.Basket", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("BuyerId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(40)")
-                        .HasMaxLength(40);
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.HasKey("Id");
 
@@ -46,7 +52,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int>("BasketId")
                         .HasColumnType("int");
@@ -72,13 +78,12 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:HiLoSequenceName", "catalog_brand_hilo")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
+                        .UseHiLo("catalog_brand_hilo");
 
                     b.Property<string>("Brand")
                         .IsRequired()
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -90,8 +95,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:HiLoSequenceName", "catalog_hilo")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
+                        .UseHiLo("catalog_hilo");
 
                     b.Property<int>("CatalogBrandId")
                         .HasColumnType("int");
@@ -104,8 +108,8 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("PictureUri")
                         .HasColumnType("nvarchar(max)");
@@ -127,13 +131,12 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:HiLoSequenceName", "catalog_type_hilo")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
+                        .UseHiLo("catalog_type_hilo");
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -145,7 +148,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("BuyerId")
                         .HasColumnType("nvarchar(max)");
@@ -163,7 +166,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int?>("OrderId")
                         .HasColumnType("int");
@@ -203,6 +206,10 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                         .HasForeignKey("CatalogTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("CatalogBrand");
+
+                    b.Navigation("CatalogType");
                 });
 
             modelBuilder.Entity("Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate.Order", b =>
@@ -212,31 +219,31 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                             b1.Property<int>("OrderId")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("int")
-                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                                .UseIdentityColumn();
 
                             b1.Property<string>("City")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(100)")
-                                .HasMaxLength(100);
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)");
 
                             b1.Property<string>("Country")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(90)")
-                                .HasMaxLength(90);
+                                .HasMaxLength(90)
+                                .HasColumnType("nvarchar(90)");
 
                             b1.Property<string>("State")
-                                .HasColumnType("nvarchar(60)")
-                                .HasMaxLength(60);
+                                .HasMaxLength(60)
+                                .HasColumnType("nvarchar(60)");
 
                             b1.Property<string>("Street")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(180)")
-                                .HasMaxLength(180);
+                                .HasMaxLength(180)
+                                .HasColumnType("nvarchar(180)");
 
                             b1.Property<string>("ZipCode")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(18)")
-                                .HasMaxLength(18);
+                                .HasMaxLength(18)
+                                .HasColumnType("nvarchar(18)");
 
                             b1.HasKey("OrderId");
 
@@ -245,6 +252,8 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("OrderId");
                         });
+
+                    b.Navigation("ShipToAddress");
                 });
 
             modelBuilder.Entity("Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate.OrderItem", b =>
@@ -258,7 +267,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                             b1.Property<int>("OrderItemId")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("int")
-                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                                .UseIdentityColumn();
 
                             b1.Property<int>("CatalogItemId")
                                 .HasColumnType("int");
@@ -268,8 +277,8 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
 
                             b1.Property<string>("ProductName")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(50)")
-                                .HasMaxLength(50);
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.HasKey("OrderItemId");
 
@@ -278,6 +287,18 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("OrderItemId");
                         });
+
+                    b.Navigation("ItemOrdered");
+                });
+
+            modelBuilder.Entity("Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate.Basket", b =>
+                {
+                    b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate.Order", b =>
+                {
+                    b.Navigation("OrderItems");
                 });
 #pragma warning restore 612, 618
         }

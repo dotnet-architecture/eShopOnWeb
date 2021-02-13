@@ -6,8 +6,6 @@
 
 @namespace BlazorAdmin.Pages.CatalogItemPage
 
-
-
 <div class="modal @_modalClass" tabindex="-1" role="dialog" style="display:@_modalDisplay">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -55,9 +53,9 @@
                                         <div class="col-md-12">
                                             <InputSelect @bind-Value="_item.CatalogBrandId" class="form-control">
                                                 @foreach (var brand in Brands)
-                                                    {
+                                                {
                                                     <option value="@brand.Id">@brand.Name</option>
-                                                    }
+                                                }
                                             </InputSelect>
                                             <ValidationMessage For="(() => _item.CatalogBrandId)" />
                                         </div>
@@ -68,9 +66,9 @@
                                         <div class="col-md-12">
                                             <InputSelect @bind-Value="_item.CatalogTypeId" class="form-control">
                                                 @foreach (var type in Types)
-                                                    {
+                                                {
                                                     <option value="@type.Id">@type.Name</option>
-                                                    }
+                                                }
                                             </InputSelect>
                                             <ValidationMessage For="(() => _item.CatalogTypeId)" />
                                         </div>
@@ -88,7 +86,7 @@
                                         <label class="control-label col-md-6">@_item.PictureName</label>
                                         <div class="row">
                                             <div class="col-md-6 esh-form-information">
-                                                <InputFile OnChange="AddFile" />
+                                                <BlazorInputFile.InputFile OnChange="AddFile"/>                                                
                                             </div>
                                             <div class="col-md-6 esh-form-information">
                                                 @if (HasPicture)

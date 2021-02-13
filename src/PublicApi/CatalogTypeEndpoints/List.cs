@@ -10,7 +10,9 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.PublicApi.CatalogTypeEndpoints
 {
-    public class List : BaseAsyncEndpoint<ListCatalogTypesResponse>
+    public class List : BaseAsyncEndpoint
+        .WithoutRequest
+        .WithResponse<ListCatalogTypesResponse>
     {
         private readonly IAsyncRepository<CatalogType> _catalogTypeRepository;
         private readonly IMapper _mapper;
@@ -33,7 +35,7 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogTypeEndpoints
         {
             var response = new ListCatalogTypesResponse();
 
-            var items = await _catalogTypeRepository.ListAllAsync();
+            var items = await _catalogTypeRepository.ListAllAsync(cancellationToken);
 
             response.CatalogTypes.AddRange(items.Select(_mapper.Map<CatalogTypeDto>));
 

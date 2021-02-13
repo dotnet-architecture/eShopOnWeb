@@ -1,6 +1,6 @@
 ﻿using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
-using System.Collections.Generic;
 using Microsoft.eShopWeb.UnitTests.Builders;
+using System.Collections.Generic;
 using Xunit;
 
 namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Entities.OrderTests

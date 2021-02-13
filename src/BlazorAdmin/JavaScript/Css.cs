@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using Microsoft.JSInterop;
+﻿using Microsoft.JSInterop;
+using System.Threading.Tasks;
 
 namespace BlazorAdmin.JavaScript
 {

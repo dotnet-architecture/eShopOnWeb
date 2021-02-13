@@ -23,13 +23,13 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.BasketServiceTes
         {
             var basket = new Basket(_buyerId);
             basket.AddItem(1, It.IsAny<decimal>(), It.IsAny<int>());
-            _mockBasketRepo.Setup(x => x.FirstOrDefaultAsync(It.IsAny<BasketWithItemsSpecification>())).ReturnsAsync(basket);
+            _mockBasketRepo.Setup(x => x.FirstOrDefaultAsync(It.IsAny<BasketWithItemsSpecification>(), default)).ReturnsAsync(basket);
 
             var basketService = new BasketService(_mockBasketRepo.Object, null);
 
             await basketService.AddItemToBasket(basket.Id, 1, 1.50m);
 
-            _mockBasketRepo.Verify(x => x.FirstOrDefaultAsync(It.IsAny<BasketWithItemsSpecification>()), Times.Once);
+            _mockBasketRepo.Verify(x => x.FirstOrDefaultAsync(It.IsAny<BasketWithItemsSpecification>(),default), Times.Once);
         }
 
         [Fact]
@@ -37,13 +37,13 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.BasketServiceTes
         {
             var basket = new Basket(_buyerId);
             basket.AddItem(1, It.IsAny<decimal>(), It.IsAny<int>());
-            _mockBasketRepo.Setup(x => x.FirstOrDefaultAsync(It.IsAny<BasketWithItemsSpecification>())).ReturnsAsync(basket);
+            _mockBasketRepo.Setup(x => x.FirstOrDefaultAsync(It.IsAny<BasketWithItemsSpecification>(),default)).ReturnsAsync(basket);
 
             var basketService = new BasketService(_mockBasketRepo.Object, null);
 
             await basketService.AddItemToBasket(basket.Id, 1, 1.50m);
 
-            _mockBasketRepo.Verify(x => x.UpdateAsync(basket), Times.Once);
+            _mockBasketRepo.Verify(x => x.UpdateAsync(basket,default), Times.Once);
         }
     }
 }

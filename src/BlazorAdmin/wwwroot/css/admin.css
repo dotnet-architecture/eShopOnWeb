@@ -14,10 +14,9 @@ a, .btn-link {
     border-color: #1861ac;
 }
 
-admin {
+#admin {
     position: relative;
-    display: flex;
-    flex-direction: column;
+    display: flex;    
 }
 
 .top-row {
@@ -168,10 +167,7 @@ admin {
     }
 }
 
-@media (min-width: 768px) {
-    admin {
-        flex-direction: row;
-    }
+@media (min-width: 768px) {    
 
     .sidebar {
         width: 250px;
