@@ -1,5 +1,4 @@
 ﻿using Microsoft.eShopWeb.ApplicationCore.Constants;
-using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;

@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>		
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Blazored.LocalStorage" Version="3.0.0" />
+		<PackageReference Include="BlazorInputFile" Version="0.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="5.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="5.0.0" />		
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.0" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.Extensions.Identity.Core" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="5.0.0" />
+		<PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\BlazorShared\BlazorShared.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Services\CatalogItem\Delete.EditCatalogItemResult.cs">
+			<DependentUpon>Delete.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Services\CatalogItem\GetById.EditCatalogItemResult.cs">
+			<DependentUpon>GetById.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Services\CatalogItem\Edit.CreateCatalogItemResult.cs">
+			<DependentUpon>Edit.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+</Project>

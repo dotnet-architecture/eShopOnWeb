@@ -1,0 +1,65 @@
+﻿@page "/admin"
+@attribute [Authorize(Roles = BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS)]
+@inherits BlazorAdmin.Helpers.BlazorComponent
+@namespace BlazorAdmin.Pages.CatalogItemPage
+
+<h1>Manage Product Catalog</h1>
+
+@if (catalogItems == null)
+{
+    <Spinner></Spinner>
+}
+else
+{
+
+    <p class="esh-link-wrapper">
+        <button class="btn btn-primary" @onclick="@(CreateClick)">
+            Create New
+        </button>
+    </p>
+
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Item Type</th>
+                <th>Brand</th>
+                <th>Id</th>
+                <th>Name</th>
+                <th>@nameof(CatalogItem.Description)</th>
+                <th>@nameof(CatalogItem.Price)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody class="cursor-pointer">
+            @foreach (var item in catalogItems)
+            {
+                <tr @onclick="@(() => DetailsClick(item.Id))">
+                    <td>
+                        <img class="img-thumbnail" src="@($"{item.PictureUri}")">
+                    </td>
+                    <td>@item.CatalogType</td>
+                    <td>@item.CatalogBrand</td>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>@item.Description</td>
+                    <td>@item.Price</td>
+                    <td>
+                        <button @onclick="@(() => EditClick(item.Id))" @onclick:stopPropagation="true" class="btn btn-primary">
+                            Edit
+                        </button>
+
+                        <button @onclick="@(() => DeleteClick(item.Id))" @onclick:stopPropagation="true" class="btn btn-danger">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <Details Brands="@catalogBrands" Types="@catalogTypes" OnEditClick="EditClick" @ref="DetailsComponent"></Details>
+    <Edit Brands="@catalogBrands" Types="@catalogTypes" OnSaveClick="ReloadCatalogItems" @ref="EditComponent"></Edit>
+    <Create Brands="@catalogBrands" Types="@catalogTypes" OnSaveClick="ReloadCatalogItems" @ref="CreateComponent"></Create>
+    <Delete Brands="@catalogBrands" Types="@catalogTypes" OnSaveClick="ReloadCatalogItems" @ref="DeleteComponent"></Delete>
+}

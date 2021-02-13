@@ -2,22 +2,30 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.eShopWeb.ApplicationCore.Constants;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
+using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
 {
-    [Authorize(Roles = AuthorizationConstants.Roles.ADMINISTRATORS, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class Create : BaseAsyncEndpoint<CreateCatalogItemRequest, CreateCatalogItemResponse>
+
+    [Authorize(Roles = BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public class Create : BaseAsyncEndpoint
+        .WithRequest<CreateCatalogItemRequest>
+        .WithResponse<CreateCatalogItemResponse>
     {
         private readonly IAsyncRepository<CatalogItem> _itemRepository;
+        private readonly IUriComposer _uriComposer;
+        private readonly IFileSystem _webFileSystem;
 
-        public Create(IAsyncRepository<CatalogItem> itemRepository)
+        public Create(IAsyncRepository<CatalogItem> itemRepository, IUriComposer uriComposer, IFileSystem webFileSystem)
         {
             _itemRepository = itemRepository;
+            _uriComposer = uriComposer;
+            _webFileSystem = webFileSystem;
         }
 
         [HttpPost("api/catalog-items")]
@@ -27,13 +35,23 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
             OperationId = "catalog-items.create",
             Tags = new[] { "CatalogItemEndpoints" })
         ]
-        public override async Task<ActionResult<CreateCatalogItemResponse>> HandleAsync(CreateCatalogItemRequest request)
+        public override async Task<ActionResult<CreateCatalogItemResponse>> HandleAsync(CreateCatalogItemRequest request, CancellationToken cancellationToken)
         {
             var response = new CreateCatalogItemResponse(request.CorrelationId());
 
-            CatalogItem newItem = new CatalogItem(request.CatalogTypeId, request.CatalogBrandId, request.Description, request.Name, request.Price, request.PictureUri);
+            var newItem = new CatalogItem(request.CatalogTypeId, request.CatalogBrandId, request.Description, request.Name, request.Price, request.PictureUri);
 
-            newItem = await _itemRepository.AddAsync(newItem);
+            newItem = await _itemRepository.AddAsync(newItem, cancellationToken);
+
+            if (newItem.Id != 0)
+            {
+                var picName = $"{newItem.Id}{Path.GetExtension(request.PictureName)}";
+                if (await _webFileSystem.SavePicture(picName, request.PictureBase64, cancellationToken))
+                {
+                    newItem.UpdatePictureUri(picName);
+                    await _itemRepository.UpdateAsync(newItem, cancellationToken);
+                }
+            }
 
             var dto = new CatalogItemDto
             {
@@ -42,11 +60,13 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
                 CatalogTypeId = newItem.CatalogTypeId,
                 Description = newItem.Description,
                 Name = newItem.Name,
-                PictureUri = newItem.PictureUri,
+                PictureUri = _uriComposer.ComposePicUri(newItem.PictureUri),
                 Price = newItem.Price
             };
             response.CatalogItem = dto;
             return response;
         }
+
+
     }
 }

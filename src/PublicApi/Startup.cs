@@ -1,28 +1,33 @@
-using System.Collections.Generic;
-using System.Text;
 using AutoMapper;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using BlazorShared;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopWeb.ApplicationCore.Constants;
+using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.ApplicationCore.Services;
 using Microsoft.eShopWeb.Infrastructure.Data;
 using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.eShopWeb.Infrastructure.Logging;
+using Microsoft.eShopWeb.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Microsoft.eShopWeb.PublicApi
 {
     public class Startup
     {
+        private const string CORS_POLICY = "CorsPolicy";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -39,13 +44,16 @@ namespace Microsoft.eShopWeb.PublicApi
             //ConfigureProductionServices(services);
         }
 
+        public void ConfigureDockerServices(IServiceCollection services)
+        {
+            ConfigureDevelopmentServices(services);
+        }
+
         private void ConfigureInMemoryDatabases(IServiceCollection services)
         {
-            // use in-memory database
             services.AddDbContext<CatalogContext>(c =>
                 c.UseInMemoryDatabase("Catalog"));
 
-            // Add Identity DbContext
             services.AddDbContext<AppIdentityDbContext>(options =>
                 options.UseInMemoryDatabase("Identity"));
 
@@ -86,27 +94,22 @@ namespace Microsoft.eShopWeb.PublicApi
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
             services.AddScoped<ITokenClaimsService, IdentityTokenClaimService>();
 
-            // Add memory cache services
+            var baseUrlConfig = new BaseUrlConfiguration();
+            Configuration.Bind(BaseUrlConfiguration.CONFIG_NAME, baseUrlConfig);
+            services.AddScoped<IFileSystem, WebFileSystem>(x => new WebFileSystem($"{baseUrlConfig.WebBase}File"));
+
             services.AddMemoryCache();
 
-            // https://stackoverflow.com/questions/46938248/asp-net-core-2-0-combining-cookies-and-bearer-authorization-for-the-same-endpoin
             var key = Encoding.ASCII.GetBytes(AuthorizationConstants.JWT_SECRET_KEY);
             services.AddAuthentication(config =>
             {
-                //config.DefaultScheme = "smart";
-                //config.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                //config.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
-                config.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
-                config.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                config.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 config.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer(x =>
+            .AddJwtBearer(config =>
             {
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
+                config.RequireHttpsMetadata = false;
+                config.SaveToken = true;
+                config.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
@@ -115,13 +118,21 @@ namespace Microsoft.eShopWeb.PublicApi
                 };
             });
 
-
-
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: CORS_POLICY,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins(baseUrlConfig.WebBase.Replace("host.docker.internal", "localhost").TrimEnd('/'));
+                                      builder.AllowAnyMethod();
+                                      builder.AllowAnyHeader();
+                                  });
+            });
 
             services.AddControllers();
+            services.AddMediatR(typeof(CatalogItem).Assembly);
 
             services.AddAutoMapper(typeof(Startup).Assembly);
-
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
@@ -157,7 +168,6 @@ namespace Microsoft.eShopWeb.PublicApi
                     }
                 });
             });
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -171,6 +181,8 @@ namespace Microsoft.eShopWeb.PublicApi
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(CORS_POLICY);
 
             app.UseAuthorization();
 

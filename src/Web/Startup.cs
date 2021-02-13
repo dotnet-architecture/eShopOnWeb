@@ -1,17 +1,20 @@
 ﻿using Ardalis.ListStartupServices;
+using BlazorAdmin;
+using BlazorAdmin.Services;
+using Blazored.LocalStorage;
+using BlazorShared;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.Infrastructure.Data;
 using Microsoft.eShopWeb.Infrastructure.Identity;
-using Microsoft.eShopWeb.Infrastructure.Logging;
-using Microsoft.eShopWeb.Infrastructure.Services;
-using Microsoft.eShopWeb.Web.Interfaces;
-using Microsoft.eShopWeb.Web.Services;
 using Microsoft.eShopWeb.Web.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,7 +22,9 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Net.Mime;
 
 namespace Microsoft.eShopWeb.Web
@@ -27,6 +32,7 @@ namespace Microsoft.eShopWeb.Web
     public class Startup
     {
         private IServiceCollection _services;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -41,6 +47,15 @@ namespace Microsoft.eShopWeb.Web
 
             // use real database
             //ConfigureProductionServices(services);
+        }
+
+        public void ConfigureDockerServices(IServiceCollection services)
+        {
+            services.AddDataProtection()
+                .SetApplicationName("eshopwebmvc")
+                .PersistKeysToFileSystem(new DirectoryInfo(@"./"));
+
+            ConfigureDevelopmentServices(services);
         }
 
         private void ConfigureInMemoryDatabases(IServiceCollection services)
@@ -80,15 +95,26 @@ namespace Microsoft.eShopWeb.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            ConfigureCookieSettings.Configure(services);
+            services.AddCookieSettings();
+
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.Cookie.HttpOnly = true;
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                    options.Cookie.SameSite = SameSiteMode.Lax;
+                });
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                        .AddDefaultUI()
                        .AddEntityFrameworkStores<AppIdentityDbContext>()
                                        .AddDefaultTokenProviders();
 
-            ConfigureCoreServices.Configure(services, Configuration);
-            ConfigureWebServices.Configure(services, Configuration);
+            services.AddScoped<ITokenClaimsService, IdentityTokenClaimService>();
+
+            services.AddCoreServices(Configuration);
+            services.AddWebServices(Configuration);
 
             // Add memory cache services
             services.AddMemoryCache();
@@ -104,11 +130,11 @@ namespace Microsoft.eShopWeb.Web
                          new SlugifyParameterTransformer()));
 
             });
+            services.AddControllersWithViews();
             services.AddRazorPages(options =>
             {
                 options.Conventions.AuthorizePage("/Basket/Checkout");
             });
-            services.AddControllersWithViews();
             services.AddHttpContextAccessor();
             services.AddHealthChecks();
             services.Configure<ServiceConfig>(config =>
@@ -117,6 +143,25 @@ namespace Microsoft.eShopWeb.Web
 
                 config.Path = "/allservices";
             });
+
+            
+            var baseUrlConfig = new BaseUrlConfiguration();
+            Configuration.Bind(BaseUrlConfiguration.CONFIG_NAME, baseUrlConfig);
+            services.AddScoped<BaseUrlConfiguration>(sp => baseUrlConfig);
+            // Blazor Admin Required Services for Prerendering
+            services.AddScoped<HttpClient>(s => new HttpClient
+            {
+                BaseAddress = new Uri(baseUrlConfig.WebBase)
+            });
+
+            // add blazor services
+            services.AddBlazoredLocalStorage();
+            services.AddServerSideBlazor();
+
+            services.AddScoped<HttpService>();
+            services.AddBlazorServices();
+
+            services.AddDatabaseDeveloperPageExceptionFilter();
 
             _services = services; // used to debug registered services
         }
@@ -146,8 +191,9 @@ namespace Microsoft.eShopWeb.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseShowAllServicesMiddleware();
-                app.UseDatabaseErrorPage();
+                app.UseShowAllServicesMiddleware();                                
+                app.UseMigrationsEndPoint();
+                app.UseWebAssemblyDebugging();
             }
             else
             {
@@ -156,10 +202,11 @@ namespace Microsoft.eShopWeb.Web
                 app.UseHsts();
             }
 
+            app.UseHttpsRedirection();
+            app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
             app.UseRouting();
 
-            app.UseHttpsRedirection();
             app.UseCookiePolicy();
             app.UseAuthentication();
             app.UseAuthorization();
@@ -170,7 +217,11 @@ namespace Microsoft.eShopWeb.Web
                 endpoints.MapRazorPages();
                 endpoints.MapHealthChecks("home_page_health_check");
                 endpoints.MapHealthChecks("api_health_check");
+                //endpoints.MapBlazorHub("/admin");
+                endpoints.MapFallbackToFile("index.html");
             });
         }
+
     }
+
 }

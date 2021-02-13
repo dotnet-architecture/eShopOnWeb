@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopWeb.Web.Features.MyOrders;
@@ -20,7 +19,7 @@ namespace Microsoft.eShopWeb.Web.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet()]
+        [HttpGet]
         public async Task<IActionResult> MyOrders()
         {
             var viewModel = await _mediator.Send(new GetMyOrders(User.Identity.Name));

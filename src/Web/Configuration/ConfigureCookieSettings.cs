@@ -7,13 +7,14 @@ namespace Microsoft.eShopWeb.Web.Configuration
 {
     public static class ConfigureCookieSettings
     {
-        public static void Configure(IServiceCollection services)
+        public static IServiceCollection AddCookieSettings(this IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
+                //TODO need to check that.
+                //options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.Strict;
             });
             services.ConfigureApplicationCookie(options =>
             {
@@ -26,6 +27,8 @@ namespace Microsoft.eShopWeb.Web.Configuration
                     IsEssential = true // required for auth to work without explicit user consent; adjust to suit your privacy policy
                 };
             });
+
+            return services;
         }
     }
 }

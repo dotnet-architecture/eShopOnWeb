@@ -1,0 +1,38 @@
+﻿@inject AuthenticationStateProvider AuthStateProvider
+@inject IJSRuntime JSRuntime
+
+@inherits BlazorAdmin.Helpers.BlazorLayoutComponent
+
+<AuthorizeView Roles=@BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS>
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+</AuthorizeView>
+
+<div class="main">
+    <div class="top-row px-4">
+        <a href="https://github.com/dotnet-architecture/eShopOnWeb" target="_blank" class="ml-md-auto">About eShopOnWeb</a>
+    </div>
+
+    <div class="content px-4">
+        @Body
+    </div>
+</div>
+    @code
+{
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+
+                if (authState.User == null)
+                {
+                    await new Route(JSRuntime).RouteOutside("/Identity/Account/Login");
+                }
+                CallRequestRefresh();
+            }
+
+            await base.OnAfterRenderAsync(firstRender);
+        }
+    }

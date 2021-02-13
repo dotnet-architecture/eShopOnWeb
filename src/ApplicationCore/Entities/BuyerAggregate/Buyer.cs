@@ -1,5 +1,5 @@
-﻿using Microsoft.eShopWeb.ApplicationCore.Interfaces;
-using Ardalis.GuardClauses;
+﻿using Ardalis.GuardClauses;
+using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using System.Collections.Generic;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Entities.BuyerAggregate

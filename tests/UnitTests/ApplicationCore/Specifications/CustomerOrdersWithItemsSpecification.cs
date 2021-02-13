@@ -17,7 +17,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Specifications
 
             var result = GetTestCollection()
                 .AsQueryable()
-                .FirstOrDefault(spec.Criterias.FirstOrDefault());
+                .FirstOrDefault(spec.WhereExpressions.FirstOrDefault());
 
             Assert.NotNull(result);
             Assert.NotNull(result.OrderItems);
@@ -32,7 +32,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Specifications
 
             var result = GetTestCollection()
                 .AsQueryable()
-                .Where(spec.Criterias.FirstOrDefault())
+                .Where(spec.WhereExpressions.FirstOrDefault())
                 .ToList();
 
             Assert.NotNull(result);

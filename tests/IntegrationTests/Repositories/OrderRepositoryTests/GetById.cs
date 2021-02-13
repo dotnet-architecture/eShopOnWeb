@@ -1,10 +1,10 @@
-﻿using Microsoft.eShopWeb.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.eShopWeb.Infrastructure.Data;
 using Microsoft.eShopWeb.UnitTests.Builders;
+using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
-using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.IntegrationTests.Repositories.OrderRepositoryTests
 {
