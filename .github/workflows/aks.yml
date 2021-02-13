@@ -1,0 +1,104 @@
+name: CI/CD .Net Core (AKS)
+
+on: [workflow_dispatch,push]
+
+env:
+  build_config: Release      
+  registry_name: lfraile.azurecr.io
+  repository_name: eshop-web
+  
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Cache Docker layers
+      uses: actions/cache@v2
+      with:
+        path: /tmp/.buildx-cache
+        key: ${{ runner.os }}-buildx-${{ hashFiles('src/Web/Dockerfile') }}
+    
+    - name: Set up Docker Buildx
+      id: buildx
+      uses: docker/setup-buildx-action@v1
+      with:
+        version: latest
+
+    - name: Test with dotnet
+      run: dotnet test ./eShopOnWeb.sln --configuration $build_config
+    
+    - name: Build docker image
+      uses: docker/build-push-action@v1.1.1
+      with:
+        registry: ${{ env.registry_name }}
+        username: ${{ secrets.ACR_USER_NAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
+        repository: ${{ env.repository_name }}
+        tags: ${{ github.run_number }}
+        path: .
+        dockerfile: src/Web/Dockerfile
+        add_git_labels: true
+        cache-from: type=local,src=/tmp/.buildx-cache
+        cache-to: type=local,dest=/tmp/.buildx-cache
+        
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.402
+    
+    - name: Install dotnet tools
+      run: dotnet tool restore
+    
+    - name: Catalog SQL Script
+      run: dotnet ef migrations script -c catalogcontext -i -p ./src/Infrastructure/Infrastructure.csproj -s ./src/Web/Web.csproj -o ./scripts/catalog.sql
+    
+    - name: Identity SQL Script
+      run: dotnet ef migrations script -c appidentitydbcontext  -i -p ./src/Infrastructure/Infrastructure.csproj -s ./src/Web/Web.csproj -o ./scripts/identity.sql
+    
+    - name: Upload scripts
+      uses: actions/upload-artifact@v2
+      with:
+        name: sql_scripts
+        path: ./scripts
+
+    - name: Upload ARM
+      uses: actions/upload-artifact@v2
+      with:
+        name: arm_template
+        path: arm
+        
+  deploy:       
+   # if: github.ref == 'refs/heads/master' 
+    needs: build
+    runs-on: ubuntu-latest  
+    steps:
+      
+    - name: Download scripts
+      uses: actions/download-artifact@v2
+      with:
+        name: sql_scripts
+        path: sql_scripts
+
+    - name: Download arm
+      uses: actions/download-artifact@v2
+      with:
+        name: arm_template
+        path: arm_template
+    
+    - uses: azure/k8s-set-context@v1
+      with:
+        method: service-account
+        k8s-url: ${{ secrets.AKS_URL }}
+        k8s-secret: ${{ secrets.AKS_SECRET }}
+      id: setcontext
+        
+    - uses: Azure/k8s-create-secret@v1
+      with:
+        container-registry-url: ${{ env.registry_name }}
+        container-registry-username: ${{ secrets.ACR_USER_NAME }}
+        container-registry-password: ${{ secrets.ACR_PASSWORD }}
+        secret-name: demo-k8s-secret
+
