@@ -1,4 +1,4 @@
-name: CI/CD .Net Core
+name: CI/CD .Net Core (docker)
 
 on: [workflow_dispatch,push]
 
