@@ -94,9 +94,13 @@ jobs:
         k8s-url: ${{ secrets.AKS_URL }}
         k8s-secret: ${{ secrets.AKS_SECRET }}
       id: setcontext
-        
+    
+    - name: test
+      run: kubectl get pods -A
+    
     - uses: Azure/k8s-create-secret@v1
-      with:
+      with:        
+        namespace: github
         container-registry-url: ${{ env.registry_name }}
         container-registry-username: ${{ secrets.ACR_USER_NAME }}
         container-registry-password: ${{ secrets.ACR_PASSWORD }}
