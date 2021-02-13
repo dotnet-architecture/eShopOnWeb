@@ -90,9 +90,9 @@ jobs:
     
     - uses: azure/k8s-set-context@v1
       with:
-        method: service-account
-        k8s-url: ${{ secrets.AKS_URL }}
-        k8s-secret: ${{ secrets.AKS_SECRET }}
+        method: kubeconfig
+        kubeconfig: ${{ secrets.AKS_KUBECONFIG }}
+        context: lfraileaks
       id: setcontext
     
     - name: test
