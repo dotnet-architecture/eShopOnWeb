@@ -16,7 +16,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
             try
             {
                 // TODO: Only run this if using a real database
-                // context.Database.Migrate();
+                // catalogContext.Database.Migrate();
                 if (!await catalogContext.CatalogBrands.AnyAsync())
                 {
                     await catalogContext.CatalogBrands.AddRangeAsync(
