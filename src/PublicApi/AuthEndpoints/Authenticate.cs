@@ -9,7 +9,9 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.PublicApi.AuthEndpoints
 {
-    public class Authenticate : BaseAsyncEndpoint<AuthenticateRequest, AuthenticateResponse>
+    public class Authenticate : BaseAsyncEndpoint
+        .WithRequest<AuthenticateRequest>
+        .WithResponse<AuthenticateResponse>
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ITokenClaimsService _tokenClaimsService;

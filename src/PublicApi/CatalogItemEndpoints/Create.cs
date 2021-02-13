@@ -13,7 +13,9 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
 {
 
     [Authorize(Roles = BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class Create : BaseAsyncEndpoint<CreateCatalogItemRequest, CreateCatalogItemResponse>
+    public class Create : BaseAsyncEndpoint
+        .WithRequest<CreateCatalogItemRequest>
+        .WithResponse<CreateCatalogItemResponse>
     {
         private readonly IAsyncRepository<CatalogItem> _itemRepository;
         private readonly IUriComposer _uriComposer;

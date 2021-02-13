@@ -12,7 +12,9 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
 {
-    public class ListPaged : BaseAsyncEndpoint<ListPagedCatalogItemRequest, ListPagedCatalogItemResponse>
+    public class ListPaged : BaseAsyncEndpoint
+        .WithRequest<ListPagedCatalogItemRequest>
+        .WithResponse<ListPagedCatalogItemResponse>
     {
         private readonly IAsyncRepository<CatalogItem> _itemRepository;
         private readonly IUriComposer _uriComposer;
