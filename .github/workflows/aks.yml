@@ -63,11 +63,17 @@ jobs:
     #     name: sql_scripts
     #     path: ./scripts
 
-    # - name: Upload ARM
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: arm_template
-    #     path: arm
+    - name: Upload ARM
+      uses: actions/upload-artifact@v2
+      with:
+        name: arm_template
+        path: arm
+
+    - name: Upload AKS
+      uses: actions/upload-artifact@v2
+      with:
+        name: aks
+        path: aks
         
   deploy:       
    # if: github.ref == 'refs/heads/master' 
@@ -86,6 +92,12 @@ jobs:
       with:
         name: arm_template
         path: arm_template
+
+    - name: Download aks
+      uses: actions/download-artifact@v2
+      with:
+        name: aks
+        path: aks
     
     - name: Find and Replace tag
       run: find *.yml -type f -exec sed -i ''s/#{TAG}#/${{ github.run_number }}/g'' {} \;
