@@ -4,7 +4,7 @@ on: [workflow_dispatch,push]
 
 env:
   build_config: Release      
-  registry_name: lfraile.azurecr.io
+  registry_name: lfraileacr.azurecr.io
   repository_name: eshop-web
   
 jobs:
