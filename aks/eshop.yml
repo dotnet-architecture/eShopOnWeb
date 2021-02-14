@@ -11,9 +11,15 @@ spec:
   - image: lfraileacr.azurecr.io/eshop-web:#{TAG}#
     env:
       - name: ConnectionStrings__CatalogConnection
-        value: '#{CATALOG_CONNSTRING}#'
+        valueFrom:
+          secretKeyRef:
+            name: conn-strings
+            key: catalog-connstring
       - name: ConnectionStrings__IdentityConnection
-        value: '#{IDENTITY_CONNSTRING}#'
+        valueFrom:
+          secretKeyRef:
+            name: conn-strings
+            key: identity-connstring
     name: eshop
     ports:
     - containerPort: 80

@@ -76,7 +76,9 @@ jobs:
         name: aks
         path: aks
         
-  deploy:       
+  deploy:
+    env:
+      NAMESPACE: github
    # if: github.ref == 'refs/heads/master' 
     needs: build
     runs-on: ubuntu-latest  
@@ -104,29 +106,25 @@ jobs:
       run: find *.yml -type f -exec sed -i ''s/#{TAG}#/${{ env.tag }}/g'' {} \;
       working-directory: aks
 
-    - name: Find and Replace catalog conn string
-      run: find *.yml -type f -exec sed -i ''s/#{CATALOG_CONNSTRING}#/$CATALOG_CONNSTRING/g'' {} \;
-      working-directory: aks
-      env:
-        CATALOG_CONNSTRING: ${{ secrets.CATALOG_DB_CONNSTRING }}
-
-    - name: Find and Replace identity conn string
-      run: find *.yml -type f -exec sed -i ''s/#{IDENTITY_CONNSTRING}#/$IDENTITY_CONNSTRING/g'' {} \;
-      working-directory: aks
-      env:
-        IDENTITY_CONNSTRING: ${{ secrets.IDENTITY_DB_CONNSTRING }}
-
-
     - uses: azure/k8s-set-context@v1
       with:
         method: kubeconfig
         kubeconfig: ${{ secrets.AKS_KUBECONFIG }}
         context: lfraileaks
       id: setcontext
+
+    - uses: azure/k8s-create-secret@v1
+      with:
+        namespace: ${{ env.NAMESPACE }}
+        secret-type: 'generic'
+        arguments:  --from-literal=catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }} --from-literal=identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}
+        secret-name: conn-strings
+
+
     
     - uses: Azure/k8s-create-secret@v1
       with:        
-        namespace: github
+        namespace: ${{ env.NAMESPACE }}
         container-registry-url: ${{ env.registry_name }}
         container-registry-username: ${{ secrets.ACR_USER_NAME }}
         container-registry-password: ${{ secrets.ACR_PASSWORD }}
@@ -140,4 +138,4 @@ jobs:
           ${{ env.registry_name }}/${{ env.repository_name }}:${{ env.tag }}
         imagepullsecrets: |
           demo-k8s-secret
-        namespace: github
+        namespace: ${{ env.NAMESPACE }}
