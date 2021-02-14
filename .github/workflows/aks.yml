@@ -108,7 +108,7 @@ jobs:
       working-directory: aks
 
     - name: Find and Replace identity conn string
-      run: find *.xml -type f -exec sed -i ''s/#{IDENTITY_CONNSTRING}#/${{ secrets.IDENTITY_CONNSTRING }}/g'' {} \;
+      run: find *.yml -type f -exec sed -i ''s/#{IDENTITY_CONNSTRING}#/${{ secrets.IDENTITY_CONNSTRING }}/g'' {} \;
       working-directory: aks
 
     - uses: actions/upload-artifact@v2
