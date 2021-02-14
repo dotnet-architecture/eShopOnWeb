@@ -13,6 +13,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
+    - name: Find and Replace tag
+      run: find *.yml -type f -exec sed -i ''s/#{TAG}#/${{ github.run_number }}/g'' {} \;
+      working-directory: aks
+
+    - name: Find and Replace catalog conn string
+      run: find *.yml -type f -exec sed -i ''s/#{CATALOG_CONNSTRING}#/${{ secrets.CATALOG_CONNSTRING }}/g'' {} \;
+      working-directory: aks
+
+    - name: Find and Replace identity conn string
+      run: find *.yml -type f -exec sed -i ''s/#{IDENTITY_CONNSTRING}#/${{ secrets.IDENTITY_CONNSTRING }}/g'' {} \;
+      working-directory: aks
     
     - name: Cache Docker layers
       uses: actions/cache@v2
@@ -110,11 +122,6 @@ jobs:
     - name: Find and Replace identity conn string
       run: find *.yml -type f -exec sed -i ''s/#{IDENTITY_CONNSTRING}#/${{ secrets.IDENTITY_CONNSTRING }}/g'' {} \;
       working-directory: aks
-
-    - uses: actions/upload-artifact@v2
-      with:
-        name: aks-scripts
-        path: aks
 
     - uses: azure/k8s-set-context@v1
       with:
