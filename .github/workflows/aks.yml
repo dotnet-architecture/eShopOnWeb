@@ -6,6 +6,7 @@ env:
   build_config: Release      
   registry_name: lfraileacr.azurecr.io
   repository_name: eshop-web
+  tag: ${{ github.sha }}
   
 jobs:
   build:
@@ -14,18 +15,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Find and Replace tag
-      run: find *.yml -type f -exec sed -i ''s/#{TAG}#/${{ github.run_number }}/g'' {} \;
-      working-directory: aks
-
-    - name: Find and Replace catalog conn string
-      run: find *.yml -type f -exec sed -i ''s/#{CATALOG_CONNSTRING}#/${{ secrets.CATALOG_CONNSTRING }}/g'' {} \;
-      working-directory: aks
-
-    - name: Find and Replace identity conn string
-      run: find *.yml -type f -exec sed -i ''s/#{IDENTITY_CONNSTRING}#/${{ secrets.IDENTITY_CONNSTRING }}/g'' {} \;
-      working-directory: aks
-    
     - name: Cache Docker layers
       uses: actions/cache@v2
       with:
@@ -48,7 +37,7 @@ jobs:
         username: ${{ secrets.ACR_USER_NAME }}
         password: ${{ secrets.ACR_PASSWORD }}
         repository: ${{ env.repository_name }}
-        tags: ${{ github.run_number }}
+        tags: ${{ env.tag }}
         path: .
         dockerfile: src/Web/Dockerfile
         add_git_labels: true
@@ -112,15 +101,15 @@ jobs:
         path: aks
     
     - name: Find and Replace tag
-      run: find *.yml -type f -exec sed -i ''s/#{TAG}#/${{ github.run_number }}/g'' {} \;
+      run: find *.yml -type f -exec sed -i ''s/#{TAG}#/${{ env.tag }}/g'' {} \;
       working-directory: aks
 
     - name: Find and Replace catalog conn string
-      run: find *.yml -type f -exec sed -i ''s/#{CATALOG_CONNSTRING}#/${{ secrets.CATALOG_CONNSTRING }}/g'' {} \;
+      run: find *.yml -type f -exec sed -i ''s/#{CATALOG_CONNSTRING}#/${{ secrets.CATALOG_DB_CONNSTRING }}/g'' {} \;
       working-directory: aks
 
     - name: Find and Replace identity conn string
-      run: find *.yml -type f -exec sed -i ''s/#{IDENTITY_CONNSTRING}#/${{ secrets.IDENTITY_CONNSTRING }}/g'' {} \;
+      run: find *.yml -type f -exec sed -i ''s/#{IDENTITY_CONNSTRING}#/${{ secrets.IDENTITY_DB_CONNSTRING }}/g'' {} \;
       working-directory: aks
 
     - uses: azure/k8s-set-context@v1
@@ -138,3 +127,12 @@ jobs:
         container-registry-password: ${{ secrets.ACR_PASSWORD }}
         secret-name: demo-k8s-secret
 
+    - uses: azure/k8s-deploy@v1    
+      with:
+        manifests: |
+          aks/eshop.yml
+        images: |
+          ${{ env.registry_name }}/${{ env.repository_name }}:${{ env.tag }}
+        imagepullsecrets: |
+          demo-k8s-secret
+        namespace: ${{ env.NAMESPACE }}
