@@ -117,7 +117,7 @@ jobs:
       with:
         namespace: ${{ env.NAMESPACE }}
         secret-type: 'generic'
-        arguments:  --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}"
+        arguments:  '--from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}"'
         secret-name: conn-strings
 
 
