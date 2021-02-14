@@ -3,15 +3,35 @@ kind: Pod
 metadata:
   creationTimestamp: null
   labels:
-    run: eshop
+    app: eshop
   name: eshop
   namespace: github
 spec:
-  containers:
-  - image: lfraileacr.azurecr.io/heroesapi:20210128.1
+  containers:  
+  - image: lfraileacr.azurecr.io/eshop-web:#{TAG}#
+    env:
+      - name: ConnectionStrings__CatalogConnection
+        value: '#{CATALOG_CONNSTRING}#'
+      - name: ConnectionStrings__IdentityConnection
+        value: '#{IDENTITY_CONNSTRING}#'
     name: eshop
     ports:
     - containerPort: 80
     resources: {}
   restartPolicy: Always
 status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eshop-svc
+  namespace: github
+spec:
+  type: LoadBalancer  
+  selector:
+    app: eshop
+  ports:
+  - protocol: TCP
+    name: eshop
+    port: 80
+    targetPort: 80

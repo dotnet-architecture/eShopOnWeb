@@ -44,31 +44,31 @@ jobs:
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache
         
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.402
+    # - name: Setup .NET Core
+    #   uses: actions/setup-dotnet@v1
+    #   with:
+    #     dotnet-version: 3.1.402
     
-    - name: Install dotnet tools
-      run: dotnet tool restore
+    # - name: Install dotnet tools
+    #   run: dotnet tool restore
     
-    - name: Catalog SQL Script
-      run: dotnet ef migrations script -c catalogcontext -i -p ./src/Infrastructure/Infrastructure.csproj -s ./src/Web/Web.csproj -o ./scripts/catalog.sql
+    # - name: Catalog SQL Script
+    #   run: dotnet ef migrations script -c catalogcontext -i -p ./src/Infrastructure/Infrastructure.csproj -s ./src/Web/Web.csproj -o ./scripts/catalog.sql
     
-    - name: Identity SQL Script
-      run: dotnet ef migrations script -c appidentitydbcontext  -i -p ./src/Infrastructure/Infrastructure.csproj -s ./src/Web/Web.csproj -o ./scripts/identity.sql
+    # - name: Identity SQL Script
+    #   run: dotnet ef migrations script -c appidentitydbcontext  -i -p ./src/Infrastructure/Infrastructure.csproj -s ./src/Web/Web.csproj -o ./scripts/identity.sql
     
-    - name: Upload scripts
-      uses: actions/upload-artifact@v2
-      with:
-        name: sql_scripts
-        path: ./scripts
+    # - name: Upload scripts
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: sql_scripts
+    #     path: ./scripts
 
-    - name: Upload ARM
-      uses: actions/upload-artifact@v2
-      with:
-        name: arm_template
-        path: arm
+    # - name: Upload ARM
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: arm_template
+    #     path: arm
         
   deploy:       
    # if: github.ref == 'refs/heads/master' 
@@ -76,11 +76,11 @@ jobs:
     runs-on: ubuntu-latest  
     steps:
       
-    - name: Download scripts
-      uses: actions/download-artifact@v2
-      with:
-        name: sql_scripts
-        path: sql_scripts
+    # - name: Download scripts
+    #   uses: actions/download-artifact@v2
+    #   with:
+    #     name: sql_scripts
+    #     path: sql_scripts
 
     - name: Download arm
       uses: actions/download-artifact@v2
@@ -88,15 +88,29 @@ jobs:
         name: arm_template
         path: arm_template
     
+    - name: Find and Replace tag
+      run: find *.yml -type f -exec sed -i ''s/#{TAG}#/${{ github.run_number }}/g'' {} \;
+      working-directory: aks
+
+    - name: Find and Replace catalog conn string
+      run: find *.yml -type f -exec sed -i ''s/#{CATALOG_CONNSTRING}#/${{ secrets.CATALOG_CONNSTRING }}/g'' {} \;
+      working-directory: aks
+
+    - name: Find and Replace identity conn string
+      run: find *.xml -type f -exec sed -i ''s/#{IDENTITY_CONNSTRING}#/${{ secrets.IDENTITY_CONNSTRING }}/g'' {} \;
+      working-directory: aks
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: aks-scripts
+        path: aks
+
     - uses: azure/k8s-set-context@v1
       with:
         method: kubeconfig
         kubeconfig: ${{ secrets.AKS_KUBECONFIG }}
         context: lfraileaks
       id: setcontext
-    
-    - name: test
-      run: kubectl get pods -A
     
     - uses: Azure/k8s-create-secret@v1
       with:        
