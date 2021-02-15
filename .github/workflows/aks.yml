@@ -115,16 +115,6 @@ jobs:
 
     - name: Create Secret
       run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }}'
-
-
-    # - uses: azure/k8s-create-secret@v1
-    #   with:
-    #     namespace: ${{ env.NAMESPACE }}
-    #     secret-type: 'generic'
-    #     arguments:  '--from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}"'
-    #     secret-name: conn-strings
-
-
     
     - uses: Azure/k8s-create-secret@v1
       with:        
@@ -143,3 +133,7 @@ jobs:
         imagepullsecrets: |
           demo-k8s-secret
         namespace: ${{ env.NAMESPACE }}
+        strategy: canary
+        traffic-split-method: smi
+        percentage: 20
+        baseline-and-canary-replicas: 1
