@@ -8,27 +8,27 @@ spec:
   selector:
     matchLabels:
       app: eshop-web
-  strategy: {}
   template:
     metadata:
+      annotations:
+        linkerd.io/inject: enabled
       labels:
         app: eshop-web
     spec:
       containers:
-      - name: eshop-web
-        image: lfraileacr.azurecr.io/eshop-web:#{TAG}#
-        env:
+      - env:
         - name: ConnectionStrings__CatalogConnection
           valueFrom:
             secretKeyRef:
-              name: conn-strings
               key: catalog-connstring
+              name: conn-strings
         - name: ConnectionStrings__IdentityConnection
           valueFrom:
             secretKeyRef:
-              name: conn-strings
               key: identity-connstring
-        
+              name: conn-strings
+        image: lfraileacr.azurecr.io/eshop-web:#{TAG}#
+        name: eshop-web
         ports:
         - containerPort: 80
         resources:
@@ -42,7 +42,7 @@ metadata:
   name: eshop-svc
   namespace: github
 spec:
-  type: ClusterIP  
+  type: ClusterIP
   selector:
     app: eshop-web
   ports:
@@ -58,8 +58,8 @@ metadata:
   namespace: github
   annotations:
     kubernetes.io/ingress.class: addon-http-application-routing
-    ingress.kubernetes.io/ssl-redirect: "false"    
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"    
+    ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
 spec:
   rules:
   - host: eshop.f1be470dbb8141be8144.westeurope.aksapp.io
