@@ -139,10 +139,10 @@ jobs:
         imagepullsecrets: |
           secret-github-acr
         namespace: ${{ env.NAMESPACE }}
-        strategy: canary
-        traffic-split-method: smi
-        percentage: 20
-        baseline-and-canary-replicas: 1
+        # strategy: canary
+        # traffic-split-method: smi
+        # percentage: 20
+        # baseline-and-canary-replicas: 1
     
     # - name: Sleep for 30 seconds
     #   uses: jakejarvis/wait-action@master
