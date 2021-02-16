@@ -5,7 +5,7 @@ on:
     branches: 
       - aks
     paths:       
-      - src/
+      - src/**
       - aks/
 
 env:
