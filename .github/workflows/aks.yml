@@ -1,6 +1,12 @@
 name: CI/CD .Net Core (AKS)
 
-on: [workflow_dispatch,push]
+on:
+  push:
+    branches: 
+      - aks
+    paths:       
+      - src/
+      - aks/
 
 env:
   build_config: Release      
