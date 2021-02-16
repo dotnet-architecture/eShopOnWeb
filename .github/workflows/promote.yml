@@ -8,17 +8,18 @@ inputs:
     
 
 on:
-  push:
-    branches: 
-      - aks
-    paths:       
-      - .github/workflows/promote.yml
+  workflow_dispatch:
+    inputs:
+      tag_to_promote:
+        description: 'Tag to promote'
+        required: true
+        default: '27b39c05cd5a93be00bc5811d636d932cacda36fd53d1bb6aa82b7a7427227d9'
 
 env:
   build_config: Release      
   registry_name: lfraileacr.azurecr.io
   repository_name: eshop-web
-  tag: ${{ inputs.tag_to_promote }}
+  tag: ${{ github.event.inputs.tag_to_promote }}
   NAMESPACE: github
   
 jobs:
