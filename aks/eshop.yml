@@ -10,8 +10,8 @@ spec:
       app: eshop-web
   template:
     metadata:
-      annotations:
-        linkerd.io/inject: enabled
+      # annotations:
+      #   linkerd.io/inject: enabled
       labels:
         app: eshop-web
     spec:
