@@ -31,7 +31,7 @@ jobs:
       run: dotnet test ./eShopOnWeb.sln --configuration $build_config
     
     - name: Build docker image
-      uses: docker/build-push-action@v2 
+      uses: docker/build-push-action@v1.1.1
       with:
         registry: ${{ env.registry_name }}
         username: ${{ secrets.ACR_USER_NAME }}
@@ -140,23 +140,23 @@ jobs:
           secret-github-acr
         namespace: ${{ env.NAMESPACE }}
         strategy: canary
-        traffic-split-method: smi
+        trafficSplitMethod: smi
         percentage: 20
-        baseline-and-canary-replicas: 1
+        baselineAndCanaryReplicas: 1
     
-    # - name: Sleep for 30 seconds
-    #   uses: jakejarvis/wait-action@master
-    #   with:
-    #     time: '30s'
+    - name: Sleep for 30 seconds
+      uses: jakejarvis/wait-action@master
+      with:
+        time: '30s'
 
-    # - uses: azure/k8s-deploy@v1    
-    #   with:
-    #     manifests: |
-    #       aks/eshop.yml
-    #     images: |
-    #       ${{ env.registry_name }}/${{ env.repository_name }}:${{ env.tag }}
-    #     imagepullsecrets: |
-    #       secret-github-acr
-    #     namespace: ${{ env.NAMESPACE }}
-    #     strategy: canary
-    #     action: promote
+    - uses: azure/k8s-deploy@v1    
+      with:
+        manifests: |
+          aks/eshop.yml
+        images: |
+          ${{ env.registry_name }}/${{ env.repository_name }}:${{ env.tag }}
+        imagepullsecrets: |
+          secret-github-acr
+        namespace: ${{ env.NAMESPACE }}
+        strategy: canary
+        action: promote
