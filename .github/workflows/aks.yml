@@ -48,27 +48,7 @@ jobs:
         dockerfile: src/Web/Dockerfile
         add_git_labels: true
         cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache
-        
-    # - name: Setup .NET Core
-    #   uses: actions/setup-dotnet@v1
-    #   with:
-    #     dotnet-version: 3.1.402
-    
-    # - name: Install dotnet tools
-    #   run: dotnet tool restore
-    
-    # - name: Catalog SQL Script
-    #   run: dotnet ef migrations script -c catalogcontext -i -p ./src/Infrastructure/Infrastructure.csproj -s ./src/Web/Web.csproj -o ./scripts/catalog.sql
-    
-    # - name: Identity SQL Script
-    #   run: dotnet ef migrations script -c appidentitydbcontext  -i -p ./src/Infrastructure/Infrastructure.csproj -s ./src/Web/Web.csproj -o ./scripts/identity.sql
-    
-    # - name: Upload scripts
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: sql_scripts
-    #     path: ./scripts
+        cache-to: type=local,dest=/tmp/.buildx-cache      
 
     - name: Upload ARM
       uses: actions/upload-artifact@v2
@@ -84,17 +64,10 @@ jobs:
         
   deploy:
     env:
-      NAMESPACE: github
-   # if: github.ref == 'refs/heads/master' 
+      NAMESPACE: github   
     needs: build
     runs-on: ubuntu-latest  
-    steps:
-      
-    # - name: Download scripts
-    #   uses: actions/download-artifact@v2
-    #   with:
-    #     name: sql_scripts
-    #     path: sql_scripts
+    steps:     
 
     - name: Download arm
       uses: actions/download-artifact@v2
@@ -155,15 +128,53 @@ jobs:
       with:
         time: '30s'
 
-    # - uses: azure/k8s-deploy@v1    
-    #   with:
-    #     manifests: |
-    #       aks/eshop.yml
-    #     images: |
-    #       ${{ env.registry_name }}/${{ env.repository_name }}:${{ env.tag }}
-    #     imagepullsecrets: |
-    #       secret-github-acr
-    #     namespace: ${{ env.NAMESPACE }}
-    #     strategy: canary
-    #     traffic-split-method: smi
-    #     action: promote 
+    - uses: azure/k8s-deploy@v1    
+      with:
+        manifests: |
+          aks/eshop.yml
+        images: |
+          ${{ env.registry_name }}/${{ env.repository_name }}:${{ env.tag }}
+        imagepullsecrets: |
+          secret-github-acr
+        namespace: ${{ env.NAMESPACE }}
+        strategy: canary
+        traffic-split-method: smi
+        percentage: 40
+        baseline-and-canary-replicas: 1
+
+    - name: Sleep for 30 seconds
+      uses: jakejarvis/wait-action@master
+      with:
+        time: '30s'
+
+    - uses: azure/k8s-deploy@v1    
+      with:
+        manifests: |
+          aks/eshop.yml
+        images: |
+          ${{ env.registry_name }}/${{ env.repository_name }}:${{ env.tag }}
+        imagepullsecrets: |
+          secret-github-acr
+        namespace: ${{ env.NAMESPACE }}
+        strategy: canary
+        traffic-split-method: smi
+        percentage: 60
+        baseline-and-canary-replicas: 1
+    
+    - name: Sleep for 30 seconds
+      uses: jakejarvis/wait-action@master
+      with:
+        time: '30s'
+
+    - uses: azure/k8s-deploy@v1    
+      with:
+        manifests: |
+          aks/eshop.yml
+        images: |
+          ${{ env.registry_name }}/${{ env.repository_name }}:${{ env.tag }}
+        imagepullsecrets: |
+          secret-github-acr
+        namespace: ${{ env.NAMESPACE }}
+        strategy: canary
+        traffic-split-method: smi
+        action: promote 
