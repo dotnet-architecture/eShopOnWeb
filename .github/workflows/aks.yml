@@ -158,13 +158,13 @@ jobs:
         namespace: ${{ env.NAMESPACE }}
         strategy: canary
         traffic-split-method: smi
-        percentage: 60
+        percentage: 50
         baseline-and-canary-replicas: 1
     
-    - name: Sleep for 30 seconds
+    - name: Sleep for 60 seconds
       uses: jakejarvis/wait-action@master
       with:
-        time: '30s'
+        time: '60s'
 
     - uses: azure/k8s-deploy@v1    
       with:
