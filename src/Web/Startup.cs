@@ -170,6 +170,16 @@ namespace Microsoft.eShopWeb.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            var catalogBaseUrl = Configuration.GetValue(typeof(string), "CatalogBaseUrl") as string;
+            if (!string.IsNullOrEmpty(catalogBaseUrl))
+            {
+                app.Use((context, next) =>
+                {
+                    context.Request.PathBase = new PathString(catalogBaseUrl);
+                    return next();
+                });
+            }
+
             app.UseHealthChecks("/health",
                 new HealthCheckOptions
                 {
