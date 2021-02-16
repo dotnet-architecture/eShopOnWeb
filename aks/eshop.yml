@@ -6,7 +6,7 @@ metadata:
   name: eshop
   namespace: github
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: eshop
@@ -17,7 +17,7 @@ spec:
         app: eshop
     spec:
       containers:
-      - image: lfraileacr.azurecr.io/eshop-web:#{TAG}#
+      - image: lfraileacr.azurecr.io/eshop-web:3a12a34c8e3cbb0e8f88030dd20b33c7ba8a9b00
         env:
         - name: ConnectionStrings__CatalogConnection
           valueFrom:
