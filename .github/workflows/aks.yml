@@ -6,7 +6,7 @@ on:
       - aks
     paths:       
       - src/**
-      - aks/
+      - aks/**
 
 env:
   build_config: Release      
