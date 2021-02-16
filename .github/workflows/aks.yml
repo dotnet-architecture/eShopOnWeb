@@ -142,7 +142,7 @@ jobs:
         strategy: canary
         traffic-split-method: smi
         percentage: 20
-        # baseline-and-canary-replicas: 1
+        baseline-and-canary-replicas: 1
     
     # - name: Sleep for 30 seconds
     #   uses: jakejarvis/wait-action@master
