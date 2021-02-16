@@ -1,11 +1,4 @@
-name: CI/CD .Net Core (AKS)
-
-inputs:
-  tag_to_promote:
-    description: 'Tag to promote'
-    required: true
-    default: '27b39c05cd5a93be00bc5811d636d932cacda36fd53d1bb6aa82b7a7427227d9'
-    
+name: Promote
 
 on:
   workflow_dispatch:
