@@ -43,7 +43,7 @@ metadata:
   name: eshop-svc
   namespace: github
 spec:
-  type: LoadBalancer  
+  type: ClusterIP  
   selector:
     app: eshop
   ports:
@@ -51,3 +51,22 @@ spec:
     name: eshop
     port: 80
     targetPort: 80
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: eshop-ing
+  namespace: github
+  annotations:
+    kubernetes.io/ingress.class: addon-http-application-routing
+    ingress.kubernetes.io/ssl-redirect: "false"    
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"    
+spec:
+  rules:
+  - host: eshop.f1be470dbb8141be8144.westeurope.aksapp.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: eshop-svc
+          servicePort: 80
