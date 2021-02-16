@@ -23,6 +23,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
     - name: Find and Replace tag
       run: find *.yml -type f -exec sed -i ''s/#{TAG}#/${{ env.tag }}/g'' {} \;
       working-directory: aks
