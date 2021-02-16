@@ -7,15 +7,16 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: eshop
+      app: eshop-web
   strategy: {}
   template:
     metadata:
       labels:
-        app: eshop
+        app: eshop-web
     spec:
       containers:
-      - image: lfraileacr.azurecr.io/eshop-web:#{TAG}#
+      - name: eshop-web
+        image: lfraileacr.azurecr.io/eshop-web:#{TAG}#
         env:
         - name: ConnectionStrings__CatalogConnection
           valueFrom:
@@ -27,7 +28,7 @@ spec:
             secretKeyRef:
               name: conn-strings
               key: identity-connstring
-        name: eshop-web
+        
         ports:
         - containerPort: 80
         resources:
@@ -43,7 +44,7 @@ metadata:
 spec:
   type: ClusterIP  
   selector:
-    app: eshop
+    app: eshop-web
   ports:
   - protocol: TCP
     name: eshop
