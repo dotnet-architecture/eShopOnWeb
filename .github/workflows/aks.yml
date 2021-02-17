@@ -92,8 +92,9 @@ jobs:
         context: lfraileaks
       id: setcontext
 
-    # - name: Create Secret
-    #   run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }}'
+    - name: Create Secret
+      run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -'
+    
     # - uses: Azure/k8s-create-secret@v1    
     #   with:
     #     namespace: ${{ env.NAMESPACE }}        
