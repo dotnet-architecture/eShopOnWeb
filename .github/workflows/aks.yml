@@ -94,13 +94,6 @@ jobs:
 
     - name: Create Secret
       run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -'
-    
-    # - uses: Azure/k8s-create-secret@v1    
-    #   with:
-    #     namespace: ${{ env.NAMESPACE }}        
-    #     secret-type: 'generic'        
-    #     arguments:  '--from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}"'
-    #     secret-name: conn-strings
 
     - uses: Azure/k8s-create-secret@v1
       with:        
@@ -114,6 +107,7 @@ jobs:
       with:
         manifests: |
           aks/eshop.yml
+          aks/eshop-ingress.yml
         images: |
           ${{ env.registry_name }}/${{ env.repository_name }}:${{ env.tag }}
         imagepullsecrets: |
