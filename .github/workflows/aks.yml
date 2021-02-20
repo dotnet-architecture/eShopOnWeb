@@ -62,18 +62,13 @@ jobs:
         name: aks
         path: aks
         
-  deploy:
+  deploy_20:
     env:
       NAMESPACE: github   
     needs: build
     runs-on: ubuntu-latest  
-    steps:     
-
-    - name: Download arm
-      uses: actions/download-artifact@v2
-      with:
-        name: arm_template
-        path: arm_template
+    environment: CANARIES_20
+    steps:
 
     - name: Download aks
       uses: actions/download-artifact@v2
@@ -118,15 +113,46 @@ jobs:
         percentage: 20
         baseline-and-canary-replicas: 1
     
-    - name: Sleep for 30 seconds
-      uses: jakejarvis/wait-action@master
+  deploy_40:
+    env:
+      NAMESPACE: github   
+    needs: build
+    runs-on: ubuntu-latest  
+    environment: CANARIES_40
+    steps:
+    - name: Download aks
+      uses: actions/download-artifact@v2
       with:
-        time: '30s'
+        name: aks
+        path: aks
+    
+    - name: Find and Replace tag
+      run: find *.yml -type f -exec sed -i ''s/#{TAG}#/${{ env.tag }}/g'' {} \;
+      working-directory: aks
+
+    - uses: azure/k8s-set-context@v1
+      with:
+        method: kubeconfig
+        kubeconfig: ${{ secrets.AKS_KUBECONFIG }}
+        context: lfraileaks
+      id: setcontext
+
+    - name: Create Secret
+      run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -'
+
+    - uses: Azure/k8s-create-secret@v1
+      with:        
+        namespace: ${{ env.NAMESPACE }}
+        container-registry-url: ${{ env.registry_name }}
+        container-registry-username: ${{ secrets.ACR_USER_NAME }}
+        container-registry-password: ${{ secrets.ACR_PASSWORD }}
+        secret-name: secret-github-acr
 
     - uses: azure/k8s-deploy@v1    
       with:
         manifests: |
           aks/eshop.yml
+          aks/eshop-ingress.yml
         images: |
           ${{ env.registry_name }}/${{ env.repository_name }}:${{ env.tag }}
         imagepullsecrets: |
@@ -136,11 +162,41 @@ jobs:
         traffic-split-method: smi
         percentage: 40
         baseline-and-canary-replicas: 1
-
-    - name: Sleep for 30 seconds
-      uses: jakejarvis/wait-action@master
+        
+  deploy_60:
+    env:
+      NAMESPACE: github   
+    needs: build
+    runs-on: ubuntu-latest  
+    environment: CANARIES_60
+    steps:
+    - name: Download aks
+      uses: actions/download-artifact@v2
       with:
-        time: '30s'
+        name: aks
+        path: aks
+    
+    - name: Find and Replace tag
+      run: find *.yml -type f -exec sed -i ''s/#{TAG}#/${{ env.tag }}/g'' {} \;
+      working-directory: aks
+
+    - uses: azure/k8s-set-context@v1
+      with:
+        method: kubeconfig
+        kubeconfig: ${{ secrets.AKS_KUBECONFIG }}
+        context: lfraileaks
+      id: setcontext
+
+    - name: Create Secret
+      run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -'
+
+    - uses: Azure/k8s-create-secret@v1
+      with:        
+        namespace: ${{ env.NAMESPACE }}
+        container-registry-url: ${{ env.registry_name }}
+        container-registry-username: ${{ secrets.ACR_USER_NAME }}
+        container-registry-password: ${{ secrets.ACR_PASSWORD }}
+        secret-name: secret-github-acr
 
     - uses: azure/k8s-deploy@v1    
       with:
@@ -153,13 +209,43 @@ jobs:
         namespace: ${{ env.NAMESPACE }}
         strategy: canary
         traffic-split-method: smi
-        percentage: 50
+        percentage: 60
         baseline-and-canary-replicas: 1
-    
-    - name: Sleep for 60 seconds
-      uses: jakejarvis/wait-action@master
+
+  promote:
+    env:
+      NAMESPACE: github   
+    needs: build
+    runs-on: ubuntu-latest  
+    environment: GA
+    steps:
+    - name: Download aks
+      uses: actions/download-artifact@v2
       with:
-        time: '60s'
+        name: aks
+        path: aks
+    
+    - name: Find and Replace tag
+      run: find *.yml -type f -exec sed -i ''s/#{TAG}#/${{ env.tag }}/g'' {} \;
+      working-directory: aks
+
+    - uses: azure/k8s-set-context@v1
+      with:
+        method: kubeconfig
+        kubeconfig: ${{ secrets.AKS_KUBECONFIG }}
+        context: lfraileaks
+      id: setcontext
+
+    - name: Create Secret
+      run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -'
+
+    - uses: Azure/k8s-create-secret@v1
+      with:        
+        namespace: ${{ env.NAMESPACE }}
+        container-registry-url: ${{ env.registry_name }}
+        container-registry-username: ${{ secrets.ACR_USER_NAME }}
+        container-registry-password: ${{ secrets.ACR_PASSWORD }}
+        secret-name: secret-github-acr
 
     - uses: azure/k8s-deploy@v1    
       with:
