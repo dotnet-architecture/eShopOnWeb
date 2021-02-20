@@ -4,7 +4,7 @@ metadata:
   name: eshop-deploy
   namespace: github
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: eshop-web

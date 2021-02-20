@@ -116,7 +116,7 @@ jobs:
   deploy_40:
     env:
       NAMESPACE: github   
-    needs: build
+    needs: deploy_20
     runs-on: ubuntu-latest  
     environment: CANARIES_40
     steps:
@@ -162,11 +162,11 @@ jobs:
         traffic-split-method: smi
         percentage: 40
         baseline-and-canary-replicas: 1
-        
+
   deploy_60:
     env:
       NAMESPACE: github   
-    needs: build
+    needs: deploy_40
     runs-on: ubuntu-latest  
     environment: CANARIES_60
     steps:
@@ -215,7 +215,7 @@ jobs:
   promote_ga:
     env:
       NAMESPACE: github   
-    needs: build
+    needs: deploy_60
     runs-on: ubuntu-latest  
     environment: GA
     steps:
