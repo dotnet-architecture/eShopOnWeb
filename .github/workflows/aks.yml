@@ -88,7 +88,7 @@ jobs:
       id: setcontext
 
     - name: Create Secret
-      run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -'
+      run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="dpapi-connstring=${{ secrets.DPAPI_STORAGE }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -'
 
     - uses: Azure/k8s-create-secret@v1
       with:        
@@ -138,7 +138,7 @@ jobs:
       id: setcontext
 
     - name: Create Secret
-      run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -'
+      run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="dpapi-connstring=${{ secrets.DPAPI_STORAGE }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -'
 
     - uses: Azure/k8s-create-secret@v1
       with:        
@@ -188,7 +188,7 @@ jobs:
       id: setcontext
 
     - name: Create Secret
-      run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -'
+      run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="dpapi-connstring=${{ secrets.DPAPI_STORAGE }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -'
 
     - uses: Azure/k8s-create-secret@v1
       with:        
@@ -237,7 +237,7 @@ jobs:
       id: setcontext
 
     - name: Create Secret
-      run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -'
+      run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="dpapi-connstring=${{ secrets.DPAPI_STORAGE }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -'
 
     - uses: Azure/k8s-create-secret@v1
       with:        

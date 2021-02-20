@@ -29,6 +29,11 @@ spec:
             secretKeyRef:
               key: identity-connstring
               name: conn-strings
+        - name: DataProtection__StorageConnString
+          valueFrom:
+            secretKeyRef:
+              key: dpapi-connstring
+              name: conn-strings
         image: lfraileacr.azurecr.io/eshop-web:#{TAG}#
         name: eshop-web
         ports:
