@@ -212,7 +212,7 @@ jobs:
         percentage: 60
         baseline-and-canary-replicas: 1
 
-  promote:
+  promote_ga:
     env:
       NAMESPACE: github   
     needs: build
