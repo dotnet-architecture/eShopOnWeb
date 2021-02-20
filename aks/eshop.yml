@@ -17,6 +17,8 @@ spec:
     spec:
       containers:
       - env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Development
         - name: ConnectionStrings__CatalogConnection
           valueFrom:
             secretKeyRef:
