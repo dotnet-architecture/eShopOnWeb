@@ -63,7 +63,6 @@ jobs:
       with:
         name: sql_scripts
         path: ./scripts
-
     - name: Upload ARM
       uses: actions/upload-artifact@v2
       with:
@@ -81,7 +80,6 @@ jobs:
       with:
         name: sql_scripts
         path: sql_scripts
-
     - name: Download arm
       uses: actions/download-artifact@v2
       with:
