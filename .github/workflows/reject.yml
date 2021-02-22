@@ -3,15 +3,15 @@ name: Reject
 on:
   workflow_dispatch:
     inputs:
-      tag_to_promote:
-        description: 'Tag to promote'
+      tag_to_reject:
+        description: 'Tag to reject'
         required: true
 
 env:
   build_config: Release      
   registry_name: lfraileacr.azurecr.io
   repository_name: eshop-web
-  tag: '${{ github.event.inputs.tag_to_promote }}'
+  tag: '${{ github.event.inputs.tag_to_reject }}'
   NAMESPACE: github
 
 jobs:
