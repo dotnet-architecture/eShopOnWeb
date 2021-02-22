@@ -61,7 +61,7 @@ jobs:
       with:
         azcliversion: 2.0.72
         inlineScript: |
-          az acr build -t ${{ env.repository_name }}:${{ env.tag }} -r ${{ env.repository_name }} -f src/Web/Dockerfile .
+          az acr build -t ${{ env.repository_name }}:${{ env.tag }} -r ${{ env.registry_name }} -f src/Web/Dockerfile .
 
     - name: Upload ARM
       uses: actions/upload-artifact@v2
