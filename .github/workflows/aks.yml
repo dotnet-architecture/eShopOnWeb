@@ -21,34 +21,46 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Cache Docker layers
-      uses: actions/cache@v2
+    - name: Azure Login
+      uses: azure/login@v1
       with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ hashFiles('src/Web/Dockerfile') }}
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    # - name: Cache Docker layers
+    #   uses: actions/cache@v2
+    #   with:
+    #     path: /tmp/.buildx-cache
+    #     key: ${{ runner.os }}-buildx-${{ hashFiles('src/Web/Dockerfile') }}
     
-    - name: Set up Docker Buildx
-      id: buildx
-      uses: docker/setup-buildx-action@v1
-      with:
-        version: latest
+    # - name: Set up Docker Buildx
+    #   id: buildx
+    #   uses: docker/setup-buildx-action@v1
+    #   with:
+    #     version: latest
 
     - name: Test with dotnet
       run: dotnet test ./eShopOnWeb.sln --configuration $build_config
     
-    - name: Build docker image
-      uses: docker/build-push-action@v1.1.1
+    # - name: Build docker image
+    #   uses: docker/build-push-action@v1.1.1
+    #   with:
+    #     registry: ${{ env.registry_name }}
+    #     username: ${{ secrets.ACR_USER_NAME }}
+    #     password: ${{ secrets.ACR_PASSWORD }}
+    #     repository: ${{ env.repository_name }}
+    #     tags: ${{ env.tag }}
+    #     path: .
+    #     dockerfile: src/Web/Dockerfile
+    #     add_git_labels: true
+    #     cache-from: type=local,src=/tmp/.buildx-cache
+    #     cache-to: type=local,dest=/tmp/.buildx-cache     
+
+    - name: Build docker image (ACR)
+      uses: azure/CLI@v1
       with:
-        registry: ${{ env.registry_name }}
-        username: ${{ secrets.ACR_USER_NAME }}
-        password: ${{ secrets.ACR_PASSWORD }}
-        repository: ${{ env.repository_name }}
-        tags: ${{ env.tag }}
-        path: .
-        dockerfile: src/Web/Dockerfile
-        add_git_labels: true
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache      
+        azcliversion: 2.0.72
+        inlineScript: |
+          az acr build -t ${{ env.repository_name }}:${{ env.tag }} -r ${{ env.repository_name }} -f src/Web/Dockerfile .
 
     - name: Upload ARM
       uses: actions/upload-artifact@v2
