@@ -95,6 +95,12 @@ jobs:
       with:
         name: aks
         path: aks
+
+    - name: Download charts
+      uses: actions/download-artifact@v2
+      with:
+        name: chart
+        path: chart
     
     - name: Find and Replace tag
       run: find *.yml -type f -exec sed -i ''s/#{TAG}#/${{ env.tag }}/g'' {} \;
