@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eshop-deploy
+  namespace: github
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: eshop-web
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      labels:
+        app: eshop-web
+    spec:
+      containers:
+      - env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Development
+        - name: ConnectionStrings__CatalogConnection
+          valueFrom:
+            secretKeyRef:
+              key: catalog-connstring
+              name: conn-strings
+        - name: ConnectionStrings__IdentityConnection
+          valueFrom:
+            secretKeyRef:
+              key: identity-connstring
+              name: conn-strings
+        - name: DataProtection__StorageConnString
+          valueFrom:
+            secretKeyRef:
+              key: dpapi-connstring
+              name: conn-strings
+        image: lfraileacr.azurecr.io/eshop-web:#{TAG}#
+        name: eshop-web
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eshop-svc
+  namespace: github
+spec:
+  type: ClusterIP
+  selector:
+    app: eshop-web
+  ports:
+  - protocol: TCP
+    name: eshop
+    port: 80
+    targetPort: 80

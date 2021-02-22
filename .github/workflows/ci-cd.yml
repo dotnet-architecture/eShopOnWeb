@@ -1,15 +1,49 @@
-name: CI/CD .Net Core
+name: CI/CD .Net Core (docker)
 
-on: [push,workflow_dispatch]
+on: [ workflow_dispatch ]
 
+env:
+  build_config: Release      
+  registry_name: lfraile.azurecr.io
+  repository_name: eshop-web
+  
+  
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      build_config: Release
+
     steps:
     - uses: actions/checkout@v2
     
+    - name: Cache Docker layers
+      uses: actions/cache@v2
+      with:
+        path: /tmp/.buildx-cache
+        key: ${{ runner.os }}-buildx-${{ hashFiles('src/Web/Dockerfile') }}
+    
+    - name: Set up Docker Buildx
+      id: buildx
+      uses: docker/setup-buildx-action@v1
+      with:
+        version: latest
+
+    - name: Test with dotnet
+      run: dotnet test ./eShopOnWeb.sln --configuration $build_config
+    
+    - name: Build docker image
+      uses: docker/build-push-action@v1.1.1
+      with:
+        registry: ${{ env.registry_name }}
+        username: ${{ secrets.ACR_USER_NAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
+        repository: ${{ env.repository_name }}
+        tags: ${{ github.run_number }}
+        path: .
+        dockerfile: src/Web/Dockerfile
+        add_git_labels: true
+        cache-from: type=local,src=/tmp/.buildx-cache
+        cache-to: type=local,dest=/tmp/.buildx-cache
+        
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
@@ -17,16 +51,6 @@ jobs:
     
     - name: Install dotnet tools
       run: dotnet tool restore
-    
-    - name: Build with dotnet
-      run: dotnet build ./eShopOnWeb.sln --configuration $build_config
-    
-    - name: Test with dotnet
-      run: dotnet test ./eShopOnWeb.sln --configuration $build_config
-    
-    - name: Publish site      
-      working-directory: ./src/Web
-      run: dotnet publish -c $build_config -o ../../web_publish
     
     - name: Catalog SQL Script
       run: dotnet ef migrations script -c catalogcontext -i -p ./src/Infrastructure/Infrastructure.csproj -s ./src/Web/Web.csproj -o ./scripts/catalog.sql
@@ -39,13 +63,6 @@ jobs:
       with:
         name: sql_scripts
         path: ./scripts
-    
-    - name: Upload site
-      uses: actions/upload-artifact@v2
-      with:
-        name: web_site
-        path: ./web_publish
-    
     - name: Upload ARM
       uses: actions/upload-artifact@v2
       with:
@@ -53,22 +70,16 @@ jobs:
         path: arm
         
   deploy:       
-    if: github.ref == 'refs/heads/master' 
+   # if: github.ref == 'refs/heads/master' 
     needs: build
-    runs-on: windows-latest
+    runs-on: windows-latest  
     steps:
+      
     - name: Download scripts
       uses: actions/download-artifact@v2
       with:
         name: sql_scripts
         path: sql_scripts
-    
-    - name: Download site
-      uses: actions/download-artifact@v2
-      with:
-        name: web_site
-        path: web_site
-    
     - name: Download arm
       uses: actions/download-artifact@v2
       with:
@@ -88,20 +99,8 @@ jobs:
         resourceGroupName: 'NetCore_GIthubCI_CD_RG'
         template: arm_template/netcore_rg_arm.json       
         deploymentMode: Incremental
-        deploymentName: deploy-${{ github.run_id }}
-        parameters: sites_netcoregithub_name=netcoregithub sqlserver_password=${{ secrets.DB_PASSWORD }}
-
-    - name: Azure WebApp
-      uses: Azure/webapps-deploy@v2
-      with:
-        app-name: netcoregithub      
-        package: web_site
-
-    - name: Azure App Service Settings
-      uses: Azure/appservice-settings@v1
-      with:
-        app-name: netcoregithub
-        connection-strings-json: ${{ secrets.CONNSTRING_JSON }}
+        deploymentName: deploy-docker-${{ github.run_number  }}
+        parameters: catalogConnstring="${{ secrets.CATALOG_DB_CONNSTRING }}" identityConnstring="${{ secrets.IDENTITY_DB_CONNSTRING }}" sites_netcoregithub_name=netcoreghdck serverfarms_netcoregithubplan_name=netcoregithubplan sqlserver_password=${{ secrets.DB_PASSWORD }} dockerRegistryUrl=${{ env.registry_name }} dockerRegistryUsername=${{ secrets.ACR_USER_NAME }} dockerRegistryPassword=${{ secrets.ACR_PASSWORD }} dockerImage=${{ env.registry_name }}/${{ env.repository_name }}:${{ github.run_number }}
         
     - name: Azure SQL Deploy
       uses: Azure/sql-action@v1

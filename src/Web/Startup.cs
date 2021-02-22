@@ -26,6 +26,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using BlazorShared;
+using Azure.Storage.Blobs;
 
 namespace Microsoft.eShopWeb.Web
 {
@@ -52,10 +53,20 @@ namespace Microsoft.eShopWeb.Web
         public void ConfigureDockerServices(IServiceCollection services)
         {
             services.AddDataProtection()
+                .PersistKeysToAzureBlobStorage(GetBlobClient())
                 .SetApplicationName("eshopwebmvc")
                 .PersistKeysToFileSystem(new DirectoryInfo(@"./"));
 
             ConfigureDevelopmentServices(services);
+        }
+
+        private BlobClient GetBlobClient()
+        {
+            var client = new BlobServiceClient(Configuration["DataProtection:StorageConnString"]);
+
+            BlobContainerClient containerClient = client.GetBlobContainerClient(Configuration["DataProtection:Container"]);
+            BlobClient blobClient = containerClient.GetBlobClient(Configuration["DataProtection:blobName"]);
+            return blobClient;
         }
 
         private void ConfigureInMemoryDatabases(IServiceCollection services)
@@ -73,6 +84,10 @@ namespace Microsoft.eShopWeb.Web
 
         public void ConfigureProductionServices(IServiceCollection services)
         {
+            services.AddDataProtection()
+               .PersistKeysToAzureBlobStorage(GetBlobClient())
+               .SetApplicationName("eshopwebmvc");
+
             // use real database
             // Requires LocalDB which can be installed with SQL Server Express 2016
             // https://www.microsoft.com/en-us/download/details.aspx?id=54284

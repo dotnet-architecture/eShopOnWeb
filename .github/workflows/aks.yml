@@ -1,0 +1,322 @@
+name: CI/CD .Net Core (AKS)
+
+on:
+  workflow_dispatch:  
+  push:
+    branches: 
+      - aks
+    paths:       
+      - src/**
+      - aks/**
+
+env:
+  build_config: Release      
+  registry_name: lfraileacr.azurecr.io
+  repository_name: eshop-web
+  tag: ${{ github.sha }}
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    # - name: Cache Docker layers
+    #   uses: actions/cache@v2
+    #   with:
+    #     path: /tmp/.buildx-cache
+    #     key: ${{ runner.os }}-buildx-${{ hashFiles('src/Web/Dockerfile') }}
+    
+    # - name: Set up Docker Buildx
+    #   id: buildx
+    #   uses: docker/setup-buildx-action@v1
+    #   with:
+    #     version: latest
+
+    - name: Test with dotnet
+      run: dotnet test ./eShopOnWeb.sln --configuration $build_config
+    
+    # - name: Build docker image
+    #   uses: docker/build-push-action@v1.1.1
+    #   with:
+    #     registry: ${{ env.registry_name }}
+    #     username: ${{ secrets.ACR_USER_NAME }}
+    #     password: ${{ secrets.ACR_PASSWORD }}
+    #     repository: ${{ env.repository_name }}
+    #     tags: ${{ env.tag }}
+    #     path: .
+    #     dockerfile: src/Web/Dockerfile
+    #     add_git_labels: true
+    #     cache-from: type=local,src=/tmp/.buildx-cache
+    #     cache-to: type=local,dest=/tmp/.buildx-cache     
+
+    - name: Build docker image (ACR)
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.16.0
+        inlineScript: |
+          az acr build -t ${{ env.repository_name }}:${{ env.tag }} -r ${{ env.registry_name }} -f src/Web/Dockerfile .
+
+    - name: Upload ARM
+      uses: actions/upload-artifact@v2
+      with:
+        name: arm_template
+        path: arm
+
+    - name: Upload AKS
+      uses: actions/upload-artifact@v2
+      with:
+        name: aks
+        path: aks
+        
+  deploy_20:
+    env:
+      NAMESPACE: github   
+    needs: build
+    runs-on: ubuntu-latest  
+    environment: CANARIES_20
+    steps:
+
+    - name: Download aks
+      uses: actions/download-artifact@v2
+      with:
+        name: aks
+        path: aks
+    
+    - name: Find and Replace tag
+      run: find *.yml -type f -exec sed -i ''s/#{TAG}#/${{ env.tag }}/g'' {} \;
+      working-directory: aks
+
+    - uses: azure/k8s-set-context@v1
+      with:
+        method: kubeconfig
+        kubeconfig: ${{ secrets.AKS_KUBECONFIG }}
+        context: lfraileaks
+      id: setcontext
+
+    - name: Create Secret
+      run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="dpapi-connstring=${{ secrets.DPAPI_STORAGE }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -'
+
+    - uses: Azure/k8s-create-secret@v1
+      with:        
+        namespace: ${{ env.NAMESPACE }}
+        container-registry-url: ${{ env.registry_name }}
+        container-registry-username: ${{ secrets.ACR_USER_NAME }}
+        container-registry-password: ${{ secrets.ACR_PASSWORD }}
+        secret-name: secret-github-acr
+
+    - uses: azure/k8s-deploy@v1    
+      with:
+        manifests: |
+          aks/eshop.yml
+          aks/eshop-ingress.yml
+        images: |
+          ${{ env.registry_name }}/${{ env.repository_name }}:${{ env.tag }}
+        imagepullsecrets: |
+          secret-github-acr
+        namespace: ${{ env.NAMESPACE }}
+        strategy: canary
+        traffic-split-method: smi
+        percentage: 20
+        baseline-and-canary-replicas: 1
+    
+  deploy_40:
+    env:
+      NAMESPACE: github   
+    needs: deploy_20
+    runs-on: ubuntu-latest  
+    environment: CANARIES_40
+    steps:
+    - name: Download aks
+      uses: actions/download-artifact@v2
+      with:
+        name: aks
+        path: aks
+    
+    - name: Find and Replace tag
+      run: find *.yml -type f -exec sed -i ''s/#{TAG}#/${{ env.tag }}/g'' {} \;
+      working-directory: aks
+
+    - uses: azure/k8s-set-context@v1
+      with:
+        method: kubeconfig
+        kubeconfig: ${{ secrets.AKS_KUBECONFIG }}
+        context: lfraileaks
+      id: setcontext
+
+    - name: Create Secret
+      run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="dpapi-connstring=${{ secrets.DPAPI_STORAGE }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -'
+
+    - uses: Azure/k8s-create-secret@v1
+      with:        
+        namespace: ${{ env.NAMESPACE }}
+        container-registry-url: ${{ env.registry_name }}
+        container-registry-username: ${{ secrets.ACR_USER_NAME }}
+        container-registry-password: ${{ secrets.ACR_PASSWORD }}
+        secret-name: secret-github-acr
+
+    - uses: azure/k8s-deploy@v1    
+      with:
+        manifests: |
+          aks/eshop.yml
+          aks/eshop-ingress.yml
+        images: |
+          ${{ env.registry_name }}/${{ env.repository_name }}:${{ env.tag }}
+        imagepullsecrets: |
+          secret-github-acr
+        namespace: ${{ env.NAMESPACE }}
+        strategy: canary
+        traffic-split-method: smi
+        percentage: 40
+        baseline-and-canary-replicas: 1
+
+  deploy_60:
+    env:
+      NAMESPACE: github   
+    needs: deploy_40
+    runs-on: ubuntu-latest  
+    environment: CANARIES_60
+    steps:
+    - name: Download aks
+      uses: actions/download-artifact@v2
+      with:
+        name: aks
+        path: aks
+    
+    - name: Find and Replace tag
+      run: find *.yml -type f -exec sed -i ''s/#{TAG}#/${{ env.tag }}/g'' {} \;
+      working-directory: aks
+
+    - uses: azure/k8s-set-context@v1
+      with:
+        method: kubeconfig
+        kubeconfig: ${{ secrets.AKS_KUBECONFIG }}
+        context: lfraileaks
+      id: setcontext
+
+    - name: Create Secret
+      run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="dpapi-connstring=${{ secrets.DPAPI_STORAGE }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -'
+
+    - uses: Azure/k8s-create-secret@v1
+      with:        
+        namespace: ${{ env.NAMESPACE }}
+        container-registry-url: ${{ env.registry_name }}
+        container-registry-username: ${{ secrets.ACR_USER_NAME }}
+        container-registry-password: ${{ secrets.ACR_PASSWORD }}
+        secret-name: secret-github-acr
+
+    - uses: azure/k8s-deploy@v1    
+      with:
+        manifests: |
+          aks/eshop.yml
+        images: |
+          ${{ env.registry_name }}/${{ env.repository_name }}:${{ env.tag }}
+        imagepullsecrets: |
+          secret-github-acr
+        namespace: ${{ env.NAMESPACE }}
+        strategy: canary
+        traffic-split-method: smi
+        percentage: 60
+        baseline-and-canary-replicas: 1
+
+  promote_ga:
+    env:
+      NAMESPACE: github   
+    needs: deploy_60
+    runs-on: ubuntu-latest  
+    environment: GA
+    steps:
+    - name: Download aks
+      uses: actions/download-artifact@v2
+      with:
+        name: aks
+        path: aks
+    
+    - name: Find and Replace tag
+      run: find *.yml -type f -exec sed -i ''s/#{TAG}#/${{ env.tag }}/g'' {} \;
+      working-directory: aks
+
+    - uses: azure/k8s-set-context@v1
+      with:
+        method: kubeconfig
+        kubeconfig: ${{ secrets.AKS_KUBECONFIG }}
+        context: lfraileaks
+      id: setcontext
+
+    - name: Create Secret
+      run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="dpapi-connstring=${{ secrets.DPAPI_STORAGE }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -'
+
+    - uses: Azure/k8s-create-secret@v1
+      with:        
+        namespace: ${{ env.NAMESPACE }}
+        container-registry-url: ${{ env.registry_name }}
+        container-registry-username: ${{ secrets.ACR_USER_NAME }}
+        container-registry-password: ${{ secrets.ACR_PASSWORD }}
+        secret-name: secret-github-acr
+
+    - uses: azure/k8s-deploy@v1    
+      with:
+        manifests: |
+          aks/eshop.yml
+        images: |
+          ${{ env.registry_name }}/${{ env.repository_name }}:${{ env.tag }}
+        imagepullsecrets: |
+          secret-github-acr
+        namespace: ${{ env.NAMESPACE }}
+        strategy: canary
+        traffic-split-method: smi
+        action: promote 
+  
+  reject:
+    env:
+      NAMESPACE: github   
+    needs: deploy_20
+    runs-on: ubuntu-latest  
+    environment: REJECT
+    steps:
+    - name: Download aks
+      uses: actions/download-artifact@v2
+      with:
+        name: aks
+        path: aks
+    
+    - name: Find and Replace tag
+      run: find *.yml -type f -exec sed -i ''s/#{TAG}#/${{ env.tag }}/g'' {} \;
+      working-directory: aks
+
+    - uses: azure/k8s-set-context@v1
+      with:
+        method: kubeconfig
+        kubeconfig: ${{ secrets.AKS_KUBECONFIG }}
+        context: lfraileaks
+      id: setcontext
+
+    - name: Create Secret
+      run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="dpapi-connstring=${{ secrets.DPAPI_STORAGE }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -'
+
+    - uses: Azure/k8s-create-secret@v1
+      with:        
+        namespace: ${{ env.NAMESPACE }}
+        container-registry-url: ${{ env.registry_name }}
+        container-registry-username: ${{ secrets.ACR_USER_NAME }}
+        container-registry-password: ${{ secrets.ACR_PASSWORD }}
+        secret-name: secret-github-acr
+
+    - uses: azure/k8s-deploy@v1    
+      with:
+        manifests: |
+          aks/eshop.yml
+        images: |
+          ${{ env.registry_name }}/${{ env.repository_name }}:${{ env.tag }}
+        imagepullsecrets: |
+          secret-github-acr
+        namespace: ${{ env.NAMESPACE }}
+        strategy: canary
+        traffic-split-method: smi
+        action: reject 
