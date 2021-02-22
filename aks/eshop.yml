@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: eshop-deploy
+  name: eshop-web
   namespace: github
 spec:
   replicas: 2
@@ -46,7 +46,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: eshop-svc
+  name: eshop-web
   namespace: github
 spec:
   type: ClusterIP

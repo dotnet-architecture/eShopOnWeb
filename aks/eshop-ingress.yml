@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: eshop-ingress
+  name: eshop-web
   namespace: github
   annotations:
     kubernetes.io/ingress.class: nginx
@@ -18,6 +18,6 @@ spec:
     http:
       paths:
       - backend:
-          serviceName: eshop-svc
+          serviceName: eshop-web
           servicePort: 80
         path: /(.*)
