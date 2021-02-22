@@ -59,7 +59,7 @@ jobs:
     - name: Build docker image (ACR)
       uses: azure/CLI@v1
       with:
-        azcliversion: 2.0.72
+        azcliversion: 2.16.0
         inlineScript: |
           az acr build -t ${{ env.repository_name }}:${{ env.tag }} -r ${{ env.registry_name }} -f src/Web/Dockerfile .
 
