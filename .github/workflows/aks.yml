@@ -113,8 +113,8 @@ jobs:
         context: lfraileaks
       id: setcontext
 
-    - name: Create Secret
-      run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="dpapi-connstring=${{ secrets.DPAPI_STORAGE }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -'
+    # - name: Create Secret
+    #   run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="dpapi-connstring=${{ secrets.DPAPI_STORAGE }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -'
 
     - uses: Azure/k8s-create-secret@v1
       with:        
@@ -124,37 +124,22 @@ jobs:
         container-registry-password: ${{ secrets.ACR_PASSWORD }}
         secret-name: secret-github-acr
     
-    # - uses: azure/k8s-bake@v1
-    #   with:
-    #     renderEngine: 'helm'
-    #     helmChart: 'chart/web'
-    #     overrides: |     
-    #       replicas:2
-    #       image.tag: ${{ env.tag }}
-    #       secrets.ConnectionStrings._CatalogConnection: ${{ secrets.CATALOG_DB_CONNSTRING }}
-    #       secrets.ConnectionStrings._IdentityConnection: ${{ secrets.IDENTITY_DB_CONNSTRING }}
-    #       secrets.DataProtection._StorageConnString: ${{ secrets.DPAPI_STORAGE }}
-    #     helm-version: 'latest' 
-    #   id: bake
+    - uses: azure/k8s-bake@v1
+      with:
+        renderEngine: 'helm'
+        helmChart: 'chart/web'
+        overrides: |     
+          replicas:2
+          image.tag: ${{ env.tag }}
+          secrets.ConnectionStrings._CatalogConnection: ${{ secrets.CATALOG_DB_CONNSTRING }}
+          secrets.ConnectionStrings._IdentityConnection: ${{ secrets.IDENTITY_DB_CONNSTRING }}
+          secrets.DataProtection._StorageConnString: ${{ secrets.DPAPI_STORAGE }}
+        helm-version: 'latest' 
+      id: bake
 
-    # - uses: azure/k8s-deploy@v1    
-    #   with:
-    #     manifests: ${{ steps.bake.outputs.manifestsBundle }}
-    #     images: |
-    #       ${{ env.registry_name }}/${{ env.repository_name }}:${{ env.tag }}
-    #     imagepullsecrets: |
-    #       secret-github-acr
-    #     namespace: ${{ env.NAMESPACE }}
-    #     strategy: canary
-    #     traffic-split-method: smi
-    #     percentage: 20
-    #     baseline-and-canary-replicas: 1
-    
     - uses: azure/k8s-deploy@v1    
       with:
-        manifests: |
-          aks/eshop.yml
-          aks/eshop-ingress.yml
+        manifests: ${{ steps.bake.outputs.manifestsBundle }}
         images: |
           ${{ env.registry_name }}/${{ env.repository_name }}:${{ env.tag }}
         imagepullsecrets: |
@@ -162,8 +147,23 @@ jobs:
         namespace: ${{ env.NAMESPACE }}
         strategy: canary
         traffic-split-method: smi
-        percentage: 40
+        percentage: 20
         baseline-and-canary-replicas: 1
+    
+    # - uses: azure/k8s-deploy@v1    
+    #   with:
+    #     manifests: |
+    #       aks/eshop.yml
+    #       aks/eshop-ingress.yml
+    #     images: |
+    #       ${{ env.registry_name }}/${{ env.repository_name }}:${{ env.tag }}
+    #     imagepullsecrets: |
+    #       secret-github-acr
+    #     namespace: ${{ env.NAMESPACE }}
+    #     strategy: canary
+    #     traffic-split-method: smi
+    #     percentage: 40
+    #     baseline-and-canary-replicas: 1
 
   deploy_40:
     env:
@@ -189,8 +189,8 @@ jobs:
         context: lfraileaks
       id: setcontext
 
-    - name: Create Secret
-      run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="dpapi-connstring=${{ secrets.DPAPI_STORAGE }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -'
+    # - name: Create Secret
+    #   run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="dpapi-connstring=${{ secrets.DPAPI_STORAGE }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -'
 
     - uses: Azure/k8s-create-secret@v1
       with:        
@@ -200,11 +200,22 @@ jobs:
         container-registry-password: ${{ secrets.ACR_PASSWORD }}
         secret-name: secret-github-acr
 
+    - uses: azure/k8s-bake@v1
+      with:
+        renderEngine: 'helm'
+        helmChart: 'chart/web'
+        overrides: |     
+          replicas:2
+          image.tag: ${{ env.tag }}
+          secrets.ConnectionStrings._CatalogConnection: ${{ secrets.CATALOG_DB_CONNSTRING }}
+          secrets.ConnectionStrings._IdentityConnection: ${{ secrets.IDENTITY_DB_CONNSTRING }}
+          secrets.DataProtection._StorageConnString: ${{ secrets.DPAPI_STORAGE }}
+        helm-version: 'latest' 
+      id: bake
+
     - uses: azure/k8s-deploy@v1    
       with:
-        manifests: |
-          aks/eshop.yml
-          aks/eshop-ingress.yml
+        manifests: ${{ steps.bake.outputs.manifestsBundle }}
         images: |
           ${{ env.registry_name }}/${{ env.repository_name }}:${{ env.tag }}
         imagepullsecrets: |
@@ -239,8 +250,8 @@ jobs:
         context: lfraileaks
       id: setcontext
 
-    - name: Create Secret
-      run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="dpapi-connstring=${{ secrets.DPAPI_STORAGE }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -'
+    # - name: Create Secret
+    #   run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="dpapi-connstring=${{ secrets.DPAPI_STORAGE }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -'
 
     - uses: Azure/k8s-create-secret@v1
       with:        
@@ -250,11 +261,22 @@ jobs:
         container-registry-password: ${{ secrets.ACR_PASSWORD }}
         secret-name: secret-github-acr
 
+    - uses: azure/k8s-bake@v1
+      with:
+        renderEngine: 'helm'
+        helmChart: 'chart/web'
+        overrides: |     
+          replicas:2
+          image.tag: ${{ env.tag }}
+          secrets.ConnectionStrings._CatalogConnection: ${{ secrets.CATALOG_DB_CONNSTRING }}
+          secrets.ConnectionStrings._IdentityConnection: ${{ secrets.IDENTITY_DB_CONNSTRING }}
+          secrets.DataProtection._StorageConnString: ${{ secrets.DPAPI_STORAGE }}
+        helm-version: 'latest' 
+      id: bake
+
     - uses: azure/k8s-deploy@v1    
       with:
-        manifests: |
-          aks/eshop.yml
-          aks/eshop-ingress.yml
+        manifests: ${{ steps.bake.outputs.manifestsBundle }}
         images: |
           ${{ env.registry_name }}/${{ env.repository_name }}:${{ env.tag }}
         imagepullsecrets: |
@@ -289,8 +311,8 @@ jobs:
         context: lfraileaks
       id: setcontext
 
-    - name: Create Secret
-      run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="dpapi-connstring=${{ secrets.DPAPI_STORAGE }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -'
+    # - name: Create Secret
+    #   run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="dpapi-connstring=${{ secrets.DPAPI_STORAGE }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -'
 
     - uses: Azure/k8s-create-secret@v1
       with:        
@@ -300,11 +322,22 @@ jobs:
         container-registry-password: ${{ secrets.ACR_PASSWORD }}
         secret-name: secret-github-acr
 
+    - uses: azure/k8s-bake@v1
+      with:
+        renderEngine: 'helm'
+        helmChart: 'chart/web'
+        overrides: |     
+          replicas:2
+          image.tag: ${{ env.tag }}
+          secrets.ConnectionStrings._CatalogConnection: ${{ secrets.CATALOG_DB_CONNSTRING }}
+          secrets.ConnectionStrings._IdentityConnection: ${{ secrets.IDENTITY_DB_CONNSTRING }}
+          secrets.DataProtection._StorageConnString: ${{ secrets.DPAPI_STORAGE }}
+        helm-version: 'latest' 
+      id: bake
+
     - uses: azure/k8s-deploy@v1    
       with:
-        manifests: |
-          aks/eshop.yml
-          aks/eshop-ingress.yml
+        manifests: ${{ steps.bake.outputs.manifestsBundle }}
         images: |
           ${{ env.registry_name }}/${{ env.repository_name }}:${{ env.tag }}
         imagepullsecrets: |
@@ -312,4 +345,4 @@ jobs:
         namespace: ${{ env.NAMESPACE }}
         strategy: canary
         traffic-split-method: smi
-        action: promote 
+        action: promote
