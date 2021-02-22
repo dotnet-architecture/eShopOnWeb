@@ -1,0 +1,43 @@
+fullnameOverride: eshop-web
+replicaCount: 2
+image:
+  repository: lfraileacr.azurecr.io/eshop-web
+  tag: stable
+  pullPolicy: IfNotPresent
+imagePullSecrets: []
+service:
+  type: ClusterIP
+  port: 80
+deployment:
+  containerPort: 80
+  labels:
+    app: eshop-web
+probes:
+  enabled: false
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/use-regex: "true"
+  path: /(.*)
+  hosts:
+  - githubaks.lfraile.net
+  tls:
+    - hosts:
+      - githubaks.lfraile.net
+      secretName: tls-secret
+secrets:
+  ConnectionStrings:
+    _CatalogConnection: CatalogConnection
+    _IdentityConnection: IdentityConnection
+  DataProtection:
+    _StorageConnString: StorageConnString
+resources:
+  limits:
+   cpu: 500m
+   memory: 512Mi
+nodeSelector: {}
+tolerations: []
+affinity: {}

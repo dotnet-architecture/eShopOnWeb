@@ -1,0 +1,22 @@
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1
+ARG BUILD_CONFIGURATION=Debug
+ENV ASPNETCORE_ENVIRONMENT=Development
+ENV ASPNETCORE_URLS=http://+:80
+ENV DOTNET_USE_POLLING_FILE_WATCHER=true
+EXPOSE 80
+
+WORKDIR /src
+COPY ["src/ApplicationCore/ApplicationCore.csproj", "src/ApplicationCore/"]
+COPY ["src/BlazorAdmin/BlazorAdmin.csproj", "src/BlazorAdmin/"]
+COPY ["src/BlazorShared/BlazorShared.csproj", "src/BlazorShared/"]
+COPY ["src/Infrastructure/Infrastructure.csproj", "src/Infrastructure/"]
+COPY ["src/Web/Web.csproj", "src/Web/"]
+
+RUN dotnet restore "src/Web/Web.csproj"
+COPY . .
+WORKDIR "/src/src/Web"
+RUN dotnet build --no-restore "Web.csproj" -c $BUILD_CONFIGURATION
+
+RUN echo "exec dotnet run --no-build --no-launch-profile -c $BUILD_CONFIGURATION --" > /entrypoint.sh
+
+ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]

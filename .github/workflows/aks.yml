@@ -75,6 +75,12 @@ jobs:
       with:
         name: aks
         path: aks
+
+    - name: Upload Chart
+      uses: actions/upload-artifact@v2
+      with:
+        name: chart
+        path: src/Web/charts
         
   deploy_20:
     env:
@@ -101,8 +107,8 @@ jobs:
         context: lfraileaks
       id: setcontext
 
-    - name: Create Secret
-      run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="dpapi-connstring=${{ secrets.DPAPI_STORAGE }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -'
+    # - name: Create Secret
+    #   run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="dpapi-connstring=${{ secrets.DPAPI_STORAGE }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -'
 
     - uses: Azure/k8s-create-secret@v1
       with:        
@@ -111,12 +117,23 @@ jobs:
         container-registry-username: ${{ secrets.ACR_USER_NAME }}
         container-registry-password: ${{ secrets.ACR_PASSWORD }}
         secret-name: secret-github-acr
+    
+    - uses: azure/k8s-bake@v1
+      with:
+        renderEngine: 'helm'
+        helmChart: 'chart/web'
+        overrides: |     
+          replicas:2
+          image.tag: ${{ env.tag }}
+          secrets.ConnectionStrings._CatalogConnection: ${{ secrets.CATALOG_DB_CONNSTRING }}
+          secrets.ConnectionStrings._IdentityConnection: ${{ secrets.IDENTITY_DB_CONNSTRING }}
+          secrets.DataProtection._StorageConnString: ${{ secrets.DPAPI_STORAGE }}
+        helm-version: 'latest' 
+      id: bake
 
     - uses: azure/k8s-deploy@v1    
       with:
-        manifests: |
-          aks/eshop.yml
-          aks/eshop-ingress.yml
+        manifests: ${{ steps.bake.outputs.manifestsBundle }}
         images: |
           ${{ env.registry_name }}/${{ env.repository_name }}:${{ env.tag }}
         imagepullsecrets: |
