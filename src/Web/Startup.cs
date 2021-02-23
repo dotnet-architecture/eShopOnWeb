@@ -27,16 +27,19 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using BlazorShared;
 using Azure.Storage.Blobs;
+using Microsoft.Extensions.Logging;
 
 namespace Microsoft.eShopWeb.Web
 {
     public class Startup
     {
         private IServiceCollection _services;
+        private readonly ILoggerFactory loggerFactory;
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, ILoggerFactory loggerFactory)
         {
             Configuration = configuration;
+            this.loggerFactory = loggerFactory;
         }
 
         public IConfiguration Configuration { get; }
@@ -62,6 +65,8 @@ namespace Microsoft.eShopWeb.Web
 
         private BlobClient GetBlobClient()
         {
+            var logger = loggerFactory.CreateLogger<Startup>();
+            logger.LogInformation(Configuration["DataProtection:StorageConnString"]);
             var client = new BlobServiceClient(Configuration["DataProtection:StorageConnString"]);
 
             BlobContainerClient containerClient = client.GetBlobContainerClient(Configuration["DataProtection:Container"]);
