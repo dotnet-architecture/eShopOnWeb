@@ -36,10 +36,9 @@ namespace Microsoft.eShopWeb.Web
         private IServiceCollection _services;
         private readonly ILoggerFactory loggerFactory;
 
-        public Startup(IConfiguration configuration, ILoggerFactory loggerFactory)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            this.loggerFactory = loggerFactory;
         }
 
         public IConfiguration Configuration { get; }
@@ -65,8 +64,6 @@ namespace Microsoft.eShopWeb.Web
 
         private BlobClient GetBlobClient()
         {
-            var logger = loggerFactory.CreateLogger<Startup>();
-            logger.LogInformation(Configuration["DataProtection:StorageConnString"]);
             var client = new BlobServiceClient(Configuration["DataProtection:StorageConnString"]);
 
             BlobContainerClient containerClient = client.GetBlobContainerClient(Configuration["DataProtection:Container"]);
