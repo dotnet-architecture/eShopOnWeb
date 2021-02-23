@@ -131,8 +131,8 @@ jobs:
         overrides: |     
           replicas:2
           image.tag:${{ env.tag }}
-          secrets.ConnectionStrings._CatalogConnection:'${{ secrets.CATALOG_DB_CONNSTRING }}'
-          secrets.ConnectionStrings._IdentityConnection:'${{ secrets.IDENTITY_DB_CONNSTRING }}'
+          secrets.ConnectionStrings._CatalogConnection:${{ secrets.CATALOG_DB_CONNSTRING }}
+          secrets.ConnectionStrings._IdentityConnection:${{ secrets.IDENTITY_DB_CONNSTRING }}
           secrets.DataProtection._StorageConnString:${{ secrets.DPAPI_STORAGE }}
         helm-version: 'latest' 
       id: bake
