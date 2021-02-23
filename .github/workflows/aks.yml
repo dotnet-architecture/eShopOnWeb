@@ -178,66 +178,11 @@ jobs:
         name: aks
         path: aks
     
-    - name: Find and Replace tag
-      run: find *.yml -type f -exec sed -i ''s/#{TAG}#/${{ env.tag }}/g'' {} \;
-      working-directory: aks
-
-    - uses: azure/k8s-set-context@v1
-      with:
-        method: kubeconfig
-        kubeconfig: ${{ secrets.AKS_KUBECONFIG }}
-        context: lfraileaks
-      id: setcontext
-
-    # - name: Create Secret
-    #   run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="dpapi-connstring=${{ secrets.DPAPI_STORAGE }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -'
-
-    - uses: Azure/k8s-create-secret@v1
-      with:        
-        namespace: ${{ env.NAMESPACE }}
-        container-registry-url: ${{ env.registry_name }}
-        container-registry-username: ${{ secrets.ACR_USER_NAME }}
-        container-registry-password: ${{ secrets.ACR_PASSWORD }}
-        secret-name: secret-github-acr
-
-    - uses: azure/k8s-bake@v1
-      with:
-        renderEngine: 'helm'
-        helmChart: 'chart/web'
-        overrides: |     
-          replicas:2
-          image.tag: ${{ env.tag }}
-          secrets.ConnectionStrings._CatalogConnection: ${{ secrets.CATALOG_DB_CONNSTRING }}
-          secrets.ConnectionStrings._IdentityConnection: ${{ secrets.IDENTITY_DB_CONNSTRING }}
-          secrets.DataProtection._StorageConnString: ${{ secrets.DPAPI_STORAGE }}
-        helm-version: 'latest' 
-      id: bake
-
-    - uses: azure/k8s-deploy@v1    
-      with:
-        manifests: ${{ steps.bake.outputs.manifestsBundle }}
-        images: |
-          ${{ env.registry_name }}/${{ env.repository_name }}:${{ env.tag }}
-        imagepullsecrets: |
-          secret-github-acr
-        namespace: ${{ env.NAMESPACE }}
-        strategy: canary
-        traffic-split-method: smi
-        percentage: 40
-        baseline-and-canary-replicas: 1
-
-  deploy_60:
-    env:
-      NAMESPACE: github   
-    needs: deploy_40
-    runs-on: ubuntu-latest  
-    environment: CANARIES_60
-    steps:
-    - name: Download aks
+    - name: Download charts
       uses: actions/download-artifact@v2
       with:
-        name: aks
-        path: aks
+        name: chart
+        path: chart
     
     - name: Find and Replace tag
       run: find *.yml -type f -exec sed -i ''s/#{TAG}#/${{ env.tag }}/g'' {} \;
@@ -267,10 +212,77 @@ jobs:
         helmChart: 'chart/web'
         overrides: |     
           replicas:2
-          image.tag: ${{ env.tag }}
-          secrets.ConnectionStrings._CatalogConnection: ${{ secrets.CATALOG_DB_CONNSTRING }}
-          secrets.ConnectionStrings._IdentityConnection: ${{ secrets.IDENTITY_DB_CONNSTRING }}
-          secrets.DataProtection._StorageConnString: ${{ secrets.DPAPI_STORAGE }}
+          image.tag:${{ env.tag }}
+          secrets.ConnectionStrings._CatalogConnection:${{ secrets.CATALOG_DB_CONNSTRING }}
+          secrets.ConnectionStrings._IdentityConnection:${{ secrets.IDENTITY_DB_CONNSTRING }}
+          secrets.DataProtection._StorageConnString:${{ secrets.DPAPI_STORAGE }}
+        helm-version: 'latest' 
+      id: bake
+
+    - uses: azure/k8s-deploy@v1    
+      with:
+        manifests: ${{ steps.bake.outputs.manifestsBundle }}
+        images: |
+          ${{ env.registry_name }}/${{ env.repository_name }}:${{ env.tag }}
+        imagepullsecrets: |
+          secret-github-acr
+        namespace: ${{ env.NAMESPACE }}
+        strategy: canary
+        traffic-split-method: smi
+        percentage: 40
+        baseline-and-canary-replicas: 1
+
+  deploy_60:
+    env:
+      NAMESPACE: github   
+    needs: deploy_40
+    runs-on: ubuntu-latest  
+    environment: CANARIES_60
+    steps:
+    - name: Download aks
+      uses: actions/download-artifact@v2
+      with:
+        name: aks
+        path: aks
+    
+    - name: Download charts
+      uses: actions/download-artifact@v2
+      with:
+        name: chart
+        path: chart
+    
+    - name: Find and Replace tag
+      run: find *.yml -type f -exec sed -i ''s/#{TAG}#/${{ env.tag }}/g'' {} \;
+      working-directory: aks
+
+    - uses: azure/k8s-set-context@v1
+      with:
+        method: kubeconfig
+        kubeconfig: ${{ secrets.AKS_KUBECONFIG }}
+        context: lfraileaks
+      id: setcontext
+
+    # - name: Create Secret
+    #   run: 'kubectl create secret generic conn-strings --from-literal="catalog-connstring=${{ secrets.CATALOG_DB_CONNSTRING }}" --from-literal="dpapi-connstring=${{ secrets.DPAPI_STORAGE }}" --from-literal="identity-connstring=${{ secrets.IDENTITY_DB_CONNSTRING }}" -n ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -'
+
+    - uses: Azure/k8s-create-secret@v1
+      with:        
+        namespace: ${{ env.NAMESPACE }}
+        container-registry-url: ${{ env.registry_name }}
+        container-registry-username: ${{ secrets.ACR_USER_NAME }}
+        container-registry-password: ${{ secrets.ACR_PASSWORD }}
+        secret-name: secret-github-acr
+
+    - uses: azure/k8s-bake@v1
+      with:
+        renderEngine: 'helm'
+        helmChart: 'chart/web'
+        overrides: |     
+          replicas:2
+          image.tag:${{ env.tag }}
+          secrets.ConnectionStrings._CatalogConnection:${{ secrets.CATALOG_DB_CONNSTRING }}
+          secrets.ConnectionStrings._IdentityConnection:${{ secrets.IDENTITY_DB_CONNSTRING }}
+          secrets.DataProtection._StorageConnString:${{ secrets.DPAPI_STORAGE }}
         helm-version: 'latest' 
       id: bake
 
