@@ -1,0 +1,94 @@
+name: Publish bake
+on:
+  workflow_dispatch:  
+  push:
+    branches: 
+      - master
+    paths:     
+      - .github/workflows/publish-bake.yml
+
+env:
+  build_config: Release      
+  registry_name: lfraileacr.azurecr.io
+  repository_name: eshop-web
+  tag: ${{ github.sha }}
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+   
+    - name: Upload ARM
+      uses: actions/upload-artifact@v2
+      with:
+        name: arm_template
+        path: arm
+
+    - name: Upload AKS
+      uses: actions/upload-artifact@v2
+      with:
+        name: aks
+        path: aks
+
+    - name: Upload Chart
+      uses: actions/upload-artifact@v2
+      with:
+        name: chart
+        path: src/Web/charts
+        
+  deploy_20:
+    env:
+      NAMESPACE: github   
+    needs: build
+    runs-on: ubuntu-latest  
+    environment: CANARIES_20
+    steps:
+
+    - name: Download aks
+      uses: actions/download-artifact@v2
+      with:
+        name: aks
+        path: aks
+
+    - name: Download charts
+      uses: actions/download-artifact@v2
+      with:
+        name: chart
+        path: chart
+    
+    - name: Find and Replace tag
+      run: find *.yml -type f -exec sed -i ''s/#{TAG}#/${{ env.tag }}/g'' {} \;
+      working-directory: aks
+
+    - uses: azure/k8s-set-context@v1
+      with:
+        method: kubeconfig
+        kubeconfig: ${{ secrets.AKS_KUBECONFIG }}
+        context: lfraileaks
+      id: setcontext
+    
+    - uses: azure/k8s-bake@v1
+      with:
+        renderEngine: 'helm'
+        helmChart: 'chart/web'
+        overrides: |     
+          replicas:2
+          image.tag: ${{ env.tag }}
+          secrets.ConnectionStrings._CatalogConnection: ${{ secrets.CATALOG_DB_CONNSTRING }}
+          secrets.ConnectionStrings._IdentityConnection: ${{ secrets.IDENTITY_DB_CONNSTRING }}
+          secrets.DataProtection._StorageConnString: ${{ secrets.DPAPI_STORAGE }}
+        helm-version: 'latest' 
+      id: bake
+
+    - name: Upload bake
+      uses: actions/upload-artifact@v2
+      with:
+        name: bake
+        path: ${{ steps.bake.outputs.manifestsBundle }}
