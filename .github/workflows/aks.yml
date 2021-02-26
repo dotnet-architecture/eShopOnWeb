@@ -297,7 +297,7 @@ jobs:
         strategy: canary
         traffic-split-method: smi
         percentage: 60
-        baseline-and-canary-replicas: 1
+        baseline-and-canary-replicas: 2
 
   promote_ga:
     env:
