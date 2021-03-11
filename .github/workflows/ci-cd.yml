@@ -6,6 +6,7 @@ env:
   build_config: Release      
   registry_name: lfraileacr.azurecr.io
   repository_name: eshop-web
+  ACTIONS_RUNNER_DEBUG: true
   
   
 jobs:
