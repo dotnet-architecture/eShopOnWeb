@@ -1,6 +1,6 @@
-# [Choice] .NET version: 5.0, 3.1, 2.1
+# [Choice] .NET Core version: 5.0, 3.1, 2.1
 ARG VARIANT=3.1
-FROM mcr.microsoft.com/vscode/devcontainers/dotnet:0-${VARIANT}
+FROM mcr.microsoft.com/vscode/devcontainers/dotnet:${VARIANT}
 
 # [Option] Install Node.js
 ARG INSTALL_NODE="true"
@@ -12,6 +12,17 @@ ARG INSTALL_AZURE_CLI="false"
 COPY library-scripts/azcli-debian.sh /tmp/library-scripts/
 RUN if [ "$INSTALL_AZURE_CLI" = "true" ]; then bash /tmp/library-scripts/azcli-debian.sh; fi \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts
+
+# Install SQL Tools: SQLPackage and sqlcmd
+COPY mssql/installSQLtools.sh installSQLtools.sh
+RUN bash ./installSQLtools.sh \
+     && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts
+
+# Update args in docker-compose.yaml to set the UID/GID of the "vscode" user.
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+RUN if [ "$USER_GID" != "1000" ] || [ "$USER_UID" != "1000" ]; then groupmod --gid $USER_GID vscode && usermod --uid $USER_UID --gid $USER_GID vscode; fi
+
 
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
