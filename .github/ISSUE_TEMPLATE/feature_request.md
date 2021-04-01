@@ -1,7 +1,7 @@
 ---
-name: DEMO Feature request
+name: Feature request
 about: Suggest an idea for this project
-title: "[BUGLF] :bug:"
+title: ''
 labels: ''
 assignees: ''
 
