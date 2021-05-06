@@ -2,17 +2,20 @@
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate
 {
     public class Order : BaseEntity, IAggregateRoot
     {
+        private readonly IEnumerable<IDiscount> _discounts;
+
         private Order()
         {
             // required by EF
         }
 
-        public Order(string buyerId, Address shipToAddress, List<OrderItem> items)
+        public Order(string buyerId, Address shipToAddress, List<OrderItem> items, IEnumerable<IDiscount> discounts = null)
         {
             Guard.Against.NullOrEmpty(buyerId, nameof(buyerId));
             Guard.Against.Null(shipToAddress, nameof(shipToAddress));
@@ -21,6 +24,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate
             BuyerId = buyerId;
             ShipToAddress = shipToAddress;
             _orderItems = items;
+            _discounts = discounts;
         }
 
         public string BuyerId { get; private set; }
@@ -42,11 +46,41 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate
         public decimal Total()
         {
             var total = 0m;
+
+            if (_discounts != null)
+            {
+                foreach (var discount in _discounts)
+                {
+                    discount.ApplyDiscount(_orderItems);
+                }
+            }
+
             foreach (var item in _orderItems)
             {
                 total += item.UnitPrice * item.Units;
             }
+            
             return total;
         }
     }
+
+    public interface IDiscount
+    {
+        void ApplyDiscount(IEnumerable<OrderItem> orderItems);
+    }
+    
+    public class  FiveOrMoreDiscount : IDiscount
+    {
+        public void ApplyDiscount(IEnumerable<OrderItem> orderItems)
+        {
+            foreach (var orderItem in orderItems)
+            {
+                if (orderItem.Units >= 5)
+                {
+                    orderItem.ApplyDiscount(.5);
+                }
+            }
+        }
+    }
+    
 }

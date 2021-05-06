@@ -1,4 +1,5 @@
-﻿using Ardalis.GuardClauses;
+﻿using System.Collections.Generic;
+using Ardalis.GuardClauses;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
 using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
@@ -46,7 +47,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
                 return orderItem;
             }).ToList();
 
-            var order = new Order(basket.BuyerId, shippingAddress, items);
+            var order = new Order(basket.BuyerId, shippingAddress, items, new List<IDiscount>());
 
             await _orderRepository.AddAsync(order);
         }
