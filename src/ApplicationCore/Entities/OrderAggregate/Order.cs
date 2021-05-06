@@ -15,7 +15,8 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate
             // required by EF
         }
 
-        public Order(string buyerId, Address shipToAddress, List<OrderItem> items, IEnumerable<IDiscount> discounts = null)
+        public Order(string buyerId, Address shipToAddress, List<OrderItem> items,
+            IEnumerable<IDiscount> discounts = null)
         {
             Guard.Against.NullOrEmpty(buyerId, nameof(buyerId));
             Guard.Against.Null(shipToAddress, nameof(shipToAddress));
@@ -59,7 +60,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate
             {
                 total += item.UnitPrice * item.Units;
             }
-            
+
             return total;
         }
     }
@@ -68,8 +69,8 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate
     {
         void ApplyDiscount(IEnumerable<OrderItem> orderItems);
     }
-    
-    public class  FiveOrMoreDiscount : IDiscount
+
+    public class FiveOrMoreDiscount : IDiscount
     {
         public void ApplyDiscount(IEnumerable<OrderItem> orderItems)
         {
@@ -82,5 +83,32 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate
             }
         }
     }
-    
+
+    public class TwoDiscount : IDiscount
+    {
+        public void ApplyDiscount(IEnumerable<OrderItem> orderItems)
+        {
+            foreach (var orderItem in orderItems)
+            {
+                if (orderItem.Units == 2)
+                {
+                    orderItem.ApplyDiscount(.95);
+                }
+            }
+        }
+    }
+
+    public class FourDiscount : IDiscount
+    {
+        public void ApplyDiscount(IEnumerable<OrderItem> orderItems)
+        {
+            foreach (var orderItem in orderItems)
+            {
+                if (orderItem.Units == 4)
+                {
+                    orderItem.ApplyDiscount(.9);
+                }
+            }
+        }
+    }
 }

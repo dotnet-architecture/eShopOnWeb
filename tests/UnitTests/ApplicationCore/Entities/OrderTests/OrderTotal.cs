@@ -60,6 +60,52 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Entities.OrderTests
             var expectedTotal = (price * testUnits) / 2;
             
             Assert.Equal(expectedTotal, total);
+        }       
+        [Fact]
+        public void ShouldApply10PercentDiscount()
+        {
+            //Given
+            var price = 1.23m;
+            var testUnits = 4;
+            var catalogItemOrdered = new CatalogItemOrdered(123, "Test product", "uri");
+            var orderItem = new OrderItem(catalogItemOrdered, price, testUnits);
+            var itemList = new List<OrderItem>() {orderItem};
+            var discountList = new List<IDiscount>()
+            {
+                new FourDiscount()
+            };
+
+            var order = new Order("buyerId", new AddressBuilder().WithDefaultValues(), itemList, discountList);
+
+            //When
+            var total = order.Total();
+            
+            //Then
+            var expectedTotal = (price * testUnits) * .9m;
+            
+            Assert.Equal(expectedTotal, total);
+        }  
+        
+        [Fact]
+        public void ShouldApply5PercentDiscount()
+        {
+            //Given
+            var price = 1.23m;
+            var testUnits = 2;
+            var catalogItemOrdered = new CatalogItemOrdered(123, "Test product", "uri");
+            var orderItem = new OrderItem(catalogItemOrdered, price, testUnits);
+            var itemList = new List<OrderItem>() {orderItem};
+            var discountList = new List<IDiscount>() {new TwoDiscount()};
+
+            var order = new Order("buyerId", new AddressBuilder().WithDefaultValues(), itemList, discountList);
+
+            //When
+            var total = order.Total();
+            
+            //Then
+            var expectedTotal = (price * testUnits) * .95m;
+            
+            Assert.Equal(expectedTotal, total);
         }
     }
 }
