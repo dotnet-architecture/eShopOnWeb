@@ -15,16 +15,19 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
         private readonly IUriComposer _uriComposer;
         private readonly IAsyncRepository<Basket> _basketRepository;
         private readonly IAsyncRepository<CatalogItem> _itemRepository;
+        private readonly IDiscountService _discountService;
 
         public OrderService(IAsyncRepository<Basket> basketRepository,
             IAsyncRepository<CatalogItem> itemRepository,
             IAsyncRepository<Order> orderRepository,
-            IUriComposer uriComposer)
+            IUriComposer uriComposer,
+            IDiscountService discountService)
         {
             _orderRepository = orderRepository;
             _uriComposer = uriComposer;
             _basketRepository = basketRepository;
             _itemRepository = itemRepository;
+            _discountService = discountService;
         }
 
         public async Task CreateOrderAsync(int basketId, Address shippingAddress)
@@ -43,7 +46,8 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
                 var catalogItem = catalogItems.First(c => c.Id == basketItem.CatalogItemId);
                 var itemOrdered = new CatalogItemOrdered(catalogItem.Id, catalogItem.Name, _uriComposer.ComposePicUri(catalogItem.PictureUri));
                 var orderItem = new OrderItem(itemOrdered, basketItem.UnitPrice, basketItem.Quantity);
-                return orderItem;
+                var itemWithDiscount = _discountService.ApplyDiscount(orderItem);
+                return itemWithDiscount;
             }).ToList();
 
             var order = new Order(basket.BuyerId, shippingAddress, items);

@@ -37,5 +37,18 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Entities.OrderTests
 
             Assert.Equal(builder.TestUnitPrice * builder.TestUnits, order.Total());
         }
+
+        [Theory]
+        [InlineData(10, 10, 40)]
+        [InlineData(15, 10, 25)]
+        [InlineData(50, 10, 30)]
+        public void IsDiscountApplied(int discount, int unitPrice, int expectedTotal)
+        {
+            var builder = new OrderBuilder();
+            var order = builder.WithItems(new List<OrderItem> { new OrderItem(new CatalogItemOrdered(1, "someProductName", "somePictureUri"), unitPrice, 1, discount) } );
+
+
+            Assert.Equal(expectedTotal, order.Total());
+        }       
     }
 }

@@ -7,6 +7,8 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate
 {
     public class Order : BaseEntity, IAggregateRoot
     {
+        private readonly int PercentageBulkDiscount = 50;
+
         private Order()
         {
             // required by EF
@@ -44,9 +46,11 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate
             var total = 0m;
             foreach (var item in _orderItems)
             {
-                total += item.UnitPrice * item.Units;
+                var totalItemPrice = item.UnitPrice * item.Units * (100-item.Discount)/100;
+                total += totalItemPrice;
             }
             return total;
         }
+
     }
 }
