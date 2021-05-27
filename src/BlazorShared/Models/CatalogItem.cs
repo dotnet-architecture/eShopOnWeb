@@ -32,7 +32,7 @@ namespace BlazorShared.Models
         public string PictureBase64 { get; set; }
         public string PictureName { get; set; }
 
-        private const int ImageMinimumBytes = 512000;
+        private const int ImageMaximumBytes = 512000;
 
         public static string IsValidImage(string pictureName, string pictureBase64)
         {
@@ -47,7 +47,7 @@ namespace BlazorShared.Models
                 return "File length is 0!";
             }
 
-            if (fileData.Length > ImageMinimumBytes)
+            if (fileData.Length > ImageMaximumBytes)
             {
                 return "Maximum length is 512KB";
             }
