@@ -76,7 +76,7 @@ jobs:
   deploy:       
    # if: github.ref == 'refs/heads/master' 
     needs: build
-    runs-on: windows-latest  
+    runs-on: ubuntu-latest  
     environment: dockerwebapp
     env:
       RESOURCE_GROUP: NetCore_GIthubCI_CD_RG
@@ -100,10 +100,8 @@ jobs:
     
     - name: Azure CLI Action
       uses: Azure/cli@1.0.4
-      with:
-        # Specify the script here
-        inlineScript:  |
-          az group create --location westeurope --resource-group $RESOURCE_GROUP
+      with:        
+        inlineScript: az group create --location westeurope --resource-group $RESOURCE_GROUP
 
     - name: Deploy Azure Resource Manager (ARM) Template
       continue-on-error: true
