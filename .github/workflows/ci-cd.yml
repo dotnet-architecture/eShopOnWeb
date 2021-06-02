@@ -9,9 +9,7 @@ env:
   build_config: Release      
   registry_name: lfraileacr.azurecr.io
   repository_name: eshop-web
-  ACTIONS_RUNNER_DEBUG: true
-  
-  
+    
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -81,12 +79,6 @@ jobs:
     env:
       RESOURCE_GROUP: NetCore_GIthubCI_CD_RG
     steps:
-      
-    - name: Download scripts
-      uses: actions/download-artifact@v2
-      with:
-        name: sql_scripts
-        path: sql_scripts
     - name: Download arm
       uses: actions/download-artifact@v2
       with:
@@ -114,6 +106,23 @@ jobs:
         deploymentMode: Incremental
         deploymentName: deploy-docker-${{ github.run_number  }}
         parameters: catalogConnstring="${{ secrets.CATALOG_DB_CONNSTRING }}" identityConnstring="${{ secrets.IDENTITY_DB_CONNSTRING }}" sites_netcoregithub_name=netcoreghdck serverfarms_netcoregithubplan_name=netcoregithubplan sqlserver_password=${{ secrets.DB_PASSWORD }} dockerRegistryUrl=${{ env.registry_name }} dockerRegistryUsername=${{ secrets.ACR_USER_NAME }} dockerRegistryPassword=${{ secrets.ACR_PASSWORD }} dockerImage=${{ env.registry_name }}/${{ env.repository_name }}:${{ github.run_number }}
+
+  deploydb:         
+    needs: deploy
+    runs-on: windows-latest  
+    environment: database
+    
+    steps:      
+    - name: Download scripts
+      uses: actions/download-artifact@v2
+      with:
+        name: sql_scripts
+        path: sql_scripts
+    
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}    
         
     - name: Azure SQL Deploy
       uses: Azure/sql-action@v1
