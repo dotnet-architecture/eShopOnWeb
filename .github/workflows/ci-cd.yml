@@ -1,6 +1,9 @@
 name: CI/CD .Net Core (docker)
 
-on: [ workflow_dispatch ]
+on:
+  workflow_dispatch:
+  push:
+    paths: .github/workflows/ci-cd.yml
 
 env:
   build_config: Release      
@@ -74,6 +77,9 @@ jobs:
    # if: github.ref == 'refs/heads/master' 
     needs: build
     runs-on: windows-latest  
+    environment: dockerwebapp
+    env:
+      RESOURCE_GROUP: NetCore_GIthubCI_CD_RG
     steps:
       
     - name: Download scripts
@@ -91,14 +97,21 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-        
+    
+    - name: Azure CLI Action
+      uses: Azure/cli@1.0.4
+      with:
+        # Specify the script here
+        inlineScript:  |
+          az group create --location westeurope --resource-group $RESOURCE_GROUP
+
     - name: Deploy Azure Resource Manager (ARM) Template
       continue-on-error: true
       uses: Azure/arm-deploy@v1
       with:        
         scope: resourcegroup
         subscriptionId: '26da47a8-c28d-4564-ae8e-8ba88e995a0a'        
-        resourceGroupName: 'NetCore_GIthubCI_CD_RG'
+        resourceGroupName: ${{ env.RESOURCE_GROUP }}
         template: arm_template/netcore_rg_arm.json       
         deploymentMode: Incremental
         deploymentName: deploy-docker-${{ github.run_number  }}
