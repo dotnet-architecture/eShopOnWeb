@@ -1,0 +1,40 @@
+name: Deploy ASP.NET Core Web Application to netconfdemo2020
+on:
+  push:
+    branches:
+    - demoprep
+env:
+  AZURE_WEBAPP_NAME: netconfdemo2020
+  AZURE_WEBAPP_PACKAGE_PATH: ./published
+  AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.NETCONFDEMO2020_PUBLISH_PROFILE }}
+  CONFIGURATION: Release
+  DOTNET_CORE_VERSION: 3.1.x
+  PROJECT_PATH: src\Web
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core SDK ${{ env.DOTNET_CORE_VERSION }}
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
+    - name: Restore packages
+      run: dotnet restore "${{ env.PROJECT_PATH }}"
+    - name: Build app
+      run: dotnet build "${{ env.PROJECT_PATH }}" --configuration ${{ env.CONFIGURATION }} --no-restore
+    - name: Test app
+      run: dotnet test "${{ env.PROJECT_PATH }}" --no-build
+    - name: Publish app for deploy
+      run: dotnet publish "${{ env.PROJECT_PATH }}" --configuration ${{ env.CONFIGURATION }} --no-build --output "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
+    - name: Deploy to Azure WebApp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        publish-profile: ${{ env.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+    - name: Publish Artifacts
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: webapp
+        path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
