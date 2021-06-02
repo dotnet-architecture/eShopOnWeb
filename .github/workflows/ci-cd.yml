@@ -93,6 +93,7 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
         
     - name: Deploy Azure Resource Manager (ARM) Template
+      continue-on-error: true
       uses: Azure/arm-deploy@v1
       with:        
         scope: resourcegroup

@@ -137,7 +137,9 @@
       "name": "[parameters('sites_netcoregithub_name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Web/serverfarms/', parameters('serverfarms_netcoregithubplan_name'))]"
+        "[concat('Microsoft.Web/serverfarms/', parameters('serverfarms_netcoregithubplan_name'))]",
+        "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_netcoregithub_name'),'eShopOnWeb.CatalogDb')]",
+        "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_netcoregithub_name'),'eShopOnWeb.Identity')]"
       ],
       "properties": {
         "name": "[parameters('sites_netcoregithub_name')]",
