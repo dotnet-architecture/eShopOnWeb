@@ -132,6 +132,33 @@
       }
     },
     {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2018-02-01",
+      "name": "[parameters('sites_netcoregithub_name')]",
+      "location": "westeurope",
+      "tags": {
+        "displayName": "[parameters('sites_netcoregithub_name')]"
+      },
+      "sku": {
+        "name": "Standard_LRS"
+      },
+      "kind": "StorageV2",
+      "properties": {},
+      "resources": [
+        {
+          "type": "blobServices/containers",
+          "apiVersion": "2018-03-01-preview",
+          "name": "default/dpapi",
+          "dependsOn": [
+            "[parameters('sites_netcoregithub_name')]"
+          ],
+          "properties": {
+            "publicAccess": "None"
+          }
+        }
+      ]
+    },
+    {
       "type": "Microsoft.Web/sites",
       "apiVersion": "2018-11-01",
       "name": "[parameters('sites_netcoregithub_name')]",
@@ -143,19 +170,19 @@
       ],
       "properties": {
         "name": "[parameters('sites_netcoregithub_name')]",
-        "siteConfig": {  
+        "siteConfig": {
           "connectionStrings": [
             {
               "connectionString": "[parameters('catalogConnstring')]",
               "name": "CatalogConnection",
               "type": "SQLAzure"
             },
-             {
+            {
               "connectionString": "[parameters('identityConnstring')]",
               "name": "IdentityConnection",
               "type": "SQLAzure"
             }
-          ],       
+          ],
           "appSettings": [
             {
               "name": "DOCKER_REGISTRY_SERVER_URL",
@@ -172,7 +199,12 @@
             {
               "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
               "value": "false"
+            },
+            {
+              "name": "DataProtection__StorageConnString",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('sites_netcoregithub_name'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('sites_netcoregithub_name')), '2019-04-01').keys[0].value,';EndpointSuffix=core.windows.net')]"
             }
+
           ],
           "linuxFxVersion": "[concat('DOCKER|',parameters('dockerImage'))]"
 
