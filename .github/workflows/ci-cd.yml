@@ -39,7 +39,7 @@ jobs:
         username: ${{ secrets.ACR_USER_NAME }}
         password: ${{ secrets.ACR_PASSWORD }}
         repository: ${{ env.repository_name }}
-        tags: ${{ github.run_number }}
+        tags: ${{ github.sha }}
         path: .
         dockerfile: src/Web/Dockerfile
         add_git_labels: true
@@ -104,8 +104,8 @@ jobs:
         resourceGroupName: ${{ env.RESOURCE_GROUP }}
         template: arm_template/netcore_rg_arm.json       
         deploymentMode: Incremental
-        deploymentName: deploy-docker-${{ github.run_number  }}
-        parameters: catalogConnstring="${{ secrets.CATALOG_DB_CONNSTRING }}" identityConnstring="${{ secrets.IDENTITY_DB_CONNSTRING }}" sites_netcoregithub_name=netcoreghdck serverfarms_netcoregithubplan_name=netcoregithubplan sqlserver_password=${{ secrets.DB_PASSWORD }} dockerRegistryUrl=${{ env.registry_name }} dockerRegistryUsername=${{ secrets.ACR_USER_NAME }} dockerRegistryPassword=${{ secrets.ACR_PASSWORD }} dockerImage=${{ env.registry_name }}/${{ env.repository_name }}:${{ github.run_number }}
+        deploymentName: deploy-docker-${{ github.sha  }}
+        parameters: catalogConnstring="${{ secrets.CATALOG_DB_CONNSTRING }}" identityConnstring="${{ secrets.IDENTITY_DB_CONNSTRING }}" sites_netcoregithub_name=netcoreghdck serverfarms_netcoregithubplan_name=netcoregithubplan sqlserver_password=${{ secrets.DB_PASSWORD }} dockerRegistryUrl=${{ env.registry_name }} dockerRegistryUsername=${{ secrets.ACR_USER_NAME }} dockerRegistryPassword=${{ secrets.ACR_PASSWORD }} dockerImage=${{ env.registry_name }}/${{ env.repository_name }}:${{ github.sha }}
 
   deploydb:         
     needs: deploy
