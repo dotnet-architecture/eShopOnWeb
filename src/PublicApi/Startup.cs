@@ -40,7 +40,7 @@ namespace Microsoft.eShopWeb.PublicApi
             // use in-memory database
             ConfigureInMemoryDatabases(services);
 
-            // use real database
+            // us   e real database
             //ConfigureProductionServices(services);
         }
 
@@ -65,14 +65,15 @@ namespace Microsoft.eShopWeb.PublicApi
             // use real database
             // Requires LocalDB which can be installed with SQL Server Express 2016
             // https://www.microsoft.com/en-us/download/details.aspx?id=54284
-            services.AddDbContext<CatalogContext>(c =>
-                c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection")));
+            // services.AddDbContext<CatalogContext>(c =>
+            //     c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection")));
 
-            // Add Identity DbContext
-            services.AddDbContext<AppIdentityDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
+            // // Add Identity DbContext
+            // services.AddDbContext<AppIdentityDbContext>(options =>
+            //     options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
 
-            ConfigureServices(services);
+            //ConfigureServices(services);
+            ConfigureInMemoryDatabases(services);
         }
 
         public void ConfigureTestingServices(IServiceCollection services)
