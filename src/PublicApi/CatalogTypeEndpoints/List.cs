@@ -16,14 +16,11 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogTypeEndpoints
     {
         private readonly IAsyncRepository<CatalogType> _catalogTypeRepository;
         private readonly IMapper _mapper;
-        private readonly IAppLogger<List> _logger;
-
-        public List(IAsyncRepository<CatalogType> catalogTypeRepository,
-            IMapper mapper, IAppLogger<List> logger)
+        
+        public List(IAsyncRepository<CatalogType> catalogTypeRepository, IMapper mapper)
         {
             _catalogTypeRepository = catalogTypeRepository;
             _mapper = mapper;
-            _logger = logger;
         }
 
         [HttpGet("api/catalog-types")]
@@ -38,7 +35,6 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogTypeEndpoints
             var response = new ListCatalogTypesResponse();
 
             var items = await _catalogTypeRepository.ListAllAsync(cancellationToken);
-            _logger.LogInformation($"Returned {items.Count} items from DB");
 
             response.CatalogTypes.AddRange(items.Select(_mapper.Map<CatalogTypeDto>));
 
