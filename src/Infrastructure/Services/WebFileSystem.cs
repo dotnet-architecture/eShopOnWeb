@@ -10,11 +10,13 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.Infrastructure.Services
 {
+    // This class never gets called. Modify it based on your need.
+
     public class WebFileSystem : IFileSystem
     {
         private readonly HttpClient _httpClient;
         private readonly string _url;
-        public const string AUTH_KEY = "AuthKeyOfDoomThatMustBeAMinimumNumberOfBytes";
+        public const string AUTH_KEY = "<IMAGE_FILE_UPLOAD_API_KEY>";               
 
         public WebFileSystem(string url)
         {
@@ -50,13 +52,11 @@ namespace Microsoft.eShopWeb.Infrastructure.Services
                 DataBase64 = Convert.ToBase64String(fileData),
                 FileName = fileName
             };
+
             var content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-            using var message = await _httpClient.PostAsync(_url, content, cancellationToken);
-            if (!message.IsSuccessStatusCode)
-            {
-                return false;
-            }
+            // TODO: Write the actual File image upload logic to web.            
+            // Post this image binary content to an Image Upload API.
 
             return true;
         }

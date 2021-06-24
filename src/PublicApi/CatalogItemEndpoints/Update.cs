@@ -17,15 +17,12 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
         .WithResponse<UpdateCatalogItemResponse>
     {
         private readonly IAsyncRepository<CatalogItem> _itemRepository;
-        private readonly IUriComposer _uriComposer;
-        private readonly IFileSystem _webFileSystem;
+        private readonly IUriComposer _uriComposer;        
 
-        public Update(IAsyncRepository<CatalogItem> itemRepository, IUriComposer uriComposer, IFileSystem webFileSystem)
+        public Update(IAsyncRepository<CatalogItem> itemRepository, IUriComposer uriComposer)
         {
             _itemRepository = itemRepository;
-            _uriComposer = uriComposer;
-            _webFileSystem = webFileSystem;
-
+            _uriComposer = uriComposer;            
         }
 
         [HttpPut("api/catalog-items")]
@@ -43,20 +40,7 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
 
             existingItem.UpdateDetails(request.Name, request.Description, request.Price);
             existingItem.UpdateBrand(request.CatalogBrandId);
-            existingItem.UpdateType(request.CatalogTypeId);
-
-            if (string.IsNullOrEmpty(request.PictureBase64) && string.IsNullOrEmpty(request.PictureUri))
-            {
-                existingItem.UpdatePictureUri(string.Empty);
-            }
-            else
-            {
-                var picName = $"{existingItem.Id}{Path.GetExtension(request.PictureName)}";
-                if (await _webFileSystem.SavePicture($"{picName}", request.PictureBase64, cancellationToken))
-                {
-                    existingItem.UpdatePictureUri(picName);
-                }
-            }
+            existingItem.UpdateType(request.CatalogTypeId);            
 
             await _itemRepository.UpdateAsync(existingItem, cancellationToken);
 

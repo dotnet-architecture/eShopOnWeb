@@ -19,13 +19,11 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
     {
         private readonly IAsyncRepository<CatalogItem> _itemRepository;
         private readonly IUriComposer _uriComposer;
-        private readonly IFileSystem _webFileSystem;
 
-        public Create(IAsyncRepository<CatalogItem> itemRepository, IUriComposer uriComposer, IFileSystem webFileSystem)
+        public Create(IAsyncRepository<CatalogItem> itemRepository, IUriComposer uriComposer)
         {
             _itemRepository = itemRepository;
             _uriComposer = uriComposer;
-            _webFileSystem = webFileSystem;
         }
 
         [HttpPost("api/catalog-items")]
@@ -45,12 +43,15 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
 
             if (newItem.Id != 0)
             {
-                var picName = $"{newItem.Id}{Path.GetExtension(request.PictureName)}";
-                if (await _webFileSystem.SavePicture(picName, request.PictureBase64, cancellationToken))
-                {
-                    newItem.UpdatePictureUri(picName);
-                    await _itemRepository.UpdateAsync(newItem, cancellationToken);
-                }
+                // At this point time, the Admin application uses the default catalog item image for any new product item.
+                //    But in the actual production scenario, you'll implement the image file upload mechanism in your application and set the image
+                //    file the Uri accordingly. You can refer to fewlines of the boilerplate code are commented out and kept it in the following files. 
+                //      - BlazorAdmin project -> Create.razor and Edit.razor.                
+                //      - Infrastructure project -> Services/WebFileSystem.cs
+
+                var picName = "eCatalog-item-default.png";
+                newItem.UpdatePictureUri(picName);
+                await _itemRepository.UpdateAsync(newItem, cancellationToken);
             }
 
             var dto = new CatalogItemDto
