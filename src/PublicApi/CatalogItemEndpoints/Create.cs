@@ -49,8 +49,7 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
                 //      - BlazorAdmin project -> Create.razor and Edit.razor.                
                 //      - Infrastructure project -> Services/WebFileSystem.cs
 
-                var picName = "eCatalog-item-default.png";
-                newItem.UpdatePictureUri(picName);
+                newItem.UpdatePictureUri("eCatalog-item-default.png");
                 await _itemRepository.UpdateAsync(newItem, cancellationToken);
             }
 
