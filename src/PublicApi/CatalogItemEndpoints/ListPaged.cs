@@ -19,14 +19,17 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
         private readonly IAsyncRepository<CatalogItem> _itemRepository;
         private readonly IUriComposer _uriComposer;
         private readonly IMapper _mapper;
+        private readonly IAppLogger<ListPaged> _logger;
 
         public ListPaged(IAsyncRepository<CatalogItem> itemRepository,
             IUriComposer uriComposer,
-            IMapper mapper)
+            IMapper mapper, 
+            IAppLogger<ListPaged> logger)
         {
             _itemRepository = itemRepository;
             _uriComposer = uriComposer;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet("api/catalog-items")]
@@ -50,6 +53,7 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
                 typeId: request.CatalogTypeId);
 
             var items = await _itemRepository.ListAsync(pagedSpec, cancellationToken);
+            _logger.LogInformation($"Returned {items.Count} items from DB");
 
             response.CatalogItems.AddRange(items.Select(_mapper.Map<CatalogItemDto>));
             foreach (CatalogItemDto item in response.CatalogItems)

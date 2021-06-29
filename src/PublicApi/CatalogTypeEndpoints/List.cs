@@ -16,9 +16,8 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogTypeEndpoints
     {
         private readonly IAsyncRepository<CatalogType> _catalogTypeRepository;
         private readonly IMapper _mapper;
-
-        public List(IAsyncRepository<CatalogType> catalogTypeRepository,
-            IMapper mapper)
+        
+        public List(IAsyncRepository<CatalogType> catalogTypeRepository, IMapper mapper)
         {
             _catalogTypeRepository = catalogTypeRepository;
             _mapper = mapper;
