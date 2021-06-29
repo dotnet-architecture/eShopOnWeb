@@ -43,11 +43,9 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
 
             if (newItem.Id != 0)
             {
-                // At this point time, the Admin application uses the default catalog item image for any new product item.
-                //    But in the actual production scenario, you'll implement the image file upload mechanism in your application and set the image
-                //    file the Uri accordingly. You can refer to fewlines of the boilerplate code are commented out and kept it in the following files. 
-                //      - BlazorAdmin project -> Create.razor and Edit.razor.                
-                //      - Infrastructure project -> Services/WebFileSystem.cs
+                //We disabled the upload functionality and added a default/placeholder image to this sample due to a potential security risk 
+                //  pointed out by the community. More info in this issue: https://github.com/dotnet-architecture/eShopOnWeb/issues/537 
+                //  In production, we recommend uploading to a blob storage and deliver the image via CDN after a verification process.
 
                 newItem.UpdatePictureUri("eCatalog-item-default.png");
                 await _itemRepository.UpdateAsync(newItem, cancellationToken);
