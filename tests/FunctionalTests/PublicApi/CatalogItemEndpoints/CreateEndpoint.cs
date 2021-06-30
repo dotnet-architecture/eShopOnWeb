@@ -18,8 +18,7 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
         private int _testBrandId = 1;
         private int _testTypeId = 2;
         private string _testDescription = "test description";
-        private string _testName = "test name";
-        private string _testUri = "test uri";
+        private string _testName = "test name";        
         private decimal _testPrice = 1.23m;
 
         public CreateEndpoint(ApiTestFixture factory)
@@ -54,8 +53,7 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
             Assert.Equal(_testBrandId, model.CatalogItem.CatalogBrandId);
             Assert.Equal(_testTypeId, model.CatalogItem.CatalogTypeId);
             Assert.Equal(_testDescription, model.CatalogItem.Description);
-            Assert.Equal(_testName, model.CatalogItem.Name);
-            Assert.Equal(_testUri, model.CatalogItem.PictureUri);
+            Assert.Equal(_testName, model.CatalogItem.Name);            
             Assert.Equal(_testPrice, model.CatalogItem.Price);
         }
 
@@ -66,8 +64,7 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
                 CatalogBrandId = _testBrandId,
                 CatalogTypeId = _testTypeId,
                 Description = _testDescription,
-                Name = _testName,
-                PictureUri = _testUri,
+                Name = _testName,                
                 Price = _testPrice
             };
             var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");

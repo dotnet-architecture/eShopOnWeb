@@ -19,13 +19,11 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
     {
         private readonly IAsyncRepository<CatalogItem> _itemRepository;
         private readonly IUriComposer _uriComposer;
-        private readonly IFileSystem _webFileSystem;
 
-        public Create(IAsyncRepository<CatalogItem> itemRepository, IUriComposer uriComposer, IFileSystem webFileSystem)
+        public Create(IAsyncRepository<CatalogItem> itemRepository, IUriComposer uriComposer)
         {
             _itemRepository = itemRepository;
             _uriComposer = uriComposer;
-            _webFileSystem = webFileSystem;
         }
 
         [HttpPost("api/catalog-items")]
@@ -45,12 +43,12 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
 
             if (newItem.Id != 0)
             {
-                var picName = $"{newItem.Id}{Path.GetExtension(request.PictureName)}";
-                if (await _webFileSystem.SavePicture(picName, request.PictureBase64, cancellationToken))
-                {
-                    newItem.UpdatePictureUri(picName);
-                    await _itemRepository.UpdateAsync(newItem, cancellationToken);
-                }
+                //We disabled the upload functionality and added a default/placeholder image to this sample due to a potential security risk 
+                //  pointed out by the community. More info in this issue: https://github.com/dotnet-architecture/eShopOnWeb/issues/537 
+                //  In production, we recommend uploading to a blob storage and deliver the image via CDN after a verification process.
+
+                newItem.UpdatePictureUri("eCatalog-item-default.png");
+                await _itemRepository.UpdateAsync(newItem, cancellationToken);
             }
 
             var dto = new CatalogItemDto
