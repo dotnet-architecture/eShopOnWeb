@@ -95,8 +95,7 @@ namespace Microsoft.eShopWeb.PublicApi
             services.AddScoped<ITokenClaimsService, IdentityTokenClaimService>();
 
             var baseUrlConfig = new BaseUrlConfiguration();
-            Configuration.Bind(BaseUrlConfiguration.CONFIG_NAME, baseUrlConfig);
-            services.AddScoped<IFileSystem, WebFileSystem>(x => new WebFileSystem($"{baseUrlConfig.WebBase}File"));
+            Configuration.Bind(BaseUrlConfiguration.CONFIG_NAME, baseUrlConfig);            
 
             services.AddMemoryCache();
 

@@ -83,23 +83,7 @@
                                             <InputNumber @bind-Value="_item.Price" class="form-control" />
                                             <ValidationMessage For="(() => _item.Price)" />
                                         </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="control-label col-md-6">@_item.PictureName</label>
-                                        <div class="row">
-                                            <div class="col-md-6 esh-form-information">
-                                                <BlazorInputFile.InputFile OnChange="ChangeFile" />
-                                            </div>
-                                            <div class="col-md-6 esh-form-information">
-                                                @if (HasPicture)
-                                                {
-                                                    <button type="button" class="btn btn-danger" @onclick="RemoveImage">Remove Picture</button>
-                                                }
-                                            </div>
-                                            <span class="col-md-12" style="color: red;"> @_badFileMessage </span>
-                                        </div>
-                                    </div>
+                                    </div>                                  
                                 </div>
                             </div>
                         </div>
@@ -169,28 +153,5 @@
         _modalDisplay = "none";
         _modalClass = "";
         _showEditModal = false;
-    }
-
-    private async Task ChangeFile(IFileListEntry[] files)
-    {
-        _badFileMessage = string.Empty;
-
-        var file = files.FirstOrDefault();
-        _item.PictureName = file?.Name;
-        _item.PictureBase64 = await CatalogItem.DataToBase64(file);
-
-        _badFileMessage = CatalogItem.IsValidImage(_item.PictureName, _item.PictureBase64);
-        if (!string.IsNullOrEmpty(_badFileMessage))
-        {
-            _item.PictureName = null;
-            _item.PictureBase64 = null;
-        }
-    }
-
-    private void RemoveImage()
-    {
-        _item.PictureName = null;
-        _item.PictureBase64 = null;
-        _item.PictureUri = null;
     }
 }
