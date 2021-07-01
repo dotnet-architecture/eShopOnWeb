@@ -1,0 +1,22 @@
+name: eShopOnWeb Rich Code Navigation
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  build:
+
+    runs-on: windows-2019
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.x
+
+    - name: Build with dotnet
+      run: dotnet build ./eShopOnWeb.sln --configuration Release
+
+    - uses: microsoft/RichCodeNavIndexer@v0.1
+      with:
+        repo-token: ${{ github.token }}
