@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
+using Microsoft.eShopWeb.ApplicationCore.Services;
 using Microsoft.eShopWeb.Infrastructure.Data;
 using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.eShopWeb.Web.Configuration;
@@ -82,7 +83,7 @@ namespace Microsoft.eShopWeb.Web
             // Add Identity DbContext
             services.AddDbContext<AppIdentityDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
-
+                        
             ConfigureServices(services);
         }
 
@@ -144,7 +145,7 @@ namespace Microsoft.eShopWeb.Web
                 config.Path = "/allservices";
             });
 
-            
+
             var baseUrlConfig = new BaseUrlConfiguration();
             Configuration.Bind(BaseUrlConfiguration.CONFIG_NAME, baseUrlConfig);
             services.AddScoped<BaseUrlConfiguration>(sp => baseUrlConfig);
@@ -152,6 +153,11 @@ namespace Microsoft.eShopWeb.Web
             services.AddScoped<HttpClient>(s => new HttpClient
             {
                 BaseAddress = new Uri(baseUrlConfig.WebBase)
+            });
+
+            services.AddHttpClient<IOrderItemsReserverService, OrderItemsReserverService>(client =>
+            {
+                client.BaseAddress = new Uri(Configuration["OrderItemsReserverUrl"]);
             });
 
             // add blazor services
