@@ -37,7 +37,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorAdmin", "src\BlazorAd
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorShared", "src\BlazorShared\BlazorShared.csproj", "{715CF7AF-A1EE-40A6-94A0-8DA3F3B2CAE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderItemsReserver", "src\OrderItemsReserver\OrderItemsReserver.csproj", "{3935F7A0-D477-4C89-AC13-FFAA6D82EE43}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderItemsReserver", "src\OrderItemsReserver\OrderItemsReserver.csproj", "{3935F7A0-D477-4C89-AC13-FFAA6D82EE43}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeliveryOrderProcessor", "src\DeliveryOrderProcessor\DeliveryOrderProcessor.csproj", "{91075648-57B6-44CE-BBAC-3A69932DEDCE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +91,10 @@ Global
 		{3935F7A0-D477-4C89-AC13-FFAA6D82EE43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3935F7A0-D477-4C89-AC13-FFAA6D82EE43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3935F7A0-D477-4C89-AC13-FFAA6D82EE43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91075648-57B6-44CE-BBAC-3A69932DEDCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91075648-57B6-44CE-BBAC-3A69932DEDCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91075648-57B6-44CE-BBAC-3A69932DEDCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91075648-57B6-44CE-BBAC-3A69932DEDCE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -104,6 +110,7 @@ Global
 		{71368733-80A4-4869-B215-3A7001878577} = {419A6ACE-0419-4315-A6FB-B0E63D39432E}
 		{715CF7AF-A1EE-40A6-94A0-8DA3F3B2CAE9} = {419A6ACE-0419-4315-A6FB-B0E63D39432E}
 		{3935F7A0-D477-4C89-AC13-FFAA6D82EE43} = {419A6ACE-0419-4315-A6FB-B0E63D39432E}
+		{91075648-57B6-44CE-BBAC-3A69932DEDCE} = {419A6ACE-0419-4315-A6FB-B0E63D39432E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {49813262-5DA3-4D61-ABD3-493C74CE8C2B}

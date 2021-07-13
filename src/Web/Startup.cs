@@ -44,10 +44,10 @@ namespace Microsoft.eShopWeb.Web
         public void ConfigureDevelopmentServices(IServiceCollection services)
         {
             // use in-memory database
-            ConfigureInMemoryDatabases(services);
+            //ConfigureInMemoryDatabases(services);
 
             // use real database
-            //ConfigureProductionServices(services);
+            ConfigureProductionServices(services);
         }
 
         public void ConfigureDockerServices(IServiceCollection services)
@@ -160,6 +160,11 @@ namespace Microsoft.eShopWeb.Web
                 client.BaseAddress = new Uri(Configuration["OrderItemsReserverUrl"]);
             });
 
+            services.AddHttpClient<IDeliveryOrderProcessorService, DeliveryOrderProcessorService>(client =>
+            {
+                client.BaseAddress = new Uri(Configuration["DeliveryOrderProcessorUrl"]);
+            });
+
             // add blazor services
             services.AddBlazoredLocalStorage();
             services.AddServerSideBlazor();
@@ -170,6 +175,7 @@ namespace Microsoft.eShopWeb.Web
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             _services = services; // used to debug registered services
+            services.AddApplicationInsightsTelemetry();
         }
 
 

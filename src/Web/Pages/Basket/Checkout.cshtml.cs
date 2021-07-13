@@ -26,12 +26,14 @@ namespace Microsoft.eShopWeb.Web.Pages.Basket
         private readonly IBasketViewModelService _basketViewModelService;
         private readonly IAppLogger<CheckoutModel> _logger;
         private readonly IOrderItemsReserverService _orderItemsReserverService;
+        private readonly IDeliveryOrderProcessorService _deliveryOrderProcessorService;
 
         public CheckoutModel(IBasketService basketService,
             IBasketViewModelService basketViewModelService,
             SignInManager<ApplicationUser> signInManager,
             IOrderService orderService,
             IOrderItemsReserverService orderItemsReserverService,
+            IDeliveryOrderProcessorService deliveryOrderProcessorService,
             IAppLogger<CheckoutModel> logger)
         {
             _basketService = basketService;
@@ -40,7 +42,8 @@ namespace Microsoft.eShopWeb.Web.Pages.Basket
             _basketViewModelService = basketViewModelService;
             _logger = logger;
             _orderItemsReserverService = orderItemsReserverService;
-        }
+            _deliveryOrderProcessorService = deliveryOrderProcessorService;
+    }
 
         public BasketViewModel BasketModel { get; set; } = new BasketViewModel();
 
@@ -62,7 +65,8 @@ namespace Microsoft.eShopWeb.Web.Pages.Basket
 
                 var updateModel = items.ToDictionary(b => b.Id.ToString(), b => b.Quantity);
                 await _basketService.SetQuantities(BasketModel.Id, updateModel);
-                await _orderService.CreateOrderAsync(BasketModel.Id, new Address("123 Main St.", "Kent", "OH", "United States", "44240"));
+                var order = await _orderService.CreateOrderAsync(BasketModel.Id, new Address("123 Main St.", "Kent", "OH", "United States", "44240"));
+                await _deliveryOrderProcessorService.PlaceOrderAsync(order);
                 await _orderItemsReserverService.PlaceOrderAsync(updateModel);
                 await _basketService.DeleteBasketAsync(BasketModel.Id);
             }
