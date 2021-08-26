@@ -3,6 +3,7 @@ using BlazorAdmin;
 using BlazorAdmin.Services;
 using Blazored.LocalStorage;
 using BlazorShared;
+using io.unlaunch;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
@@ -16,6 +17,7 @@ using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.Infrastructure.Data;
 using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.eShopWeb.Web.Configuration;
+using Microsoft.eShopWeb.Web.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -160,6 +162,9 @@ namespace Microsoft.eShopWeb.Web
 
             services.AddScoped<HttpService>();
             services.AddBlazorServices();
+
+            services.AddSingleton<IUnlaunchClient>(UnlaunchClient.Create("prod-server-0bdc1324-cbec-4740-83e9-86045d1cd93f"));
+            services.AddTransient<UnlaunchService>();
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 

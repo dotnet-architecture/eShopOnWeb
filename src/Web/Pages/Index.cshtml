@@ -1,4 +1,6 @@
 ﻿@page
+@using Microsoft.eShopWeb.Web.Services;
+@inject UnlaunchService UnlaunchService;
 @{
     ViewData["Title"] = "Catalog";
     @model IndexModel
@@ -27,11 +29,18 @@
         <partial name="_pagination" for="CatalogModel.PaginationInfo" />
 
         <div class="esh-catalog-items row">
-            @foreach (var catalogItem in Model.CatalogModel.CatalogItems)
-            {
-                <div class="esh-catalog-item col-md-4">
-                    <partial name="_product" for="@catalogItem" />
-                </div>
+            @{
+                if (UnlaunchService.IsEnabled(HttpContext.Connection.RemoteIpAddress.ToString()))
+                {
+                    Model.CatalogModel.CatalogItems.Reverse();
+                }
+
+                foreach (var catalogItem in Model.CatalogModel.CatalogItems)
+                {
+                    <div class="esh-catalog-item col-md-4">
+                        <partial name="_product" for="@catalogItem" />
+                    </div>
+                }
             }
         </div>
         <partial name="_pagination" for="CatalogModel.PaginationInfo" />
