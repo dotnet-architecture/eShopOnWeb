@@ -73,7 +73,7 @@ jobs:
         
   deploy:       
     if: github.ref == 'refs/heads/main' 
-    needs: build
+    needs: build_ci
     runs-on: ubuntu-latest  
     environment: dockerwebapp
     env:
