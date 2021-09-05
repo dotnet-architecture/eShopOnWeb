@@ -2,15 +2,15 @@ name: CI/CD .Net Core (AKS)
 
 on:
   workflow_dispatch:  
-  push:   
-    tags:
-      - aks-v*
-    branches: 
-      - main
-    paths:       
-      - src/**
-      - aks/**
-      - .github/workflows/aks.yml
+#  push:   
+#   tags:
+#      - aks-v*
+#    branches: 
+#      - main
+#    paths:       
+#      - src/**
+#      - aks/**
+#      - .github/workflows/aks.yml
 
 env:
   build_config: Release      
