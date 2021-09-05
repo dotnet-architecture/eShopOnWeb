@@ -2,7 +2,9 @@ name: CI/CD .Net Core (AKS)
 
 on:
   workflow_dispatch:  
-  push:
+  push:   
+    tags:
+      - aks-v*
     branches: 
       - main
     paths:       
