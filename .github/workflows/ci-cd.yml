@@ -11,7 +11,7 @@ env:
   repository_name: eshop-web
     
 jobs:
-  build:
+  build_ci:
     runs-on: ubuntu-latest
 
     steps:
