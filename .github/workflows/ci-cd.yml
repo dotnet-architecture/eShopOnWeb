@@ -5,7 +5,10 @@ on:
   pull_request:
     branches: [ main ]
   push:
-    paths: .github/workflows/ci-cd.yml
+    branches: [ main ]
+    paths: 
+      - .github/workflows/ci-cd.yml
+      - src/**
 
 env:
   build_config: Release      
