@@ -7,6 +7,7 @@
 #
 # RUN COMMAND
 #  docker run --name eshopweb --rm -it -p 5106:5106 web
+# MODIFY
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /app
 
