@@ -2,13 +2,14 @@ name: CI/CD .Net Core (docker)
 
 on:
   workflow_dispatch:
-  pull_request:
-    branches: [ main ]
+  # pull_request:
+  #   branches: [ main ]
   push:
-    branches: [ main ]
+    # branches: [ main, codespaces ]
     paths: 
       - .github/workflows/ci-cd.yml
       - src/**
+      - arm/**
 
 env:
   build_config: Release      
@@ -21,13 +22,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    
-    - name: Cache Docker layers
-      uses: actions/cache@v2
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ hashFiles('src/Web/Dockerfile') }}
-    
+       
     - name: Set up Docker Buildx
       id: buildx
       uses: docker/setup-buildx-action@v1
@@ -37,20 +32,22 @@ jobs:
     - name: Test with dotnet
       run: dotnet test ./eShopOnWeb.sln --configuration $build_config
     
-    - name: Build docker image
-      uses: docker/build-push-action@v1.1.1
+    - name: Login to DockerHub
+      uses: docker/login-action@v1
       with:
         registry: ${{ env.registry_name }}
         username: ${{ secrets.ACR_USER_NAME }}
         password: ${{ secrets.ACR_PASSWORD }}
-        repository: ${{ env.repository_name }}
-        tags: ${{ github.sha }}
-        path: .
-        dockerfile: src/Web/Dockerfile
-        add_git_labels: true
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache
-        
+   
+    - name: Build and push
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        pull: true
+        push: true
+        file: src/Web/Dockerfile
+        tags: ${{ env.registry_name }}/${{ env.repository_name }}:${{ github.sha }}
+    
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
@@ -76,11 +73,11 @@ jobs:
         name: arm_template
         path: arm
         
-  deploy:       
-    if: github.ref == 'refs/heads/main' 
+  deploydev:       
+    if: github.ref != 'refs/heads/main'
     needs: build_ci
-    runs-on: ubuntu-latest  
-    environment: dockerwebapp
+    runs-on: windows-latest  
+    environment: dockerwebappdev
     env:
       RESOURCE_GROUP: NetCore_GIthubCI_CD_RG
     steps:
@@ -94,11 +91,6 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-    
-    - name: Azure CLI Action
-      uses: Azure/cli@1.0.4
-      with:        
-        inlineScript: az group create --location westeurope --resource-group $RESOURCE_GROUP
 
     - name: Deploy Azure Resource Manager (ARM) Template
       continue-on-error: true
@@ -107,28 +99,69 @@ jobs:
         scope: resourcegroup
         subscriptionId: '26da47a8-c28d-4564-ae8e-8ba88e995a0a'        
         resourceGroupName: ${{ env.RESOURCE_GROUP }}
-        template: arm_template/netcore_rg_arm.json       
+        template: arm_template/netcore_rg_arm.json     
+        region: westeurope  
         deploymentMode: Incremental
         deploymentName: deploy-docker-${{ github.sha  }}
         parameters: catalogConnstring="${{ secrets.CATALOG_DB_CONNSTRING }}" identityConnstring="${{ secrets.IDENTITY_DB_CONNSTRING }}" sites_netcoregithub_name=netcoreghdck serverfarms_netcoregithubplan_name=netcoregithubplan sqlserver_password=${{ secrets.DB_PASSWORD }} dockerRegistryUrl=${{ env.registry_name }} dockerRegistryUsername=${{ secrets.ACR_USER_NAME }} dockerRegistryPassword=${{ secrets.ACR_PASSWORD }} dockerImage=${{ env.registry_name }}/${{ env.repository_name }}:${{ github.sha }}
 
-  deploydb:  
-    if: github.ref == 'refs/heads/main'        
-    needs: deploy
-    runs-on: windows-latest  
-    environment: database
-    
-    steps:      
     - name: Download scripts
       uses: actions/download-artifact@v2
       with:
         name: sql_scripts
-        path: sql_scripts
+        path: sql_scripts    
+        
+    - name: Azure SQL Deploy
+      uses: Azure/sql-action@v1
+      with:
+        server-name: netcoregithub.database.windows.net
+        connection-string: ${{ secrets.CATALOG_DB_CONNSTRING }}
+        sql-file: sql_scripts/catalog.sql
+        
+    - name: Azure SQL Deploy
+      uses: Azure/sql-action@v1
+      with:
+        server-name: netcoregithub.database.windows.net
+        connection-string: ${{ secrets.IDENTITY_DB_CONNSTRING }}
+        sql-file: sql_scripts/identity.sql
+
+  deploypro:      
+    if: github.ref == 'refs/heads/main'
+    needs: build_ci
+    runs-on: windows-latest  
+    environment: dockerwebapppro
+    env:
+      RESOURCE_GROUP: NetCore_GitHubCI_CD_PRO_RG
+    steps:
+    - name: Download arm
+      uses: actions/download-artifact@v2
+      with:
+        name: arm_template
+        path: arm_template
     
     - name: 'Login via Azure CLI'
       uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}    
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deploy Azure Resource Manager (ARM) Template
+      continue-on-error: true
+      uses: Azure/arm-deploy@v1
+      with:        
+        scope: resourcegroup
+        subscriptionId: '26da47a8-c28d-4564-ae8e-8ba88e995a0a'        
+        resourceGroupName: ${{ env.RESOURCE_GROUP }}
+        template: arm_template/netcore_rg_arm.json     
+        region: westeurope  
+        deploymentMode: Incremental
+        deploymentName: deploy-docker-${{ github.sha  }}
+        parameters: catalogConnstring="${{ secrets.CATALOG_DB_CONNSTRING }}" identityConnstring="${{ secrets.IDENTITY_DB_CONNSTRING }}" sites_netcoregithub_name=netcoreghdckpro serverfarms_netcoregithubplan_name=netcoregithubplanpro servers_netcoregithub_name=netcoreghdckpro sqlserver_password=${{ secrets.DB_PASSWORD }} dockerRegistryUrl=${{ env.registry_name }} dockerRegistryUsername=${{ secrets.ACR_USER_NAME }} dockerRegistryPassword=${{ secrets.ACR_PASSWORD }} dockerImage=${{ env.registry_name }}/${{ env.repository_name }}:${{ github.sha }}
+
+    - name: Download scripts
+      uses: actions/download-artifact@v2
+      with:
+        name: sql_scripts
+        path: sql_scripts    
         
     - name: Azure SQL Deploy
       uses: Azure/sql-action@v1

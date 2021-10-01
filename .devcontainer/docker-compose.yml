@@ -15,9 +15,10 @@ services:
         # On Linux, you may need to update USER_UID and USER_GID below if not your local UID is not 1000.
         USER_UID: 1000
         USER_GID: 1000
-
+    init: true
     volumes:
       - ..:/workspace:cached
+      - /var/run/docker.sock:/var/run/docker.sock
       
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity

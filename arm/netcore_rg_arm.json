@@ -1,5 +1,5 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
     "sites_netcoregithub_name": {
@@ -86,12 +86,11 @@
         "[resourceId('Microsoft.Sql/servers', parameters('servers_netcoregithub_name'))]"
       ],
       "sku": {
-        "name": "GP_S_Gen5",
-        "tier": "GeneralPurpose",
-        "family": "Gen5",
-        "capacity": 1
+        "name": "Standard",
+        "tier": "Standard",
+        "capacity": 20
       },
-      "kind": "v12.0,user,vcore,serverless",
+      "kind": "v12.0,user",
       "properties": {
         "collation": "SQL_Latin1_General_CP1_CI_AS",
         "maxSizeBytes": 1073741824,
