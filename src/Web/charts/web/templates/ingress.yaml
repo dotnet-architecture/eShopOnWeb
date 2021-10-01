@@ -38,6 +38,7 @@ spec:
             backend:
               service:
                 name: {{ $fullName }}
-                port: http
+                port: 
+                  number: 80
   {{- end }}
 {{- end }}
