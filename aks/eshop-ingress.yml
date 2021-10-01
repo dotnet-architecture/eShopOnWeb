@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: eshop-web
@@ -17,7 +17,11 @@ spec:
   - host: githubaks.lfraile.net
     http:
       paths:
-      - backend:
-          serviceName: eshop-web
-          servicePort: 80
-        path: /(.*)
+      - path: /(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: eshop-web          
+            port: 
+              number: 80
+        
