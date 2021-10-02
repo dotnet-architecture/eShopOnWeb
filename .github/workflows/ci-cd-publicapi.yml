@@ -50,7 +50,7 @@ jobs:
         tags: ${{ env.registry_name }}/${{ env.repository_name }}:${{ github.sha }}    
 
   deploydev:
-    if: github.ref != 'refs/heads/main'
+    #if: github.ref != 'refs/heads/main'
     needs: 
       - build-ci
 
