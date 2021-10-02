@@ -56,6 +56,8 @@ jobs:
 
     runs-on: ubuntu-latest
     environment: dockerwebappdev
+    env:
+      RESOURCE_GROUP: NetCore_GIthubCI_CD_RG
     steps:
       - name: Azure Login
         uses: azure/login@v1
