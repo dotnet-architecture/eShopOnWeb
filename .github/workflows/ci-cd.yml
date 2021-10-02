@@ -67,6 +67,7 @@ jobs:
       with:
         name: sql_scripts
         path: ./scripts
+
     - name: Upload ARM
       uses: actions/upload-artifact@v2
       with:
