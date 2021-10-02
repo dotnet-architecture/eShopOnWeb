@@ -67,7 +67,6 @@ jobs:
       - name: Azure CLI script
         uses: azure/CLI@v1
         with:
-          azcliversion: 2.27.1
           inlineScript: |
             az account show
             az container create \
@@ -78,5 +77,5 @@ jobs:
               --ports 80 \
               --registry-login-server ${{ env.registry_name }} \
               --registry-username ${{ secrets.ACR_USER_NAME }} \
-              --registry-password HUAYrAX5UbLwAn6p=${{ secrets.ACR_PASSWORD }} \
+              --registry-password ${{ secrets.ACR_PASSWORD }} \
               --environment-variable ConnectionStrings__CatalogConnection="${{ secrets.CATALOG_DB_CONNSTRING }}" ConnectionStrings__IdentityConnection="${{ secrets.IDENTITY_DB_CONNSTRING }}"
