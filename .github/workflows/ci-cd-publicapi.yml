@@ -22,9 +22,12 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Setup .NET
-      uses: actions/setup-dotnet@v1
+
+    - name: Set up Docker Buildx
+      id: buildx
+      uses: docker/setup-buildx-action@v1
       with:
-        dotnet-version: '5.0.x'
+        version: latest
 
     - name: Build with dotnet
       run: dotnet build ./eShopOnWeb.sln --configuration Release
