@@ -1,4 +1,4 @@
-name: CI/CD .Net Core (docker ACI)
+name: CI/CD .Net Core (ACI)
 
 on:
   workflow_dispatch:
