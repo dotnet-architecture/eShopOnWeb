@@ -21,8 +21,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Setup .NET
-
     - name: Set up Docker Buildx
       id: buildx
       uses: docker/setup-buildx-action@v1
