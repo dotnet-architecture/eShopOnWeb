@@ -12,7 +12,7 @@ on:
 
 env:
   registry_name: lfraileacr.azurecr.io
-  api_repository_name: eshop-web-api
+  repository_name: eshop-web-api
 
 jobs:
   build-ci:
