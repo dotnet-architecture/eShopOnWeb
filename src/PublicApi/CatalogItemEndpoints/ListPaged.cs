@@ -56,7 +56,15 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
             {
                 item.PictureUri = _uriComposer.ComposePicUri(item.PictureUri);
             }
-            response.PageCount = int.Parse(Math.Ceiling((decimal)totalItems / request.PageSize).ToString());
+
+            if (request.PageSize > 0)
+            {
+                response.PageCount = int.Parse(Math.Ceiling((decimal)totalItems / request.PageSize).ToString());
+            }
+            else
+            {
+                response.PageCount = totalItems > 0 ? 1 : 0;
+            }
 
             return Ok(response);
         }
