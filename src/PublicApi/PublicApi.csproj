@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Ardalis.ApiEndpoints" Version="3.0.0" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
