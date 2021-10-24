@@ -49,7 +49,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
 
         public async Task<T> AddAsync(T entity, CancellationToken cancellationToken = default)
         {
-            await _dbContext.Set<T>().AddAsync(entity);
+            await _dbContext.Set<T>().AddAsync(entity, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
             return entity;

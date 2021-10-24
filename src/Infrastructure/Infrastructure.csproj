@@ -6,8 +6,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Ardalis.EFCore.Extensions" Version="1.1.0" />
-		<PackageReference Include="Ardalis.Specification" Version="4.1.0" />
 		<PackageReference Include="Ardalis.Specification.EntityFrameworkCore" Version="4.1.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.10" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.11" />
