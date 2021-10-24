@@ -84,9 +84,8 @@ namespace BlazorAdmin.Services
             _logger.LogInformation("Fetching catalog items from API.");
 
             var brandListTask = _brandService.List();
-            var typeListTask = _typeService.List();
-            //TODO: Need to change the api to support full list
-            var itemListTask = _httpService.HttpGet<PagedCatalogItemResponse>($"catalog-items?PageSize=100");
+            var typeListTask = _typeService.List();           
+            var itemListTask = _httpService.HttpGet<PagedCatalogItemResponse>($"catalog-items");
             await Task.WhenAll(brandListTask, typeListTask, itemListTask);
             var brands = brandListTask.Result;
             var types = typeListTask.Result;
