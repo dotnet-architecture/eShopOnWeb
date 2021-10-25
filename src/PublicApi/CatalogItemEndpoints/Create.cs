@@ -40,10 +40,10 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
             var response = new CreateCatalogItemResponse(request.CorrelationId());
 
             var catalogItemNameSpecification = new CatalogItemNameSpecification(request.Name);
-            var existingCataloogItem = await _itemRepository.FirstOrDefaultAsync(catalogItemNameSpecification, cancellationToken);
-            if (existingCataloogItem != null)
+            var existingCataloogItem = await _itemRepository.CountAsync(catalogItemNameSpecification, cancellationToken);
+            if (existingCataloogItem > 0)
             {
-                throw new DuplicateException($"A catalogItem with name {request.Name} already exists", existingCataloogItem.Id);
+                throw new DuplicateException($"A catalogItem with name {request.Name} already exists");
             }
 
             var newItem = new CatalogItem(request.CatalogTypeId, request.CatalogBrandId, request.Description, request.Name, request.Price, request.PictureUri);

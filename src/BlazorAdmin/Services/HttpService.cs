@@ -14,7 +14,7 @@ namespace BlazorAdmin.Services
         private readonly string _apiUrl;
 
 
-        public HttpService(HttpClient httpClient, baseUrlConfiguration baseUrlConfiguration)
+        public HttpService(HttpClient httpClient, BaseUrlConfiguration baseUrlConfiguration, ToastService toastService)
         {
             _httpClient = httpClient;
             _toastService = toastService;
