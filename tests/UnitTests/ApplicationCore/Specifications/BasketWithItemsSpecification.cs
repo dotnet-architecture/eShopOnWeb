@@ -1,5 +1,4 @@
-﻿using Ardalis.Specification.EntityFrameworkCore;
-using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
+﻿using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
 using Microsoft.eShopWeb.ApplicationCore.Specifications;
 using Moq;
 using System.Collections.Generic;
@@ -13,16 +12,12 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Specifications
         private readonly int _testBasketId = 123;
         private readonly string _buyerId = "Test buyerId";
 
-        // tests with specifications can use an evaluator or just WhereExpressions.FirstOrDefault if only one
-        private readonly SpecificationEvaluator<Basket> _evaluator = new SpecificationEvaluator<Basket>();
-
         [Fact]
         public void MatchesBasketWithGivenBasketId()
         {
             var spec = new BasketWithItemsSpecification(_testBasketId);
 
-            var result = _evaluator.GetQuery(GetTestBasketCollection().AsQueryable(), spec)
-                                    .FirstOrDefault();
+            var result = spec.Evaluate(GetTestBasketCollection()).FirstOrDefault();
 
             Assert.NotNull(result);
             Assert.Equal(_testBasketId, result.Id);
@@ -34,8 +29,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Specifications
             int badBasketId = -1;
             var spec = new BasketWithItemsSpecification(badBasketId);
 
-            var result = _evaluator.GetQuery(GetTestBasketCollection().AsQueryable(), spec)
-                        .Any();
+            var result = spec.Evaluate(GetTestBasketCollection()).Any();
 
             Assert.False(result);
         }
@@ -45,8 +39,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Specifications
         {
             var spec = new BasketWithItemsSpecification(_buyerId);
 
-            var result = _evaluator.GetQuery(GetTestBasketCollection().AsQueryable(), spec)
-                        .FirstOrDefault();
+            var result = spec.Evaluate(GetTestBasketCollection()).FirstOrDefault();
 
             Assert.NotNull(result);
             Assert.Equal(_buyerId, result.BuyerId);
@@ -58,8 +51,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Specifications
             string badBuyerId = "badBuyerId";
             var spec = new BasketWithItemsSpecification(badBuyerId);
 
-            var result = _evaluator.GetQuery(GetTestBasketCollection().AsQueryable(), spec)
-                                      .Any();
+            var result = spec.Evaluate(GetTestBasketCollection()).Any();
 
             Assert.False(result);
         }

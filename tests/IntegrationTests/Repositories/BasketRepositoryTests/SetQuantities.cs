@@ -13,7 +13,7 @@ namespace Microsoft.eShopWeb.IntegrationTests.Repositories.BasketRepositoryTests
     public class SetQuantities
     {
         private readonly CatalogContext _catalogContext;
-        private readonly IAsyncRepository<Basket> _basketRepository;
+        private readonly EfRepository<Basket> _basketRepository;
         private readonly BasketBuilder BasketBuilder = new BasketBuilder();
 
         public SetQuantities()
