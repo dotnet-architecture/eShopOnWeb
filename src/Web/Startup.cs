@@ -158,6 +158,8 @@ namespace Microsoft.eShopWeb.Web
             services.AddBlazoredLocalStorage();
             services.AddServerSideBlazor();
 
+
+            services.AddScoped<ToastService>();
             services.AddScoped<HttpService>();
             services.AddBlazorServices();
 

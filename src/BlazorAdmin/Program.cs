@@ -25,14 +25,16 @@ namespace BlazorAdmin
 
             builder.Services.AddScoped(sp => new HttpClient() { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
+            builder.Services.AddScoped<ToastService>();
             builder.Services.AddScoped<HttpService>();
+           
 
             builder.Services.AddScoped<ILocalStorageService, LocalStorageService>();
 
             builder.Services.AddAuthorizationCore();
             builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
             builder.Services.AddScoped(sp => (CustomAuthStateProvider)sp.GetRequiredService<AuthenticationStateProvider>());
-
+           
             builder.Services.AddBlazorServices();
 
             builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"));

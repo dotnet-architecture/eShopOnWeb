@@ -33,7 +33,8 @@ namespace BlazorAdmin.Services
 
         public async Task<CatalogItem> Create(CreateCatalogItemRequest catalogItem)
         {
-            return (await _httpService.HttpPost<CreateCatalogItemResponse>("catalog-items", catalogItem)).CatalogItem;
+            var response = await _httpService.HttpPost<CreateCatalogItemResponse>("catalog-items", catalogItem);
+            return response?.CatalogItem;
         }
 
         public async Task<CatalogItem> Edit(CatalogItem catalogItem)
