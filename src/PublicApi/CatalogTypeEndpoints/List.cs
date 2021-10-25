@@ -14,10 +14,10 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogTypeEndpoints
         .WithoutRequest
         .WithResponse<ListCatalogTypesResponse>
     {
-        private readonly IAsyncRepository<CatalogType> _catalogTypeRepository;
+        private readonly IRepository<CatalogType> _catalogTypeRepository;
         private readonly IMapper _mapper;
 
-        public List(IAsyncRepository<CatalogType> catalogTypeRepository,
+        public List(IRepository<CatalogType> catalogTypeRepository,
             IMapper mapper)
         {
             _catalogTypeRepository = catalogTypeRepository;
@@ -35,7 +35,7 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogTypeEndpoints
         {
             var response = new ListCatalogTypesResponse();
 
-            var items = await _catalogTypeRepository.ListAllAsync(cancellationToken);
+            var items = await _catalogTypeRepository.ListAsync(cancellationToken);
 
             response.CatalogTypes.AddRange(items.Select(_mapper.Map<CatalogTypeDto>));
 

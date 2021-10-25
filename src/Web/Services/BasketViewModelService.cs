@@ -12,12 +12,12 @@ namespace Microsoft.eShopWeb.Web.Services
 {
     public class BasketViewModelService : IBasketViewModelService
     {
-        private readonly IAsyncRepository<Basket> _basketRepository;
+        private readonly IRepository<Basket> _basketRepository;
         private readonly IUriComposer _uriComposer;
-        private readonly IAsyncRepository<CatalogItem> _itemRepository;
+        private readonly IRepository<CatalogItem> _itemRepository;
 
-        public BasketViewModelService(IAsyncRepository<Basket> basketRepository,
-            IAsyncRepository<CatalogItem> itemRepository,
+        public BasketViewModelService(IRepository<Basket> basketRepository,
+            IRepository<CatalogItem> itemRepository,
             IUriComposer uriComposer)
         {
             _basketRepository = basketRepository;
@@ -28,7 +28,7 @@ namespace Microsoft.eShopWeb.Web.Services
         public async Task<BasketViewModel> GetOrCreateBasketForUser(string userName)
         {
             var basketSpec = new BasketWithItemsSpecification(userName);
-            var basket = (await _basketRepository.FirstOrDefaultAsync(basketSpec));
+            var basket = (await _basketRepository.GetBySpecAsync(basketSpec));
 
             if (basket == null)
             {

@@ -14,10 +14,10 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogBrandEndpoints
         .WithoutRequest
         .WithResponse<ListCatalogBrandsResponse>
     {
-        private readonly IAsyncRepository<CatalogBrand> _catalogBrandRepository;
+        private readonly IRepository<CatalogBrand> _catalogBrandRepository;
         private readonly IMapper _mapper;
 
-        public List(IAsyncRepository<CatalogBrand> catalogBrandRepository,
+        public List(IRepository<CatalogBrand> catalogBrandRepository,
             IMapper mapper)
         {
             _catalogBrandRepository = catalogBrandRepository;
@@ -35,7 +35,7 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogBrandEndpoints
         {
             var response = new ListCatalogBrandsResponse();
 
-            var items = await _catalogBrandRepository.ListAllAsync(cancellationToken);
+            var items = await _catalogBrandRepository.ListAsync(cancellationToken);
 
             response.CatalogBrands.AddRange(items.Select(_mapper.Map<CatalogBrandDto>));
 

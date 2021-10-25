@@ -18,16 +18,16 @@ namespace Microsoft.eShopWeb.Web.Services
     public class CatalogViewModelService : ICatalogViewModelService
     {
         private readonly ILogger<CatalogViewModelService> _logger;
-        private readonly IAsyncRepository<CatalogItem> _itemRepository;
-        private readonly IAsyncRepository<CatalogBrand> _brandRepository;
-        private readonly IAsyncRepository<CatalogType> _typeRepository;
+        private readonly IRepository<CatalogItem> _itemRepository;
+        private readonly IRepository<CatalogBrand> _brandRepository;
+        private readonly IRepository<CatalogType> _typeRepository;
         private readonly IUriComposer _uriComposer;
 
         public CatalogViewModelService(
             ILoggerFactory loggerFactory,
-            IAsyncRepository<CatalogItem> itemRepository,
-            IAsyncRepository<CatalogBrand> brandRepository,
-            IAsyncRepository<CatalogType> typeRepository,
+            IRepository<CatalogItem> itemRepository,
+            IRepository<CatalogBrand> brandRepository,
+            IRepository<CatalogType> typeRepository,
             IUriComposer uriComposer)
         {
             _logger = loggerFactory.CreateLogger<CatalogViewModelService>();
@@ -80,7 +80,7 @@ namespace Microsoft.eShopWeb.Web.Services
         public async Task<IEnumerable<SelectListItem>> GetBrands()
         {
             _logger.LogInformation("GetBrands called.");
-            var brands = await _brandRepository.ListAllAsync();
+            var brands = await _brandRepository.ListAsync();
 
             var items = brands
                 .Select(brand => new SelectListItem() { Value = brand.Id.ToString(), Text = brand.Brand })
@@ -96,7 +96,7 @@ namespace Microsoft.eShopWeb.Web.Services
         public async Task<IEnumerable<SelectListItem>> GetTypes()
         {
             _logger.LogInformation("GetTypes called.");
-            var types = await _typeRepository.ListAllAsync();
+            var types = await _typeRepository.ListAsync();
 
             var items = types
                 .Select(type => new SelectListItem() { Value = type.Id.ToString(), Text = type.Type })

@@ -10,12 +10,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.BasketServiceTes
     public class DeleteBasket
     {
         private readonly string _buyerId = "Test buyerId";
-        private readonly Mock<IAsyncRepository<Basket>> _mockBasketRepo;
-
-        public DeleteBasket()
-        {
-            _mockBasketRepo = new Mock<IAsyncRepository<Basket>>();
-        }
+        private readonly Mock<IRepository<Basket>> _mockBasketRepo = new();
 
         [Fact]
         public async Task ShouldInvokeBasketRepositoryDeleteAsyncOnce()
