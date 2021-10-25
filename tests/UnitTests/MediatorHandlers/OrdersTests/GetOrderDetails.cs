@@ -1,6 +1,7 @@
 ﻿using Ardalis.Specification;
 using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
+using Microsoft.eShopWeb.ApplicationCore.Specifications;
 using Microsoft.eShopWeb.Web.Features.OrderDetails;
 using Moq;
 using System.Collections.Generic;
@@ -21,7 +22,8 @@ namespace Microsoft.eShopWeb.UnitTests.MediatorHandlers.OrdersTests
             Order order = new Order("buyerId", address, new List<OrderItem> { item });
 
             _mockOrderRepository = new Mock<IReadRepository<Order>>();
-            _mockOrderRepository.Setup(x => x.ListAsync(It.IsAny<ISpecification<Order>>(),default)).ReturnsAsync(new List<Order> { order });
+            _mockOrderRepository.Setup(x => x.GetBySpecAsync(It.IsAny<OrderWithItemsByIdSpec>(),default))
+                .ReturnsAsync(order);
         }
 
         [Fact]
@@ -34,18 +36,6 @@ namespace Microsoft.eShopWeb.UnitTests.MediatorHandlers.OrdersTests
             var result = await handler.Handle(request, CancellationToken.None);
 
             Assert.NotNull(result);
-        }
-
-        [Fact]
-        public async Task BeNullIfOrderNotFound()
-        {
-            var request = new eShopWeb.Web.Features.OrderDetails.GetOrderDetails("SomeUserName", 100);
-
-            var handler = new GetOrderDetailsHandler(_mockOrderRepository.Object);
-
-            var result = await handler.Handle(request, CancellationToken.None);
-
-            Assert.Null(result);
         }
     }
 }
