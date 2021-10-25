@@ -30,7 +30,7 @@
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" Condition="'$(Configuration)'=='Release'" PrivateAssets="All" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="5.0.11" />
     <PackageReference Include="Microsoft.CodeAnalysis" Version="3.11.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.11" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.0" />
     <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.113" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.11" />
