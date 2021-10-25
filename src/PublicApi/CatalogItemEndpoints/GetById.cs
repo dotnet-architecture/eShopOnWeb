@@ -12,10 +12,10 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
         .WithRequest<GetByIdCatalogItemRequest>
         .WithResponse<GetByIdCatalogItemResponse>
     {
-        private readonly IAsyncRepository<CatalogItem> _itemRepository;
+        private readonly IRepository<CatalogItem> _itemRepository;
         private readonly IUriComposer _uriComposer;
 
-        public GetById(IAsyncRepository<CatalogItem> itemRepository, IUriComposer uriComposer)
+        public GetById(IRepository<CatalogItem> itemRepository, IUriComposer uriComposer)
         {
             _itemRepository = itemRepository;
             _uriComposer = uriComposer;

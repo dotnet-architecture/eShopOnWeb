@@ -15,9 +15,9 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
         .WithRequest<DeleteCatalogItemRequest>
         .WithResponse<DeleteCatalogItemResponse>
     {
-        private readonly IAsyncRepository<CatalogItem> _itemRepository;
+        private readonly IRepository<CatalogItem> _itemRepository;
 
-        public Delete(IAsyncRepository<CatalogItem> itemRepository)
+        public Delete(IRepository<CatalogItem> itemRepository)
         {
             _itemRepository = itemRepository;
         }

@@ -8,9 +8,9 @@ namespace Microsoft.eShopWeb.Web.Services
 {
     public class CatalogItemViewModelService : ICatalogItemViewModelService
     {
-        private readonly IAsyncRepository<CatalogItem> _catalogItemRepository;
+        private readonly IRepository<CatalogItem> _catalogItemRepository;
 
-        public CatalogItemViewModelService(IAsyncRepository<CatalogItem> catalogItemRepository)
+        public CatalogItemViewModelService(IRepository<CatalogItem> catalogItemRepository)
         {
             _catalogItemRepository = catalogItemRepository;
         }

@@ -11,7 +11,6 @@ namespace BlazorAdmin.Services
         private readonly HttpClient _httpClient;
         private readonly string _apiUrl;
 
-
         public HttpService(HttpClient httpClient, BaseUrlConfiguration baseUrlConfiguration)
         {
             _httpClient = httpClient;

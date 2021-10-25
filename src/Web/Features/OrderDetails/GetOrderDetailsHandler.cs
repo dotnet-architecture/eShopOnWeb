@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.ApplicationCore.Specifications;
 using Microsoft.eShopWeb.Web.ViewModels;
@@ -10,17 +11,18 @@ namespace Microsoft.eShopWeb.Web.Features.OrderDetails
 {
     public class GetOrderDetailsHandler : IRequestHandler<GetOrderDetails, OrderViewModel>
     {
-        private readonly IOrderRepository _orderRepository;
+        private readonly IReadRepository<Order> _orderRepository;
 
-        public GetOrderDetailsHandler(IOrderRepository orderRepository)
+        public GetOrderDetailsHandler(IReadRepository<Order> orderRepository)
         {
             _orderRepository = orderRepository;
         }
 
-        public async Task<OrderViewModel> Handle(GetOrderDetails request, CancellationToken cancellationToken)
+        public async Task<OrderViewModel> Handle(GetOrderDetails request, 
+            CancellationToken cancellationToken)
         {
-            var customerOrders = await _orderRepository.ListAsync(new CustomerOrdersWithItemsSpecification(request.UserName), cancellationToken);
-            var order = customerOrders.FirstOrDefault(o => o.Id == request.OrderId);
+            var spec = new OrderWithItemsByIdSpec(request.OrderId);
+            var order = await _orderRepository.GetBySpecAsync(spec, cancellationToken);
 
             if (order == null)
             {
