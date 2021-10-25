@@ -3,9 +3,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
+using Microsoft.eShopWeb.ApplicationCore.Exceptions;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
+using Microsoft.eShopWeb.ApplicationCore.Specifications;
 using Swashbuckle.AspNetCore.Annotations;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -38,8 +39,14 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
         {
             var response = new CreateCatalogItemResponse(request.CorrelationId());
 
-            var newItem = new CatalogItem(request.CatalogTypeId, request.CatalogBrandId, request.Description, request.Name, request.Price, request.PictureUri);
+            var catalogItemNameSpecification = new CatalogItemNameSpecification(request.Name);
+            var existingCataloogItem = await _itemRepository.CountAsync(catalogItemNameSpecification, cancellationToken);
+            if (existingCataloogItem > 0)
+            {
+                throw new DuplicateException($"A catalogItem with name {request.Name} already exists");
+            }
 
+            var newItem = new CatalogItem(request.CatalogTypeId, request.CatalogBrandId, request.Description, request.Name, request.Price, request.PictureUri);
             newItem = await _itemRepository.AddAsync(newItem, cancellationToken);
 
             if (newItem.Id != 0)

@@ -106,13 +106,13 @@
 
 @code {
 
-    [Parameter]
-    public IEnumerable<CatalogBrand> Brands { get; set; }
-    [Parameter]
-    public IEnumerable<CatalogType> Types { get; set; }
+        [Parameter]
+        public IEnumerable<CatalogBrand> Brands { get; set; }
+        [Parameter]
+        public IEnumerable<CatalogType> Types { get; set; }
 
-    [Parameter]
-    public EventCallback<string> OnSaveClick { get; set; }
+        [Parameter]
+        public EventCallback<string> OnSaveClick { get; set; }
 
     private string LoadPicture => string.IsNullOrEmpty(_item.PictureBase64) ? string.Empty : $"data:image/png;base64, {_item.PictureBase64}";
     private bool HasPicture => !string.IsNullOrEmpty(_item.PictureBase64);
@@ -124,13 +124,17 @@
 
     private async Task CreateClick()
     {
-        await CatalogItemService.Create(_item);
-        await OnSaveClick.InvokeAsync(null);
-        await Close();
+        var result = await CatalogItemService.Create(_item);
+        if (result != null)
+        {
+            await OnSaveClick.InvokeAsync(null);
+            await Close();
+        }
     }
 
     public async Task Open()
     {
+    
         Logger.LogInformation("Now loading... /Catalog/Create");
 
         await new Css(JSRuntime).HideBodyOverflow();

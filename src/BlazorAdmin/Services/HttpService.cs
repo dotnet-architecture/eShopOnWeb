@@ -1,4 +1,5 @@
 ﻿using BlazorShared;
+using BlazorShared.Models;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -9,11 +10,14 @@ namespace BlazorAdmin.Services
     public class HttpService
     {
         private readonly HttpClient _httpClient;
+        private readonly ToastService _toastService;
         private readonly string _apiUrl;
 
-        public HttpService(HttpClient httpClient, BaseUrlConfiguration baseUrlConfiguration)
+
+        public HttpService(HttpClient httpClient, BaseUrlConfiguration baseUrlConfiguration, ToastService toastService)
         {
             _httpClient = httpClient;
+            _toastService = toastService;
             _apiUrl = baseUrlConfiguration.ApiBase;
         }
 
@@ -49,6 +53,12 @@ namespace BlazorAdmin.Services
             var result = await _httpClient.PostAsync($"{_apiUrl}{uri}", content);
             if (!result.IsSuccessStatusCode)
             {
+                var exception = JsonSerializer.Deserialize<ErrorDetails>(await result.Content.ReadAsStringAsync(), new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+                _toastService.ShowToast($"Error : {exception.Message}", ToastLevel.Error);
+
                 return null;
             }
 
@@ -63,12 +73,12 @@ namespace BlazorAdmin.Services
             var result = await _httpClient.PutAsync($"{_apiUrl}{uri}", content);
             if (!result.IsSuccessStatusCode)
             {
+                _toastService.ShowToast("Error", ToastLevel.Error);
                 return null;
             }
 
             return await FromHttpResponseMessage<T>(result);
         }
-
 
         private StringContent ToJson(object obj)
         {
