@@ -3,6 +3,7 @@
 
 @inherits BlazorAdmin.Helpers.BlazorLayoutComponent
 
+
 <AuthorizeView Roles=@BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS>
     <div class="sidebar">
         <NavMenu />
@@ -10,11 +11,13 @@
 </AuthorizeView>
 
 <div class="main">
+   
     <div class="top-row px-4">
         <a href="https://github.com/dotnet-architecture/eShopOnWeb" target="_blank" class="ml-md-auto">About eShopOnWeb</a>
     </div>
 
     <div class="content px-4">
+        <Toast></Toast>
         @Body
     </div>
 </div>
