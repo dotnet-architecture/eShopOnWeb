@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
+using Microsoft.eShopWeb.ApplicationCore.Specifications;
 using Microsoft.eShopWeb.Infrastructure.Data;
 using Microsoft.eShopWeb.UnitTests.Builders;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace Microsoft.eShopWeb.IntegrationTests.Repositories.OrderRepositoryTests
     public class GetByIdWithItemsAsync
     {
         private readonly CatalogContext _catalogContext;
-        private readonly OrderRepository _orderRepository;
+        private readonly EfRepository<Order> _orderRepository;
         private OrderBuilder OrderBuilder { get; } = new OrderBuilder();
 
         public GetByIdWithItemsAsync()
@@ -21,7 +22,7 @@ namespace Microsoft.eShopWeb.IntegrationTests.Repositories.OrderRepositoryTests
                 .UseInMemoryDatabase(databaseName: "TestCatalog")
                 .Options;
             _catalogContext = new CatalogContext(dbOptions);
-            _orderRepository = new OrderRepository(_catalogContext);
+            _orderRepository = new EfRepository<Order>(_catalogContext);
         }
 
         [Fact]
@@ -47,7 +48,8 @@ namespace Microsoft.eShopWeb.IntegrationTests.Repositories.OrderRepositoryTests
             _catalogContext.SaveChanges();
 
             //Act
-            var orderFromRepo = await _orderRepository.GetByIdWithItemsAsync(secondOrderId);
+            var spec = new OrderWithItemsByIdSpec(secondOrderId);
+            var orderFromRepo = await _orderRepository.GetBySpecAsync(spec);
 
             //Assert
             Assert.Equal(secondOrderId, orderFromRepo.Id);

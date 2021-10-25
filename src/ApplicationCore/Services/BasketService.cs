@@ -9,10 +9,10 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
 {
     public class BasketService : IBasketService
     {
-        private readonly IAsyncRepository<Basket> _basketRepository;
+        private readonly IRepository<Basket> _basketRepository;
         private readonly IAppLogger<BasketService> _logger;
 
-        public BasketService(IAsyncRepository<Basket> basketRepository,
+        public BasketService(IRepository<Basket> basketRepository,
             IAppLogger<BasketService> logger)
         {
             _basketRepository = basketRepository;
@@ -22,7 +22,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
         public async Task AddItemToBasket(int basketId, int catalogItemId, decimal price, int quantity = 1)
         {
             var basketSpec = new BasketWithItemsSpecification(basketId);
-            var basket = await _basketRepository.FirstOrDefaultAsync(basketSpec);
+            var basket = await _basketRepository.GetBySpecAsync(basketSpec);
             Guard.Against.NullBasket(basketId, basket);
 
             basket.AddItem(catalogItemId, price, quantity);
@@ -40,7 +40,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
         {
             Guard.Against.Null(quantities, nameof(quantities));
             var basketSpec = new BasketWithItemsSpecification(basketId);
-            var basket = await _basketRepository.FirstOrDefaultAsync(basketSpec);
+            var basket = await _basketRepository.GetBySpecAsync(basketSpec);
             Guard.Against.NullBasket(basketId, basket);
 
             foreach (var item in basket.Items)
@@ -60,10 +60,10 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
             Guard.Against.NullOrEmpty(anonymousId, nameof(anonymousId));
             Guard.Against.NullOrEmpty(userName, nameof(userName));
             var anonymousBasketSpec = new BasketWithItemsSpecification(anonymousId);
-            var anonymousBasket = await _basketRepository.FirstOrDefaultAsync(anonymousBasketSpec);
+            var anonymousBasket = await _basketRepository.GetBySpecAsync(anonymousBasketSpec);
             if (anonymousBasket == null) return;
             var userBasketSpec = new BasketWithItemsSpecification(userName);
-            var userBasket = await _basketRepository.FirstOrDefaultAsync(userBasketSpec);
+            var userBasket = await _basketRepository.GetBySpecAsync(userBasketSpec);
             if (userBasket == null)
             {
                 userBasket = new Basket(userName);

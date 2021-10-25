@@ -12,12 +12,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.BasketServiceTes
     public class SetQuantities
     {
         private readonly int _invalidId = -1;
-        private readonly Mock<IAsyncRepository<Basket>> _mockBasketRepo;
-
-        public SetQuantities()
-        {
-            _mockBasketRepo = new Mock<IAsyncRepository<Basket>>();
-        }
+        private readonly Mock<IRepository<Basket>> _mockBasketRepo = new();
 
         [Fact]
         public async Task ThrowsGivenInvalidBasketId()

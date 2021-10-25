@@ -14,7 +14,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Specifications
         private readonly string _buyerId = "Test buyerId";
 
         // tests with specifications can use an evaluator or just WhereExpressions.FirstOrDefault if only one
-        private readonly SpecificationEvaluator<Basket> _evaluator = new SpecificationEvaluator<Basket>();
+        private readonly SpecificationEvaluator _evaluator = new SpecificationEvaluator();
 
         [Fact]
         public void MatchesBasketWithGivenBasketId()
