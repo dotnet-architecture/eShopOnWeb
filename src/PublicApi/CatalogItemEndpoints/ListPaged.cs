@@ -16,11 +16,11 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
         .WithRequest<ListPagedCatalogItemRequest>
         .WithResponse<ListPagedCatalogItemResponse>
     {
-        private readonly IAsyncRepository<CatalogItem> _itemRepository;
+        private readonly IRepository<CatalogItem> _itemRepository;
         private readonly IUriComposer _uriComposer;
         private readonly IMapper _mapper;
 
-        public ListPaged(IAsyncRepository<CatalogItem> itemRepository,
+        public ListPaged(IRepository<CatalogItem> itemRepository,
             IUriComposer uriComposer,
             IMapper mapper)
         {

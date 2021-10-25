@@ -11,14 +11,14 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
 {
     public class OrderService : IOrderService
     {
-        private readonly IAsyncRepository<Order> _orderRepository;
+        private readonly IRepository<Order> _orderRepository;
         private readonly IUriComposer _uriComposer;
-        private readonly IAsyncRepository<Basket> _basketRepository;
-        private readonly IAsyncRepository<CatalogItem> _itemRepository;
+        private readonly IRepository<Basket> _basketRepository;
+        private readonly IRepository<CatalogItem> _itemRepository;
 
-        public OrderService(IAsyncRepository<Basket> basketRepository,
-            IAsyncRepository<CatalogItem> itemRepository,
-            IAsyncRepository<Order> orderRepository,
+        public OrderService(IRepository<Basket> basketRepository,
+            IRepository<CatalogItem> itemRepository,
+            IRepository<Order> orderRepository,
             IUriComposer uriComposer)
         {
             _orderRepository = orderRepository;
@@ -30,7 +30,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
         public async Task CreateOrderAsync(int basketId, Address shippingAddress)
         {
             var basketSpec = new BasketWithItemsSpecification(basketId);
-            var basket = await _basketRepository.FirstOrDefaultAsync(basketSpec);
+            var basket = await _basketRepository.GetBySpecAsync(basketSpec);
 
             Guard.Against.NullBasket(basketId, basket);
             Guard.Against.EmptyBasketOnCheckout(basket.Items);

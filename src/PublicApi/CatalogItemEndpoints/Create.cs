@@ -17,10 +17,11 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
         .WithRequest<CreateCatalogItemRequest>
         .WithResponse<CreateCatalogItemResponse>
     {
-        private readonly IAsyncRepository<CatalogItem> _itemRepository;
+        private readonly IRepository<CatalogItem> _itemRepository;
         private readonly IUriComposer _uriComposer;
 
-        public Create(IAsyncRepository<CatalogItem> itemRepository, IUriComposer uriComposer)
+        public Create(IRepository<CatalogItem> itemRepository,
+            IUriComposer uriComposer)
         {
             _itemRepository = itemRepository;
             _uriComposer = uriComposer;

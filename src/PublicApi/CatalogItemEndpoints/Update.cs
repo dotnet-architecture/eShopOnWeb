@@ -16,10 +16,10 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
         .WithRequest<UpdateCatalogItemRequest>
         .WithResponse<UpdateCatalogItemResponse>
     {
-        private readonly IAsyncRepository<CatalogItem> _itemRepository;
+        private readonly IRepository<CatalogItem> _itemRepository;
         private readonly IUriComposer _uriComposer;        
 
-        public Update(IAsyncRepository<CatalogItem> itemRepository, IUriComposer uriComposer)
+        public Update(IRepository<CatalogItem> itemRepository, IUriComposer uriComposer)
         {
             _itemRepository = itemRepository;
             _uriComposer = uriComposer;            
