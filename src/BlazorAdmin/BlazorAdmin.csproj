@@ -8,7 +8,7 @@
 		<PackageReference Include="Blazored.LocalStorage" Version="3.0.0" />
 		<PackageReference Include="BlazorInputFile" Version="0.2.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="5.0.11" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.11" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="5.0.11" />		
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.10" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.Extensions.Identity.Core" Version="5.0.11" />
