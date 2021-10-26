@@ -11,7 +11,6 @@ namespace BlazorAdmin.Services
 {
     public class CachedCatalogTypeServiceDecorator : ICatalogLookupDataService<CatalogType>
     {
-        // TODO: Make a generic decorator for any LookupData type
         private readonly ILocalStorageService _localStorageService;
         private readonly CatalogLookupDataService<CatalogType, CatalogTypeResponse> _catalogTypeService;
         private ILogger<CachedCatalogTypeServiceDecorator> _logger;
