@@ -28,9 +28,8 @@ namespace BlazorAdmin
             builder.Services.AddScoped<ToastService>();
             builder.Services.AddScoped<HttpService>();
            
-
-            builder.Services.AddScoped<ILocalStorageService, LocalStorageService>();
-
+            builder.Services.AddBlazoredLocalStorage();
+           
             builder.Services.AddAuthorizationCore();
             builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
             builder.Services.AddScoped(sp => (CustomAuthStateProvider)sp.GetRequiredService<AuthenticationStateProvider>());
