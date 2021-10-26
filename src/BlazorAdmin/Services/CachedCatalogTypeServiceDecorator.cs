@@ -9,15 +9,14 @@ using System.Threading.Tasks;
 
 namespace BlazorAdmin.Services
 {
-    public class CachedCatalogTypeServiceDecorator : ICatalogTypeService
+    public class CachedCatalogTypeServiceDecorator : ICatalogLookupDataService<CatalogType>
     {
-        // TODO: Make a generic decorator for any LookupData type
         private readonly ILocalStorageService _localStorageService;
-        private readonly CatalogTypeService _catalogTypeService;
+        private readonly CatalogLookupDataService<CatalogType, CatalogTypeResponse> _catalogTypeService;
         private ILogger<CachedCatalogTypeServiceDecorator> _logger;
 
         public CachedCatalogTypeServiceDecorator(ILocalStorageService localStorageService,
-            CatalogTypeService catalogTypeService,
+            CatalogLookupDataService<CatalogType, CatalogTypeResponse> catalogTypeService,
             ILogger<CachedCatalogTypeServiceDecorator> logger)
         {
             _localStorageService = localStorageService;

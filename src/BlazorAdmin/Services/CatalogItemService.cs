@@ -1,5 +1,4 @@
-﻿using BlazorShared;
-using BlazorShared.Interfaces;
+﻿using BlazorShared.Interfaces;
 using BlazorShared.Models;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -11,24 +10,20 @@ namespace BlazorAdmin.Services
 {
     public class CatalogItemService : ICatalogItemService
     {
-        private readonly ICatalogBrandService _brandService;
-        private readonly ICatalogTypeService _typeService;
+        private readonly ICatalogLookupDataService<CatalogBrand> _brandService;
+        private readonly ICatalogLookupDataService<CatalogType> _typeService;
         private readonly HttpService _httpService;
         private readonly ILogger<CatalogItemService> _logger;
-        private string _apiUrl;
 
-        public CatalogItemService(ICatalogBrandService brandService,
-            ICatalogTypeService typeService,
+        public CatalogItemService(ICatalogLookupDataService<CatalogBrand> brandService,
+            ICatalogLookupDataService<CatalogType> typeService,
             HttpService httpService,
-            BaseUrlConfiguration baseUrlConfiguration,
             ILogger<CatalogItemService> logger)
         {
             _brandService = brandService;
             _typeService = typeService;
-
             _httpService = httpService;
             _logger = logger;
-            _apiUrl = baseUrlConfiguration.ApiBase;
         }
 
         public async Task<CatalogItem> Create(CreateCatalogItemRequest catalogItem)
@@ -85,7 +80,7 @@ namespace BlazorAdmin.Services
             _logger.LogInformation("Fetching catalog items from API.");
 
             var brandListTask = _brandService.List();
-            var typeListTask = _typeService.List();           
+            var typeListTask = _typeService.List();
             var itemListTask = _httpService.HttpGet<PagedCatalogItemResponse>($"catalog-items");
             await Task.WhenAll(brandListTask, typeListTask, itemListTask);
             var brands = brandListTask.Result;
