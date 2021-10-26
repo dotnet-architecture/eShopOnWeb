@@ -13,7 +13,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Config
 
             builder.Property(b => b.BuyerId)
                 .IsRequired()
-                .HasMaxLength(40);
+                .HasMaxLength(256);
         }
     }
 }
