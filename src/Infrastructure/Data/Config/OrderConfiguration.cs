@@ -12,6 +12,10 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Config
 
             navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
 
+            builder.Property(b => b.BuyerId)
+                .IsRequired()
+                .HasMaxLength(256);
+
             builder.OwnsOne(o => o.ShipToAddress, a =>
             {
                 a.WithOwner();
