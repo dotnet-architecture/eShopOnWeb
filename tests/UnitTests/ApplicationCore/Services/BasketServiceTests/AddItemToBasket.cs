@@ -14,7 +14,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.BasketServiceTes
         private readonly Mock<IRepository<Basket>> _mockBasketRepo = new();
 
         [Fact]
-        public async Task InvokesBasketRepositoryFirstOrDefaultAsyncOnce()
+        public async Task InvokesBasketRepositoryGetBySpecAsyncOnce()
         {
             var basket = new Basket(_buyerId);
             basket.AddItem(1, It.IsAny<decimal>(), It.IsAny<int>());
