@@ -1,9 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using BlazorShared.Interfaces;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace BlazorShared.Models
 {
-    public class CatalogTypeResponse
+    public class CatalogTypeResponse : ILookupDataResponse<CatalogType>
     {
-        public List<CatalogType> CatalogTypes { get; set; } = new List<CatalogType>();
+
+        [JsonPropertyName("CatalogTypes")]
+        public List<CatalogType> List { get; set; } = new List<CatalogType>();
     }
 }
