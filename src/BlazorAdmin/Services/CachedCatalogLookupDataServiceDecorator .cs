@@ -4,7 +4,6 @@ using BlazorShared.Models;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BlazorAdmin.Services
@@ -16,20 +15,15 @@ namespace BlazorAdmin.Services
     {
         private readonly ILocalStorageService _localStorageService;
         private readonly CatalogLookupDataService<TLookupData, TReponse> _catalogTypeService;
-        private ILogger<CachedCatalogLookupDataServiceDecorator<TLookupData,TReponse>> _logger;
+        private ILogger<CachedCatalogLookupDataServiceDecorator<TLookupData, TReponse>> _logger;
 
         public CachedCatalogLookupDataServiceDecorator(ILocalStorageService localStorageService,
             CatalogLookupDataService<TLookupData, TReponse> catalogTypeService,
-            ILogger<CachedCatalogLookupDataServiceDecorator<TLookupData,TReponse>> logger)
+            ILogger<CachedCatalogLookupDataServiceDecorator<TLookupData, TReponse>> logger)
         {
             _localStorageService = localStorageService;
             _catalogTypeService = catalogTypeService;
             _logger = logger;
-        }
-
-        public async Task<TLookupData> GetById(int id)
-        {
-            return (await List()).FirstOrDefault(x => x.Id == id);
         }
 
         public async Task<List<TLookupData>> List()
