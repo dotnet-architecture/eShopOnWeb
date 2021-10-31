@@ -31,11 +31,6 @@ namespace BlazorAdmin.Services
             _apiUrl = baseUrlConfiguration.ApiBase;
         }
 
-        public async Task<TLookupData> GetById(int id)
-        {
-            return (await List()).FirstOrDefault(x => x.Id == id);
-        }
-
         public async Task<List<TLookupData>> List()
         {
             var endpointName = typeof(TLookupData).GetCustomAttribute<EndpointAttribute>().Name;
