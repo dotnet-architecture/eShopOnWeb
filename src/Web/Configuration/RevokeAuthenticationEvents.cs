@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.Web.Configuration
 {
+    //TODO : replace IMemoryCache by disctribud cache if you are in multi-host scenario
     public class RevokeAuthenticationEvents : CookieAuthenticationEvents
     {
         private readonly IMemoryCache _cache;
