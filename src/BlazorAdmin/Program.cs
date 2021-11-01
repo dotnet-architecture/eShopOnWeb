@@ -1,6 +1,7 @@
 using BlazorAdmin.Services;
 using Blazored.LocalStorage;
 using BlazorShared;
+using BlazorShared.Models;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -48,8 +49,8 @@ namespace BlazorAdmin
             var sp = services.BuildServiceProvider();
             var localStorageService = sp.GetRequiredService<ILocalStorageService>();
 
-            await localStorageService.RemoveItemAsync("CatalogType");
-            await localStorageService.RemoveItemAsync("CatalogBrand");
+            await localStorageService.RemoveItemAsync(typeof(CatalogBrand).Name);
+            await localStorageService.RemoveItemAsync(typeof(CatalogType).Name);
         }
     }
 }
