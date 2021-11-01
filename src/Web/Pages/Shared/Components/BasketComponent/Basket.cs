@@ -4,6 +4,7 @@ using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.eShopWeb.Web.Interfaces;
 using Microsoft.eShopWeb.Web.Pages.Basket;
 using Microsoft.eShopWeb.Web.ViewModels;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -34,16 +35,24 @@ namespace Microsoft.eShopWeb.Web.Pages.Shared.Components.BasketComponent
             {
                 return await _basketService.GetOrCreateBasketForUser(User.Identity.Name);
             }
-            string anonymousId = GetBasketIdFromCookie();
-            if (anonymousId == null) return new BasketViewModel();
+
+            string anonymousId = GetAnnonymousIdFromCookie();
+            if (anonymousId == null)
+                return new BasketViewModel();
+
             return await _basketService.GetOrCreateBasketForUser(anonymousId);
         }
 
-        private string GetBasketIdFromCookie()
+        private string GetAnnonymousIdFromCookie()
         {
             if (Request.Cookies.ContainsKey(Constants.BASKET_COOKIENAME))
             {
-                return Request.Cookies[Constants.BASKET_COOKIENAME];
+                var id = Request.Cookies[Constants.BASKET_COOKIENAME];
+
+                if (Guid.TryParse(id, out var _))
+                {
+                    return id;
+                }
             }
             return null;
         }

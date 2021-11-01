@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using BlazorAdmin.Services;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.Extensions.Logging;
-using Microsoft.eShopWeb.ApplicationCore.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.Web.Areas.Identity.Pages.Account
 {
@@ -113,7 +112,10 @@ namespace Microsoft.eShopWeb.Web.Areas.Identity.Pages.Account
             if (Request.Cookies.ContainsKey(Constants.BASKET_COOKIENAME))
             {
                 var anonymousId = Request.Cookies[Constants.BASKET_COOKIENAME];
-                await _basketService.TransferBasketAsync(anonymousId, userName);
+                if (Guid.TryParse(anonymousId, out var _))
+                {
+                    await _basketService.TransferBasketAsync(anonymousId, userName);
+                }
                 Response.Cookies.Delete(Constants.BASKET_COOKIENAME);
             }
         }
