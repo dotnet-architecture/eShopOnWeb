@@ -42,7 +42,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.13.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.14.0" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\fonts\" />
