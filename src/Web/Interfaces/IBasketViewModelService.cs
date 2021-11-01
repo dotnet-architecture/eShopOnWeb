@@ -1,4 +1,5 @@
-﻿using Microsoft.eShopWeb.Web.Pages.Basket;
+﻿using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
+using Microsoft.eShopWeb.Web.Pages.Basket;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.Web.Interfaces
@@ -6,5 +7,9 @@ namespace Microsoft.eShopWeb.Web.Interfaces
     public interface IBasketViewModelService
     {
         Task<BasketViewModel> GetOrCreateBasketForUser(string userName);
+
+        Task<int> CountTotalBasketItems(string username);
+
+        Task<BasketViewModel> Map(Basket basket);
     }
 }

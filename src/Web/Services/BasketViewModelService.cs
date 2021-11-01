@@ -34,20 +34,9 @@ namespace Microsoft.eShopWeb.Web.Services
             {
                 return await CreateBasketForUser(userName);
             }
-            return await CreateViewModelFromBasket(basket);
-        }
-
-        private async Task<BasketViewModel> CreateViewModelFromBasket(Basket basket)
-        {
-            var viewModel = new BasketViewModel
-            {
-                Id = basket.Id,
-                BuyerId = basket.BuyerId,
-                Items = await GetBasketItems(basket.Items)
-            };
-            
+            var viewModel = await Map(basket);
             return viewModel;
-        }
+        }        
 
         private async Task<BasketViewModel> CreateBasketForUser(string userId)
         {
@@ -83,6 +72,25 @@ namespace Microsoft.eShopWeb.Web.Services
             }).ToList();
 
             return items;
+        }
+
+        public async Task<BasketViewModel> Map(Basket basket)
+        {
+            return new BasketViewModel()
+            {
+                BuyerId = basket.BuyerId,
+                Id = basket.Id,                
+                Items = await GetBasketItems(basket.Items)
+            };
+        }
+
+        public async Task<int> CountTotalBasketItems(string username)
+        {
+            var basketSpec = new BasketWithItemsSpecification(username);
+            var basket = await _basketRepository.GetBySpecAsync(basketSpec);
+            if (basket == null)
+                return 0;
+            return basket.Items.Sum(i => i.Quantity);
         }
     }
 }

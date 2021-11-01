@@ -22,7 +22,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.BasketServiceTes
 
             var basketService = new BasketService(_mockBasketRepo.Object, null);
 
-            await basketService.AddItemToBasket(basket.Id, 1, 1.50m);
+            await basketService.AddItemToBasket(basket.BuyerId, 1, 1.50m);
 
             _mockBasketRepo.Verify(x => x.GetBySpecAsync(It.IsAny<BasketWithItemsSpecification>(), default), Times.Once);
         }
@@ -36,7 +36,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.BasketServiceTes
 
             var basketService = new BasketService(_mockBasketRepo.Object, null);
 
-            await basketService.AddItemToBasket(basket.Id, 1, 1.50m);
+            await basketService.AddItemToBasket(basket.BuyerId, 1, 1.50m);
 
             _mockBasketRepo.Verify(x => x.UpdateAsync(basket, default), Times.Once);
         }
