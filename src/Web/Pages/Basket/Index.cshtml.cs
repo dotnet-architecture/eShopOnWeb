@@ -76,6 +76,7 @@ namespace Microsoft.eShopWeb.Web.Pages.Basket
             {
                 GetOrSetBasketCookieAndUserName();
                 BasketModel = await _basketViewModelService.GetOrCreateBasketForUser(_username);
+
             }
         }
 
@@ -84,6 +85,14 @@ namespace Microsoft.eShopWeb.Web.Pages.Basket
             if (Request.Cookies.ContainsKey(Constants.BASKET_COOKIENAME))
             {
                 _username = Request.Cookies[Constants.BASKET_COOKIENAME];
+
+                if (!Request.HttpContext.User.Identity.IsAuthenticated)
+                {
+                    if (!Guid.TryParse(_username, out var _))
+                    {
+                        _username = null;
+                    }
+                }
             }
             if (_username != null) return;
 
