@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace Microsoft.eShopWeb.Web.Configuration
             _logger = logger;
         }
 
-        public override Task ValidatePrincipal(CookieValidatePrincipalContext context)
+        public override async Task ValidatePrincipal(CookieValidatePrincipalContext context)
         {
             var userId = context.Principal.Claims.First(c => c.Type == ClaimTypes.Name);
             var identityKey = context.Request.Cookies[ConfigureCookieSettings.IdentifierCookieName];
@@ -27,8 +28,8 @@ namespace Microsoft.eShopWeb.Web.Configuration
             {
                 _logger.LogDebug($"Access has been revoked for: {userId.Value}.");
                 context.RejectPrincipal();
+                await context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             }
-            return Task.CompletedTask;
         }
     }
 }
