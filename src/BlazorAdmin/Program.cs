@@ -27,13 +27,13 @@ namespace BlazorAdmin
 
             builder.Services.AddScoped<ToastService>();
             builder.Services.AddScoped<HttpService>();
-           
+
             builder.Services.AddBlazoredLocalStorage();
-           
+
             builder.Services.AddAuthorizationCore();
             builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
             builder.Services.AddScoped(sp => (CustomAuthStateProvider)sp.GetRequiredService<AuthenticationStateProvider>());
-           
+
             builder.Services.AddBlazorServices();
 
             builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
@@ -48,7 +48,8 @@ namespace BlazorAdmin
             var sp = services.BuildServiceProvider();
             var localStorageService = sp.GetRequiredService<ILocalStorageService>();
 
-            await localStorageService.RemoveItemAsync("brands");
+            await localStorageService.RemoveItemAsync("CatalogType");
+            await localStorageService.RemoveItemAsync("CatalogBrand");
         }
     }
 }

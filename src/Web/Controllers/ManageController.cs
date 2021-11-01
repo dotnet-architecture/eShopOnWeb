@@ -125,7 +125,7 @@ namespace Microsoft.eShopWeb.Web.Controllers
             await _emailSender.SendEmailConfirmationAsync(email, callbackUrl);
 
             StatusMessage = "Verification email sent. Please check your email.";
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(MyAccount));
         }
 
         [HttpGet]
