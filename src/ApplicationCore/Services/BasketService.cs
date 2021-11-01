@@ -19,15 +19,21 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
             _logger = logger;
         }
 
-        public async Task AddItemToBasket(int basketId, int catalogItemId, decimal price, int quantity = 1)
+        public async Task<Basket> AddItemToBasket(string username, int catalogItemId, decimal price, int quantity = 1)
         {
-            var basketSpec = new BasketWithItemsSpecification(basketId);
+            var basketSpec = new BasketWithItemsSpecification(username);
             var basket = await _basketRepository.GetBySpecAsync(basketSpec);
-            Guard.Against.NullBasket(basketId, basket);
+
+            if (basket == null)
+            {
+                basket = new Basket(username);
+                await _basketRepository.AddAsync(basket);
+            }
 
             basket.AddItem(catalogItemId, price, quantity);
 
             await _basketRepository.UpdateAsync(basket);
+            return basket;
         }
 
         public async Task DeleteBasketAsync(int basketId)
@@ -36,7 +42,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
             await _basketRepository.DeleteAsync(basket);
         }
 
-        public async Task SetQuantities(int basketId, Dictionary<string, int> quantities)
+        public async Task<Basket> SetQuantities(int basketId, Dictionary<string, int> quantities)
         {
             Guard.Against.Null(quantities, nameof(quantities));
             var basketSpec = new BasketWithItemsSpecification(basketId);
@@ -53,6 +59,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
             }
             basket.RemoveEmptyItems();
             await _basketRepository.UpdateAsync(basket);
+            return basket;
         }
 
         public async Task TransferBasketAsync(string anonymousId, string userName)
