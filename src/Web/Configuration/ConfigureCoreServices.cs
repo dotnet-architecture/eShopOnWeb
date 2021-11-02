@@ -18,7 +18,7 @@ namespace Microsoft.eShopWeb.Web.Configuration
 
             services.AddScoped<IBasketService, BasketService>();
             services.AddScoped<IOrderService, OrderService>();
-            services.AddScoped<IBasketRepository, BasketRepository>();
+            services.AddScoped<IBasketQueryService, BasketQueryService>();
             services.AddSingleton<IUriComposer>(new UriComposer(configuration.Get<CatalogSettings>()));
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
             services.AddTransient<IEmailSender, EmailSender>();

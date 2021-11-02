@@ -1,17 +1,15 @@
-﻿using Ardalis.Specification.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.Infrastructure.Data
 {
-    public class BasketRepository : RepositoryBase<Basket>, IBasketRepository
+    public class BasketQueryService : IBasketQueryService
     {
         private readonly CatalogContext _dbContext;
 
-        public BasketRepository(CatalogContext dbContext) : base(dbContext)
+        public BasketQueryService(CatalogContext dbContext)
         {
             _dbContext = dbContext;
         }

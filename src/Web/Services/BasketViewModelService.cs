@@ -12,16 +12,19 @@ namespace Microsoft.eShopWeb.Web.Services
 {
     public class BasketViewModelService : IBasketViewModelService
     {
-        private readonly IBasketRepository _basketRepository;
+        private readonly IRepository<Basket> _basketRepository;
         private readonly IUriComposer _uriComposer;
+        private readonly IBasketQueryService _basketQueryService;
         private readonly IRepository<CatalogItem> _itemRepository;
 
-        public BasketViewModelService(IBasketRepository basketRepository,
+        public BasketViewModelService(IRepository<Basket> basketRepository,
             IRepository<CatalogItem> itemRepository,
-            IUriComposer uriComposer)
+            IUriComposer uriComposer,
+            IBasketQueryService basketQueryService)
         {
             _basketRepository = basketRepository;
             _uriComposer = uriComposer;
+            _basketQueryService = basketQueryService;
             _itemRepository = itemRepository;
         }
 
@@ -86,7 +89,7 @@ namespace Microsoft.eShopWeb.Web.Services
 
         public async Task<int> CountTotalBasketItems(string username)
         {
-            var counter = await _basketRepository.CountTotalBasketItems(username);
+            var counter = await _basketQueryService.CountTotalBasketItems(username);
 
             return counter;
         }
