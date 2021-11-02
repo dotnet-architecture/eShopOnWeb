@@ -7,7 +7,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Specifications
     {
         public CatalogItemNameSpecification(string catalogItemName)
         {
-            Query.Where(item => string.Compare(catalogItemName, item.Name, true) == 0);
+            Query.Where(item => catalogItemName == item.Name);
         }
     }
 }
