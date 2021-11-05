@@ -1,25 +1,24 @@
-﻿using Microsoft.JSInterop;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Microsoft.JSInterop;
 
-namespace BlazorAdmin.JavaScript
+namespace BlazorAdmin.JavaScript;
+
+public class Cookies
 {
-    public class Cookies
+    private readonly IJSRuntime _jsRuntime;
+
+    public Cookies(IJSRuntime jsRuntime)
     {
-        private readonly IJSRuntime _jsRuntime;
+        _jsRuntime = jsRuntime;
+    }
 
-        public Cookies(IJSRuntime jsRuntime)
-        {
-            _jsRuntime = jsRuntime;
-        }
+    public async Task DeleteCookie(string name)
+    {
+        await _jsRuntime.InvokeAsync<string>(JSInteropConstants.DeleteCookie, name);
+    }
 
-        public async Task DeleteCookie(string name)
-        {
-            await _jsRuntime.InvokeAsync<string>(JSInteropConstants.DeleteCookie, name);
-        }
-
-        public async Task<string> GetCookie(string name)
-        {
-            return await _jsRuntime.InvokeAsync<string>(JSInteropConstants.GetCookie, name);
-        }
+    public async Task<string> GetCookie(string name)
+    {
+        return await _jsRuntime.InvokeAsync<string>(JSInteropConstants.GetCookie, name);
     }
 }

@@ -1,9 +1,8 @@
-﻿namespace Microsoft.eShopWeb.PublicApi
+﻿namespace Microsoft.eShopWeb.PublicApi;
+
+/// <summary>
+/// Base class used by API requests
+/// </summary>
+public abstract class BaseRequest : BaseMessage
 {
-    /// <summary>
-    /// Base class used by API requests
-    /// </summary>
-    public abstract class BaseRequest : BaseMessage 
-    {
-    }
 }

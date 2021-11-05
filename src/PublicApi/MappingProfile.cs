@@ -4,17 +4,16 @@ using Microsoft.eShopWeb.PublicApi.CatalogBrandEndpoints;
 using Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints;
 using Microsoft.eShopWeb.PublicApi.CatalogTypeEndpoints;
 
-namespace Microsoft.eShopWeb.PublicApi
+namespace Microsoft.eShopWeb.PublicApi;
+
+public class MappingProfile : Profile
 {
-    public class MappingProfile : Profile
+    public MappingProfile()
     {
-        public MappingProfile()
-        {
-            CreateMap<CatalogItem, CatalogItemDto>();
-            CreateMap<CatalogType, CatalogTypeDto>()
-                .ForMember(dto => dto.Name, options => options.MapFrom(src => src.Type));
-            CreateMap<CatalogBrand, CatalogBrandDto>()
-                .ForMember(dto => dto.Name, options => options.MapFrom(src => src.Brand));
-        }
+        CreateMap<CatalogItem, CatalogItemDto>();
+        CreateMap<CatalogType, CatalogTypeDto>()
+            .ForMember(dto => dto.Name, options => options.MapFrom(src => src.Type));
+        CreateMap<CatalogBrand, CatalogBrandDto>()
+            .ForMember(dto => dto.Name, options => options.MapFrom(src => src.Brand));
     }
 }

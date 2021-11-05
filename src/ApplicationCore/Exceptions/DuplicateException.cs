@@ -1,14 +1,12 @@
 ﻿using System;
 
-namespace Microsoft.eShopWeb.ApplicationCore.Exceptions
-{
+namespace Microsoft.eShopWeb.ApplicationCore.Exceptions;
 
-    public class DuplicateException : Exception
+public class DuplicateException : Exception
+{
+    public DuplicateException(string message) : base(message)
     {
-        public DuplicateException(string message) : base(message)
-        {
-            
-        }
-       
+
     }
+
 }

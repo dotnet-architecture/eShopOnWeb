@@ -1,7 +1,6 @@
-﻿namespace Microsoft.eShopWeb.Web.ViewModels
+﻿namespace Microsoft.eShopWeb.Web.ViewModels;
+
+public class BasketComponentViewModel
 {
-    public class BasketComponentViewModel
-    {
-        public int ItemsCount { get; set; }
-    }
+    public int ItemsCount { get; set; }
 }

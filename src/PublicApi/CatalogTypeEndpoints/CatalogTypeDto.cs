@@ -1,8 +1,7 @@
-﻿namespace Microsoft.eShopWeb.PublicApi.CatalogTypeEndpoints
+﻿namespace Microsoft.eShopWeb.PublicApi.CatalogTypeEndpoints;
+
+public class CatalogTypeDto
 {
-    public class CatalogTypeDto
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
+    public int Id { get; set; }
+    public string Name { get; set; }
 }

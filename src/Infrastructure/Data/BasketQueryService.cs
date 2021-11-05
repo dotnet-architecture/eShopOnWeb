@@ -1,27 +1,26 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.eShopWeb.ApplicationCore.Interfaces;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 
-namespace Microsoft.eShopWeb.Infrastructure.Data
+namespace Microsoft.eShopWeb.Infrastructure.Data;
+
+public class BasketQueryService : IBasketQueryService
 {
-    public class BasketQueryService : IBasketQueryService
+    private readonly CatalogContext _dbContext;
+
+    public BasketQueryService(CatalogContext dbContext)
     {
-        private readonly CatalogContext _dbContext;
+        _dbContext = dbContext;
+    }
 
-        public BasketQueryService(CatalogContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
+    public async Task<int> CountTotalBasketItems(string username)
+    {
+        var totalItems = await _dbContext.Baskets
+            .Where(basket => basket.BuyerId == username)
+            .SelectMany(item => item.Items)
+            .SumAsync(sum => sum.Quantity);
 
-        public async Task<int> CountTotalBasketItems(string username)
-        {
-            var totalItems = await _dbContext.Baskets
-                .Where(basket => basket.BuyerId == username)
-                .SelectMany(item => item.Items)
-                .SumAsync(sum => sum.Quantity);
-
-            return totalItems;
-        }
+        return totalItems;
     }
 }
