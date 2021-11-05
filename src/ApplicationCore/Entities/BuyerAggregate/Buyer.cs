@@ -1,26 +1,25 @@
-﻿using Ardalis.GuardClauses;
+﻿using System.Collections.Generic;
+using Ardalis.GuardClauses;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
-using System.Collections.Generic;
 
-namespace Microsoft.eShopWeb.ApplicationCore.Entities.BuyerAggregate
+namespace Microsoft.eShopWeb.ApplicationCore.Entities.BuyerAggregate;
+
+public class Buyer : BaseEntity, IAggregateRoot
 {
-    public class Buyer : BaseEntity, IAggregateRoot
+    public string IdentityGuid { get; private set; }
+
+    private List<PaymentMethod> _paymentMethods = new List<PaymentMethod>();
+
+    public IEnumerable<PaymentMethod> PaymentMethods => _paymentMethods.AsReadOnly();
+
+    private Buyer()
     {
-        public string IdentityGuid { get; private set; }
+        // required by EF
+    }
 
-        private List<PaymentMethod> _paymentMethods = new List<PaymentMethod>();
-
-        public IEnumerable<PaymentMethod> PaymentMethods => _paymentMethods.AsReadOnly();
-
-        private Buyer()
-        {
-            // required by EF
-        }
-
-        public Buyer(string identity) : this()
-        {
-            Guard.Against.NullOrEmpty(identity, nameof(identity));
-            IdentityGuid = identity;
-        }
+    public Buyer(string identity) : this()
+    {
+        Guard.Against.NullOrEmpty(identity, nameof(identity));
+        IdentityGuid = identity;
     }
 }

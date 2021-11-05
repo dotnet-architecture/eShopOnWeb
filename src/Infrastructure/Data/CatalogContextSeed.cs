@@ -1,64 +1,64 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.eShopWeb.ApplicationCore.Entities;
-using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.eShopWeb.ApplicationCore.Entities;
+using Microsoft.Extensions.Logging;
 
-namespace Microsoft.eShopWeb.Infrastructure.Data
+namespace Microsoft.eShopWeb.Infrastructure.Data;
+
+public class CatalogContextSeed
 {
-    public class CatalogContextSeed
+    public static async Task SeedAsync(CatalogContext catalogContext,
+        ILoggerFactory loggerFactory, int retry = 0)
     {
-        public static async Task SeedAsync(CatalogContext catalogContext,
-            ILoggerFactory loggerFactory, int retry = 0)
+        var retryForAvailability = retry;
+        try
         {
-            var retryForAvailability = retry;
-            try
+            if (catalogContext.Database.IsSqlServer())
             {
-                if (catalogContext.Database.IsSqlServer())
-                {
-                    catalogContext.Database.Migrate();
-                }
-
-                if (!await catalogContext.CatalogBrands.AnyAsync())
-                {
-                    await catalogContext.CatalogBrands.AddRangeAsync(
-                        GetPreconfiguredCatalogBrands());
-
-                    await catalogContext.SaveChangesAsync();
-                }
-
-                if (!await catalogContext.CatalogTypes.AnyAsync())
-                {
-                    await catalogContext.CatalogTypes.AddRangeAsync(
-                        GetPreconfiguredCatalogTypes());
-
-                    await catalogContext.SaveChangesAsync();
-                }
-
-                if (!await catalogContext.CatalogItems.AnyAsync())
-                {
-                    await catalogContext.CatalogItems.AddRangeAsync(
-                        GetPreconfiguredItems());
-
-                    await catalogContext.SaveChangesAsync();
-                }
+                catalogContext.Database.Migrate();
             }
-            catch (Exception ex)
-            {
-                if (retryForAvailability >= 10) throw;
 
-                retryForAvailability++;
-                var log = loggerFactory.CreateLogger<CatalogContextSeed>();
-                log.LogError(ex.Message);
-                await SeedAsync(catalogContext, loggerFactory, retryForAvailability);
-                throw;
+            if (!await catalogContext.CatalogBrands.AnyAsync())
+            {
+                await catalogContext.CatalogBrands.AddRangeAsync(
+                    GetPreconfiguredCatalogBrands());
+
+                await catalogContext.SaveChangesAsync();
+            }
+
+            if (!await catalogContext.CatalogTypes.AnyAsync())
+            {
+                await catalogContext.CatalogTypes.AddRangeAsync(
+                    GetPreconfiguredCatalogTypes());
+
+                await catalogContext.SaveChangesAsync();
+            }
+
+            if (!await catalogContext.CatalogItems.AnyAsync())
+            {
+                await catalogContext.CatalogItems.AddRangeAsync(
+                    GetPreconfiguredItems());
+
+                await catalogContext.SaveChangesAsync();
             }
         }
-
-        static IEnumerable<CatalogBrand> GetPreconfiguredCatalogBrands()
+        catch (Exception ex)
         {
-            return new List<CatalogBrand>
+            if (retryForAvailability >= 10) throw;
+
+            retryForAvailability++;
+            var log = loggerFactory.CreateLogger<CatalogContextSeed>();
+            log.LogError(ex.Message);
+            await SeedAsync(catalogContext, loggerFactory, retryForAvailability);
+            throw;
+        }
+    }
+
+    static IEnumerable<CatalogBrand> GetPreconfiguredCatalogBrands()
+    {
+        return new List<CatalogBrand>
             {
                 new("Azure"),
                 new(".NET"),
@@ -66,22 +66,22 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
                 new("SQL Server"),
                 new("Other")
             };
-        }
+    }
 
-        static IEnumerable<CatalogType> GetPreconfiguredCatalogTypes()
-        {
-            return new List<CatalogType>
+    static IEnumerable<CatalogType> GetPreconfiguredCatalogTypes()
+    {
+        return new List<CatalogType>
             {
                 new("Mug"),
                 new("T-Shirt"),
                 new("Sheet"),
                 new("USB Memory Stick")
             };
-        }
+    }
 
-        static IEnumerable<CatalogItem> GetPreconfiguredItems()
-        {
-            return new List<CatalogItem>
+    static IEnumerable<CatalogItem> GetPreconfiguredItems()
+    {
+        return new List<CatalogItem>
             {
                 new(2,2, ".NET Bot Black Sweatshirt", ".NET Bot Black Sweatshirt", 19.5M,  "http://catalogbaseurltobereplaced/images/products/1.png"),
                 new(1,2, ".NET Black & White Mug", ".NET Black & White Mug", 8.50M, "http://catalogbaseurltobereplaced/images/products/2.png"),
@@ -96,6 +96,5 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
                 new(3,2, "Cup<T> Sheet", "Cup<T> Sheet", 8.5M, "http://catalogbaseurltobereplaced/images/products/11.png"),
                 new(2,5, "Prism White TShirt", "Prism White TShirt", 12, "http://catalogbaseurltobereplaced/images/products/12.png")
             };
-        }
     }
 }

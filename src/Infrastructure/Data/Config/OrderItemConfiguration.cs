@@ -2,24 +2,23 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 
-namespace Microsoft.eShopWeb.Infrastructure.Data.Config
+namespace Microsoft.eShopWeb.Infrastructure.Data.Config;
+
+public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
 {
-    public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
+    public void Configure(EntityTypeBuilder<OrderItem> builder)
     {
-        public void Configure(EntityTypeBuilder<OrderItem> builder)
+        builder.OwnsOne(i => i.ItemOrdered, io =>
         {
-            builder.OwnsOne(i => i.ItemOrdered, io =>
-            {
-                io.WithOwner();
+            io.WithOwner();
 
-                io.Property(cio => cio.ProductName)
-                    .HasMaxLength(50)
-                    .IsRequired();
-            });
+            io.Property(cio => cio.ProductName)
+                .HasMaxLength(50)
+                .IsRequired();
+        });
 
-            builder.Property(oi => oi.UnitPrice)
-                .IsRequired(true)
-                .HasColumnType("decimal(18,2)");
-        }
+        builder.Property(oi => oi.UnitPrice)
+            .IsRequired(true)
+            .HasColumnType("decimal(18,2)");
     }
 }

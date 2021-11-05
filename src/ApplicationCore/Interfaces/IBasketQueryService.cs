@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-namespace Microsoft.eShopWeb.ApplicationCore.Interfaces
+namespace Microsoft.eShopWeb.ApplicationCore.Interfaces;
+
+public interface IBasketQueryService
 {
-    public interface IBasketQueryService
-    {
-        Task<int> CountTotalBasketItems(string username);
-    }
+    Task<int> CountTotalBasketItems(string username);
 }

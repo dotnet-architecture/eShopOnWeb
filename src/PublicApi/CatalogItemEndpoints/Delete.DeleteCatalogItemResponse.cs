@@ -1,17 +1,16 @@
 ﻿using System;
 
-namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
+namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints;
+
+public class DeleteCatalogItemResponse : BaseResponse
 {
-    public class DeleteCatalogItemResponse : BaseResponse
+    public DeleteCatalogItemResponse(Guid correlationId) : base(correlationId)
     {
-        public DeleteCatalogItemResponse(Guid correlationId) : base(correlationId)
-        {
-        }
-
-        public DeleteCatalogItemResponse()
-        {
-        }
-
-        public string Status { get; set; } = "Deleted";
     }
+
+    public DeleteCatalogItemResponse()
+    {
+    }
+
+    public string Status { get; set; } = "Deleted";
 }

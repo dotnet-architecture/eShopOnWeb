@@ -1,17 +1,16 @@
 ﻿using System;
 
-namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
+namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints;
+
+public class UpdateCatalogItemResponse : BaseResponse
 {
-    public class UpdateCatalogItemResponse : BaseResponse
+    public UpdateCatalogItemResponse(Guid correlationId) : base(correlationId)
     {
-        public UpdateCatalogItemResponse(Guid correlationId) : base(correlationId)
-        {
-        }
-
-        public UpdateCatalogItemResponse()
-        {
-        }
-
-        public CatalogItemDto CatalogItem { get; set; }
     }
+
+    public UpdateCatalogItemResponse()
+    {
+    }
+
+    public CatalogItemDto CatalogItem { get; set; }
 }

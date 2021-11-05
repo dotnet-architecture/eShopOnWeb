@@ -1,9 +1,8 @@
 ﻿using BlazorShared.Attributes;
 
-namespace BlazorShared.Models
+namespace BlazorShared.Models;
+
+[Endpoint(Name = "catalog-types")]
+public class CatalogType : LookupData
 {
-    [Endpoint(Name = "catalog-types")]
-    public class CatalogType : LookupData
-    {
-    }
 }

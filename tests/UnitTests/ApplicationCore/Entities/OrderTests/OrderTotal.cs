@@ -1,41 +1,40 @@
-﻿using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
+﻿using System.Collections.Generic;
+using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 using Microsoft.eShopWeb.UnitTests.Builders;
-using System.Collections.Generic;
 using Xunit;
 
-namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Entities.OrderTests
+namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Entities.OrderTests;
+
+public class OrderTotal
 {
-    public class OrderTotal
+    private decimal _testUnitPrice = 42m;
+
+    [Fact]
+    public void IsZeroForNewOrder()
     {
-        private decimal _testUnitPrice = 42m;
+        var order = new OrderBuilder().WithNoItems();
 
-        [Fact]
-        public void IsZeroForNewOrder()
-        {
-            var order = new OrderBuilder().WithNoItems();
+        Assert.Equal(0, order.Total());
+    }
 
-            Assert.Equal(0, order.Total());
-        }
-
-        [Fact]
-        public void IsCorrectGiven1Item()
-        {
-            var builder = new OrderBuilder();
-            var items = new List<OrderItem>
+    [Fact]
+    public void IsCorrectGiven1Item()
+    {
+        var builder = new OrderBuilder();
+        var items = new List<OrderItem>
             {
                 new OrderItem(builder.TestCatalogItemOrdered, _testUnitPrice, 1)
             };
-            var order = new OrderBuilder().WithItems(items);
-            Assert.Equal(_testUnitPrice, order.Total());
-        }
+        var order = new OrderBuilder().WithItems(items);
+        Assert.Equal(_testUnitPrice, order.Total());
+    }
 
-        [Fact]
-        public void IsCorrectGiven3Items()
-        {
-            var builder = new OrderBuilder();
-            var order = builder.WithDefaultValues();
+    [Fact]
+    public void IsCorrectGiven3Items()
+    {
+        var builder = new OrderBuilder();
+        var order = builder.WithDefaultValues();
 
-            Assert.Equal(builder.TestUnitPrice * builder.TestUnits, order.Total());
-        }
+        Assert.Equal(builder.TestUnitPrice * builder.TestUnits, order.Total());
     }
 }
