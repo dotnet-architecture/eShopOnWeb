@@ -1,14 +1,13 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using System.Collections.Generic;
 
-namespace Microsoft.eShopWeb.Web.ViewModels.Manage
+namespace Microsoft.eShopWeb.Web.ViewModels.Manage;
+
+public class ExternalLoginsViewModel
 {
-    public class ExternalLoginsViewModel
-    {
-        public IList<UserLoginInfo> CurrentLogins { get; set; }
-        public IList<AuthenticationScheme> OtherLogins { get; set; }
-        public bool ShowRemoveButton { get; set; }
-        public string StatusMessage { get; set; }
-    }
+    public IList<UserLoginInfo> CurrentLogins { get; set; }
+    public IList<AuthenticationScheme> OtherLogins { get; set; }
+    public bool ShowRemoveButton { get; set; }
+    public string StatusMessage { get; set; }
 }

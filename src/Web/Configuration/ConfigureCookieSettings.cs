@@ -1,41 +1,40 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
-namespace Microsoft.eShopWeb.Web.Configuration
+namespace Microsoft.eShopWeb.Web.Configuration;
+
+public static class ConfigureCookieSettings
 {
-    public static class ConfigureCookieSettings
-    {
-        public const int ValidityMinutesPeriod = 60;
-        public const string IdentifierCookieName = "EshopIdentifier";
+    public const int ValidityMinutesPeriod = 60;
+    public const string IdentifierCookieName = "EshopIdentifier";
 
-        public static IServiceCollection AddCookieSettings(this IServiceCollection services)
+    public static IServiceCollection AddCookieSettings(this IServiceCollection services)
+    {
+        services.Configure<CookiePolicyOptions>(options =>
         {
-            services.Configure<CookiePolicyOptions>(options =>
-            {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 //TODO need to check that.
                 //options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.Strict;
-            });
-            services.ConfigureApplicationCookie(options =>
+        });
+        services.ConfigureApplicationCookie(options =>
+        {
+            options.EventsType = typeof(RevokeAuthenticationEvents);
+            options.Cookie.HttpOnly = true;
+            options.ExpireTimeSpan = TimeSpan.FromMinutes(ValidityMinutesPeriod);
+            options.LoginPath = "/Account/Login";
+            options.LogoutPath = "/Account/Logout";
+            options.Cookie = new CookieBuilder
             {
-                options.EventsType = typeof(RevokeAuthenticationEvents);
-                options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(ValidityMinutesPeriod);
-                options.LoginPath = "/Account/Login";
-                options.LogoutPath = "/Account/Logout";
-                options.Cookie = new CookieBuilder
-                {
-                    Name = IdentifierCookieName,
-                    IsEssential = true // required for auth to work without explicit user consent; adjust to suit your privacy policy
+                Name = IdentifierCookieName,
+                IsEssential = true // required for auth to work without explicit user consent; adjust to suit your privacy policy
                 };
-            });
+        });
 
-            services.AddScoped<RevokeAuthenticationEvents>();
+        services.AddScoped<RevokeAuthenticationEvents>();
 
-            return services;
-        }
+        return services;
     }
 }
