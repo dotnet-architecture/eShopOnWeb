@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-namespace Microsoft.eShopWeb.ApplicationCore.Interfaces
+namespace Microsoft.eShopWeb.ApplicationCore.Interfaces;
+
+public interface ITokenClaimsService
 {
-    public interface ITokenClaimsService
-    {
-        Task<string> GetTokenAsync(string userName);
-    }
+    Task<string> GetTokenAsync(string userName);
 }
