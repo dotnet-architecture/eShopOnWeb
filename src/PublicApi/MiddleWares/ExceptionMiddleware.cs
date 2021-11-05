@@ -1,46 +1,45 @@
-﻿using BlazorShared.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.eShopWeb.ApplicationCore.Exceptions;
-using System;
+﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using BlazorShared.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.eShopWeb.ApplicationCore.Exceptions;
 
-namespace Microsoft.eShopWeb.PublicApi.MiddleWares
+namespace Microsoft.eShopWeb.PublicApi.MiddleWares;
+
+public class ExceptionMiddleware
 {
-    public class ExceptionMiddleware
+    private readonly RequestDelegate _next;
+
+    public ExceptionMiddleware(RequestDelegate next)
     {
-        private readonly RequestDelegate _next;
+        _next = next;
+    }
 
-        public ExceptionMiddleware(RequestDelegate next)
+    public async Task InvokeAsync(HttpContext httpContext)
+    {
+        try
         {
-            _next = next;
+            await _next(httpContext);
         }
-
-        public async Task InvokeAsync(HttpContext httpContext)
+        catch (Exception ex)
         {
-            try
-            {
-                await _next(httpContext);
-            }
-            catch (Exception ex)
-            {
-                await HandleExceptionAsync(httpContext, ex);
-            }
+            await HandleExceptionAsync(httpContext, ex);
         }
+    }
 
-        private async Task HandleExceptionAsync(HttpContext context, Exception exception)
+    private async Task HandleExceptionAsync(HttpContext context, Exception exception)
+    {
+        context.Response.ContentType = "application/json";
+
+        if (exception is DuplicateException duplicationException)
         {
-            context.Response.ContentType = "application/json";
-
-            if (exception is DuplicateException duplicationException)
+            context.Response.StatusCode = (int)HttpStatusCode.Conflict;
+            await context.Response.WriteAsync(new ErrorDetails()
             {
-                context.Response.StatusCode = (int)HttpStatusCode.Conflict;
-                await context.Response.WriteAsync(new ErrorDetails()
-                {
-                    StatusCode = context.Response.StatusCode,
-                    Message = duplicationException.Message
-                }.ToString());
-            }
+                StatusCode = context.Response.StatusCode,
+                Message = duplicationException.Message
+            }.ToString());
         }
     }
 }
