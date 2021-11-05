@@ -1,11 +1,10 @@
-﻿using BlazorShared.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using BlazorShared.Models;
 
-namespace BlazorShared.Interfaces
+namespace BlazorShared.Interfaces;
+
+public interface ICatalogLookupDataService<TLookupData> where TLookupData : LookupData
 {
-    public interface ICatalogLookupDataService<TLookupData> where TLookupData : LookupData
-    {
-        Task<List<TLookupData>> List();
-    }
+    Task<List<TLookupData>> List();
 }

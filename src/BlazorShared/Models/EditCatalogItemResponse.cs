@@ -1,7 +1,6 @@
-﻿namespace BlazorShared.Models
+﻿namespace BlazorShared.Models;
+
+public class EditCatalogItemResult
 {
-    public class EditCatalogItemResult
-    {
-        public CatalogItem CatalogItem { get; set; } = new CatalogItem();
-    }
+    public CatalogItem CatalogItem { get; set; } = new CatalogItem();
 }
