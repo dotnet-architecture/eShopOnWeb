@@ -22,6 +22,7 @@ using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.Infrastructure.Data;
 using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.eShopWeb.Web.Configuration;
+using Microsoft.eShopWeb.Web.HealthChecks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -136,7 +137,10 @@ public class Startup
             options.Conventions.AuthorizePage("/Basket/Checkout");
         });
         services.AddHttpContextAccessor();
-        services.AddHealthChecks();
+        services
+            .AddHealthChecks()
+            .AddCheck<ApiHealthCheck>("api_health_check", tags: new[] { "apiHealthCheck" })
+            .AddCheck<HomePageHealthCheck>("home_page_health_check", tags: new[] { "homePageHealthCheck" });
         services.Configure<ServiceConfig>(config =>
         {
             config.Services = new List<ServiceDescriptor>(services);
@@ -227,8 +231,8 @@ public class Startup
         {
             endpoints.MapControllerRoute("default", "{controller:slugify=Home}/{action:slugify=Index}/{id?}");
             endpoints.MapRazorPages();
-            endpoints.MapHealthChecks("home_page_health_check");
-            endpoints.MapHealthChecks("api_health_check");
+            endpoints.MapHealthChecks("home_page_health_check", new HealthCheckOptions { Predicate = check => check.Tags.Contains("homePageHealthCheck") });
+            endpoints.MapHealthChecks("api_health_check", new HealthCheckOptions { Predicate = check => check.Tags.Contains("apiHealthCheck") });
                 //endpoints.MapBlazorHub("/admin");
                 endpoints.MapFallbackToFile("index.html");
         });
