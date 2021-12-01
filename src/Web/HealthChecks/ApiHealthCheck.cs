@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using BlazorShared;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Options;
 
 namespace Microsoft.eShopWeb.Web.HealthChecks;
 
@@ -10,9 +11,9 @@ public class ApiHealthCheck : IHealthCheck
 {
     private readonly BaseUrlConfiguration _baseUrlConfiguration;
 
-    public ApiHealthCheck(BaseUrlConfiguration baseUrlConfiguration)
+    public ApiHealthCheck(IOptions<BaseUrlConfiguration> baseUrlConfiguration)
     {
-        _baseUrlConfiguration = baseUrlConfiguration;
+        _baseUrlConfiguration = baseUrlConfiguration.Value;
     }
 
     public async Task<HealthCheckResult> CheckHealthAsync(

@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using BlazorShared;
 using BlazorShared.Models;
+using Microsoft.Extensions.Options;
 
 namespace BlazorAdmin.Services;
 
@@ -14,11 +15,11 @@ public class HttpService
     private readonly string _apiUrl;
 
 
-    public HttpService(HttpClient httpClient, BaseUrlConfiguration baseUrlConfiguration, ToastService toastService)
+    public HttpService(HttpClient httpClient, IOptions<BaseUrlConfiguration> baseUrlConfiguration, ToastService toastService)
     {
         _httpClient = httpClient;
         _toastService = toastService;
-        _apiUrl = baseUrlConfiguration.ApiBase;
+        _apiUrl = baseUrlConfiguration.Value.ApiBase;
     }
 
     public async Task<T> HttpGet<T>(string uri)
