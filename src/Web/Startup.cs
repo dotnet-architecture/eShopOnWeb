@@ -148,10 +148,10 @@ public class Startup
             config.Path = "/allservices";
         });
 
+        var configSection = Configuration.GetRequiredSection(BaseUrlConfiguration.CONFIG_NAME);
+        services.Configure<BaseUrlConfiguration>(configSection);
+        var baseUrlConfig = configSection.Get<BaseUrlConfiguration>();
 
-        var baseUrlConfig = new BaseUrlConfiguration();
-        Configuration.Bind(BaseUrlConfiguration.CONFIG_NAME, baseUrlConfig);
-        services.AddScoped<BaseUrlConfiguration>(sp => baseUrlConfig);
         // Blazor Admin Required Services for Prerendering
         services.AddScoped<HttpClient>(s => new HttpClient
         {
