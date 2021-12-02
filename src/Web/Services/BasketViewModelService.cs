@@ -14,17 +14,14 @@ public class BasketViewModelService : IBasketViewModelService
 {
     private readonly IRepository<Basket> _basketRepository;
     private readonly IUriComposer _uriComposer;
-    private readonly IBasketQueryService _basketQueryService;
-    private readonly IRepository<CatalogItem> _itemRepository;
+    private readonly IReadRepository<CatalogItem> _itemRepository;
 
     public BasketViewModelService(IRepository<Basket> basketRepository,
-        IRepository<CatalogItem> itemRepository,
-        IUriComposer uriComposer,
-        IBasketQueryService basketQueryService)
+        IReadRepository<CatalogItem> itemRepository,
+        IUriComposer uriComposer)
     {
         _basketRepository = basketRepository;
         _uriComposer = uriComposer;
-        _basketQueryService = basketQueryService;
         _itemRepository = itemRepository;
     }
 
@@ -85,12 +82,5 @@ public class BasketViewModelService : IBasketViewModelService
             Id = basket.Id,
             Items = await GetBasketItems(basket.Items)
         };
-    }
-
-    public async Task<int> CountTotalBasketItems(string username)
-    {
-        var counter = await _basketQueryService.CountTotalBasketItems(username);
-
-        return counter;
     }
 }
