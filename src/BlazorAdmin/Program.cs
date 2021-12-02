@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using BlazorAdmin.Services;
@@ -20,9 +20,8 @@ public class Program
         var builder = WebAssemblyHostBuilder.CreateDefault(args);
         builder.RootComponents.Add<App>("#admin");
 
-        var baseUrlConfig = new BaseUrlConfiguration();
-        builder.Configuration.Bind(BaseUrlConfiguration.CONFIG_NAME, baseUrlConfig);
-        builder.Services.AddScoped<BaseUrlConfiguration>(sp => baseUrlConfig);
+        var configSection = builder.Configuration.GetRequiredSection(BaseUrlConfiguration.CONFIG_NAME);
+        builder.Services.Configure<BaseUrlConfiguration>(configSection);
 
         builder.Services.AddScoped(sp => new HttpClient() { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
@@ -37,7 +36,7 @@ public class Program
 
         builder.Services.AddBlazorServices();
 
-        builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
+        builder.Logging.AddConfiguration(builder.Configuration.GetRequiredSection("Logging"));
 
         await ClearLocalStorageCache(builder.Services);
 
