@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -20,11 +20,11 @@ public class Program
         using (var scope = host.Services.CreateScope())
         {
             var services = scope.ServiceProvider;
-            var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+            var logger = services.GetRequiredService<ILogger<Program>>();
             try
             {
                 var catalogContext = services.GetRequiredService<CatalogContext>();
-                await CatalogContextSeed.SeedAsync(catalogContext, loggerFactory);
+                await CatalogContextSeed.SeedAsync(catalogContext, logger);
 
                 var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                 var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
@@ -32,7 +32,6 @@ public class Program
             }
             catch (Exception ex)
             {
-                var logger = loggerFactory.CreateLogger<Program>();
                 logger.LogError(ex, "An error occurred seeding the DB.");
             }
         }

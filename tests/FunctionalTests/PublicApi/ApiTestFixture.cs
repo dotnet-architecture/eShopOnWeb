@@ -49,7 +49,6 @@ public class ApiTestFixture : WebApplicationFactory<Startup>
             {
                 var scopedServices = scope.ServiceProvider;
                 var db = scopedServices.GetRequiredService<CatalogContext>();
-                var loggerFactory = scopedServices.GetRequiredService<ILoggerFactory>();
 
                 var logger = scopedServices
                     .GetRequiredService<ILogger<ApiTestFixture>>();
@@ -60,7 +59,7 @@ public class ApiTestFixture : WebApplicationFactory<Startup>
                 try
                 {
                         // Seed the database with test data.
-                        CatalogContextSeed.SeedAsync(db, loggerFactory).Wait();
+                        CatalogContextSeed.SeedAsync(db, logger).Wait();
 
                         // seed sample user data
                         var userManager = scopedServices.GetRequiredService<UserManager<ApplicationUser>>();
