@@ -42,7 +42,7 @@ jobs:
         path: ${{ runner.temp }}/build
         
     - name: 'Run Azure webapp deploy action using publish profile credentials'
-      uses: azurewebapps-deploy@v2.1.5
+      uses: azure/webapps-deploy@v2.1.5
       with: 
         app-name: eShopOnWeb-gdbc
         publish-profile: ${{ secrets.publish_profile }} # Define secret variable in repository settings as per action documentation
