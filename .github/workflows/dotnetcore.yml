@@ -22,7 +22,7 @@ jobs:
       run: dotnet test ./eShopOnWeb.sln --configuration Release
       
     - name: Publish with dotnet
-      run: dotnet publish ./eShopOnWeb.sln --configuration Release --output ${{ runner.temp }}/publish
+      run: dotnet publish ./src/Web/Web.csproj --configuration Release --output ${{ runner.temp }}/publish
 
     - name: Upload artefact
       uses: actions/upload-artifact@v2
