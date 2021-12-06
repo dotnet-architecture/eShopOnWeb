@@ -5,9 +5,9 @@ using Xunit;
 namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers;
 
 [Collection("Sequential")]
-public class CatalogControllerIndex : IClassFixture<WebTestFixture>
+public class CatalogControllerIndex : IClassFixture<TestApplication>
 {
-    public CatalogControllerIndex(WebTestFixture factory)
+    public CatalogControllerIndex(TestApplication factory)
     {
         Client = factory.CreateClient();
     }

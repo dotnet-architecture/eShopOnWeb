@@ -10,9 +10,9 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace Microsoft.eShopWeb.PublicApi.CatalogTypeEndpoints;
 
-public class List : BaseAsyncEndpoint
+public class List : EndpointBaseAsync
     .WithoutRequest
-    .WithResponse<ListCatalogTypesResponse>
+    .WithActionResult<ListCatalogTypesResponse>
 {
     private readonly IRepository<CatalogType> _catalogTypeRepository;
     private readonly IMapper _mapper;

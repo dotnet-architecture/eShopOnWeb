@@ -5,7 +5,7 @@ using BlazorShared.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.eShopWeb.ApplicationCore.Exceptions;
 
-namespace Microsoft.eShopWeb.PublicApi.MiddleWares;
+namespace Microsoft.eShopWeb.PublicApi.Middleware;
 
 public class ExceptionMiddleware
 {
