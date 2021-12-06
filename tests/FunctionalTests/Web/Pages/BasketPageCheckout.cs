@@ -10,9 +10,9 @@ using Xunit;
 namespace Microsoft.eShopWeb.FunctionalTests.WebRazorPages;
 
 [Collection("Sequential")]
-public class BasketPageCheckout : IClassFixture<WebTestFixture>
+public class BasketPageCheckout : IClassFixture<TestApplication>
 {
-    public BasketPageCheckout(WebTestFixture factory)
+    public BasketPageCheckout(TestApplication factory)
     {
         Client = factory.CreateClient(new WebApplicationFactoryClientOptions
         {

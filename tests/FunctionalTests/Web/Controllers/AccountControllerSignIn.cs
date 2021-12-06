@@ -11,9 +11,9 @@ using Xunit;
 namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers;
 
 [Collection("Sequential")]
-public class AccountControllerSignIn : IClassFixture<WebTestFixture>
+public class AccountControllerSignIn : IClassFixture<TestApplication>
 {
-    public AccountControllerSignIn(WebTestFixture factory)
+    public AccountControllerSignIn(TestApplication factory)
     {
         Client = factory.CreateClient(new WebApplicationFactoryClientOptions
         {

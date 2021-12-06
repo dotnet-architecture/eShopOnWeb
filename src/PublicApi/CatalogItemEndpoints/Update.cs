@@ -12,9 +12,9 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints;
 
 [Authorize(Roles = BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-public class Update : BaseAsyncEndpoint
+public class Update : EndpointBaseAsync
     .WithRequest<UpdateCatalogItemRequest>
-    .WithResponse<UpdateCatalogItemResponse>
+    .WithActionResult<UpdateCatalogItemResponse>
 {
     private readonly IRepository<CatalogItem> _itemRepository;
     private readonly IUriComposer _uriComposer;

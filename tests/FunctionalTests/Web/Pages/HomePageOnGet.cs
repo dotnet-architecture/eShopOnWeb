@@ -6,9 +6,9 @@ using Xunit;
 namespace Microsoft.eShopWeb.FunctionalTests.WebRazorPages;
 
 [Collection("Sequential")]
-public class HomePageOnGet : IClassFixture<WebTestFixture>
+public class HomePageOnGet : IClassFixture<TestApplication>
 {
-    public HomePageOnGet(WebTestFixture factory)
+    public HomePageOnGet(TestApplication factory)
     {
         Client = factory.CreateClient();
     }

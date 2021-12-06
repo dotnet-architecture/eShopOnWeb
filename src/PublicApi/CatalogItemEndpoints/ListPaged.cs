@@ -12,9 +12,9 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints;
 
-public class ListPaged : BaseAsyncEndpoint
+public class ListPaged : EndpointBaseAsync
     .WithRequest<ListPagedCatalogItemRequest>
-    .WithResponse<ListPagedCatalogItemResponse>
+    .WithActionResult<ListPagedCatalogItemResponse>
 {
     private readonly IRepository<CatalogItem> _itemRepository;
     private readonly IUriComposer _uriComposer;

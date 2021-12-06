@@ -10,11 +10,11 @@ using Xunit;
 namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers;
 
 [Collection("Sequential")]
-public class AuthenticateEndpoint : IClassFixture<ApiTestFixture>
+public class AuthenticateEndpoint : IClassFixture<TestApiApplication>
 {
     JsonSerializerOptions _jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
-    public AuthenticateEndpoint(ApiTestFixture factory)
+    public AuthenticateEndpoint(TestApiApplication factory)
     {
         Client = factory.CreateClient();
     }

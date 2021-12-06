@@ -11,9 +11,9 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints;
 
 [Authorize(Roles = BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-public class Delete : BaseAsyncEndpoint
+public class Delete : EndpointBaseAsync
     .WithRequest<DeleteCatalogItemRequest>
-    .WithResponse<DeleteCatalogItemResponse>
+    .WithActionResult<DeleteCatalogItemResponse>
 {
     private readonly IRepository<CatalogItem> _itemRepository;
 
