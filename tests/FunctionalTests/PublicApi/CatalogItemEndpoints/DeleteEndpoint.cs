@@ -11,11 +11,11 @@ using Xunit;
 namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers;
 
 [Collection("Sequential")]
-public class DeleteEndpoint : IClassFixture<ApiTestFixture>
+public class DeleteEndpoint : IClassFixture<TestApiApplication>
 {
     JsonSerializerOptions _jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
-    public DeleteEndpoint(ApiTestFixture factory)
+    public DeleteEndpoint(TestApiApplication factory)
     {
         Client = factory.CreateClient();
     }

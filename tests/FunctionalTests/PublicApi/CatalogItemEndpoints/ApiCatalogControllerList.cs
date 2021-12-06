@@ -8,9 +8,9 @@ using Xunit;
 namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers;
 
 [Collection("Sequential")]
-public class ApiCatalogControllerList : IClassFixture<ApiTestFixture>
+public class ApiCatalogControllerList : IClassFixture<TestApiApplication>
 {
-    public ApiCatalogControllerList(ApiTestFixture factory)
+    public ApiCatalogControllerList(TestApiApplication factory)
     {
         Client = factory.CreateClient();
     }

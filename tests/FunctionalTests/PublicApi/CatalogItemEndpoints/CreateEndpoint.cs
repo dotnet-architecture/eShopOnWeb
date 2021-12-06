@@ -12,7 +12,7 @@ using Xunit;
 namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers;
 
 [Collection("Sequential")]
-public class CreateEndpoint : IClassFixture<ApiTestFixture>
+public class CreateEndpoint : IClassFixture<TestApiApplication>
 {
     JsonSerializerOptions _jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
     private int _testBrandId = 1;
@@ -21,7 +21,7 @@ public class CreateEndpoint : IClassFixture<ApiTestFixture>
     private string _testName = "test name";
     private decimal _testPrice = 1.23m;
 
-    public CreateEndpoint(ApiTestFixture factory)
+    public CreateEndpoint(TestApiApplication factory)
     {
         Client = factory.CreateClient();
     }

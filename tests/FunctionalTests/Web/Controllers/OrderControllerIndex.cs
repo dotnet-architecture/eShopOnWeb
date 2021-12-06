@@ -7,9 +7,9 @@ using Xunit;
 namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers;
 
 [Collection("Sequential")]
-public class OrderIndexOnGet : IClassFixture<WebTestFixture>
+public class OrderIndexOnGet : IClassFixture<TestApplication>
 {
-    public OrderIndexOnGet(WebTestFixture factory)
+    public OrderIndexOnGet(TestApplication factory)
     {
         Client = factory.CreateClient(new WebApplicationFactoryClientOptions
         {

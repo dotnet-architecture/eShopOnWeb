@@ -13,9 +13,9 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints;
 
 [Authorize(Roles = BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-public class Create : BaseAsyncEndpoint
+public class Create : EndpointBaseAsync
     .WithRequest<CreateCatalogItemRequest>
-    .WithResponse<CreateCatalogItemResponse>
+    .WithActionResult<CreateCatalogItemResponse>
 {
     private readonly IRepository<CatalogItem> _itemRepository;
     private readonly IUriComposer _uriComposer;
