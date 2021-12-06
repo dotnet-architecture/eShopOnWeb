@@ -20,3 +20,23 @@ jobs:
     
     - name: Test with dotnet
       run: dotnet test ./eShopOnWeb.sln --configuration Release
+      
+    - name: Publish with dotnet
+      run: dotnet publish ./eShopOnWeb.sln --configuration Release --output ${{ runner.temp }}/publish
+
+    - name: Upload artefact
+      uses: actions/upload-artifact@v2
+      with:
+        name: build
+        path: ${{ runner.temp }}/publish
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Download artefact
+      uses: actions/download-artifact@v2
+      with:
+        name: build
+        path: ${{ runner.temp }}/build
