@@ -24,7 +24,7 @@ public class TestApiApplication : WebApplicationFactory<Authenticate>
             {
                 // Replace SQLite with in-memory database for tests
                 return new DbContextOptionsBuilder<CatalogContext>()
-                .UseInMemoryDatabase("InMemoryDbForTesting")
+                .UseInMemoryDatabase("DbForPublicApi")
                 .UseApplicationServiceProvider(sp)
                 .Options;
             });
@@ -32,7 +32,7 @@ public class TestApiApplication : WebApplicationFactory<Authenticate>
             {
                 // Replace SQLite with in-memory database for tests
                 return new DbContextOptionsBuilder<AppIdentityDbContext>()
-                .UseInMemoryDatabase("Identity")
+                .UseInMemoryDatabase("IdentityDbForPublicApi")
                 .UseApplicationServiceProvider(sp)
                 .Options;
             });

@@ -194,6 +194,5 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-
 app.Logger.LogInformation("LAUNCHING");
 app.Run();
