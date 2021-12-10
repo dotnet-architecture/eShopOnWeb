@@ -83,7 +83,7 @@ jobs:
     - name: Download artefact
       uses: actions/download-artifact@v2
       with:
-        name: build
+        name: build-backend
         path: ${{ runner.temp }}/build-backend
         
     - name: 'Run Azure webapp deploy action using publish profile credentials'
@@ -91,4 +91,4 @@ jobs:
       with: 
         app-name: eShopOnWeb-gdbc-backend
         publish-profile: ${{ secrets.publish_profile_backend }} # Define secret variable in repository settings as per action documentation
-        package: ${{ runner.temp }}/build
+        package: ${{ runner.temp }}/build-backend
