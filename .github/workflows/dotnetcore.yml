@@ -15,6 +15,15 @@ jobs:
         dotnet-version: '6.0.x'
         include-prerelease: true
 
+    - uses: actions/cache@v2
+      with:
+        path: |
+          ~/.nuget/packages
+          !~/.nuget/packages/unwanted
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.csproj') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
     - name: Build with dotnet
       run: dotnet build ./eShopOnWeb.sln --configuration Release
     
@@ -59,6 +68,15 @@ jobs:
       with:
         dotnet-version: '6.0.x'
         include-prerelease: true
+
+    - uses: actions/cache@v2
+      with:
+        path: |
+          ~/.nuget/packages
+          !~/.nuget/packages/unwanted
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.csproj') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
 
     - name: Build with dotnet
       run: dotnet build ./eShopOnWeb.sln --configuration Release
