@@ -74,9 +74,9 @@ jobs:
         path: |
           ~/.nuget/packages
           !~/.nuget/packages/unwanted
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.csproj') }}
+        key: ${{ runner.os }}-backend-nuget-${{ hashFiles('**/packages.csproj') }}
         restore-keys: |
-          ${{ runner.os }}-nuget-
+          ${{ runner.os }}-backend-nuget-
 
     - name: Build with dotnet
       run: dotnet build ./eShopOnWeb.sln --configuration Release
