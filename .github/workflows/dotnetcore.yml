@@ -60,8 +60,8 @@ jobs:
     - uses: azure/login@v1
       with:
         creds: '${{ secrets.AZURE_CREDENTIALS }}'
-        
-    -  name: Set Web App ACR authentication
+
+    -  name: Web App settings
        uses: Azure/appservice-settings@v1
        with:
         app-name: 'eShopOnWeb-gdbc'
@@ -130,3 +130,21 @@ jobs:
         app-name: eShopOnWeb-gdbc-backend
         publish-profile: ${{ secrets.publish_profile_backend }} # Define secret variable in repository settings as per action documentation
         package: ${{ runner.temp }}/build-backend
+    
+    - uses: azure/login@v1
+      with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}'
+        
+    -  name: Web App settings
+       uses: Azure/appservice-settings@v1
+       with:
+        app-name: 'eShopOnWeb-gdbc'
+        connection-strings-json: |
+          [
+             {
+                 "name": "DB",
+                 "value": "${{ secrets.DB_CONNECTION_STRING}}",
+                 "type": "SQLServer",
+                 "slotSetting": false
+             }             
+          ]
