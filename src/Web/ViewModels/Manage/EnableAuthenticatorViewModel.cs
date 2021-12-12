@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Microsoft.eShopWeb.Web.ViewModels.Manage;
 
@@ -11,8 +12,9 @@ public class EnableAuthenticatorViewModel
     [Display(Name = "Verification Code")]
     public string Code { get; set; }
 
-    [ReadOnly(true)]
+    [BindNever]
     public string SharedKey { get; set; }
 
+    [BindNever]
     public string AuthenticatorUri { get; set; }
 }
