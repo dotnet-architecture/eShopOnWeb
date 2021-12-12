@@ -1,6 +1,7 @@
 ﻿namespace Microsoft.eShopWeb.Web.ViewModels.Manage;
 
-public class GenerateRecoveryCodesViewModel
+public class ShowRecoveryCodesViewModel
 {
     public string[] RecoveryCodes { get; set; }
 }
+
