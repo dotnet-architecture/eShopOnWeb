@@ -451,7 +451,8 @@ public class ManageController : Controller
         return RedirectToAction(nameof(EnableAuthenticator));
     }
 
-    [HttpGet]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> GenerateRecoveryCodes()
     {
         var user = await _userManager.GetUserAsync(User);
@@ -466,11 +467,28 @@ public class ManageController : Controller
         }
 
         var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
-        var model = new GenerateRecoveryCodesViewModel { RecoveryCodes = recoveryCodes.ToArray() };
-
         _logger.LogInformation("User with ID {UserId} has generated new 2FA recovery codes.", user.Id);
 
-        return View(model);
+        var model = new ShowRecoveryCodesViewModel { RecoveryCodes = recoveryCodes.ToArray() };
+
+        return View(nameof(ShowRecoveryCodes), model);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GenerateRecoveryCodesWarning()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user == null)
+        {
+            throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+        }
+
+        if (!user.TwoFactorEnabled)
+        {
+            throw new ApplicationException($"Cannot generate recovery codes for user with ID '{user.Id}' because they do not have 2FA enabled.");
+        }
+
+        return View(nameof(GenerateRecoveryCodesWarning));
     }
 
     private void AddErrors(IdentityResult result)
