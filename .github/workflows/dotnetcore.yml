@@ -142,9 +142,15 @@ jobs:
         connection-strings-json: |
           [
              {
-                 "name": "DB",
+                 "name": "CatalogConnection",
                  "value": "${{ secrets.DB_CONNECTION_STRING}}",
                  "type": "SQLServer",
                  "slotSetting": false
-             }             
+             },          
+             {
+                 "name": "IdentityConnection",
+                 "value": "${{ secrets.DB_CONNECTION_STRING}}",
+                 "type": "SQLServer",
+                 "slotSetting": false
+             }    
           ]
