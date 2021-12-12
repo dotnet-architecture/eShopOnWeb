@@ -138,7 +138,7 @@ jobs:
     -  name: Web App settings
        uses: Azure/appservice-settings@v1
        with:
-        app-name: 'eShopOnWeb-gdbc'
+        app-name: 'eShopOnWeb-gdbc-backend'
         connection-strings-json: |
           [
              {
