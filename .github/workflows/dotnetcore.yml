@@ -3,7 +3,7 @@ name: eShopOnWeb Build and Test
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
-  build:
+  build-front-end:
 
     runs-on: ubuntu-latest
 
@@ -15,6 +15,15 @@ jobs:
         dotnet-version: '6.0.x'
         include-prerelease: true
 
+    - uses: actions/cache@v2
+      with:
+        path: |
+          ~/.nuget/packages
+          !~/.nuget/packages/unwanted
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.csproj') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
     - name: Build with dotnet
       run: dotnet build ./eShopOnWeb.sln --configuration Release
     
@@ -22,7 +31,7 @@ jobs:
       run: dotnet test ./eShopOnWeb.sln --configuration Release
       
     - name: Publish with dotnet
-      run: dotnet publish ./eShopOnWeb.sln --configuration Release --output ${{ runner.temp }}/publish
+      run: dotnet publish ./src/Web/Web.csproj --configuration Release --output ${{ runner.temp }}/publish
 
     - name: Upload artefact
       uses: actions/upload-artifact@v2
@@ -30,8 +39,8 @@ jobs:
         name: build
         path: ${{ runner.temp }}/publish
 
-  deploy:
-    needs: build
+  deploy-front-end:
+    needs: build-front-end
     runs-on: ubuntu-latest
     steps:
 
@@ -40,3 +49,124 @@ jobs:
       with:
         name: build
         path: ${{ runner.temp }}/build
+        
+    - name: 'Run Azure webapp deploy action using publish profile credentials'
+      uses: azure/webapps-deploy@v2.1.5
+      with: 
+        app-name: eShopOnWeb-gdbc
+        publish-profile: ${{ secrets.publish_profile }} # Define secret variable in repository settings as per action documentation
+        package: ${{ runner.temp }}/build
+
+    - uses: azure/login@v1
+      with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}'
+
+    -  name: Web App settings
+       uses: Azure/appservice-settings@v1
+       with:
+        app-name: 'eShopOnWeb-gdbc'
+        app-settings-json: |
+          [
+             {
+                "name": "baseUrls:apiBase",
+                "value": "https://eshoponweb-gdbc-backend.azurewebsites.net/"
+             },
+             {
+                "name": "baseUrls:webBase",
+                "value": "https://eshoponweb-gdbc.azurewebsites.net/"
+             }
+          ]
+        connection-strings-json: |
+          [
+             {
+                 "name": "CatalogConnection",
+                 "value": "${{ secrets.DB_CONNECTION_STRING}}",
+                 "type": "SQLServer",
+                 "slotSetting": false
+             },          
+             {
+                 "name": "IdentityConnection",
+                 "value": "${{ secrets.DB_CONNECTION_STRING}}",
+                 "type": "SQLServer",
+                 "slotSetting": false
+             }    
+          ]
+
+
+  build-back-end:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x'
+        include-prerelease: true
+
+    - uses: actions/cache@v2
+      with:
+        path: |
+          ~/.nuget/packages
+          !~/.nuget/packages/unwanted
+        key: ${{ runner.os }}-backend-nuget-${{ hashFiles('**/packages.csproj') }}
+        restore-keys: |
+          ${{ runner.os }}-backend-nuget-
+
+    - name: Build with dotnet
+      run: dotnet build ./eShopOnWeb.sln --configuration Release
+    
+    - name: Test with dotnet
+      run: dotnet test ./eShopOnWeb.sln --configuration Release
+      
+    - name: Publish with dotnet
+      run: dotnet publish ./src/PublicApi/PublicApi.csproj --configuration Release --output ${{ runner.temp }}/publish
+
+    - name: Upload artefact
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-backend
+        path: ${{ runner.temp }}/publish
+
+  deploy-back-end:
+    needs: build-back-end
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Download artefact
+      uses: actions/download-artifact@v2
+      with:
+        name: build-backend
+        path: ${{ runner.temp }}/build-backend
+        
+    - name: 'Run Azure webapp deploy action using publish profile credentials'
+      uses: azure/webapps-deploy@v2.1.5
+      with: 
+        app-name: eShopOnWeb-gdbc-backend
+        publish-profile: ${{ secrets.publish_profile_backend }} # Define secret variable in repository settings as per action documentation
+        package: ${{ runner.temp }}/build-backend
+    
+    - uses: azure/login@v1
+      with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}'
+        
+    -  name: Web App settings
+       uses: Azure/appservice-settings@v1
+       with:
+        app-name: 'eShopOnWeb-gdbc-backend'
+        connection-strings-json: |
+          [
+             {
+                 "name": "CatalogConnection",
+                 "value": "${{ secrets.DB_CONNECTION_STRING}}",
+                 "type": "SQLServer",
+                 "slotSetting": false
+             },          
+             {
+                 "name": "IdentityConnection",
+                 "value": "${{ secrets.DB_CONNECTION_STRING}}",
+                 "type": "SQLServer",
+                 "slotSetting": false
+             }    
+          ]
