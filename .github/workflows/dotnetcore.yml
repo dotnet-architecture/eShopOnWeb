@@ -65,16 +65,32 @@ jobs:
        uses: Azure/appservice-settings@v1
        with:
         app-name: 'eShopOnWeb-gdbc'
+        app-settings-json: |
+          [
+             {
+                "name": "baseUrls:apiBase",
+                "value": "https://eshoponweb-gdbc-backend.azurewebsites.net/"
+             },
+             {
+                "name": "baseUrls:webBase",
+                "value": "https://eshoponweb-gdbc.azurewebsites.net/"
+             }
+          ]
         connection-strings-json: |
           [
              {
-                 "name": "DB",
+                 "name": "CatalogConnection",
                  "value": "${{ secrets.DB_CONNECTION_STRING}}",
                  "type": "SQLServer",
                  "slotSetting": false
-             }             
+             },          
+             {
+                 "name": "IdentityConnection",
+                 "value": "${{ secrets.DB_CONNECTION_STRING}}",
+                 "type": "SQLServer",
+                 "slotSetting": false
+             }    
           ]
-
 
 
   build-back-end:
