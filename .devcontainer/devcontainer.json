@@ -33,6 +33,11 @@
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [5000, 5001],
+	"portsAttributes": {
+		"5001": {
+			"protocol": "https"
+		}
+	},
 
 	// [Optional] To reuse of your local HTTPS dev cert, first export it locally using this command:
 	//  * Windows PowerShell:
@@ -52,5 +57,5 @@
 	}
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "dotnet restore"
+    ,"postCreateCommand": "dotnet dev-certs https && dotnet restore"
 }
