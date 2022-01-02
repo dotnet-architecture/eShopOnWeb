@@ -9,7 +9,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace Microsoft.eShopWeb.FunctionalTests.PublicApi;
 
-public class TestApiApplication : WebApplicationFactory<Authenticate>
+public class TestApiApplication : WebApplicationFactory<AuthenticateEndpoint>
 {
     private readonly string _environment = "Testing";
 
