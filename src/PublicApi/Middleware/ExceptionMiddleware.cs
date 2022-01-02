@@ -24,8 +24,7 @@ public class ExceptionMiddleware
         }
         catch (Exception ex)
         {
-            await HandleExceptionAsync(httpContext, ex);
-            throw;
+            await HandleExceptionAsync(httpContext, ex);        
         }
     }
 
