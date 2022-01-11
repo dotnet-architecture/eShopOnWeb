@@ -53,7 +53,7 @@ jobs:
     - name: 'Run Azure webapp deploy action using publish profile credentials'
       uses: azure/webapps-deploy@v2.1.5
       with: 
-        app-name: eShopOnWeb-gdbc
+        app-name: 'eShopOnWeb-gdbc'
         publish-profile: ${{ secrets.publish_profile }} # Define secret variable in repository settings as per action documentation
         package: ${{ runner.temp }}/build
 
@@ -143,7 +143,7 @@ jobs:
     - name: 'Run Azure webapp deploy action using publish profile credentials'
       uses: azure/webapps-deploy@v2.1.5
       with: 
-        app-name: eShopOnWeb-gdbc-backend
+        app-name: 'eShopOnWeb-gdbc-backend'
         publish-profile: ${{ secrets.publish_profile_backend }} # Define secret variable in repository settings as per action documentation
         package: ${{ runner.temp }}/build-backend
     
