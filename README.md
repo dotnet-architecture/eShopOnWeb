@@ -55,7 +55,7 @@ You can also run the samples in Docker (see below).
 
 ### Configuring the sample to use SQL Server
 
-1. By default, the project uses a real database. If you want only in memroy database, you can add in `appsettings.json`
+1. By default, the project uses a real database. If you want an in memory database, you can add in `appsettings.json`
 
     ```json
    {
