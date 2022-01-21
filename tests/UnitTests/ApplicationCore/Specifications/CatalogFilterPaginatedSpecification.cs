@@ -14,7 +14,7 @@ public class CatalogFilterPaginatedSpecification
 
         var result = GetTestCollection()
             .AsQueryable()
-            .Where(spec.WhereExpressions.FirstOrDefault());
+            .Where(spec.WhereExpressions.FirstOrDefault().Filter);
 
         Assert.NotNull(result);
         Assert.Equal(4, result.ToList().Count);
@@ -27,7 +27,7 @@ public class CatalogFilterPaginatedSpecification
 
         var result = GetTestCollection()
             .AsQueryable()
-            .Where(spec.WhereExpressions.FirstOrDefault());
+            .Where(spec.WhereExpressions.FirstOrDefault().Filter);
 
         Assert.NotNull(result);
         Assert.Equal(2, result.ToList().Count);
