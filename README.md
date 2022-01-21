@@ -55,18 +55,13 @@ You can also run the samples in Docker (see below).
 
 ### Configuring the sample to use SQL Server
 
-1. Update `Startup.cs`'s `ConfigureDevelopmentServices` method as follows:
+1. By default, the project uses a real database. If you want an in memory database, you can add in `appsettings.json`
 
-    ```csharp
-    public void ConfigureDevelopmentServices(IServiceCollection services)
-    {
-        // use in-memory database
-        //ConfigureTestingServices(services);
+    ```json
+   {
+       "UseOnlyInMemoryDatabase": true
+   }
 
-        // use real database
-        ConfigureProductionServices(services);
-
-    }
     ```
 
 1. Ensure your connection strings in `appsettings.json` point to a local SQL Server instance.

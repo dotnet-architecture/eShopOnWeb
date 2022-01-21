@@ -1,52 +1,56 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using Ardalis.ApiEndpoints;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Exceptions;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.ApplicationCore.Specifications;
-using Swashbuckle.AspNetCore.Annotations;
+using MinimalApi.Endpoint;
 
 namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints;
 
-[Authorize(Roles = BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-public class Create : EndpointBaseAsync
-    .WithRequest<CreateCatalogItemRequest>
-    .WithActionResult<CreateCatalogItemResponse>
+/// <summary>
+/// Creates a new Catalog Item
+/// </summary>
+public class CreateCatalogItemEndpoint : IEndpoint<IResult, CreateCatalogItemRequest>
 {
-    private readonly IRepository<CatalogItem> _itemRepository;
+    private IRepository<CatalogItem> _itemRepository;
     private readonly IUriComposer _uriComposer;
 
-    public Create(IRepository<CatalogItem> itemRepository,
-        IUriComposer uriComposer)
+    public CreateCatalogItemEndpoint(IUriComposer uriComposer)
     {
-        _itemRepository = itemRepository;
         _uriComposer = uriComposer;
     }
 
-    [HttpPost("api/catalog-items")]
-    [SwaggerOperation(
-        Summary = "Creates a new Catalog Item",
-        Description = "Creates a new Catalog Item",
-        OperationId = "catalog-items.create",
-        Tags = new[] { "CatalogItemEndpoints" })
-    ]
-    public override async Task<ActionResult<CreateCatalogItemResponse>> HandleAsync(CreateCatalogItemRequest request, CancellationToken cancellationToken)
+    public void AddRoute(IEndpointRouteBuilder app)
+    {
+        app.MapPost("api/catalog-items",
+            [Authorize(Roles = BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)] async
+            (CreateCatalogItemRequest request, IRepository<CatalogItem> itemRepository) =>
+            {
+                _itemRepository = itemRepository;
+                return await HandleAsync(request);
+            })
+            .Produces<CreateCatalogItemResponse>()
+            .WithTags("CatalogItemEndpoints");
+    }
+
+    public async Task<IResult> HandleAsync(CreateCatalogItemRequest request)
     {
         var response = new CreateCatalogItemResponse(request.CorrelationId());
 
         var catalogItemNameSpecification = new CatalogItemNameSpecification(request.Name);
-        var existingCataloogItem = await _itemRepository.CountAsync(catalogItemNameSpecification, cancellationToken);
+        var existingCataloogItem = await _itemRepository.CountAsync(catalogItemNameSpecification);
         if (existingCataloogItem > 0)
         {
             throw new DuplicateException($"A catalogItem with name {request.Name} already exists");
         }
 
         var newItem = new CatalogItem(request.CatalogTypeId, request.CatalogBrandId, request.Description, request.Name, request.Price, request.PictureUri);
-        newItem = await _itemRepository.AddAsync(newItem, cancellationToken);
+        newItem = await _itemRepository.AddAsync(newItem);
 
         if (newItem.Id != 0)
         {
@@ -55,7 +59,7 @@ public class Create : EndpointBaseAsync
             //  In production, we recommend uploading to a blob storage and deliver the image via CDN after a verification process.
 
             newItem.UpdatePictureUri("eCatalog-item-default.png");
-            await _itemRepository.UpdateAsync(newItem, cancellationToken);
+            await _itemRepository.UpdateAsync(newItem);
         }
 
         var dto = new CatalogItemDto
@@ -69,8 +73,6 @@ public class Create : EndpointBaseAsync
             Price = newItem.Price
         };
         response.CatalogItem = dto;
-        return response;
+        return Results.Created($"api/catalog-items/{dto.Id}", response);       
     }
-
-
 }
