@@ -41,6 +41,7 @@ jobs:
 
   deploy-front-end:
     concurrency: front-end
+    if: github.event_name != 'pull_request'
     needs: build-front-end
     runs-on: ubuntu-latest
     steps:
@@ -132,6 +133,7 @@ jobs:
 
   deploy-back-end:
     needs: build-back-end
+    if: github.event_name != 'pull_request'
     concurrency: back-end
     runs-on: ubuntu-latest
     steps:
