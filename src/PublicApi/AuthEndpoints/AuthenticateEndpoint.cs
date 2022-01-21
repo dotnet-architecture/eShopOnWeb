@@ -9,14 +9,17 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace Microsoft.eShopWeb.PublicApi.AuthEndpoints;
 
-public class Authenticate : EndpointBaseAsync
+/// <summary>
+/// Authenticates a user
+/// </summary>
+public class AuthenticateEndpoint : EndpointBaseAsync
     .WithRequest<AuthenticateRequest>
     .WithActionResult<AuthenticateResponse>
 {
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly ITokenClaimsService _tokenClaimsService;
 
-    public Authenticate(SignInManager<ApplicationUser> signInManager,
+    public AuthenticateEndpoint(SignInManager<ApplicationUser> signInManager,
         ITokenClaimsService tokenClaimsService)
     {
         _signInManager = signInManager;
@@ -30,7 +33,7 @@ public class Authenticate : EndpointBaseAsync
         OperationId = "auth.authenticate",
         Tags = new[] { "AuthEndpoints" })
     ]
-    public override async Task<ActionResult<AuthenticateResponse>> HandleAsync(AuthenticateRequest request, CancellationToken cancellationToken)
+    public override async Task<ActionResult<AuthenticateResponse>> HandleAsync(AuthenticateRequest request, CancellationToken cancellationToken = default)
     {
         var response = new AuthenticateResponse(request.CorrelationId());
 

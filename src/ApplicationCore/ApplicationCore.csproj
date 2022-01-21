@@ -10,7 +10,7 @@
 		<PackageReference Include="Ardalis.Specification" Version="5.2.0" />
 		<PackageReference Include="MediatR" Version="9.0.0" />
 		<PackageReference Include="System.Security.Claims" Version="4.3.0" />
-		<PackageReference Include="System.Text.Json" Version="6.0.0" />
+		<PackageReference Include="System.Text.Json" Version="6.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>
