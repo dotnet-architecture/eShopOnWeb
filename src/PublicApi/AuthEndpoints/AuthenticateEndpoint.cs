@@ -1,40 +1,39 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Ardalis.ApiEndpoints;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.Infrastructure.Identity;
-using MinimalApi.Endpoint;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Microsoft.eShopWeb.PublicApi.AuthEndpoints;
 
 /// <summary>
 /// Authenticates a user
 /// </summary>
-public class AuthenticateEndpoint : IEndpoint<IResult, AuthenticateRequest>
+public class AuthenticateEndpoint : EndpointBaseAsync
+    .WithRequest<AuthenticateRequest>
+    .WithActionResult<AuthenticateResponse>
 {
-    private SignInManager<ApplicationUser> _signInManager;
+    private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly ITokenClaimsService _tokenClaimsService;
 
-    public AuthenticateEndpoint(ITokenClaimsService tokenClaimsService)
+    public AuthenticateEndpoint(SignInManager<ApplicationUser> signInManager,
+        ITokenClaimsService tokenClaimsService)
     {
+        _signInManager = signInManager;
         _tokenClaimsService = tokenClaimsService;
     }
 
-    public void AddRoute(IEndpointRouteBuilder app)
-    {
-        app.MapPost("api/authenticate",
-            async (AuthenticateRequest request, SignInManager<ApplicationUser> signInManager) =>
-            {
-                _signInManager = signInManager;
-                return await HandleAsync(request);
-            })
-            .Produces<AuthenticateResponse>()
-            .WithTags("AuthEndpoints");
-    }
-
-    public async Task<IResult> HandleAsync(AuthenticateRequest request)
+    [HttpPost("api/authenticate")]
+    [SwaggerOperation(
+        Summary = "Authenticates a user",
+        Description = "Authenticates a user",
+        OperationId = "auth.authenticate",
+        Tags = new[] { "AuthEndpoints" })
+    ]
+    public override async Task<ActionResult<AuthenticateResponse>> HandleAsync(AuthenticateRequest request, CancellationToken cancellationToken = default)
     {
         var response = new AuthenticateResponse(request.CorrelationId());
 
@@ -54,6 +53,6 @@ public class AuthenticateEndpoint : IEndpoint<IResult, AuthenticateRequest>
             response.Token = await _tokenClaimsService.GetTokenAsync(request.Username);
         }
 
-        return Results.Ok(response);
+        return response;
     }
 }
