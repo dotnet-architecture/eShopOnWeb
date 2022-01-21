@@ -39,5 +39,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
                 .HasMaxLength(100)
                 .IsRequired();
         });
+
+        builder.Navigation(x => x.ShipToAddress).IsRequired();
     }
 }
