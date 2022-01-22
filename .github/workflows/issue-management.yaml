@@ -1,13 +1,22 @@
-name: New issue created
+name: Issue management
 
 on:
   issues:
-    types: [opened]
+    types: [opened, assigned, closed]
+
+# map fields with customized labels
+env:
+  todo: Todo
+  assigned: Assigned
+  done: Done
+
+  project-owner: 'GlobalDevOpsBootcamp'
+  project-number: 1
 
 jobs:
   issue-created:
     runs-on: ubuntu-latest
-    if: github.event.issue.state == 'open' && github.repository == 'GlobalDevOpsBootcamp/eShopOnWeb'
+    if: github.event_name == 'issues' && github.event.action == 'opened' && github.repository == 'GlobalDevOpsBootcamp/eShopOnWeb'
     steps:
     
       - name: Get Token
@@ -18,9 +27,60 @@ jobs:
           application_private_key: ${{ secrets.GH_APP_TOKEN }}
           
       - uses: monry/actions-add-issue-to-project@3e54e1f966203c08d6f15406f7dcf6f6ef2f7dd1
+        id: add-issue-to-project
         with:
           # Personal Access Token that with `repo`, `org:read` and `org:write` are granted.
           github-token: ${{ steps.get_workflow_token.outputs.token }}
-          project-owner: 'GlobalDevOpsBootcamp'
-          project-number: 1
+          project-owner: ${{ env.project-owner }}
+          project-number: ${{ env.project-number }}
           issue-id: ${{ github.event.issue.node_id }}
+
+      - name: Moved issue to ${{ env.todo }}
+        uses: leonsteinhaeuser/project-beta-automations@283c1170b626cab442b68fafde34b64d088f32dd
+        with:
+          gh_token: ${{ steps.get_workflow_token.outputs.token }}
+          organization: ${{ env.project-owner }}
+          project_id: ${{ env.project-number }}
+          resource_node_id: ${{ github.event.issue.node_id }}
+          status_value: ${{ env.todo }} # Target status
+
+  issue-assigned:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issues' && github.event.action == 'assigned' && github.repository == 'GlobalDevOpsBootcamp/eShopOnWeb'
+    steps:
+      - name: Get Token
+        id: get_workflow_token
+        uses: peter-murray/workflow-application-token-action@d93504a6ff913242c1c512d97ad1f8b302000af5
+        with:
+          application_id: ${{ secrets.GH_APP_ID }}
+          application_private_key: ${{ secrets.GH_APP_TOKEN }}
+      
+      - name: Move issue to ${{ env.assigned }}
+        uses: leonsteinhaeuser/project-beta-automations@283c1170b626cab442b68fafde34b64d088f32dd
+        with:
+          gh_token: ${{ steps.get_workflow_token.outputs.token }}
+          organization: ${{ env.project-owner }}
+          project_id: ${{ env.project-number }}
+          resource_node_id: ${{ github.event.issue.node_id }}
+          status_value: ${{ env.assigned }} # Target status
+
+  issue-closed:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issues' && github.event.action == 'closed' && github.repository == 'GlobalDevOpsBootcamp/eShopOnWeb'
+    steps:
+      - name: Get Token
+        id: get_workflow_token
+        uses: peter-murray/workflow-application-token-action@d93504a6ff913242c1c512d97ad1f8b302000af5
+        with:
+          application_id: ${{ secrets.GH_APP_ID }}
+          application_private_key: ${{ secrets.GH_APP_TOKEN }}
+      
+      - name: Move issue to ${{ env.done }}
+        uses: leonsteinhaeuser/project-beta-automations@283c1170b626cab442b68fafde34b64d088f32dd
+        with:
+          gh_token: ${{ steps.get_workflow_token.outputs.token }}
+          organization: ${{ env.project-owner }}
+          project_id: ${{ env.project-number }}
+          resource_node_id: ${{ github.event.issue.node_id }}
+          status_value: ${{ env.done }} # Target status
+
