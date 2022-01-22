@@ -1,0 +1,26 @@
+name: New issue created
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  issue-created:
+    runs-on: ubuntu-latest
+    if: github.event.issue.state == 'open' && github.repository == 'GlobalDevOpsBootcamp/eShopOnWeb'
+    steps:
+    
+      - name: Get Token
+        id: get_workflow_token
+        uses: peter-murray/workflow-application-token-action@d93504a6ff913242c1c512d97ad1f8b302000af5
+        with:
+          application_id: ${{ secrets.GH_APP_ID }}
+          application_private_key: ${{ secrets.GH_APP_TOKEN }}
+          
+      - uses: monry/actions-add-issue-to-project@3e54e1f966203c08d6f15406f7dcf6f6ef2f7dd1
+        with:
+          # Personal Access Token that with `repo`, `org:read` and `org:write` are granted.
+          github-token: ${{ steps.get_workflow_token.outputs.token }}
+          project-owner: 'GlobalDevOpsBootcamp'
+          project-number: 1
+          issue-id: ${{ github.event.issue.node_id }}
