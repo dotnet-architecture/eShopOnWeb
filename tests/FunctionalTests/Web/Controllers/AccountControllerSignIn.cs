@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using System.Net;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 
@@ -54,16 +49,8 @@ public class AccountControllerSignIn : IClassFixture<TestApplication>
         response.EnsureSuccessStatusCode();
         var stringResponse = await response.Content.ReadAsStringAsync();
 
-        string token = GetRequestVerificationToken(stringResponse);
+        string token = WebPageHelpers.GetRequestVerificationToken(stringResponse);
         Assert.True(token.Length > 50);
-    }
-
-    private string GetRequestVerificationToken(string input)
-    {
-        string regexpression = @"name=""__RequestVerificationToken"" type=""hidden"" value=""([-A-Za-z0-9+=/\\_]+?)""";
-        var regex = new Regex(regexpression);
-        var match = regex.Match(input);
-        return match.Groups.Values.LastOrDefault().Value;
     }
 
     [Fact]
@@ -72,17 +59,55 @@ public class AccountControllerSignIn : IClassFixture<TestApplication>
         var getResponse = await Client.GetAsync("/identity/account/login");
         getResponse.EnsureSuccessStatusCode();
         var stringResponse1 = await getResponse.Content.ReadAsStringAsync();
-        string token = GetRequestVerificationToken(stringResponse1);
 
-        var keyValues = new List<KeyValuePair<string, string>>();
-        keyValues.Add(new KeyValuePair<string, string>("Email", "demouser@microsoft.com"));
-        keyValues.Add(new KeyValuePair<string, string>("Password", "Pass@word1"));
-
-        keyValues.Add(new KeyValuePair<string, string>("__RequestVerificationToken", token));
+        var keyValues = new List<KeyValuePair<string, string>>
+        {
+            new KeyValuePair<string, string>("Email", "demouser@microsoft.com"),
+            new KeyValuePair<string, string>("Password", "Pass@word1"),
+            new KeyValuePair<string, string>(WebPageHelpers.TokenTag, WebPageHelpers.GetRequestVerificationToken(stringResponse1))
+        };
         var formContent = new FormUrlEncodedContent(keyValues);
 
         var postResponse = await Client.PostAsync("/identity/account/login", formContent);
         Assert.Equal(HttpStatusCode.Redirect, postResponse.StatusCode);
         Assert.Equal(new System.Uri("/", UriKind.Relative), postResponse.Headers.Location);
+    }
+
+    [Fact]
+    public async Task UpdatePhoneNumberProfile()
+    {
+        //Login
+        var getResponse = await Client.GetAsync("/identity/account/login");
+        getResponse.EnsureSuccessStatusCode();
+        var stringResponse1 = await getResponse.Content.ReadAsStringAsync();
+        var keyValues = new List<KeyValuePair<string, string>>
+        {
+            new KeyValuePair<string, string>("Email", "demouser@microsoft.com"),
+            new KeyValuePair<string, string>("Password", "Pass@word1"),
+            new KeyValuePair<string, string>(WebPageHelpers.TokenTag, WebPageHelpers.GetRequestVerificationToken(stringResponse1))
+        };
+        var formContent = new FormUrlEncodedContent(keyValues);
+        await Client.PostAsync("/identity/account/login", formContent);
+
+        //Profile page
+        var profileResponse = await Client.GetAsync("/manage/my-account");
+        profileResponse.EnsureSuccessStatusCode();
+        var stringProfileResponse = await profileResponse.Content.ReadAsStringAsync();
+
+        //Update phone number
+        var updateProfileValues = new List<KeyValuePair<string, string>>
+        {
+            new KeyValuePair<string, string>("Email", "demouser@microsoft.com"),
+            new KeyValuePair<string, string>("PhoneNumber", "03656565"),
+            new KeyValuePair<string, string>(WebPageHelpers.TokenTag, WebPageHelpers.GetRequestVerificationToken(stringProfileResponse))
+        };
+        var updateProfileContent = new FormUrlEncodedContent(updateProfileValues);
+        var postProfileResponse = await Client.PostAsync("/manage/my-account", updateProfileContent);
+
+        Assert.Equal(HttpStatusCode.Redirect, postProfileResponse.StatusCode);
+        var profileResponse2 = await Client.GetAsync("/manage/my-account");
+        var stringProfileResponse2 = await profileResponse2.Content.ReadAsStringAsync();
+        Assert.Contains("03656565", stringProfileResponse2);
+
     }
 }
