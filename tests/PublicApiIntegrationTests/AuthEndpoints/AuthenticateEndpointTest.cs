@@ -1,18 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
+﻿using System.Net.Http;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 using Microsoft.eShopWeb;
 using Microsoft.eShopWeb.ApplicationCore.Constants;
 using Microsoft.eShopWeb.PublicApi.AuthEndpoints;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace PublicApiIntegrationTests.AuthEndpoints
 {
     [TestClass]
     public class AuthenticateEndpoint
-    {      
+    {
         [TestMethod]
         [DataRow("demouser@microsoft.com", AuthorizationConstants.DEFAULT_PASSWORD, true)]
         [DataRow("demouser@microsoft.com", "badpassword", false)]
