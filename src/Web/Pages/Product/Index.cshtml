@@ -1,0 +1,51 @@
+﻿@page "{Id}"
+@model CatalogItemViewModel
+@{
+    ViewData["Title"] = "Detail";
+    ViewData["Uri"] = "/images/products/" + RouteData.Values["Id"] + ".png";
+}
+<section class="esh-catalog-hero">
+    <div class="container">
+        <img class="esh-catalog-title" src="~/images/main_banner_text.png" />
+    </div>
+</section>
+
+<div class="container">
+
+
+    <form method="post">
+
+        <div class="esh-catalog-item row">
+            <div class="esh-catalog-name row">
+                <span>PRODUCT NAME HERE @*@Model.Name*@</span>
+            </div>
+            <img class="esh-catalog-thumbnail" src="@ViewData["Uri"]" src2="@*@Model.PictureUri*@" />
+
+            <div class="esh-catalog-price">
+                <span>1234 @*@Model.Price.ToString("N2")*@</span>
+            </div>
+
+            @*<input type="hidden" asp-for="@Model.Id" name="id" />
+            <input type="hidden" asp-for="@Model.Name" name="name" />
+            <input type="hidden" asp-for="@Model.PictureUri" name="pictureUri" />
+            <input type="hidden" asp-for="@Model.Price" name="price" />
+*@
+            <input class="esh-catalog-button" type="submit" value="[ ADD TO BASKET ]" />
+            
+            <hr />
+
+            <div class="esh-catalog-TODO">
+                <span class="row">Description</span>
+                <div class="row">
+                    Lorum ipsum
+                </div>
+            </div>
+            <hr />
+
+            <div class="esh-catalog-TODO">
+                <span>Reviews [**** ]</span>
+            </div>
+        </div>
+    </form>
+
+</div>
