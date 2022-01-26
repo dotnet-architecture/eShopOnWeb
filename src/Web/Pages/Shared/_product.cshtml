@@ -1,7 +1,7 @@
 ﻿@model CatalogItemViewModel
 
 <form asp-page="/Basket/Index" method="post">
-    <img class="esh-catalog-thumbnail" src="@Model.PictureUri" />
+    <a asp-page="/Product/Index" asp-route-id="@Model.Id"><img class="esh-catalog-thumbnail" src="@Model.PictureUri" /></a>
     <input class="esh-catalog-button" type="submit" value="[ ADD TO BASKET ]" />
     <div class="esh-catalog-name">
         <span>@Model.Name</span>
