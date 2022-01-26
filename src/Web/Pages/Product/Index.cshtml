@@ -1,8 +1,7 @@
 ﻿@page "{Id}"
-@model CatalogItemViewModel
+@model IndexModel
 @{
     ViewData["Title"] = "Detail";
-    ViewData["Uri"] = "/images/products/" + RouteData.Values["Id"] + ".png";
 }
 <section class="esh-catalog-hero">
     <div class="container">
@@ -17,19 +16,19 @@
 
         <div class="esh-catalog-item row">
             <div class="esh-catalog-name row">
-                <span>PRODUCT NAME HERE @*@Model.Name*@</span>
+                <span>@Model.CatalogItemModel.Name</span>
             </div>
-            <img class="esh-catalog-thumbnail" src="@ViewData["Uri"]" src2="@*@Model.PictureUri*@" />
+            <img class="esh-catalog-thumbnail" src="@Model.CatalogItemModel.PictureUri" />
 
             <div class="esh-catalog-price">
-                <span>1234 @*@Model.Price.ToString("N2")*@</span>
+                <span>@Model.CatalogItemModel.Price.ToString("N2")</span>
             </div>
 
-            @*<input type="hidden" asp-for="@Model.Id" name="id" />
-            <input type="hidden" asp-for="@Model.Name" name="name" />
-            <input type="hidden" asp-for="@Model.PictureUri" name="pictureUri" />
-            <input type="hidden" asp-for="@Model.Price" name="price" />
-*@
+            <input type="hidden" asp-for="@Model.CatalogItemModel.Id" name="id" />
+            <input type="hidden" asp-for="@Model.CatalogItemModel.Name" name="name" />
+            <input type="hidden" asp-for="@Model.CatalogItemModel.PictureUri" name="pictureUri" />
+            <input type="hidden" asp-for="@Model.CatalogItemModel.Price" name="price" />
+
             <input class="esh-catalog-button" type="submit" value="[ ADD TO BASKET ]" />
             
             <hr />
