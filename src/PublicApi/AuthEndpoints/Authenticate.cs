@@ -9,9 +9,9 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace Microsoft.eShopWeb.PublicApi.AuthEndpoints;
 
-public class Authenticate : BaseAsyncEndpoint
+public class Authenticate : EndpointBaseAsync
     .WithRequest<AuthenticateRequest>
-    .WithResponse<AuthenticateResponse>
+    .WithActionResult<AuthenticateResponse>
 {
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly ITokenClaimsService _tokenClaimsService;

@@ -8,9 +8,9 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints;
 
-public class GetById : BaseAsyncEndpoint
+public class GetById : EndpointBaseAsync
     .WithRequest<GetByIdCatalogItemRequest>
-    .WithResponse<GetByIdCatalogItemResponse>
+    .WithActionResult<GetByIdCatalogItemResponse>
 {
     private readonly IRepository<CatalogItem> _itemRepository;
     private readonly IUriComposer _uriComposer;
