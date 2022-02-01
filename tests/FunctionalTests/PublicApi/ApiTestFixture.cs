@@ -19,8 +19,6 @@ public class ApiTestFixture : WebApplicationFactory<Startup>
 
         builder.ConfigureServices(services =>
         {
-            services.AddEntityFrameworkInMemoryDatabase();
-
             // Create a new service provider.
             var provider = services
             .AddEntityFrameworkInMemoryDatabase()
