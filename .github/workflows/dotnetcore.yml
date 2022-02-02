@@ -147,13 +147,6 @@ jobs:
         name: build-backend
         path: ${{ runner.temp }}/build-backend
 
-    - name: 'Run Azure webapp deploy action using publish profile credentials'
-      uses: azure/webapps-deploy@v2.1.5
-      with:
-        app-name: 'eShopOnWeb-gdbc-backend'
-        publish-profile: ${{ secrets.publish_profile_backend }} # Define secret variable in repository settings as per action documentation
-        package: ${{ runner.temp }}/build-backend
-
     - uses: azure/login@v1
       with:
         creds: '${{ secrets.AZURE_CREDENTIALS }}'
@@ -162,6 +155,13 @@ jobs:
        uses: Azure/appservice-settings@v1
        with:
         app-name: 'eShopOnWeb-gdbc-backend'
+        app-settings-json: |
+          [
+             {
+                "name": "WEBSITE_RUN_FROM_PACKAGE",
+                "value": "1"
+             }
+          ]
         connection-strings-json: |
           [
              {
@@ -177,3 +177,12 @@ jobs:
                  "slotSetting": false
              }
           ]
+
+    - name: 'Run Azure webapp deploy action using publish profile credentials'
+      uses: azure/webapps-deploy@v2.1.5
+      with:
+        app-name: 'eShopOnWeb-gdbc-backend'
+        publish-profile: ${{ secrets.publish_profile_backend }} # Define secret variable in repository settings as per action documentation
+        package: ${{ runner.temp }}/build-backend
+
+
