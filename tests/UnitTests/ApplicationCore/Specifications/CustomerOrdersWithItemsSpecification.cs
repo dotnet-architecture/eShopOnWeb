@@ -17,7 +17,7 @@ public class CustomerOrdersWithItemsSpecification
 
         var result = GetTestCollection()
             .AsQueryable()
-            .FirstOrDefault(spec.WhereExpressions.FirstOrDefault());
+            .FirstOrDefault(spec.WhereExpressions.FirstOrDefault().Filter);
 
         Assert.NotNull(result);
         Assert.NotNull(result.OrderItems);
@@ -32,7 +32,7 @@ public class CustomerOrdersWithItemsSpecification
 
         var result = GetTestCollection()
             .AsQueryable()
-            .Where(spec.WhereExpressions.FirstOrDefault())
+            .Where(spec.WhereExpressions.FirstOrDefault().Filter)
             .ToList();
 
         Assert.NotNull(result);

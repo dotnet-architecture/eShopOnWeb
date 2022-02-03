@@ -16,7 +16,7 @@ public class CatalogItemsSpecification
 
         var result = GetTestCollection()
             .AsQueryable()
-            .Where(spec.WhereExpressions.FirstOrDefault());
+            .Where(spec.WhereExpressions.FirstOrDefault().Filter);
 
         Assert.NotNull(result);
         Assert.Single(result.ToList());
@@ -30,7 +30,7 @@ public class CatalogItemsSpecification
 
         var result = GetTestCollection()
             .AsQueryable()
-            .Where(spec.WhereExpressions.FirstOrDefault());
+            .Where(spec.WhereExpressions.FirstOrDefault().Filter);
 
         Assert.NotNull(result);
         Assert.Equal(2, result.ToList().Count);

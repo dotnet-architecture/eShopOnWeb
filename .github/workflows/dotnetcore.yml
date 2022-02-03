@@ -26,10 +26,10 @@ jobs:
 
     - name: Build with dotnet
       run: dotnet build ./eShopOnWeb.sln --configuration Release
-    
+
     - name: Test with dotnet
       run: dotnet test ./eShopOnWeb.sln --configuration Release
-      
+
     - name: Publish with dotnet
       run: dotnet publish ./src/Web/Web.csproj --configuration Release --output ${{ runner.temp }}/publish
 
@@ -51,13 +51,6 @@ jobs:
       with:
         name: build
         path: ${{ runner.temp }}/build
-        
-    - name: 'Run Azure webapp deploy action using publish profile credentials'
-      uses: azure/webapps-deploy@v2.1.5
-      with: 
-        app-name: 'eShopOnWeb-gdbc'
-        publish-profile: ${{ secrets.publish_profile }} # Define secret variable in repository settings as per action documentation
-        package: ${{ runner.temp }}/build
 
     - uses: azure/login@v1
       with:
@@ -76,6 +69,10 @@ jobs:
              {
                 "name": "baseUrls:webBase",
                 "value": "https://eshoponweb-gdbc.azurewebsites.net/"
+             },
+             {
+                "name": "WEBSITE_RUN_FROM_PACKAGE",
+                "value": "1"
              }
           ]
         connection-strings-json: |
@@ -85,15 +82,21 @@ jobs:
                  "value": "${{ secrets.DB_CONNECTION_STRING}}",
                  "type": "SQLServer",
                  "slotSetting": false
-             },          
+             },
              {
                  "name": "IdentityConnection",
                  "value": "${{ secrets.DB_CONNECTION_STRING}}",
                  "type": "SQLServer",
                  "slotSetting": false
-             }    
+             }
           ]
 
+    - name: 'Run Azure webapp deploy action using publish profile credentials'
+      uses: azure/webapps-deploy@v2.1.5
+      with:
+        app-name: 'eShopOnWeb-gdbc'
+        publish-profile: ${{ secrets.publish_profile }} # Define secret variable in repository settings as per action documentation
+        package: ${{ runner.temp }}/build
 
   build-back-end:
 
@@ -118,10 +121,10 @@ jobs:
 
     - name: Build with dotnet
       run: dotnet build ./eShopOnWeb.sln --configuration Release
-    
+
     - name: Test with dotnet
       run: dotnet test ./eShopOnWeb.sln --configuration Release
-      
+
     - name: Publish with dotnet
       run: dotnet publish ./src/PublicApi/PublicApi.csproj --configuration Release --output ${{ runner.temp }}/publish
 
@@ -143,22 +146,22 @@ jobs:
       with:
         name: build-backend
         path: ${{ runner.temp }}/build-backend
-        
-    - name: 'Run Azure webapp deploy action using publish profile credentials'
-      uses: azure/webapps-deploy@v2.1.5
-      with: 
-        app-name: 'eShopOnWeb-gdbc-backend'
-        publish-profile: ${{ secrets.publish_profile_backend }} # Define secret variable in repository settings as per action documentation
-        package: ${{ runner.temp }}/build-backend
-    
+
     - uses: azure/login@v1
       with:
         creds: '${{ secrets.AZURE_CREDENTIALS }}'
-        
+
     -  name: Web App settings
        uses: Azure/appservice-settings@v1
        with:
         app-name: 'eShopOnWeb-gdbc-backend'
+        app-settings-json: |
+          [
+             {
+                "name": "WEBSITE_RUN_FROM_PACKAGE",
+                "value": "1"
+             }
+          ]
         connection-strings-json: |
           [
              {
@@ -166,11 +169,20 @@ jobs:
                  "value": "${{ secrets.DB_CONNECTION_STRING}}",
                  "type": "SQLServer",
                  "slotSetting": false
-             },          
+             },
              {
                  "name": "IdentityConnection",
                  "value": "${{ secrets.DB_CONNECTION_STRING}}",
                  "type": "SQLServer",
                  "slotSetting": false
-             }    
+             }
           ]
+
+    - name: 'Run Azure webapp deploy action using publish profile credentials'
+      uses: azure/webapps-deploy@v2.1.5
+      with:
+        app-name: 'eShopOnWeb-gdbc-backend'
+        publish-profile: ${{ secrets.publish_profile_backend }} # Define secret variable in repository settings as per action documentation
+        package: ${{ runner.temp }}/build-backend
+
+
