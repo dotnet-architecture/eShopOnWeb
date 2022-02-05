@@ -37,5 +37,9 @@
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="AuthEndpoints\" />
+  </ItemGroup>
+
 
 </Project>

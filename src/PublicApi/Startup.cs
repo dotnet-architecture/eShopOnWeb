@@ -1,21 +1,17 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
-using AutoMapper;
 using BlazorShared;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopWeb.ApplicationCore.Constants;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.ApplicationCore.Services;
 using Microsoft.eShopWeb.Infrastructure.Data;
-using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.eShopWeb.Infrastructure.Logging;
-using Microsoft.eShopWeb.Infrastructure.Services;
 using Microsoft.eShopWeb.PublicApi.MiddleWares;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -55,9 +51,6 @@ public class Startup
         services.AddDbContext<CatalogContext>(c =>
             c.UseInMemoryDatabase("Catalog"));
 
-        services.AddDbContext<AppIdentityDbContext>(options =>
-            options.UseInMemoryDatabase("Identity"));
-
         ConfigureServices(services);
     }
 
@@ -68,10 +61,6 @@ public class Startup
         // https://www.microsoft.com/en-us/download/details.aspx?id=54284
         services.AddDbContext<CatalogContext>(c =>
             c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection")));
-
-        // Add Identity DbContext
-        services.AddDbContext<AppIdentityDbContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
 
         ConfigureServices(services);
     }
@@ -85,16 +74,11 @@ public class Startup
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<AppIdentityDbContext>()
-                .AddDefaultTokenProviders();
-
         services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
         services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
         services.Configure<CatalogSettings>(Configuration);
         services.AddSingleton<IUriComposer>(new UriComposer(Configuration.Get<CatalogSettings>()));
         services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
-        services.AddScoped<ITokenClaimsService, IdentityTokenClaimService>();
 
         var baseUrlConfig = new BaseUrlConfiguration();
         Configuration.Bind(BaseUrlConfiguration.CONFIG_NAME, baseUrlConfig);
