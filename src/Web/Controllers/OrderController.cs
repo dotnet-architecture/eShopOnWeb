@@ -8,7 +8,6 @@ using Microsoft.eShopWeb.Web.Features.OrderDetails;
 namespace Microsoft.eShopWeb.Web.Controllers;
 
 [ApiExplorerSettings(IgnoreApi = true)]
-[Authorize] // Controllers that mainly require Authorization still use Controller/View; other pages use Pages
 [Route("[controller]/[action]")]
 public class OrderController : Controller
 {

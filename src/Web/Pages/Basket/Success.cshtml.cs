@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.eShopWeb.Web.Interfaces;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Microsoft.eShopWeb.Web.Pages.Basket;
 
-[Authorize]
 public class SuccessModel : PageBase
 {
     

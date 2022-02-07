@@ -33,7 +33,11 @@
                             <img src="~/images/brand.png" alt="eShop On Web" />
                         </a>
                     </section>
-                    <partial name="_LoginPartial" />
+                    <section class="col-lg-4 col-md-5 col-xs-12">
+                    </section>
+                    <section class="col-lg-1 col-xs-12">
+                        @await Component.InvokeAsync("Basket")
+                    </section>
                 </article>
             </div>
         </header>

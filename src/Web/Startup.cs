@@ -15,12 +15,9 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.Infrastructure.Data;
-using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.eShopWeb.Web.Configuration;
 using Microsoft.eShopWeb.Web.Interfaces;
 using Microsoft.eShopWeb.Web.Services;
@@ -66,10 +63,6 @@ public class Startup
         services.AddDbContext<CatalogContext>(c =>
             c.UseInMemoryDatabase("Catalog"));
 
-        // Add Identity DbContext
-        services.AddDbContext<AppIdentityDbContext>(options =>
-            options.UseInMemoryDatabase("Identity"));
-
         ConfigureServices(services);
     }
 
@@ -80,10 +73,6 @@ public class Startup
         // https://www.microsoft.com/en-us/download/details.aspx?id=54284
         services.AddDbContext<CatalogContext>(c =>
             c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection")));
-
-        // Add Identity DbContext
-        services.AddDbContext<AppIdentityDbContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
 
         ConfigureServices(services);
     }
@@ -108,13 +97,6 @@ public class Startup
                 options.Cookie.SameSite = SameSiteMode.Lax;
             });
 
-        services.AddIdentity<ApplicationUser, IdentityRole>()
-                   .AddDefaultUI()
-                   .AddEntityFrameworkStores<AppIdentityDbContext>()
-                                   .AddDefaultTokenProviders();
-
-        services.AddScoped<ITokenClaimsService, IdentityTokenClaimService>();
-
         services.AddCoreServices(Configuration);
         services.AddWebServices(Configuration);
 
@@ -133,10 +115,7 @@ public class Startup
 
         });
         services.AddControllersWithViews();
-        services.AddRazorPages(options =>
-        {
-            options.Conventions.AuthorizePage("/Basket/Checkout");
-        });
+        services.AddRazorPages();
         services.AddHttpContextAccessor();
         services.AddHealthChecks();
         services.Configure<ServiceConfig>(config =>
