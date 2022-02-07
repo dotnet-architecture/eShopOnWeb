@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.eShopWeb.Web.Interfaces;
 
 namespace Microsoft.eShopWeb.Web.Pages.Basket;
 
 [Authorize]
-public class SuccessModel : PageModel
+public class SuccessModel : PageBase
 {
+    
+    public SuccessModel(IPublishEventService publishEventService) : base(publishEventService)
+    {
+    }
+
     public void OnGet()
     {
-
     }
 }

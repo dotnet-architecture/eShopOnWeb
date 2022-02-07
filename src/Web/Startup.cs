@@ -22,6 +22,8 @@ using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.Infrastructure.Data;
 using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.eShopWeb.Web.Configuration;
+using Microsoft.eShopWeb.Web.Interfaces;
+using Microsoft.eShopWeb.Web.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -164,8 +166,11 @@ public class Startup
         services.AddBlazorServices();
 
         services.AddDatabaseDeveloperPageExceptionFilter();
+        services.AddApplicationInsightsTelemetry();
+        services.AddScoped<IPublishEventService, PublishEventService>();
 
         _services = services; // used to debug registered services
+        
     }
 
 

@@ -11,13 +11,14 @@ using Microsoft.eShopWeb.Web.ViewModels;
 
 namespace Microsoft.eShopWeb.Web.Pages.Basket;
 
-public class IndexModel : PageModel
+public class IndexModel : PageBase
 {
     private readonly IBasketService _basketService;
     private readonly IBasketViewModelService _basketViewModelService;
 
     public IndexModel(IBasketService basketService,
-        IBasketViewModelService basketViewModelService)
+        IBasketViewModelService basketViewModelService,
+        IPublishEventService publishService) : base(publishService)
     {
         _basketService = basketService;
         _basketViewModelService = basketViewModelService;

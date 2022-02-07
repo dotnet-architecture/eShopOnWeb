@@ -17,7 +17,7 @@ using Microsoft.eShopWeb.Web.Interfaces;
 namespace Microsoft.eShopWeb.Web.Pages.Basket;
 
 [Authorize]
-public class CheckoutModel : PageModel
+public class CheckoutModel : PageBase
 {
     private readonly IBasketService _basketService;
     private readonly SignInManager<ApplicationUser> _signInManager;
@@ -30,7 +30,8 @@ public class CheckoutModel : PageModel
         IBasketViewModelService basketViewModelService,
         SignInManager<ApplicationUser> signInManager,
         IOrderService orderService,
-        IAppLogger<CheckoutModel> logger)
+        IAppLogger<CheckoutModel> logger,
+        IPublishEventService publishEventService) : base(publishEventService)
     {
         _basketService = basketService;
         _signInManager = signInManager;
