@@ -13,7 +13,7 @@ using Microsoft.eShopWeb.Web.Interfaces;
 
 namespace Microsoft.eShopWeb.Web.Pages.Basket;
 
-public class CheckoutModel : PageModel
+public class CheckoutModel : PageBase
 {
     private readonly IBasketService _basketService;
     private readonly IOrderService _orderService;
