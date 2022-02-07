@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.eShopWeb.Web.Interfaces;
 using Microsoft.eShopWeb.Web.ViewModels;
 
@@ -11,13 +10,10 @@ namespace Microsoft.eShopWeb.Web.Pages.Shared.Components.BasketComponent;
 public class Basket : ViewComponent
 {
     private readonly IBasketViewModelService _basketService;
-    private readonly SignInManager<ApplicationUser> _signInManager;
 
-    public Basket(IBasketViewModelService basketService,
-                    SignInManager<ApplicationUser> signInManager)
+    public Basket(IBasketViewModelService basketService)
     {
         _basketService = basketService;
-        _signInManager = signInManager;
     }
 
     public async Task<IViewComponentResult> InvokeAsync()
@@ -31,11 +27,6 @@ public class Basket : ViewComponent
 
     private async Task<int> CountTotalBasketItems()
     {
-        if (_signInManager.IsSignedIn(HttpContext.User))
-        {
-            return await _basketService.CountTotalBasketItems(User.Identity.Name);
-        }
-
         string anonymousId = GetAnnonymousIdFromCookie();
         if (anonymousId == null)
             return 0;

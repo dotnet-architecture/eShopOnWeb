@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopWeb.Infrastructure.Data;
-using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.eShopWeb.Web;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -32,12 +31,6 @@ public class WebTestFixture : WebApplicationFactory<Startup>
                 options.UseInternalServiceProvider(provider);
             });
 
-            services.AddDbContext<AppIdentityDbContext>(options =>
-            {
-                options.UseInMemoryDatabase("Identity");
-                options.UseInternalServiceProvider(provider);
-            });
-
             // Build the service provider.
             var sp = services.BuildServiceProvider();
 
@@ -61,9 +54,6 @@ public class WebTestFixture : WebApplicationFactory<Startup>
                     CatalogContextSeed.SeedAsync(db, loggerFactory).Wait();
 
                     // seed sample user data
-                    var userManager = scopedServices.GetRequiredService<UserManager<ApplicationUser>>();
-                    var roleManager = scopedServices.GetRequiredService<RoleManager<IdentityRole>>();
-                    AppIdentityDbContextSeed.SeedAsync(userManager, roleManager).Wait();
                 }
                 catch (Exception ex)
                 {
