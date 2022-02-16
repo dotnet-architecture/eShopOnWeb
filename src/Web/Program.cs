@@ -1,5 +1,6 @@
 ﻿using System.Net.Mime;
 using Ardalis.ListStartupServices;
+using Azure.Identity;
 using BlazorAdmin;
 using BlazorAdmin.Services;
 using Blazored.LocalStorage;
@@ -20,6 +21,10 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.AddConsole();
+
+var vaultName = builder.Configuration["VaultName"];
+var vaultUri = new Uri($"https://{vaultName}.vault.azure.net/");
+builder.Configuration.AddAzureKeyVault(vaultUri, new DefaultAzureCredential());
 
 Microsoft.eShopWeb.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, builder.Services);
 
@@ -170,9 +175,10 @@ using (var scope = app.Services.CreateScope())
         var catalogContext = scopedProvider.GetRequiredService<CatalogContext>();
         await CatalogContextSeed.SeedAsync(catalogContext, app.Logger);
 
+        var identityContext = scopedProvider.GetRequiredService<AppIdentityDbContext>();
         var userManager = scopedProvider.GetRequiredService<UserManager<ApplicationUser>>();
         var roleManager = scopedProvider.GetRequiredService<RoleManager<IdentityRole>>();
-        await AppIdentityDbContextSeed.SeedAsync(userManager, roleManager);
+        await AppIdentityDbContextSeed.SeedAsync(identityContext, userManager, roleManager);
     }
     catch (Exception ex)
     {
