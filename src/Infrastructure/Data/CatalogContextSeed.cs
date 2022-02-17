@@ -47,7 +47,8 @@ public class CatalogContextSeed
         }
         catch (Exception ex)
         {
-            if (retryForAvailability >= 10) throw;
+            if (retryForAvailability >= 10) 
+                throw;
 
             retryForAvailability++;
             

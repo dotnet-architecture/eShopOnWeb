@@ -1,5 +1,6 @@
 ﻿using System.Net.Mime;
 using Ardalis.ListStartupServices;
+using Azure.Identity;
 using BlazorAdmin;
 using BlazorAdmin.Services;
 using Blazored.LocalStorage;
@@ -12,6 +13,7 @@ using Microsoft.eShopWeb;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.Infrastructure.Data;
 using Microsoft.eShopWeb.Infrastructure.Identity;
+using Microsoft.eShopWeb.Infrastructure.Services;
 using Microsoft.eShopWeb.Web;
 using Microsoft.eShopWeb.Web.Configuration;
 using Microsoft.eShopWeb.Web.HealthChecks;
@@ -20,6 +22,10 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.AddConsole();
+
+var vaultName = builder.Configuration["VaultName"];
+var vaultUri = new Uri($"https://{vaultName}.vault.azure.net/");
+builder.Configuration.AddAzureKeyVault(vaultUri, new DefaultAzureCredential());
 
 Microsoft.eShopWeb.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, builder.Services);
 
@@ -85,6 +91,9 @@ builder.Services.AddScoped<HttpClient>(s => new HttpClient
     BaseAddress = new Uri(baseUrlConfig.WebBase)
 });
 
+builder.Services.AddHttpClient<IAzFuncAppClient, AzFuncAppClient>(cfg =>
+    cfg.BaseAddress = new Uri(baseUrlConfig.AzFuncAppBase));
+
 // add blazor services
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddServerSideBlazor();
@@ -93,6 +102,8 @@ builder.Services.AddScoped<HttpService>();
 builder.Services.AddBlazorServices();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+builder.Services.AddScoped<IMessagingService, MessagingService>();
 
 var app = builder.Build();
 
@@ -170,9 +181,10 @@ using (var scope = app.Services.CreateScope())
         var catalogContext = scopedProvider.GetRequiredService<CatalogContext>();
         await CatalogContextSeed.SeedAsync(catalogContext, app.Logger);
 
+        var identityContext = scopedProvider.GetRequiredService<AppIdentityDbContext>();
         var userManager = scopedProvider.GetRequiredService<UserManager<ApplicationUser>>();
         var roleManager = scopedProvider.GetRequiredService<RoleManager<IdentityRole>>();
-        await AppIdentityDbContextSeed.SeedAsync(userManager, roleManager);
+        await AppIdentityDbContextSeed.SeedAsync(identityContext, userManager, roleManager);
     }
     catch (Exception ex)
     {

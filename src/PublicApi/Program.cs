@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Azure.Identity;
 using BlazorShared;
 using BlazorShared.Models;
 using MediatR;
@@ -33,6 +34,10 @@ builder.Services.AddEndpoints();
 //Use to force loading of appsettings.json of test project
 builder.Configuration.AddConfigurationFile();
 builder.Logging.AddConsole();
+
+var vaultName = builder.Configuration["VaultName"];
+var vaultUri = new Uri($"https://{vaultName}.vault.azure.net/");
+builder.Configuration.AddAzureKeyVault(vaultUri, new DefaultAzureCredential());
 
 Microsoft.eShopWeb.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, builder.Services);
 
@@ -77,7 +82,8 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: CORS_POLICY,
                       builder =>
                       {
-                          builder.WithOrigins(baseUrlConfig.WebBase.Replace("host.docker.internal", "localhost").TrimEnd('/'));
+                          //builder.WithOrigins(baseUrlConfig.WebBase.Replace("host.docker.internal", "localhost").TrimEnd('/'));
+                          builder.AllowAnyOrigin();
                           builder.AllowAnyMethod();
                           builder.AllowAnyHeader();
                       });
@@ -169,9 +175,10 @@ using (var scope = app.Services.CreateScope())
         var catalogContext = scopedProvider.GetRequiredService<CatalogContext>();
         await CatalogContextSeed.SeedAsync(catalogContext, app.Logger);
 
+        var identityContext = scopedProvider.GetRequiredService<AppIdentityDbContext>();
         var userManager = scopedProvider.GetRequiredService<UserManager<ApplicationUser>>();
         var roleManager = scopedProvider.GetRequiredService<RoleManager<IdentityRole>>();
-        await AppIdentityDbContextSeed.SeedAsync(userManager, roleManager);
+        await AppIdentityDbContextSeed.SeedAsync(identityContext, userManager, roleManager);
     }
     catch (Exception ex)
     {

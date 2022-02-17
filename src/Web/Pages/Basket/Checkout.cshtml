@@ -31,12 +31,16 @@
                         <div>
                             <section class="esh-basket-item esh-basket-item--middle col-lg-3 hidden-lg-down">
                                 <img class="esh-basket-image" src="@item.PictureUrl" />
+                                <input type="hidden" name="@("Items[" + i + "].PictureUrl")" value="@item.PictureUrl" />
+                            </section>                            
+                            <section class="esh-basket-item esh-basket-item--middle col-xs-3">@item.ProductName
+                                <input type="hidden" name="@("Items[" + i + "].ProductName")" value="@item.ProductName" />
                             </section>
-                            <section class="esh-basket-item esh-basket-item--middle col-xs-3">@item.ProductName</section>
                             <section class="esh-basket-item esh-basket-item--middle col-xs-2">$ @item.UnitPrice.ToString("N2")</section>
                             <section class="esh-basket-item esh-basket-item--middle col-xs-2">
                                 <input type="hidden" name="@("Items[" + i + "].Id")" value="@item.Id" />
                                 <input type="hidden" name="@("Items[" + i + "].Quantity")" value="@item.Quantity" />
+                                <input type="hidden" name="@("Items[" + i + "].CatalogItemId")" value="@item.CatalogItemId" />
                                 @item.Quantity
                             </section>
                             <section class="esh-basket-item esh-basket-item--middle esh-basket-item--mark col-xs-2">$ @Math.Round(item.Quantity * item.UnitPrice, 2).ToString("N2")</section>
