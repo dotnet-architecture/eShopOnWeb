@@ -16,6 +16,7 @@ public class CheckoutModel : PageModel
     private readonly IBasketService _basketService;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IOrderService _orderService;
+    private readonly IMessagingService _messagingService;
     private string _username = null;
     private readonly IBasketViewModelService _basketViewModelService;
     private readonly IAppLogger<CheckoutModel> _logger;
@@ -24,11 +25,13 @@ public class CheckoutModel : PageModel
         IBasketViewModelService basketViewModelService,
         SignInManager<ApplicationUser> signInManager,
         IOrderService orderService,
+        IMessagingService messagingService,
         IAppLogger<CheckoutModel> logger)
     {
         _basketService = basketService;
         _signInManager = signInManager;
         _orderService = orderService;
+        _messagingService = messagingService;
         _basketViewModelService = basketViewModelService;
         _logger = logger;
     }
@@ -55,6 +58,12 @@ public class CheckoutModel : PageModel
             await _basketService.SetQuantities(BasketModel.Id, updateModel);
             await _orderService.CreateOrderAsync(BasketModel.Id, new Address("123 Main St.", "Kent", "OH", "United States", "44240"));
             await _basketService.DeleteBasketAsync(BasketModel.Id);
+
+            var message = new OrderDetailsDto(
+                Guid.NewGuid().ToString(),
+                items.Select(x => new OrderItem(x.CatalogItemId.ToString(), x.Quantity)));
+
+            await _messagingService.SendAsync(message);
         }
         catch (EmptyBasketOnCheckoutException emptyBasketOnCheckoutException)
         {
@@ -85,7 +94,9 @@ public class CheckoutModel : PageModel
         {
             _username = Request.Cookies[Constants.BASKET_COOKIENAME];
         }
-        if (_username != null) return;
+
+        if (_username != null)
+            return;
 
         _username = Guid.NewGuid().ToString();
         var cookieOptions = new CookieOptions();
@@ -93,3 +104,11 @@ public class CheckoutModel : PageModel
         Response.Cookies.Append(Constants.BASKET_COOKIENAME, _username, cookieOptions);
     }
 }
+
+public record OrderDetailsDto(
+    string OrderId,
+    IEnumerable<OrderItem> Items);
+
+public record OrderItem(
+    string ItemId,
+    int Quantity);
