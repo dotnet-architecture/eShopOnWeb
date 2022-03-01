@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.ApplicationInsights;
 using Microsoft.eShopWeb.Web.Interfaces;
-
 namespace Microsoft.eShopWeb.Web.Services;
 
 public class PublishEventService : IPublishEventService

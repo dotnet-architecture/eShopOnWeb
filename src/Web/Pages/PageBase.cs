@@ -10,5 +10,4 @@ public abstract class PageBase : PageModel
     {
         publishEventService.PublishEvent(EventType.PageOpenings, new Dictionary<string, string> {{ "PageName", this.GetType().Name }});
     }
-
 }

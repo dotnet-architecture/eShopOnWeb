@@ -20,6 +20,7 @@ public class CheckoutModel : PageBase
     private string _username = null;
     private readonly IBasketViewModelService _basketViewModelService;
     private readonly IAppLogger<CheckoutModel> _logger;
+    private readonly IPublishEventService _publishService;
 
     public CheckoutModel(IBasketService basketService,
         IBasketViewModelService basketViewModelService,
@@ -31,6 +32,7 @@ public class CheckoutModel : PageBase
         _orderService = orderService;
         _basketViewModelService = basketViewModelService;
         _logger = logger;
+        _publishService = publishEventService;
     }
 
     public BasketViewModel BasketModel { get; set; } = new BasketViewModel();
@@ -54,6 +56,14 @@ public class CheckoutModel : PageBase
             var updateModel = items.ToDictionary(b => b.Id.ToString(), b => b.Quantity);
             await _basketService.SetQuantities(BasketModel.Id, updateModel);
             await _orderService.CreateOrderAsync(BasketModel.Id, new Address("123 Main St.", "Kent", "OH", "United States", "44240"));
+
+            var dictionary = new Dictionary<string, string>
+        {
+            { "Username",  BasketModel.BuyerId},
+            { "Total",  BasketModel.Total().ToString()}
+        };
+
+            _publishService.PublishEvent(EventType.Checkout, dictionary);
             await _basketService.DeleteBasketAsync(BasketModel.Id);
         }
         catch (EmptyBasketOnCheckoutException emptyBasketOnCheckoutException)

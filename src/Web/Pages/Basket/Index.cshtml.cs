@@ -11,17 +11,19 @@ using Microsoft.eShopWeb.Web.ViewModels;
 
 namespace Microsoft.eShopWeb.Web.Pages.Basket;
 
-public class IndexModel : PageBase
+public class IndexModel : PageModel
 {
     private readonly IBasketService _basketService;
     private readonly IBasketViewModelService _basketViewModelService;
+    private readonly IPublishEventService _publishService;
 
     public IndexModel(IBasketService basketService,
         IBasketViewModelService basketViewModelService,
-        IPublishEventService publishService) : base(publishService)
+        IPublishEventService publishService) //: base(publishService)
     {
         _basketService = basketService;
         _basketViewModelService = basketViewModelService;
+        _publishService = publishService;
     }
 
     public BasketViewModel BasketModel { get; set; } = new BasketViewModel();
@@ -42,6 +44,14 @@ public class IndexModel : PageBase
         var basket = await _basketService.AddItemToBasket(username,
             productDetails.Id, productDetails.Price);
 
+        var dictionary = new Dictionary<string, string>
+        {
+            { "Username",  username},
+            { "ProductId",  productDetails.Id.ToString()},
+            { "Price",  productDetails.Price.ToString() }
+        };
+
+        _publishService.PublishEvent(EventType.AddToCart, dictionary);
         BasketModel = await _basketViewModelService.Map(basket);
 
         return RedirectToPage();
