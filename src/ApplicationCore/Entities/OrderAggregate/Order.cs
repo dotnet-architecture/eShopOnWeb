@@ -20,7 +20,10 @@ public class Order : BaseEntity, IAggregateRoot
 
         BuyerId = buyerId;
         ShipToAddress = shipToAddress;
-        _orderItems = items;
+
+        string s;
+
+        _orderItems = SanitizeOrderItems(items);
     }
 
     public string BuyerId { get; private set; }
@@ -48,4 +51,32 @@ public class Order : BaseEntity, IAggregateRoot
         }
         return total;
     }
+
+    private List<OrderItem> SanitizeOrderItems(List<OrderItem> items)
+    {
+        var cleanedOrderedItems = new List<OrderItem>();
+
+        foreach (var orderItem in cleanedOrderedItems)
+        {
+            if (IsPriceGreiterThanZero(orderItem) || IsUnitsGreaterThanZero(orderItem))
+            {
+                cleanedOrderedItems.Add(orderItem);
+            }
+        }
+
+        return cleanedOrderedItems;
+    }
+
+    private bool IsPriceGreiterThanZero(OrderItem item)
+    {
+        if (item.UnitPrice > 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool IsUnitsGreaterThanZero(OrderItem item)
+        => item.Units < 0;
 }
