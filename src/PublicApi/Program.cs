@@ -30,8 +30,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpoints();
 
-//Use to force loading of appsettings.json of test project
-builder.Configuration.AddConfigurationFile();
+//Use to force loading of appsettings.json of test projec
+builder.Configuration.AddConfigurationFile("appsettings.test.json");
 builder.Logging.AddConsole();
 
 Microsoft.eShopWeb.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, builder.Services);
@@ -171,7 +171,8 @@ using (var scope = app.Services.CreateScope())
 
         var userManager = scopedProvider.GetRequiredService<UserManager<ApplicationUser>>();
         var roleManager = scopedProvider.GetRequiredService<RoleManager<IdentityRole>>();
-        await AppIdentityDbContextSeed.SeedAsync(userManager, roleManager);
+        var identityContext = scopedProvider.GetRequiredService<AppIdentityDbContext>();
+        await AppIdentityDbContextSeed.SeedAsync(identityContext, userManager, roleManager);
     }
     catch (Exception ex)
     {
