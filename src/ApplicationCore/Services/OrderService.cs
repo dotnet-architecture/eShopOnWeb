@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
@@ -47,6 +48,16 @@ public class OrderService : IOrderService
         }).ToList();
 
         var order = new Order(basket.BuyerId, shippingAddress, items);
+
+        int currentSecond = DateTime.Now.Second;
+        if (currentSecond % 3 == 1)
+        {
+            order.SetStatusOutForDelivery();
+        }
+        if (currentSecond % 3 == 2)
+        {
+            order.SetStatusDelivered();
+        }
 
         await _orderRepository.AddAsync(order);
     }
