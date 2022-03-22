@@ -38,7 +38,8 @@ public class GetMyOrdersHandler : IRequestHandler<GetMyOrders, IEnumerable<Order
             }).ToList(),
             OrderNumber = o.Id,
             ShippingAddress = o.ShipToAddress,
-            Total = o.Total()
+            Total = o.Total(),
+            Status = o.Status
         });
     }
 }
