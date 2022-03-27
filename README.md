@@ -113,3 +113,14 @@ You can also run the applications by using the instructions located in their `Do
 We have some great contributions from the community, and while these aren't maintained by Microsoft we still want to highlight them.
 
 [eShopOnWeb VB.NET](https://github.com/VBAndCs/eShopOnWeb_VB.NET) by Mohammad Hamdy Ghanem
+
+
+En vanlig funktionalitet som kan tänkas behövas läggas till ett api är något
+form av rapport-generering.
+Du/Ni har nu fått i uppgift att lägga till en endpoint till MVC-projektet för att
+kunna generera en rapport i json-format. Rapporten skall innehålla:
+● Totala antalet ordrar (Om orderstatus finns, totalen per orderstatus)
+● Totala priset för samtliga ordrar
+● Totala antalet produkter i systemet
+● Antalet registrerade användare
+Du behöver inte tänka på säkerhet och auktorisering i denna uppgift. 

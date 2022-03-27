@@ -11,7 +11,7 @@ using Microsoft.eShopWeb.Web.ViewModels.Manage;
 
 namespace Microsoft.eShopWeb.Web.Controllers;
 
-[ApiExplorerSettings(IgnoreApi = true)]
+//[ApiExplorerSettings(IgnoreApi = true)]
 [Authorize] // Controllers that mainly require Authorization still use Controller/View; other pages use Pages
 [Route("[controller]/[action]")]
 public class ManageController : Controller

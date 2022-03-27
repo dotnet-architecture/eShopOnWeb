@@ -59,6 +59,7 @@ builder.Services.AddMvc(options =>
 
 });
 builder.Services.AddControllersWithViews();
+builder.Services.AddControllers();
 builder.Services.AddRazorPages(options =>
 {
     options.Conventions.AuthorizePage("/Basket/Checkout");

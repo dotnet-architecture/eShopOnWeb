@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
@@ -34,7 +35,7 @@ public class OrderService : IOrderService
 
         Guard.Against.NullBasket(basketId, basket);
         Guard.Against.EmptyBasketOnCheckout(basket.Items);
-
+    
         var catalogItemsSpecification = new CatalogItemsSpecification(basket.Items.Select(item => item.CatalogItemId).ToArray());
         var catalogItems = await _itemRepository.ListAsync(catalogItemsSpecification);
 
@@ -48,6 +49,15 @@ public class OrderService : IOrderService
 
         var order = new Order(basket.BuyerId, shippingAddress, items);
 
+        int currentSecond = DateTime.Now.Second;
+        if(currentSecond % 3 == 1)
+        {
+           order.SetStatusOutForDelivery();
+        }
+        if(currentSecond % 3 == 2)
+        {
+            order.SetStatusDelivered();
+        }
         await _orderRepository.AddAsync(order);
     }
 }

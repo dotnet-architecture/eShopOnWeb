@@ -7,7 +7,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 
 public class Order : BaseEntity, IAggregateRoot
 {
-    private Order()
+    public Order()
     {
         // required by EF
     }
@@ -25,7 +25,8 @@ public class Order : BaseEntity, IAggregateRoot
 
     public string BuyerId { get; private set; }
     public DateTimeOffset OrderDate { get; private set; } = DateTimeOffset.Now;
-    public Address ShipToAddress { get; private set; }
+    public Address ShipToAddress { get; set; }
+     public string Status { get; private set; } = "Pending";
 
     // DDD Patterns comment
     // Using a private collection field, better for DDD Aggregate's encapsulation
@@ -48,4 +49,14 @@ public class Order : BaseEntity, IAggregateRoot
         }
         return total;
     }
+    public void SetStatusOutForDelivery()
+        {
+            Status = "Out for Delivery";
+        }
+
+        public void SetStatusDelivered()
+        {
+            Status = "Delivered";
+        }
+
 }

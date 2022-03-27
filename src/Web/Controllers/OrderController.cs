@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopWeb.Web.Features.MyOrders;
 using Microsoft.eShopWeb.Web.Features.OrderDetails;
+using Microsoft.eShopWeb.Web.ViewModels;
 
 namespace Microsoft.eShopWeb.Web.Controllers;
 
-[ApiExplorerSettings(IgnoreApi = true)]
+//[ApiExplorerSettings(IgnoreApi = true)]
 [Authorize] // Controllers that mainly require Authorization still use Controller/View; other pages use Pages
 [Route("[controller]/[action]")]
 public class OrderController : Controller
@@ -18,6 +19,7 @@ public class OrderController : Controller
         _mediator = mediator;
     }
 
+
     [HttpGet]
     public async Task<IActionResult> MyOrders()
     {
@@ -25,6 +27,7 @@ public class OrderController : Controller
 
         return View(viewModel);
     }
+
 
     [HttpGet("{orderId}")]
     public async Task<IActionResult> Detail(int orderId)
@@ -37,5 +40,14 @@ public class OrderController : Controller
         }
 
         return View(viewModel);
+    }
+
+    [HttpGet]
+    public ActionResult<string> GetJsonReport()
+    {
+        var jsonReport = new JsonReport();
+
+        new JsonReport {NumberOfOrder = 2222, TotalPrice = 21232, TotalProduct = 322, TotalUser = 443}.ToString();
+        return jsonReport.ToString();
     }
 }
