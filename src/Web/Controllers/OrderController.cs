@@ -42,12 +42,4 @@ public class OrderController : Controller
         return View(viewModel);
     }
 
-    [HttpGet]
-    public ActionResult<string> GetJsonReport()
-    {
-        var jsonReport = new JsonReport();
-
-        new JsonReport {NumberOfOrder = 2222, TotalPrice = 21232, TotalProduct = 322, TotalUser = 443}.ToString();
-        return jsonReport.ToString();
-    }
 }
