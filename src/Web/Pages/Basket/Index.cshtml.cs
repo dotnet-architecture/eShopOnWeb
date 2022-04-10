@@ -15,11 +15,11 @@ public class IndexModel : PageModel
 
     public IndexModel(IBasketService basketService,
         IBasketViewModelService basketViewModelService,
-        IRepository<CatalogItem> _itemRepository)
+        IRepository<CatalogItem> itemRepository)
     {
         _basketService = basketService;
         _basketViewModelService = basketViewModelService;
-        this._itemRepository = _itemRepository;
+        _itemRepository = itemRepository;
     }
 
     public BasketViewModel BasketModel { get; set; } = new BasketViewModel();

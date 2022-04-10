@@ -7,7 +7,7 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Pages.Basket;
 public class IndexTest : IClassFixture<TestApplication>
 {
     public IndexTest(TestApplication factory)
-    {       
+    {
         Client = factory.CreateClient(new WebApplicationFactoryClientOptions
         {
             AllowAutoRedirect = true
@@ -31,7 +31,7 @@ public class IndexTest : IClassFixture<TestApplication>
         var keyValues = new List<KeyValuePair<string, string>>
         {
             new KeyValuePair<string, string>("id", "2"),
-            new KeyValuePair<string, string>("name", "shirt"),           
+            new KeyValuePair<string, string>("name", "shirt"),
             new KeyValuePair<string, string>("__RequestVerificationToken", token)
         };
         var formContent = new FormUrlEncodedContent(keyValues);
@@ -53,8 +53,8 @@ public class IndexTest : IClassFixture<TestApplication>
         var stringUpdateResponse = await updateResponse.Content.ReadAsStringAsync();
 
         Assert.Contains("/basket/update", updateResponse.RequestMessage.RequestUri.ToString());
-        decimal exptectedTotalAmount = 416.50M;
-        Assert.Contains(exptectedTotalAmount.ToString("N2"), stringUpdateResponse);
+        decimal expectedTotalAmount = 416.50M;
+        Assert.Contains(expectedTotalAmount.ToString("N2"), stringUpdateResponse);
     }
 
     [Fact]
@@ -71,7 +71,7 @@ public class IndexTest : IClassFixture<TestApplication>
         var keyValues = new List<KeyValuePair<string, string>>
         {
             new KeyValuePair<string, string>("id", "2"),
-            new KeyValuePair<string, string>("name", "shirt"),          
+            new KeyValuePair<string, string>("name", "shirt"),
             new KeyValuePair<string, string>("__RequestVerificationToken", token)
         };
         var formContent = new FormUrlEncodedContent(keyValues);
@@ -93,6 +93,6 @@ public class IndexTest : IClassFixture<TestApplication>
         var stringUpdateResponse = await updateResponse.Content.ReadAsStringAsync();
 
         Assert.Contains("/basket/update", updateResponse.RequestMessage.RequestUri.ToString());
-        Assert.Contains("Basket is empty", stringUpdateResponse);       
+        Assert.Contains("Basket is empty", stringUpdateResponse);
     }
 }
