@@ -68,7 +68,7 @@ You can also run the samples in Docker (see below).
 1. Ensure the tool EF was already installed. You can find some help [here](https://docs.microsoft.com/ef/core/miscellaneous/cli/dotnet)
 
     ```
-    dotnet tool install --global dotnet-ef
+    dotnet tool update --global dotnet-ef
     ```
 
 1. Open a command prompt in the Web folder and execute the following commands:
