@@ -1,9 +1,14 @@
 ﻿@inject NavigationManager Navigation
+@inject IJSRuntime JsRuntime
 
 @code {
+
     protected override void OnInitialized()
     {
-        Navigation.NavigateTo($"Identity/Account/Login?returnUrl=" +
-            $"/{Uri.EscapeDataString(Navigation.ToBaseRelativePath(Navigation.Uri))}");
+        var loginUrl = Navigation.ToAbsoluteUri($"Identity/Account/Login?returnUrl=" +
+            $"/{Uri.EscapeDataString(Navigation.ToBaseRelativePath(Navigation.Uri))}").PathAndQuery;
+
+        JsRuntime.InvokeVoidAsync("location.replace", loginUrl);
     }
+
 }
