@@ -23,7 +23,7 @@
       "destination": "wwwroot/lib/jquery-validation-unobtrusive/"
     },
     {
-      "library": "jquery-validate@1.17.0",
+      "library": "jquery-validate@1.19.5",
       "destination": "wwwroot/lib/jquery-validate/",
       "files": [
         "jquery.validate.min.js",

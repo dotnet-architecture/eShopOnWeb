@@ -17,10 +17,12 @@ public class CatalogBrandListEndpoint : IEndpoint<IResult>
 {
     private IRepository<CatalogBrand> _catalogBrandRepository;
     private readonly IMapper _mapper;
+    private readonly IAppLogger<CatalogBrandListEndpoint> _logger;
 
-    public CatalogBrandListEndpoint(IMapper mapper)
+    public CatalogBrandListEndpoint(IMapper mapper, IAppLogger<CatalogBrandListEndpoint> logger)
     {
         _mapper = mapper;
+        _logger = logger;
     }
 
     public void AddRoute(IEndpointRouteBuilder app)
@@ -42,7 +44,7 @@ public class CatalogBrandListEndpoint : IEndpoint<IResult>
         var items = await _catalogBrandRepository.ListAsync();
 
         response.CatalogBrands.AddRange(items.Select(_mapper.Map<CatalogBrandDto>));
-
+        _logger.LogInformation($"{items.Count} CataLog Brands returned!");
         return Results.Ok(response);
     }
 }
