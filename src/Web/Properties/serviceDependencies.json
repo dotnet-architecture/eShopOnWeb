@@ -15,6 +15,11 @@
     "mssql2": {
       "type": "mssql",
       "connectionId": "ConnectionStrings:IdentityConnection"
+    },
+    "secrets2": {
+      "type": "secrets",
+      "connectionId": "VaultUri",
+      "dynamicId": null
     }
   }
 }
