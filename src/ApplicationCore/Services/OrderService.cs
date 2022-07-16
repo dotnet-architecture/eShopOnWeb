@@ -7,8 +7,8 @@ using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
 using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.ApplicationCore.Specifications;
-using Newtonsoft.Json;
 using System.Text;
+using System.Text.Json;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Services;
 
@@ -19,19 +19,22 @@ public class OrderService : IOrderService
     private readonly IRepository<Basket> _basketRepository;
     private readonly IRepository<CatalogItem> _itemRepository;
     private readonly IAppLogger<OrderService> _logger;
-    private readonly string _funcUrl = "https://orderitem0711.azurewebsites.net/api/OrderItems?";
-
+    private readonly HttpClient _httpClient;
+    /*private readonly string _funcUrl = "https://orderitem0711.azurewebsites.net/api/";*/
+    private readonly string _funcUrl = "http://localhost:7016/api/";
     public OrderService(IRepository<Basket> basketRepository,
         IRepository<CatalogItem> itemRepository,
         IRepository<Order> orderRepository,
         IUriComposer uriComposer,
-        IAppLogger<OrderService> logger)
+        IAppLogger<OrderService> logger,
+        HttpClient httpClient)
     {
         _orderRepository = orderRepository;
         _uriComposer = uriComposer;
         _basketRepository = basketRepository;
         _itemRepository = itemRepository;
         _logger = logger;
+        _httpClient = httpClient;
     }
 
     public async Task CreateOrderAsync(int basketId, Address shippingAddress)
@@ -58,10 +61,17 @@ public class OrderService : IOrderService
         await _orderRepository.AddAsync(order);
 
         _logger.LogInformation("start sending http request");
-        HttpClient client = new HttpClient();
-        string orderJson = JsonConvert.SerializeObject(order);
-        string parameter = $"orderDetail={orderJson}";
-        await client.GetAsync(_funcUrl + parameter);
-        _logger.LogInformation("sending http request end");
+        var content = ToJson(order);
+        string uri = "OrderItems";
+        var result = await _httpClient.PostAsync($"{_funcUrl}{uri}", content);
+        if (!result.IsSuccessStatusCode)
+        {
+            _logger.LogInformation("sending http request end");
+        }
+    }
+
+    private StringContent ToJson(object obj)
+    {
+        return new StringContent(JsonSerializer.Serialize(obj), Encoding.UTF8, "application/json");
     }
 }

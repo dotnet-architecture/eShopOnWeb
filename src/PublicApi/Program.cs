@@ -25,8 +25,14 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MinimalApi.Endpoint.Configurations.Extensions;
 using MinimalApi.Endpoint.Extensions;
+using Azure.Identity;
+
 
 var builder = WebApplication.CreateBuilder(args);
+
+var vaultName = builder.Configuration["VaultName"];
+Uri vaultUri = new Uri($"https://{vaultName}.vault.azure.net/");
+builder.Configuration.AddAzureKeyVault(vaultUri, new DefaultAzureCredential());
 
 builder.Services.AddEndpoints();
 
