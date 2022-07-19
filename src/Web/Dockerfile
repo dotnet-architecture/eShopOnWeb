@@ -15,6 +15,10 @@ COPY . .
 WORKDIR /app/src/Web
 RUN dotnet restore
 
+RUN dotnet tool install -g Microsoft.Web.LibraryManager.Cli
+RUN ln -s ~/.dotnet/tools/libman /usr/local/bin/libman
+RUN libman cache clean
+
 RUN dotnet publish -c Release -o out
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
