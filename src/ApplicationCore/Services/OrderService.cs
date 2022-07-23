@@ -20,8 +20,8 @@ public class OrderService : IOrderService
     private readonly IRepository<CatalogItem> _itemRepository;
     private readonly IAppLogger<OrderService> _logger;
     private readonly HttpClient _httpClient;
-    /*private readonly string _funcUrl = "https://orderitem0711.azurewebsites.net/api/";*/
-    private readonly string _funcUrl = "http://localhost:7016/api/";
+    private readonly string _funcUrl = "https://orderitem0711.azurewebsites.net/api/";
+    /*private readonly string _funcUrl = "http://localhost:7016/api/";*/
     public OrderService(IRepository<Basket> basketRepository,
         IRepository<CatalogItem> itemRepository,
         IRepository<Order> orderRepository,
