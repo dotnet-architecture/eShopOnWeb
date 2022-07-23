@@ -9,6 +9,9 @@ using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.ApplicationCore.Specifications;
 using System.Text;
 using System.Text.Json;
+using System;
+using Microsoft.Extensions.Options;
+using BlazorShared;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Services;
 
@@ -20,14 +23,15 @@ public class OrderService : IOrderService
     private readonly IRepository<CatalogItem> _itemRepository;
     private readonly IAppLogger<OrderService> _logger;
     private readonly HttpClient _httpClient;
-    private readonly string _funcUrl = "https://orderitem0711.azurewebsites.net/api/";
-    /*private readonly string _funcUrl = "http://localhost:7016/api/";*/
+    private readonly string _funcUrl;
+
     public OrderService(IRepository<Basket> basketRepository,
         IRepository<CatalogItem> itemRepository,
         IRepository<Order> orderRepository,
         IUriComposer uriComposer,
         IAppLogger<OrderService> logger,
-        HttpClient httpClient)
+        HttpClient httpClient,
+        IOptions<BaseUrlConfiguration> baseUrlConfiguration)
     {
         _orderRepository = orderRepository;
         _uriComposer = uriComposer;
@@ -35,6 +39,7 @@ public class OrderService : IOrderService
         _itemRepository = itemRepository;
         _logger = logger;
         _httpClient = httpClient;
+        _funcUrl = baseUrlConfiguration.Value.FuncBase;
     }
 
     public async Task CreateOrderAsync(int basketId, Address shippingAddress)
