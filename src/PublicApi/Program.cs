@@ -30,9 +30,8 @@ using Azure.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var vaultName = builder.Configuration["VaultName"];
-Uri vaultUri = new Uri($"https://{vaultName}.vault.azure.net/");
-builder.Configuration.AddAzureKeyVault(vaultUri, new DefaultAzureCredential());
+var keyVaultEndpoint = new Uri(builder.Configuration["VaultUri"]);
+builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
 
 builder.Services.AddEndpoints();
 
