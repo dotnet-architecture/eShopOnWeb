@@ -12,6 +12,9 @@ using System.Text.Json;
 using System;
 using Microsoft.Extensions.Options;
 using BlazorShared;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Azure.Messaging.ServiceBus;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Services;
 
@@ -24,6 +27,8 @@ public class OrderService : IOrderService
     private readonly IAppLogger<OrderService> _logger;
     private readonly HttpClient _httpClient;
     private readonly string _funcUrl;
+    private readonly IConfiguration _configuration;
+    private readonly ServiceBusSender _sender;
 
     public OrderService(IRepository<Basket> basketRepository,
         IRepository<CatalogItem> itemRepository,
@@ -31,7 +36,8 @@ public class OrderService : IOrderService
         IUriComposer uriComposer,
         IAppLogger<OrderService> logger,
         HttpClient httpClient,
-        IOptions<BaseUrlConfiguration> baseUrlConfiguration)
+        IOptions<BaseUrlConfiguration> baseUrlConfiguration,
+        IConfiguration configuration)
     {
         _orderRepository = orderRepository;
         _uriComposer = uriComposer;
@@ -40,6 +46,8 @@ public class OrderService : IOrderService
         _logger = logger;
         _httpClient = httpClient;
         _funcUrl = baseUrlConfiguration.Value.FuncBase;
+        _configuration = configuration;
+        _sender = buildSender();
     }
 
     public async Task CreateOrderAsync(int basketId, Address shippingAddress)
@@ -62,8 +70,13 @@ public class OrderService : IOrderService
         }).ToList();
 
         var order = new Order(basket.BuyerId, shippingAddress, items);
-
         await _orderRepository.AddAsync(order);
+
+        var message = new ServiceBusMessage(JsonSerializer.Serialize(order));
+        _logger.LogInformation("start sending to messagebus");
+        await _sender.SendMessageAsync(message);
+        _logger.LogInformation("sent to messagebus");
+
 
         _logger.LogInformation("start sending http request");
         var content = ToJson(order);
@@ -73,8 +86,17 @@ public class OrderService : IOrderService
         {
             _logger.LogInformation("sending http request end");
         }
+
     }
 
+    private ServiceBusSender buildSender()
+    {
+        string ServiceBusConnectionString = _configuration["ServiceBusConnectionString"];
+        string QueueName = _configuration["itemsmessages"];
+        var client = new ServiceBusClient(ServiceBusConnectionString);
+        ServiceBusSender sender = client.CreateSender(QueueName);
+        return sender;
+    }
     private StringContent ToJson(object obj)
     {
         return new StringContent(JsonSerializer.Serialize(obj), Encoding.UTF8, "application/json");
