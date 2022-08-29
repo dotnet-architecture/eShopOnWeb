@@ -10,7 +10,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.7" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.7" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.7" />
-		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.21.0" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.22.1" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\ApplicationCore\ApplicationCore.csproj" />
