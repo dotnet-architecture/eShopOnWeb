@@ -6,7 +6,6 @@ using BlazorShared.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.eShopWeb;
 using Microsoft.eShopWeb.ApplicationCore.Constants;
@@ -30,7 +29,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpoints();
 
-//Use to force loading of appsettings.json of test project
+// Use to force loading of appsettings.json of test project
 builder.Configuration.AddConfigurationFile("appsettings.test.json");
 builder.Logging.AddConsole();
 
@@ -75,11 +74,11 @@ const string CORS_POLICY = "CorsPolicy";
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: CORS_POLICY,
-                      builder =>
+                      corsPolicyBuilder =>
                       {
-                          builder.WithOrigins(baseUrlConfig.WebBase.Replace("host.docker.internal", "localhost").TrimEnd('/'));
-                          builder.AllowAnyMethod();
-                          builder.AllowAnyHeader();
+                          corsPolicyBuilder.WithOrigins(baseUrlConfig.WebBase.Replace("host.docker.internal", "localhost").TrimEnd('/'));
+                          corsPolicyBuilder.AllowAnyMethod();
+                          corsPolicyBuilder.AllowAnyHeader();
                       });
 });
 
