@@ -40,7 +40,7 @@ public class ManageController : Controller
     }
 
     [TempData]
-    public string StatusMessage { get; set; }
+    public string? StatusMessage { get; set; }
 
     [HttpGet]
     public async Task<IActionResult> MyAccount()
@@ -377,7 +377,7 @@ public class ManageController : Controller
     [HttpGet]
     public IActionResult ShowRecoveryCodes()
     {
-        var recoveryCodes = (string[])TempData[RecoveryCodesKey];
+        var recoveryCodes = (string[]?)TempData[RecoveryCodesKey];
         if (recoveryCodes == null)
         {
             return RedirectToAction(nameof(TwoFactorAuthentication));
