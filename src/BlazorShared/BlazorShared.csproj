@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="BlazorInputFile" Version="0.2.0" />
-    <PackageReference Include="FluentValidation" Version="11.2.1" />
+    <PackageReference Include="FluentValidation" Version="11.2.2" />
   </ItemGroup>
 
 </Project>
