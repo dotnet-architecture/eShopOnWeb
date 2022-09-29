@@ -32,9 +32,9 @@ public class Basket : ViewComponent
 
     private async Task<int> CountTotalBasketItems()
     {
-        Guard.Against.Null(User?.Identity?.Name, nameof(User.Identity.Name));
         if (_signInManager.IsSignedIn(HttpContext.User))
         {
+            Guard.Against.Null(User?.Identity?.Name, nameof(User.Identity.Name));
             return await _basketService.CountTotalBasketItems(User.Identity.Name);
         }
 

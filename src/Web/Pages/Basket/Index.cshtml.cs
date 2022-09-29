@@ -68,11 +68,11 @@ public class IndexModel : PageModel
     private string GetOrSetBasketCookieAndUserName()
     {
         Guard.Against.Null(Request.HttpContext.User.Identity, nameof(Request.HttpContext.User.Identity));
-        Guard.Against.Null(Request.HttpContext.User.Identity.Name, nameof(Request.HttpContext.User.Identity.Name));
         string? userName = null;
 
         if (Request.HttpContext.User.Identity.IsAuthenticated)
         {
+            Guard.Against.Null(Request.HttpContext.User.Identity.Name, nameof(Request.HttpContext.User.Identity.Name));
             return Request.HttpContext.User.Identity.Name!;
         }
 
