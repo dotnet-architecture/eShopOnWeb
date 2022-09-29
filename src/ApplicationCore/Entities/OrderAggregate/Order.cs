@@ -7,16 +7,12 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 
 public class Order : BaseEntity, IAggregateRoot
 {
-    private Order()
-    {
-        // required by EF
-    }
+    #pragma warning disable CS8618 // Required by Entity Framework
+    private Order() {}
 
     public Order(string buyerId, Address shipToAddress, List<OrderItem> items)
     {
         Guard.Against.NullOrEmpty(buyerId, nameof(buyerId));
-        Guard.Against.Null(shipToAddress, nameof(shipToAddress));
-        Guard.Against.Null(items, nameof(items));
 
         BuyerId = buyerId;
         ShipToAddress = shipToAddress;

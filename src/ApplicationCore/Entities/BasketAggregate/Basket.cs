@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Ardalis.GuardClauses;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
@@ -26,6 +27,7 @@ public class Basket : BaseEntity, IAggregateRoot
             return;
         }
         var existingItem = Items.FirstOrDefault(i => i.CatalogItemId == catalogItemId);
+        Guard.Against.Null(existingItem, nameof(existingItem));
         existingItem.AddQuantity(quantity);
     }
 

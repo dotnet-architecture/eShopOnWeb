@@ -12,10 +12,8 @@ public class Buyer : BaseEntity, IAggregateRoot
 
     public IEnumerable<PaymentMethod> PaymentMethods => _paymentMethods.AsReadOnly();
 
-    private Buyer()
-    {
-        // required by EF
-    }
+    #pragma warning disable CS8618 // Required by Entity Framework
+    private Buyer() { }
 
     public Buyer(string identity) : this()
     {

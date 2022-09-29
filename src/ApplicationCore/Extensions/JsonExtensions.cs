@@ -9,7 +9,7 @@ public static class JsonExtensions
         PropertyNameCaseInsensitive = true
     };
 
-    public static T FromJson<T>(this string json) =>
+    public static T? FromJson<T>(this string json) =>
         JsonSerializer.Deserialize<T>(json, _jsonOptions);
 
     public static string ToJson<T>(this T obj) =>

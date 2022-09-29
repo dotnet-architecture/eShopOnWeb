@@ -2,5 +2,5 @@
 
 public class CatalogSettings
 {
-    public string CatalogBaseUrl { get; set; }
+    public string? CatalogBaseUrl { get; set; }
 }
