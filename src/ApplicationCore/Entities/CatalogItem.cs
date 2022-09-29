@@ -30,11 +30,11 @@ public class CatalogItem : BaseEntity, IAggregateRoot
         PictureUri = pictureUri;
     }
 
-    public void UpdateDetails(string name, string description, decimal price)
+    public void UpdateDetails(CatalogItemDetails command)
     {
-        Name = name;
-        Description = description;
-        Price = price;
+        Name = command.Name;
+        Description = command.Description;
+        Price = command.Price;
     }
 
     public void UpdateBrand(int catalogBrandId)
@@ -57,5 +57,23 @@ public class CatalogItem : BaseEntity, IAggregateRoot
             return;
         }
         PictureUri = $"images\\products\\{pictureName}?{new DateTime().Ticks}";
+    }
+}
+
+public class CatalogItemDetails
+{
+    public string Name { get; }
+    public string Description { get; }
+    public decimal Price { get; }
+
+    public CatalogItemDetails(string? name, string? description, decimal price)
+    {
+        Guard.Against.NullOrEmpty(name, nameof(name));
+        Guard.Against.NullOrEmpty(description, nameof(description));
+        Guard.Against.NegativeOrZero(price, nameof(price));
+
+        Name = name;
+        Description = description;
+        Price = price;
     }
 }
