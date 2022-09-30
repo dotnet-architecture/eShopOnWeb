@@ -42,7 +42,7 @@ public class UpdateCatalogItemEndpoint : IEndpoint<IResult, UpdateCatalogItemReq
 
         var existingItem = await _itemRepository.GetByIdAsync(request.Id);
         
-        CatalogItemDetails details = new(request.Name, request.Description, request.Price);
+        CatalogItem.CatalogItemDetails details = new(request.Name, request.Description, request.Price);
         existingItem.UpdateDetails(details);
         existingItem.UpdateBrand(request.CatalogBrandId);
         existingItem.UpdateType(request.CatalogTypeId);

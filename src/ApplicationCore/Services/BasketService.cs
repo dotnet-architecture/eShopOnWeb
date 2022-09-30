@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
+using Ardalis.Result;
 using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.ApplicationCore.Specifications;
@@ -43,11 +44,11 @@ public class BasketService : IBasketService
         await _basketRepository.DeleteAsync(basket);
     }
 
-    public async Task<Basket> SetQuantities(int basketId, Dictionary<string, int> quantities)
+    public async Task<Result<Basket>> SetQuantities(int basketId, Dictionary<string, int> quantities)
     {
         var basketSpec = new BasketWithItemsSpecification(basketId);
         var basket = await _basketRepository.FirstOrDefaultAsync(basketSpec);
-        Guard.Against.Null(basket, nameof(basket));
+        if (basket == null) return Result<Basket>.NotFound();
 
         foreach (var item in basket.Items)
         {

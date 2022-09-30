@@ -26,8 +26,7 @@ public class Basket : BaseEntity, IAggregateRoot
             _items.Add(new BasketItem(catalogItemId, quantity, unitPrice));
             return;
         }
-        var existingItem = Items.FirstOrDefault(i => i.CatalogItemId == catalogItemId);
-        Guard.Against.Null(existingItem, nameof(existingItem));
+        var existingItem = Items.First(i => i.CatalogItemId == catalogItemId);
         existingItem.AddQuantity(quantity);
     }
 
