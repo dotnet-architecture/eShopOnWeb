@@ -30,11 +30,15 @@ public class CatalogItem : BaseEntity, IAggregateRoot
         PictureUri = pictureUri;
     }
 
-    public void UpdateDetails(CatalogItemDetails command)
+    public void UpdateDetails(CatalogItemDetails details)
     {
-        Name = command.Name;
-        Description = command.Description;
-        Price = command.Price;
+        Guard.Against.NullOrEmpty(details.Name, nameof(details.Name));
+        Guard.Against.NullOrEmpty(details.Description, nameof(details.Description));
+        Guard.Against.NegativeOrZero(details.Price, nameof(details.Price));
+
+        Name = details.Name;
+        Description = details.Description;
+        Price = details.Price;
     }
 
     public void UpdateBrand(int catalogBrandId)
@@ -58,22 +62,18 @@ public class CatalogItem : BaseEntity, IAggregateRoot
         }
         PictureUri = $"images\\products\\{pictureName}?{new DateTime().Ticks}";
     }
-}
 
-public class CatalogItemDetails
-{
-    public string Name { get; }
-    public string Description { get; }
-    public decimal Price { get; }
-
-    public CatalogItemDetails(string? name, string? description, decimal price)
+    public readonly record struct CatalogItemDetails
     {
-        Guard.Against.NullOrEmpty(name, nameof(name));
-        Guard.Against.NullOrEmpty(description, nameof(description));
-        Guard.Against.NegativeOrZero(price, nameof(price));
+        public string? Name { get; }
+        public string? Description { get; }
+        public decimal Price { get; }
 
-        Name = name;
-        Description = description;
-        Price = price;
+        public CatalogItemDetails(string? name, string? description, decimal price)
+        {
+            Name = name;
+            Description = description;
+            Price = price;
+        }
     }
 }
