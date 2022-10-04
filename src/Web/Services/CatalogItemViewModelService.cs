@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+﻿using Ardalis.GuardClauses;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.Web.Interfaces;
@@ -18,7 +18,11 @@ public class CatalogItemViewModelService : ICatalogItemViewModelService
     public async Task UpdateCatalogItem(CatalogItemViewModel viewModel)
     {
         var existingCatalogItem = await _catalogItemRepository.GetByIdAsync(viewModel.Id);
-        existingCatalogItem.UpdateDetails(viewModel.Name, existingCatalogItem.Description, viewModel.Price);
+
+        Guard.Against.Null(existingCatalogItem, nameof(existingCatalogItem));
+
+        CatalogItem.CatalogItemDetails details = new(viewModel.Name, existingCatalogItem.Description, viewModel.Price);
+        existingCatalogItem.UpdateDetails(details);
         await _catalogItemRepository.UpdateAsync(existingCatalogItem);
     }
 }

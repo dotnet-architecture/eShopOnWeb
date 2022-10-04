@@ -28,7 +28,7 @@ public class GetMyOrdersHandler : IRequestHandler<GetMyOrders, IEnumerable<Order
         return orders.Select(o => new OrderViewModel
         {
             OrderDate = o.OrderDate,
-            OrderItems = o.OrderItems?.Select(oi => new OrderItemViewModel()
+            OrderItems = o.OrderItems.Select(oi => new OrderItemViewModel()
             {
                 PictureUrl = oi.ItemOrdered.PictureUri,
                 ProductId = oi.ItemOrdered.CatalogItemId,

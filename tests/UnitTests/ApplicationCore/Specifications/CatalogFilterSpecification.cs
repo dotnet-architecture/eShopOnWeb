@@ -19,9 +19,7 @@ public class CatalogFilterSpecification
     {
         var spec = new eShopWeb.ApplicationCore.Specifications.CatalogFilterSpecification(brandId, typeId);
 
-        var result = GetTestItemCollection()
-            .AsQueryable()
-            .Where(spec.WhereExpressions.FirstOrDefault().Filter);
+        var result = spec.Evaluate(GetTestItemCollection()).ToList();
 
         Assert.Equal(expectedCount, result.Count());
     }

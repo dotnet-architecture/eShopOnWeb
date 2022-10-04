@@ -12,6 +12,7 @@ public class Address // ValueObject
 
     public string ZipCode { get; private set; }
 
+    #pragma warning disable CS8618 // Required by Entity Framework
     private Address() { }
 
     public Address(string street, string city, string state, string country, string zipcode)
