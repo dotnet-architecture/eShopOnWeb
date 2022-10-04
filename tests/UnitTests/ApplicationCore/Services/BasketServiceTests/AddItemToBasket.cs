@@ -12,19 +12,20 @@ public class AddItemToBasket
 {
     private readonly string _buyerId = "Test buyerId";
     private readonly Mock<IRepository<Basket>> _mockBasketRepo = new();
+    private readonly Mock<IAppLogger<BasketService>> _mockLogger = new();
 
     [Fact]
     public async Task InvokesBasketRepositoryGetBySpecAsyncOnce()
     {
         var basket = new Basket(_buyerId);
         basket.AddItem(1, It.IsAny<decimal>(), It.IsAny<int>());
-        _mockBasketRepo.Setup(x => x.GetBySpecAsync(It.IsAny<BasketWithItemsSpecification>(), default)).ReturnsAsync(basket);
+        _mockBasketRepo.Setup(x => x.FirstOrDefaultAsync(It.IsAny<BasketWithItemsSpecification>(), default)).ReturnsAsync(basket);
 
-        var basketService = new BasketService(_mockBasketRepo.Object, null);
+        var basketService = new BasketService(_mockBasketRepo.Object, _mockLogger.Object);
 
         await basketService.AddItemToBasket(basket.BuyerId, 1, 1.50m);
 
-        _mockBasketRepo.Verify(x => x.GetBySpecAsync(It.IsAny<BasketWithItemsSpecification>(), default), Times.Once);
+        _mockBasketRepo.Verify(x => x.FirstOrDefaultAsync(It.IsAny<BasketWithItemsSpecification>(), default), Times.Once);
     }
 
     [Fact]
@@ -32,9 +33,9 @@ public class AddItemToBasket
     {
         var basket = new Basket(_buyerId);
         basket.AddItem(1, It.IsAny<decimal>(), It.IsAny<int>());
-        _mockBasketRepo.Setup(x => x.GetBySpecAsync(It.IsAny<BasketWithItemsSpecification>(), default)).ReturnsAsync(basket);
+        _mockBasketRepo.Setup(x => x.FirstOrDefaultAsync(It.IsAny<BasketWithItemsSpecification>(), default)).ReturnsAsync(basket);
 
-        var basketService = new BasketService(_mockBasketRepo.Object, null);
+        var basketService = new BasketService(_mockBasketRepo.Object, _mockLogger.Object);
 
         await basketService.AddItemToBasket(basket.BuyerId, 1, 1.50m);
 

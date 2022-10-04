@@ -22,7 +22,7 @@ public class GetOrderDetails
         Order order = new Order("buyerId", address, new List<OrderItem> { item });
 
         _mockOrderRepository = new Mock<IReadRepository<Order>>();
-        _mockOrderRepository.Setup(x => x.GetBySpecAsync(It.IsAny<OrderWithItemsByIdSpec>(), default))
+        _mockOrderRepository.Setup(x => x.FirstOrDefaultAsync(It.IsAny<OrderWithItemsByIdSpec>(), default))
             .ReturnsAsync(order);
     }
 

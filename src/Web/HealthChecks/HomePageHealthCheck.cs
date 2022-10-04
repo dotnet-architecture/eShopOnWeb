@@ -19,8 +19,8 @@ public class HomePageHealthCheck : IHealthCheck
         HealthCheckContext context,
         CancellationToken cancellationToken = default(CancellationToken))
     {
-        var request = _httpContextAccessor.HttpContext.Request;
-        string myUrl = request.Scheme + "://" + request.Host.ToString();
+        var request = _httpContextAccessor.HttpContext?.Request;
+        string myUrl = request?.Scheme + "://" + request?.Host.ToString();
 
         var client = new HttpClient();
         var response = await client.GetAsync(myUrl);

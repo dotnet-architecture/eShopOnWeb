@@ -11,9 +11,9 @@ public class CatalogItem : BaseEntity, IAggregateRoot
     public decimal Price { get; private set; }
     public string PictureUri { get; private set; }
     public int CatalogTypeId { get; private set; }
-    public CatalogType CatalogType { get; private set; }
+    public CatalogType? CatalogType { get; private set; }
     public int CatalogBrandId { get; private set; }
-    public CatalogBrand CatalogBrand { get; private set; }
+    public CatalogBrand? CatalogBrand { get; private set; }
 
     public CatalogItem(int catalogTypeId,
         int catalogBrandId,
@@ -30,15 +30,15 @@ public class CatalogItem : BaseEntity, IAggregateRoot
         PictureUri = pictureUri;
     }
 
-    public void UpdateDetails(string name, string description, decimal price)
+    public void UpdateDetails(CatalogItemDetails details)
     {
-        Guard.Against.NullOrEmpty(name, nameof(name));
-        Guard.Against.NullOrEmpty(description, nameof(description));
-        Guard.Against.NegativeOrZero(price, nameof(price));
+        Guard.Against.NullOrEmpty(details.Name, nameof(details.Name));
+        Guard.Against.NullOrEmpty(details.Description, nameof(details.Description));
+        Guard.Against.NegativeOrZero(details.Price, nameof(details.Price));
 
-        Name = name;
-        Description = description;
-        Price = price;
+        Name = details.Name;
+        Description = details.Description;
+        Price = details.Price;
     }
 
     public void UpdateBrand(int catalogBrandId)
@@ -61,5 +61,19 @@ public class CatalogItem : BaseEntity, IAggregateRoot
             return;
         }
         PictureUri = $"images\\products\\{pictureName}?{new DateTime().Ticks}";
+    }
+
+    public readonly record struct CatalogItemDetails
+    {
+        public string? Name { get; }
+        public string? Description { get; }
+        public decimal Price { get; }
+
+        public CatalogItemDetails(string? name, string? description, decimal price)
+        {
+            Name = name;
+            Description = description;
+            Price = price;
+        }
     }
 }

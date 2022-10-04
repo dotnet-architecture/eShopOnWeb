@@ -3,6 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<RootNamespace>Microsoft.eShopWeb.Infrastructure</RootNamespace>
+		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
 	<ItemGroup>

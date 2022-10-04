@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Text.Encodings.Web;
+using Ardalis.GuardClauses;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -119,6 +120,7 @@ public class ManageController : Controller
 
         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+        Guard.Against.Null(callbackUrl, nameof(callbackUrl));
         var email = user.Email;
         await _emailSender.SendEmailConfirmationAsync(email, callbackUrl);
 
@@ -405,7 +407,7 @@ public class ManageController : Controller
         }
 
         // Strip spaces and hypens
-        var verificationCode = model.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
+        var verificationCode = model.Code?.Replace(" ", string.Empty).Replace("-", string.Empty);
 
         var is2faTokenValid = await _userManager.VerifyTwoFactorTokenAsync(
             user, _userManager.Options.Tokens.AuthenticatorTokenProvider, verificationCode);

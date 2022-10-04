@@ -14,9 +14,7 @@ public class CatalogItemsSpecification
         var catalogItemIds = new int[] { 1 };
         var spec = new eShopWeb.ApplicationCore.Specifications.CatalogItemsSpecification(catalogItemIds);
 
-        var result = GetTestCollection()
-            .AsQueryable()
-            .Where(spec.WhereExpressions.FirstOrDefault().Filter);
+        var result = spec.Evaluate(GetTestCollection()).ToList();
 
         Assert.NotNull(result);
         Assert.Single(result.ToList());
@@ -28,9 +26,7 @@ public class CatalogItemsSpecification
         var catalogItemIds = new int[] { 1, 3 };
         var spec = new eShopWeb.ApplicationCore.Specifications.CatalogItemsSpecification(catalogItemIds);
 
-        var result = GetTestCollection()
-            .AsQueryable()
-            .Where(spec.WhereExpressions.FirstOrDefault().Filter);
+        var result = spec.Evaluate(GetTestCollection()).ToList();
 
         Assert.NotNull(result);
         Assert.Equal(2, result.ToList().Count);

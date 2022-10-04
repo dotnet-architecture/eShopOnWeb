@@ -28,7 +28,7 @@ public class UserController : ControllerBase
 
     private async Task<UserInfo> CreateUserInfo(ClaimsPrincipal claimsPrincipal)
     {
-        if (!claimsPrincipal.Identity.IsAuthenticated)
+        if (claimsPrincipal.Identity == null || claimsPrincipal.Identity.Name == null || !claimsPrincipal.Identity.IsAuthenticated)
         {
             return UserInfo.Anonymous;
         }

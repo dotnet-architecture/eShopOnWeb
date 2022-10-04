@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Ardalis.GuardClauses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -67,8 +68,8 @@ public class RegisterModel : PageModel
         returnUrl = returnUrl ?? Url.Content("~/");
         if (ModelState.IsValid)
         {
-            var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
-            var result = await _userManager.CreateAsync(user, Input.Password);
+            var user = new ApplicationUser { UserName = Input?.Email, Email = Input?.Email };
+            var result = await _userManager.CreateAsync(user, Input?.Password);
             if (result.Succeeded)
             {
                 _logger.LogInformation("User created a new account with password.");
@@ -80,7 +81,8 @@ public class RegisterModel : PageModel
                     values: new { userId = user.Id, code = code },
                     protocol: Request.Scheme);
 
-                await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                Guard.Against.Null(callbackUrl, nameof(callbackUrl));
+                await _emailSender.SendEmailAsync(Input?.Email, "Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                 await _signInManager.SignInAsync(user, isPersistent: false);
