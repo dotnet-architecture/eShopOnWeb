@@ -65,8 +65,11 @@
                     <section class="esh-basket-item col-xs-1">
                         <a asp-page="/Index" class="btn esh-basket-checkout text-white">[ Continue Shopping ]</a>
                     </section>
-                    <section class="esh-basket-item col-xs-push-7 col-xs-4">
-
+                    <section class="esh-basket-item col-xs-push-5 col-xs-6">
+                        <button class="btn esh-basket-checkout" name="removeallbutton" value="" type="submit"
+                                asp-page-handler="RemoveAll">
+                            [ Remove All ]
+                        </button>
                         <button class="btn esh-basket-checkout" name="updatebutton" value="" type="submit"
                                 asp-page-handler="Update">
                             [ Update ]

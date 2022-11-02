@@ -65,6 +65,17 @@ public class IndexModel : PageModel
         BasketModel = await _basketViewModelService.Map(basket);
     }
 
+    public async Task OnPostRemoveAll(IEnumerable<BasketItemViewModel> items)
+    {
+        if (!ModelState.IsValid)
+        {
+            return;
+        }
+
+        var basketView = await _basketViewModelService.GetOrCreateBasketForUser(GetOrSetBasketCookieAndUserName());
+        await _basketService.DeleteBasketAsync(basketView.Id);
+    }
+
     private string GetOrSetBasketCookieAndUserName()
     {
         Guard.Against.Null(Request.HttpContext.User.Identity, nameof(Request.HttpContext.User.Identity));
