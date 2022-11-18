@@ -14,7 +14,7 @@ param appUserPassword string
 var defaultDatabaseName = 'Todo'
 var actualDatabaseName = !empty(databaseName) ? databaseName : defaultDatabaseName
 
-module sqlServer1 '../core/database/sqlserver/sqlserver1.bicep' = {
+module sqlServer1 '../core/database/sqlserver/sqlserver-catalog.bicep' = {
   name: 'sqlServer01'
   params: {
     name: name
