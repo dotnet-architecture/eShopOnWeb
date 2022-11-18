@@ -1,9 +1,9 @@
-param environmentName string
+param name string
 param location string = resourceGroup().location
+param tags object = {}
 
 param adminUserEnabled bool = true
 param anonymousPullEnabled bool = false
-param containerRegistryName string = ''
 param dataEndpointEnabled bool = false
 param encryption object = {
   status: 'disabled'
@@ -11,17 +11,13 @@ param encryption object = {
 param networkRuleBypassOptions string = 'AzureServices'
 param publicNetworkAccess string = 'Enabled'
 param sku object = {
-  name: 'Standard'
+  name: 'Basic'
 }
 param zoneRedundancy string = 'Disabled'
 
-var abbrs = loadJsonContent('../../abbreviations.json')
-var resourceToken = toLower(uniqueString(subscription().id, environmentName, location))
-var tags = { 'azd-env-name': environmentName }
-
 // 2022-02-01-preview needed for anonymousPullEnabled
 resource containerRegistry 'Microsoft.ContainerRegistry/registries@2022-02-01-preview' = {
-  name: !empty(containerRegistryName) ? containerRegistryName : '${abbrs.containerRegistryRegistries}${resourceToken}'
+  name: name
   location: location
   tags: tags
   sku: sku
@@ -36,5 +32,5 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2022-02-01-pr
   }
 }
 
-output containerRegistryEndpoint string = containerRegistry.properties.loginServer
-output containerRegistryName string = containerRegistry.name
+output loginServer string = containerRegistry.properties.loginServer
+output name string = containerRegistry.name

@@ -1,16 +1,13 @@
-param environmentName string
+param name string
 param location string = resourceGroup().location
+param tags object = {}
 
 param kind string = ''
 param reserved bool = true
 param sku object
 
-var abbrs = loadJsonContent('../../abbreviations.json')
-var resourceToken = toLower(uniqueString(subscription().id, environmentName, location))
-var tags = { 'azd-env-name': environmentName }
-
 resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
-  name: '${abbrs.webServerFarms}${resourceToken}'
+  name: name
   location: location
   tags: tags
   sku: sku
@@ -20,4 +17,4 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   }
 }
 
-output appServicePlanId string = appServicePlan.id
+output id string = appServicePlan.id

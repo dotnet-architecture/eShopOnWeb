@@ -6,9 +6,3 @@ services:
         project: ./src/Web
         language: csharp
         host: appservice
-infra:
-    provider: ""
-    path: ""
-    module: ""
-pipeline:
-    provider: ""

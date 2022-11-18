@@ -1,20 +1,16 @@
-param environmentName string
+param name string
 param location string = resourceGroup().location
+param tags object = {}
 
-param serviceName string
 param sku object = {
   name: 'Free'
   tier: 'Free'
 }
 
-var abbrs = loadJsonContent('../../abbreviations.json')
-var resourceToken = toLower(uniqueString(subscription().id, environmentName, location))
-var tags = { 'azd-env-name': environmentName }
-
 resource web 'Microsoft.Web/staticSites@2022-03-01' = {
-  name: '${abbrs.webStaticSites}${serviceName}-${resourceToken}'
+  name: name
   location: location
-  tags: union(tags, { 'azd-service-name': serviceName })
+  tags: tags
   sku: sku
   properties: {
     provider: 'Custom'

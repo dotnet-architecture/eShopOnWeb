@@ -1,15 +1,11 @@
-param environmentName string
+param name string
 param location string = resourceGroup().location
+param tags object = {}
 
-param containerAppsEnvironmentName string = ''
 param logAnalyticsWorkspaceName string
 
-var abbrs = loadJsonContent('../../abbreviations.json')
-var resourceToken = toLower(uniqueString(subscription().id, environmentName, location))
-var tags = { 'azd-env-name': environmentName }
-
 resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2022-03-01' = {
-  name: !empty(containerAppsEnvironmentName) ? containerAppsEnvironmentName : '${abbrs.appManagedEnvironments}${resourceToken}'
+  name: name
   location: location
   tags: tags
   properties: {
@@ -23,8 +19,8 @@ resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2022-03-01'
   }
 }
 
-resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-12-01-preview' existing = {
+resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = {
   name: logAnalyticsWorkspaceName
 }
 
-output containerAppsEnvironmentName string = containerAppsEnvironment.name
+output name string = containerAppsEnvironment.name

@@ -1,30 +1,30 @@
-param environmentName string
+param name string
 param location string = resourceGroup().location
+param tags object = {}
 
 param containerAppsEnvironmentName string = ''
-param containerAppsGroupName string = 'app'
 param containerRegistryName string = ''
 param logAnalyticsWorkspaceName string = ''
 
 module containerAppsEnvironment 'container-apps-environment.bicep' = {
-  name: '${containerAppsGroupName}-container-apps-environment'
+  name: '${name}-container-apps-environment'
   params: {
-    environmentName: environmentName
+    name: containerAppsEnvironmentName
     location: location
-    containerAppsEnvironmentName: containerAppsEnvironmentName
+    tags: tags
     logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
   }
 }
 
 module containerRegistry 'container-registry.bicep' = {
-  name: '${containerAppsGroupName}-container-registry'
+  name: '${name}-container-registry'
   params: {
-    environmentName: environmentName
+    name: containerRegistryName
     location: location
-    containerRegistryName: containerRegistryName
+    tags: tags
   }
 }
 
-output containerAppsEnvironmentName string = containerAppsEnvironment.outputs.containerAppsEnvironmentName
-output containerRegistryEndpoint string = containerRegistry.outputs.containerRegistryEndpoint
-output containerRegistryName string = containerRegistry.outputs.containerRegistryName
+output environmentName string = containerAppsEnvironment.outputs.name
+output registryLoginServer string = containerRegistry.outputs.loginServer
+output registryName string = containerRegistry.outputs.name

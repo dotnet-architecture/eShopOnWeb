@@ -1,14 +1,11 @@
-param environmentName string
-param location string = resourceGroup().location
+param name string
 param applicationInsightsName string
-
-var abbrs = loadJsonContent('../../abbreviations.json')
-var resourceToken = toLower(uniqueString(subscription().id, environmentName, location))
-var tags = { 'azd-env-name': environmentName }
+param location string = resourceGroup().location
+param tags object = {}
 
 // 2020-09-01-preview because that is the latest valid version
 resource applicationInsightsDashboard 'Microsoft.Portal/dashboards@2020-09-01-preview' = {
-  name: '${abbrs.portalDashboards}${resourceToken}'
+  name: name
   location: location
   tags: tags
   properties: {

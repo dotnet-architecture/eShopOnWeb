@@ -1,34 +1,42 @@
-param environmentName string
+param name string
 param location string = resourceGroup().location
+param tags object = {}
 
+// Reference Properties
+param applicationInsightsName string = ''
+param appServicePlanId string
+param keyVaultName string = ''
+param managedIdentity bool = !empty(keyVaultName)
+
+// Runtime Properties
+@allowed([
+  'dotnet', 'dotnetcore', 'dotnet-isolated', 'node', 'python', 'java', 'powershell', 'custom'
+])
+param runtimeName string
+param runtimeNameAndVersion string = '${runtimeName}|${runtimeVersion}'
+param runtimeVersion string
+
+// Microsoft.Web/sites Properties
+param kind string = 'app,linux'
+
+// Microsoft.Web/sites/config
 param allowedOrigins array = []
 param alwaysOn bool = true
 param appCommandLine string = ''
-param applicationInsightsName string = ''
-param appServicePlanId string
 param appSettings object = {}
 param clientAffinityEnabled bool = false
+param enableOryxBuild bool = contains(kind, 'linux')
 param functionAppScaleLimit int = -1
-param keyVaultName string = ''
-param kind string = 'app,linux'
-param linuxFxVersion string = ''
-param managedIdentity bool = !(empty(keyVaultName))
+param linuxFxVersion string = runtimeNameAndVersion
 param minimumElasticInstanceCount int = -1
 param numberOfWorkers int = -1
 param scmDoBuildDuringDeployment bool = false
-param serviceName string
 param use32BitWorkerProcess bool = false
 
-var abbrs = loadJsonContent('../../abbreviations.json')
-var tags = { 'azd-env-name': environmentName }
-var resourceToken = toLower(uniqueString(subscription().id, environmentName, location))
-
-var prefix = contains(kind, 'function') ? abbrs.webSitesFunctions : abbrs.webSitesAppService
-
 resource appService 'Microsoft.Web/sites@2022-03-01' = {
-  name: '${prefix}${serviceName}-${resourceToken}'
+  name: name
   location: location
-  tags: union(tags, { 'azd-service-name': serviceName })
+  tags: tags
   kind: kind
   properties: {
     serverFarmId: appServicePlanId
@@ -49,41 +57,30 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
     httpsOnly: true
   }
 
-  identity: managedIdentity ? { type: 'SystemAssigned' } : null
+  identity: { type: managedIdentity ? 'SystemAssigned' : 'None' }
 
-  resource appSettings 'config' = {
+  resource configAppSettings 'config' = {
     name: 'appsettings'
-    properties: union({
+    properties: union(appSettings,
+      {
         SCM_DO_BUILD_DURING_DEPLOYMENT: string(scmDoBuildDuringDeployment)
+        ENABLE_ORYX_BUILD: string(enableOryxBuild)
       },
-      !(empty(applicationInsightsName)) ? { APPLICATIONINSIGHTS_CONNECTION_STRING: applicationInsights.properties.ConnectionString } : {},
-      !(empty(keyVaultName)) ? { AZURE_KEY_VAULT_ENDPOINT: keyVault.properties.vaultUri } : {})
+      !empty(applicationInsightsName) ? { APPLICATIONINSIGHTS_CONNECTION_STRING: applicationInsights.properties.ConnectionString } : {},
+      !empty(keyVaultName) ? { AZURE_KEY_VAULT_ENDPOINT: keyVault.properties.vaultUri } : {})
   }
-}
 
-module appSettingsUnion 'appservice-config-union.bicep' = if (!empty(appSettings)) {
-  name: '${serviceName}-app-settings-union'
-  params: {
-    appServiceName: appService.name
-    configName: 'appsettings'
-    currentConfigProperties: appService::appSettings.list().properties
-    additionalConfigProperties: appSettings
-  }
-}
-
-module siteConfigLogs 'appservice-config-logs.bicep' = {
-  name: '${serviceName}-appservice-config-logs'
-  params: {
-    appServiceName: appService.name
-  }
-}
-
-module keyVaultAccess '../security/keyvault-access.bicep' = if (!(empty(keyVaultName))) {
-  name: '${serviceName}-appservice-keyvault-access'
-  params: {
-    principalId: appService.identity.principalId
-    environmentName: environmentName
-    location: location
+  resource configLogs 'config' = {
+    name: 'logs'
+    properties: {
+      applicationLogs: { fileSystem: { level: 'Verbose' } }
+      detailedErrorMessages: { enabled: true }
+      failedRequestsTracing: { enabled: true }
+      httpLogs: { fileSystem: { enabled: true, retentionInDays: 1, retentionInMb: 35 } }
+    }
+    dependsOn: [
+      configAppSettings
+    ]
   }
 }
 
@@ -91,7 +88,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = if (!(empty(
   name: keyVaultName
 }
 
-resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing = if (!(empty(applicationInsightsName))) {
+resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing = if (!empty(applicationInsightsName)) {
   name: applicationInsightsName
 }
 
