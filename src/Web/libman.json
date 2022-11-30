@@ -3,11 +3,11 @@
   "defaultProvider": "cdnjs",
   "libraries": [
     {
-      "library": "jquery@3.3.1",
+      "library": "jquery@3.6.1",
       "destination": "wwwroot/lib/jquery/"
     },
     {
-      "library": "twitter-bootstrap@3.3.7",
+      "library": "twitter-bootstrap@5.2.3",
       "files": [
         "css/bootstrap.css",
         "css/bootstrap.css.map",
@@ -19,11 +19,11 @@
       "destination": "wwwroot/lib/bootstrap/dist/"
     },
     {
-      "library": "jquery-validation-unobtrusive@3.2.10",
+      "library": "jquery-validation-unobtrusive@4.0.0",
       "destination": "wwwroot/lib/jquery-validation-unobtrusive/"
     },
     {
-      "library": "jquery-validate@1.17.0",
+      "library": "jquery-validate@1.19.5",
       "destination": "wwwroot/lib/jquery-validate/",
       "files": [
         "jquery.validate.min.js",
@@ -35,7 +35,7 @@
       "destination": "wwwroot/lib/toastr/"
     },
     {
-      "library": "aspnet-signalr@1.0.3",
+      "library": "aspnet-signalr@1.0.27",
       "files": [
         "signalr.js",
         "signalr.min.js"
