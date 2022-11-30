@@ -86,6 +86,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddMediatR(typeof(CatalogItem).Assembly);
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
+builder.Configuration.AddEnvironmentVariables();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
