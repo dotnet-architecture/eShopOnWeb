@@ -15,9 +15,10 @@ param location string
 // }
 param resourceGroupName string = ''
 param webServiceName string = ''
-param sqlServer1Name string = 'sqlServer-catalog-01'
-param sqlServer2Name string = 'sqlServer-identity-01'
-param sqlDatabaseName string = ''
+param catalogDatabaseName string = ''
+param catalogDatabaseServerName string = ''
+param identityDatabaseName string = ''
+param identityDatabaseServerName string = ''
 param appServicePlanName string = ''
 param keyVaultName string = ''
 
@@ -44,48 +45,50 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 }
 
 // The application frontend
-module web './app/web.bicep' = {
+module web './core/host/appservice.bicep' = {
   name: 'web'
   scope: rg
   params: {
     name: !empty(webServiceName) ? webServiceName : '${abbrs.webSitesAppService}web-${resourceToken}'
     location: location
-    tags: tags
     appServicePlanId: appServicePlan.outputs.id
+    runtimeName: 'dotnetcore'
+    runtimeVersion: '6.0'
+    tags: union(tags, { 'azd-service-name': 'web' })
   }
 }
 
 // The application database: Catalog
-module sqlServer1 './app/catalog-db.bicep' = {
+module catalogDb './core/database/sqlserver/sqlserver.bicep' = {
   name: 'sql-catalog'
   scope: rg
   params: {
-    name: !empty(sqlServer1Name) ? sqlServer1Name : '${abbrs.sqlServers}${resourceToken}'
-    databaseName: sqlDatabaseName
+    name: !empty(catalogDatabaseServerName) ? catalogDatabaseServerName : '${abbrs.sqlServers}catalog-${resourceToken}'
+    databaseName: catalogDatabaseName
     location: location
     tags: tags
     sqlAdminPassword: sqlAdminPassword
     appUserPassword: appUserPassword
     keyVaultName: keyVault.outputs.name
+    connectionStringKey: 'AZURE-SQL-CATALOG-CONNECTION-STRING'
   }
 }
 
 // The application database: Identity
-module sqlServer2 './app/identity-db.bicep' = {
+module identityDb './core/database/sqlserver/sqlserver.bicep' = {
   name: 'sql-identity'
   scope: rg
   params: {
-    name: !empty(sqlServer2Name) ? sqlServer2Name : '${abbrs.sqlServers}${resourceToken}'
-    databaseName: sqlDatabaseName
+    name: !empty(identityDatabaseServerName) ? identityDatabaseServerName : '${abbrs.sqlServers}identity-${resourceToken}'
+    databaseName: identityDatabaseName
     location: location
     tags: tags
     sqlAdminPassword: sqlAdminPassword
     appUserPassword: appUserPassword
     keyVaultName: keyVault.outputs.name
+    connectionStringKey: 'AZURE-SQL-IDENTITY-CONNECTION-STRING'
   }
 }
-
-
 
 // Store secrets in a keyvault
 module keyVault './core/security/keyvault.bicep' = {
@@ -98,7 +101,6 @@ module keyVault './core/security/keyvault.bicep' = {
     principalId: principalId
   }
 }
-
 
 // Create an App Service Plan to group applications under the same payment plan and SKU
 module appServicePlan './core/host/appserviceplan.bicep' = {
