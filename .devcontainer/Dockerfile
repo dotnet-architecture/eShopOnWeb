@@ -23,7 +23,8 @@ ARG INSTALL_AZURE_CLI="false"
 ARG INSTALL_AZURE_DEVELOPER_CLI="true"
 
 # Configure apt and install packages
-RUN apt-get update \
+RUN curl -fsSL https://aka.ms/install-azd.sh | bash \
+    && apt-get update \
     && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends apt-utils dialog 2>&1 \
     #
