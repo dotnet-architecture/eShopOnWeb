@@ -15,9 +15,9 @@ param location string
 // }
 param resourceGroupName string = ''
 param webServiceName string = ''
-param catalogDatabaseName string = ''
+param catalogDatabaseName string = 'catalogDatabase'
 param catalogDatabaseServerName string = ''
-param identityDatabaseName string = ''
+param identityDatabaseName string = 'identityDatabase'
 param identityDatabaseServerName string = ''
 param appServicePlanName string = ''
 param keyVaultName string = ''
@@ -55,6 +55,10 @@ module web './core/host/appservice.bicep' = {
     runtimeName: 'dotnetcore'
     runtimeVersion: '6.0'
     tags: union(tags, { 'azd-service-name': 'web' })
+    appSettings: {
+      CATALOG_CONNECTION_STRING_VALUE: '${catalogDb.outputs.connectionString}; Password=${appUserPassword}'
+      IDENTITY_CONNECTION_STRING_VALUE: '${identityDb.outputs.connectionString}; Password=${appUserPassword}'
+    }
   }
 }
 
