@@ -71,8 +71,7 @@ RUN apt-get update \
     #
     # [Optional] Install the Azure Developer CLI
     && if [ "$INSTALL_AZURE_DEVELOPER_CLI" = "true" ]; then \
-        apt-get update \
-        && curl -fsSL https://aka.ms/install-azd.sh | bash \
+        curl -fsSL https://aka.ms/install-azd.sh | bash \
     fi \
     #
     # Install EF Core dotnet tool
