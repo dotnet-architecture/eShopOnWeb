@@ -11,7 +11,24 @@
         "INSTALL_AZURE_CLI": "false"
         }
     },
-
+    "features": {
+        "ghcr.io/devcontainers/features/azure-cli:1": {
+            "version": "2.38"
+        },
+        "ghcr.io/devcontainers/features/docker-from-docker:1": {
+            "version": "20.10"
+        },
+        "ghcr.io/devcontainers/features/dotnet:1": {
+            "version": "6.0"
+        },
+        "ghcr.io/devcontainers/features/github-cli:1": {
+            "version": "2"
+        },
+        "ghcr.io/devcontainers/features/node:1": {
+            "version": "16",
+            "nodeGypDependencies": false
+        }
+    },
 	// Comment out to connect as root user. See https://aka.ms/vscode-remote/containers/non-root.
 	// make sure this is the same as USERNAME above
 	"remoteUser": "vscode",
@@ -23,6 +40,7 @@
 
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
+		"ms-azuretools.azure-dev",
         "ms-dotnettools.csharp",
         "formulahendry.dotnet-test-explorer",
         "ms-vscode.vscode-node-azure-pack",
