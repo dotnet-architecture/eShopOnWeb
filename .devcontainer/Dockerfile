@@ -20,6 +20,7 @@ ENV NVM_DIR=/usr/local/share/nvm
 
 # [Optional] Install the Azure CLI
 ARG INSTALL_AZURE_CLI="false"
+ARG INSTALL_AZURE_DEVELOPER_CLI="true"
 
 # Configure apt and install packages
 RUN apt-get update \
@@ -66,6 +67,12 @@ RUN apt-get update \
         && curl -sL https://packages.microsoft.com/keys/microsoft.asc | apt-key add - 2>/dev/null \
         && apt-get update \
         && apt-get install -y azure-cli; \
+    fi \
+    #
+    # [Optional] Install the Azure Developer CLI
+    && if [ "$INSTALL_AZURE_DEVELOPER_CLI" = "true" ]; then \
+        apt-get update \
+        && curl -fsSL https://aka.ms/install-azd.sh | bash \
     fi \
     #
     # Install EF Core dotnet tool

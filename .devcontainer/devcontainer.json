@@ -8,7 +8,8 @@
         "USERNAME": "vscode",
         "INSTALL_NODE": "false",
         "NODE_VERSION": "lts/*",
-        "INSTALL_AZURE_CLI": "false"
+        "INSTALL_AZURE_CLI": "false",
+		"INSTALL_AZURE_DEVELOPER_CLI": "true"
         }
     },
     "features": {
