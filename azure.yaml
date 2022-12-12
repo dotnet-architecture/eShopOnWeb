@@ -1,8 +1,11 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/wbreza/azure-dev/main/schemas/v1.0/azure.yaml.json
 
 name: eShopOnWeb
 services:
-    web:
-        project: ./src/Web
-        language: csharp
-        host: appservice
+  web:
+    project: ./src/Web
+    language: csharp
+    host: appservice
+scripts:
+  postprovision:
+    path: './scripts/setup-database.ps1'
