@@ -6,6 +6,3 @@ services:
     project: ./src/Web
     language: csharp
     host: appservice
-scripts:
-  postprovision:
-    path: './scripts/setup-database.ps1'
