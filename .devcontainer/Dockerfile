@@ -20,7 +20,6 @@ ENV NVM_DIR=/usr/local/share/nvm
 
 # [Optional] Install the Azure CLI
 ARG INSTALL_AZURE_CLI="false"
-ARG INSTALL_AZURE_DEVELOPER_CLI="true"
 
 # Configure apt and install packages
 RUN curl -fsSL https://aka.ms/install-azd.sh | bash \
