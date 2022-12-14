@@ -56,8 +56,9 @@ module web './core/host/appservice.bicep' = {
     runtimeVersion: '6.0'
     tags: union(tags, { 'azd-service-name': 'web' })
     appSettings: {
-      CATALOG_CONNECTION_STRING_VALUE: '${catalogDb.outputs.connectionString}; Password=${appUserPassword}'
-      IDENTITY_CONNECTION_STRING_VALUE: '${identityDb.outputs.connectionString}; Password=${appUserPassword}'
+      CATALOG_CONNECTION_STRING_KEY: 'AZURE-SQL-CATALOG-CONNECTION-STRING'
+      IDENTITY_CONNECTION_STRING_KEY: 'AZURE-SQL-IDENTITY-CONNECTION-STRING'
+      KEY_VAULT_ENDPOINT: keyVault.outputs.endpoint
     }
   }
 }
@@ -120,5 +121,14 @@ module appServicePlan './core/host/appserviceplan.bicep' = {
   }
 }
 
+// Data outputs
+output AZURE_SQL_CATALOG_CONNECTION_STRING string = catalogDb.outputs.connectionStringKey
+output AZURE_SQL_IDENTITY_CONNECTION_STRING string = identityDb.outputs.connectionStringKey
+output AZURE_SQL_CATALOG_DATABASE_NAME string = catalogDb.outputs.databaseName
+output AZURE_SQL_IDENTITY_DATABASE_NAME string = identityDb.outputs.databaseName
+
+// App outputs
 output AZURE_LOCATION string = location
 output AZURE_TENANT_ID string = tenant().tenantId
+output AZURE_KEY_VAULT_ENDPOINT string = keyVault.outputs.endpoint
+output AZURE_KEY_VAULT_NAME string = keyVault.outputs.name
