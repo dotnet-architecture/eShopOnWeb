@@ -14,9 +14,9 @@ public static class Dependencies
     public static void ConfigureServices(IConfiguration configuration, IServiceCollection services)
     {
         var useOnlyInMemoryDatabase = false;
-        string keyVaultUri = configuration["KEY_VAULT_ENDPOINT"];
-        string catalogConnectionStringKey = configuration["AZURE-SQL-CATALOG-CONNECTION-STRING"];
-        string identityConnectionStringKey = configuration["AZURE-SQL-IDENTITY-CONNECTION-STRING"];
+        string keyVaultUri = configuration["AZURE_KEY_VAULT_ENDPOINT"];
+        string catalogConnectionStringKey = configuration["AZURE_CATALOG_CONNECTION_STRING_KEY"];
+        string identityConnectionStringKey = configuration["AZURE_IDENTITY_CONNECTION_STRING_KEY"];
         string catalogConnectionStringValue = GetSqlConnectString(keyVaultUri, catalogConnectionStringKey);
         string identityConnectionStringValue = GetSqlConnectString(keyVaultUri, identityConnectionStringKey);
 

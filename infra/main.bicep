@@ -56,9 +56,9 @@ module web './core/host/appservice.bicep' = {
     runtimeVersion: '6.0'
     tags: union(tags, { 'azd-service-name': 'web' })
     appSettings: {
-      CATALOG_CONNECTION_STRING_KEY: 'AZURE-SQL-CATALOG-CONNECTION-STRING'
-      IDENTITY_CONNECTION_STRING_KEY: 'AZURE-SQL-IDENTITY-CONNECTION-STRING'
-      KEY_VAULT_ENDPOINT: keyVault.outputs.endpoint
+      AZURE_CATALOG_CONNECTION_STRING_KEY: 'AZURE-SQL-CATALOG-CONNECTION-STRING'
+      AZURE_IDENTITY_CONNECTION_STRING_KEY: 'AZURE-SQL-IDENTITY-CONNECTION-STRING'
+      AZURE_KEY_VAULT_ENDPOINT: keyVault.outputs.endpoint
     }
   }
 }
