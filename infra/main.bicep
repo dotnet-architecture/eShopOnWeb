@@ -52,14 +52,24 @@ module web './core/host/appservice.bicep' = {
     name: !empty(webServiceName) ? webServiceName : '${abbrs.webSitesAppService}web-${resourceToken}'
     location: location
     appServicePlanId: appServicePlan.outputs.id
+    keyVaultName: keyVault.outputs.name
     runtimeName: 'dotnetcore'
     runtimeVersion: '6.0'
     tags: union(tags, { 'azd-service-name': 'web' })
     appSettings: {
-      AZURE_CATALOG_CONNECTION_STRING_KEY: 'AZURE-SQL-CATALOG-CONNECTION-STRING'
-      AZURE_IDENTITY_CONNECTION_STRING_KEY: 'AZURE-SQL-IDENTITY-CONNECTION-STRING'
+      AZURE_SQL_CATALOG_CONNECTION_STRING_KEY: 'AZURE-SQL-CATALOG-CONNECTION-STRING'
+      AZURE_SQL_IDENTITY_CONNECTION_STRING_KEY: 'AZURE-SQL-IDENTITY-CONNECTION-STRING'
       AZURE_KEY_VAULT_ENDPOINT: keyVault.outputs.endpoint
     }
+  }
+}
+
+module apiKeyVaultAccess './core/security/keyvault-access.bicep' = {
+  name: 'api-keyvault-access'
+  scope: rg
+  params: {
+    keyVaultName: keyVault.outputs.name
+    principalId: web.outputs.identityPrincipalId
   }
 }
 
@@ -122,8 +132,8 @@ module appServicePlan './core/host/appserviceplan.bicep' = {
 }
 
 // Data outputs
-output AZURE_SQL_CATALOG_CONNECTION_STRING string = catalogDb.outputs.connectionStringKey
-output AZURE_SQL_IDENTITY_CONNECTION_STRING string = identityDb.outputs.connectionStringKey
+output AZURE_SQL_CATALOG_CONNECTION_STRING_KEY string = catalogDb.outputs.connectionStringKey
+output AZURE_SQL_IDENTITY_CONNECTION_STRING_KEY string = identityDb.outputs.connectionStringKey
 output AZURE_SQL_CATALOG_DATABASE_NAME string = catalogDb.outputs.databaseName
 output AZURE_SQL_IDENTITY_DATABASE_NAME string = identityDb.outputs.databaseName
 

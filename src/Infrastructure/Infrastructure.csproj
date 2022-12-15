@@ -8,8 +8,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="Ardalis.Specification.EntityFrameworkCore" Version="6.1.0" />
-		<PackageReference Include="Azure.Identity" Version="1.5.0" />
-		<PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.4.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.8" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.8" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.8" />
