@@ -13,32 +13,29 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints;
 /// <summary>
 /// Deletes a Catalog Item
 /// </summary>
-public class DeleteCatalogItemEndpoint : IEndpoint<IResult, DeleteCatalogItemRequest>
+public class DeleteCatalogItemEndpoint : IEndpoint<IResult, DeleteCatalogItemRequest, IRepository<CatalogItem>>
 {
-    private IRepository<CatalogItem> _itemRepository;
-
     public void AddRoute(IEndpointRouteBuilder app)
     {
         app.MapDelete("api/catalog-items/{catalogItemId}",
             [Authorize(Roles = BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)] async
             (int catalogItemId, IRepository<CatalogItem> itemRepository) =>
             {
-                _itemRepository = itemRepository;
-                return await HandleAsync(new DeleteCatalogItemRequest(catalogItemId));
+                return await HandleAsync(new DeleteCatalogItemRequest(catalogItemId), itemRepository);
             })
             .Produces<DeleteCatalogItemResponse>()
             .WithTags("CatalogItemEndpoints");
     }
 
-    public async Task<IResult> HandleAsync(DeleteCatalogItemRequest request)
+    public async Task<IResult> HandleAsync(DeleteCatalogItemRequest request, IRepository<CatalogItem> itemRepository)
     {
         var response = new DeleteCatalogItemResponse(request.CorrelationId());
 
-        var itemToDelete = await _itemRepository.GetByIdAsync(request.CatalogItemId);
+        var itemToDelete = await itemRepository.GetByIdAsync(request.CatalogItemId);
         if (itemToDelete is null)
             return Results.NotFound();
 
-        await _itemRepository.DeleteAsync(itemToDelete);
+        await itemRepository.DeleteAsync(itemToDelete);
 
         return Results.Ok(response);
     }
