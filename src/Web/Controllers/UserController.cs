@@ -24,11 +24,11 @@ public class UserController : ControllerBase
     [Authorize]
     [AllowAnonymous]
     public async Task<IActionResult> GetCurrentUser() =>
-        Ok(User.Identity.IsAuthenticated ? await CreateUserInfo(User) : UserInfo.Anonymous);
+        Ok(await CreateUserInfo(User));
 
     private async Task<UserInfo> CreateUserInfo(ClaimsPrincipal claimsPrincipal)
     {
-        if (!claimsPrincipal.Identity.IsAuthenticated)
+        if (claimsPrincipal.Identity == null || claimsPrincipal.Identity.Name == null || !claimsPrincipal.Identity.IsAuthenticated)
         {
             return UserInfo.Anonymous;
         }

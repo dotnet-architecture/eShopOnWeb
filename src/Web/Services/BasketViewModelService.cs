@@ -28,7 +28,7 @@ public class BasketViewModelService : IBasketViewModelService
     public async Task<BasketViewModel> GetOrCreateBasketForUser(string userName)
     {
         var basketSpec = new BasketWithItemsSpecification(userName);
-        var basket = (await _basketRepository.GetBySpecAsync(basketSpec));
+        var basket = (await _basketRepository.FirstOrDefaultAsync(basketSpec));
 
         if (basket == null)
         {

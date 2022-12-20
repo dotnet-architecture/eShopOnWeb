@@ -1,6 +1,4 @@
-﻿using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.eShopWeb.FunctionalTests.Web;
+﻿using Microsoft.eShopWeb.FunctionalTests.Web;
 using Xunit;
 
 namespace Microsoft.eShopWeb.FunctionalTests.WebRazorPages;

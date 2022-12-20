@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Ardalis.GuardClauses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.Web.Interfaces;
 using Microsoft.eShopWeb.Web.ViewModels;
@@ -15,12 +12,15 @@ public class IndexModel : PageModel
 {
     private readonly IBasketService _basketService;
     private readonly IBasketViewModelService _basketViewModelService;
+    private readonly IRepository<CatalogItem> _itemRepository;
 
     public IndexModel(IBasketService basketService,
-        IBasketViewModelService basketViewModelService)
+        IBasketViewModelService basketViewModelService,
+        IRepository<CatalogItem> itemRepository)
     {
         _basketService = basketService;
         _basketViewModelService = basketViewModelService;
+        _itemRepository = itemRepository;
     }
 
     public BasketViewModel BasketModel { get; set; } = new BasketViewModel();
@@ -37,9 +37,15 @@ public class IndexModel : PageModel
             return RedirectToPage("/Index");
         }
 
+        var item = await _itemRepository.GetByIdAsync(productDetails.Id);
+        if (item == null)
+        {
+            return RedirectToPage("/Index");
+        }
+
         var username = GetOrSetBasketCookieAndUserName();
         var basket = await _basketService.AddItemToBasket(username,
-            productDetails.Id, productDetails.Price);
+            productDetails.Id, item.Price);
 
         BasketModel = await _basketViewModelService.Map(basket);
 
@@ -61,11 +67,13 @@ public class IndexModel : PageModel
 
     private string GetOrSetBasketCookieAndUserName()
     {
-        string userName = null;
+        Guard.Against.Null(Request.HttpContext.User.Identity, nameof(Request.HttpContext.User.Identity));
+        string? userName = null;
 
         if (Request.HttpContext.User.Identity.IsAuthenticated)
         {
-            return Request.HttpContext.User.Identity.Name;
+            Guard.Against.Null(Request.HttpContext.User.Identity.Name, nameof(Request.HttpContext.User.Identity.Name));
+            return Request.HttpContext.User.Identity.Name!;
         }
 
         if (Request.Cookies.ContainsKey(Constants.BASKET_COOKIENAME))
