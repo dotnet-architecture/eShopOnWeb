@@ -5,6 +5,7 @@
 #-------------------------------------------------------------------------------------------------------------
 FROM mcr.microsoft.com/dotnet/sdk:7.0
 
+
 # This Dockerfile adds a non-root user with sudo access. Use the "remoteUser"
 # property in devcontainer.json to use it. On Linux, the container user's GID/UIDs
 # will be updated to match your local UID/GID (when using the dockerFile property).
