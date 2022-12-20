@@ -2,7 +2,10 @@
 using Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints;
 using Microsoft.eShopWeb.Web.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace PublicApiIntegrationTests.CatalogItemEndpoints
@@ -44,6 +47,27 @@ namespace PublicApiIntegrationTests.CatalogItemEndpoints
             var totalExpected = totalItem - (pageSize * pageIndex);
 
             Assert.AreEqual(totalExpected, model2.CatalogItems.Count());
+        }
+
+        [DataTestMethod]
+        [DataRow("catalog-items")]
+        [DataRow("catalog-brands")]
+        [DataRow("catalog-types")]
+        [DataRow("catalog-items/1")]
+        public async Task SuccessFullMutipleParallelCall(string endpointName)
+        {
+            var client = ProgramTest.NewClient;
+            var tasks = new List<Task<HttpResponseMessage>>();
+
+            for (int i = 0; i < 100; i++)
+            {
+                var task = client.GetAsync($"/api/{endpointName}");
+                tasks.Add(task);
+            }
+            await Task.WhenAll(tasks.ToList());
+            var totalKO = tasks.Count(t => t.Result.StatusCode != HttpStatusCode.OK);
+
+            Assert.AreEqual(0, totalKO);
         }
     }
 }
