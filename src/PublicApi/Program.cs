@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using BlazorShared;
 using BlazorShared.Models;
-using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -83,8 +82,6 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddControllers();
-
-builder.Services.AddMediatR(typeof(CatalogItem).Assembly);
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
 builder.Services.AddEndpointsApiExplorer();
