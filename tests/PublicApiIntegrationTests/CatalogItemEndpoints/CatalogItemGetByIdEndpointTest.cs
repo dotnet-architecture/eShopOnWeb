@@ -1,6 +1,6 @@
-﻿using Microsoft.eShopWeb;
-using Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints;
+﻿using Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.eShopWeb.ApplicationCore.Extensions;
 using System.Net;
 using System.Threading.Tasks;
 

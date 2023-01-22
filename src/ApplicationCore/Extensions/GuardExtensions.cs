@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Ardalis.GuardClauses;
 using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
 using Microsoft.eShopWeb.ApplicationCore.Exceptions;
 
-namespace Ardalis.GuardClauses;
+namespace Microsoft.eShopWeb.ApplicationCore.Extensions;
 
 public static class BasketGuards
 {

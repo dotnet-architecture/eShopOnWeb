@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using Microsoft.eShopWeb.ApplicationCore.Extensions;
+using Xunit;
 
 namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Extensions;
 

@@ -1,4 +1,4 @@
-﻿namespace Microsoft.eShopWeb;
+﻿namespace Microsoft.eShopWeb.ApplicationCore;
 
 public class CatalogSettings
 {
