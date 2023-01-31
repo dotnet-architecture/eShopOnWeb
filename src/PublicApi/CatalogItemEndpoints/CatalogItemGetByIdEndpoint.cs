@@ -11,9 +11,8 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints;
 /// <summary>
 /// Get a Catalog Item by Id
 /// </summary>
-public class CatalogItemGetByIdEndpoint : IEndpoint<IResult, GetByIdCatalogItemRequest>
+public class CatalogItemGetByIdEndpoint : IEndpoint<IResult, GetByIdCatalogItemRequest, IRepository<CatalogItem>>
 {
-    private IRepository<CatalogItem> _itemRepository;
     private readonly IUriComposer _uriComposer;
 
     public CatalogItemGetByIdEndpoint(IUriComposer uriComposer)
@@ -26,18 +25,17 @@ public class CatalogItemGetByIdEndpoint : IEndpoint<IResult, GetByIdCatalogItemR
         app.MapGet("api/catalog-items/{catalogItemId}",
             async (int catalogItemId, IRepository<CatalogItem> itemRepository) =>
             {
-                _itemRepository = itemRepository;
-                return await HandleAsync(new GetByIdCatalogItemRequest(catalogItemId));
+                return await HandleAsync(new GetByIdCatalogItemRequest(catalogItemId), itemRepository);
             })
             .Produces<GetByIdCatalogItemResponse>()
             .WithTags("CatalogItemEndpoints");
     }
 
-    public async Task<IResult> HandleAsync(GetByIdCatalogItemRequest request)
+    public async Task<IResult> HandleAsync(GetByIdCatalogItemRequest request, IRepository<CatalogItem> itemRepository)
     {
         var response = new GetByIdCatalogItemResponse(request.CorrelationId());
 
-        var item = await _itemRepository.GetByIdAsync(request.CatalogItemId);
+        var item = await itemRepository.GetByIdAsync(request.CatalogItemId);
         if (item is null)
             return Results.NotFound();
 

@@ -13,9 +13,8 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints;
 /// <summary>
 /// Updates a Catalog Item
 /// </summary>
-public class UpdateCatalogItemEndpoint : IEndpoint<IResult, UpdateCatalogItemRequest>
-{
-    private IRepository<CatalogItem> _itemRepository;
+public class UpdateCatalogItemEndpoint : IEndpoint<IResult, UpdateCatalogItemRequest, IRepository<CatalogItem>>
+{ 
     private readonly IUriComposer _uriComposer;
 
     public UpdateCatalogItemEndpoint(IUriComposer uriComposer)
@@ -29,25 +28,24 @@ public class UpdateCatalogItemEndpoint : IEndpoint<IResult, UpdateCatalogItemReq
             [Authorize(Roles = BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)] async
             (UpdateCatalogItemRequest request, IRepository<CatalogItem> itemRepository) =>
             {
-                _itemRepository = itemRepository;
-                return await HandleAsync(request);
+                return await HandleAsync(request, itemRepository);
             })
             .Produces<UpdateCatalogItemResponse>()
             .WithTags("CatalogItemEndpoints");
     }
 
-    public async Task<IResult> HandleAsync(UpdateCatalogItemRequest request)
+    public async Task<IResult> HandleAsync(UpdateCatalogItemRequest request, IRepository<CatalogItem> itemRepository)
     {
         var response = new UpdateCatalogItemResponse(request.CorrelationId());
 
-        var existingItem = await _itemRepository.GetByIdAsync(request.Id);
-        
+        var existingItem = await itemRepository.GetByIdAsync(request.Id);
+
         CatalogItem.CatalogItemDetails details = new(request.Name, request.Description, request.Price);
         existingItem.UpdateDetails(details);
         existingItem.UpdateBrand(request.CatalogBrandId);
         existingItem.UpdateType(request.CatalogTypeId);
 
-        await _itemRepository.UpdateAsync(existingItem);
+        await itemRepository.UpdateAsync(existingItem);
 
         var dto = new CatalogItemDto
         {

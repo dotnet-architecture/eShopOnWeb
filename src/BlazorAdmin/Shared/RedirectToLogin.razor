@@ -1,9 +1,12 @@
-﻿@inject NavigationManager Navigation
+﻿@using System.Web;
+
+@inject NavigationManager Navigation
+@inject IJSRuntime JsRuntime
 
 @code {
     protected override void OnInitialized()
-    {
-        Navigation.NavigateTo($"Identity/Account/Login?returnUrl=" +
-            $"/{Uri.EscapeDataString(Navigation.ToBaseRelativePath(Navigation.Uri))}");
+    {       
+        var returnUrl = HttpUtility.UrlEncode($"/{Uri.EscapeDataString(Navigation.ToBaseRelativePath(Navigation.Uri))}");
+        JsRuntime.InvokeVoidAsync("location.replace", $"Identity/Account/Login?returnUrl={returnUrl}");
     }
 }

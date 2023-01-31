@@ -1,14 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+  <PropertyGroup>  
     <RootNamespace>BlazorShared</RootNamespace>
     <AssemblyName>BlazorShared</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BlazorInputFile" Version="0.2.0" />
-    <PackageReference Include="FluentValidation" Version="11.2.1" />
+    <PackageReference Include="BlazorInputFile" />
+    <PackageReference Include="FluentValidation" />
   </ItemGroup>
 
 </Project>

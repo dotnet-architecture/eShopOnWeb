@@ -25,15 +25,22 @@
     // Comment out to connect as root user. See https://aka.ms/vscode-remote/containers/non-root.
     // make sure this is the same as USERNAME above
     "remoteUser": "vscode",
+    "runArgs": [
+        "-v",
+        "/var/run/docker.sock:/var/run/docker.sock"
+    ],
+	// Set *default* container specific settings.json values on container create.
+	"settings": {
+        "terminal.integrated.profiles.linux": {
+            "bash": {
+                "path": "bash",
+                "icon": "terminal-bash"
+            }
+        }
+	},
 
-    // Set *default* container specific settings.json values on container create.
-    "settings": {
-        "terminal.integrated.shell.linux": "/bin/bash"
-    },
-
-    // Add the IDs of extensions you want installed when the container is created.
-    "extensions": [
-        "ms-azuretools.azure-dev",
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
         "ms-dotnettools.csharp",
         "formulahendry.dotnet-test-explorer",
         "ms-vscode.vscode-node-azure-pack",
