@@ -11,5 +11,9 @@ provider "azurerm" {
   client_id       = var.spn_client_id
   client_secret   = var.spn_secret
 
-  features {}
+  features {
+    resource_group {
+      prevent_deletion_if_contains_resources = false
+    }
+  }
 }

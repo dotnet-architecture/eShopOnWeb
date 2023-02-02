@@ -1,9 +1,8 @@
 ## Terraform specifics
 terraform/**/*secret*
 **/.terraform/**
-terraform/**/terraform.tfstate
-terraform/**/terraform.tfstate.backup
-terraform/**/.terraform.tfstate.lock.info
+terraform/**/terraform.tfstate*
+terraform/**/.terraform.*
 
 
 ## Ignore Visual Studio temporary files, build results, and
@@ -265,3 +264,4 @@ pub/
 
 #Ignore marker-file used to know which docker files we have.
 .eshopdocker_*
+terraform/az-base/cpchem-az-base.zip
