@@ -41,12 +41,46 @@ The goal for this sample is to demonstrate some of the principles and patterns d
 - Development Process for Azure-Hosted ASP.NET Core Apps
 - Azure Hosting Recommendations for ASP.NET Core Web Apps
 
-## Running the sample
+## Running the sample using Azd template
 
 The store's home page should look like this:
 
 ![eShopOnWeb home page screenshot](https://user-images.githubusercontent.com/782127/88414268-92d83a00-cdaa-11ea-9b4c-db67d95be039.png)
 
+The Azure Developer CLI (`azd`) is a developer-centric command-line interface (CLI) tool for creating Azure applications.
+
+You need to install it before running and deploying with Azure Developer CLI.
+
+### Windows
+
+```powershell
+powershell -ex AllSigned -c "Invoke-RestMethod 'https://aka.ms/install-azd.ps1' | Invoke-Expression"
+```
+
+### Linux/MacOS
+
+```
+curl -fsSL https://aka.ms/install-azd.sh | bash
+```
+
+After logging in with the following command, you will be able to use the azd cli to quickly provision and deploy the application.
+
+```
+azd login
+```
+
+Then, just use the `azd up` command to complete all operations of clone, provision and deployment.
+```
+azd up -t dotnet-architecture/eShopOnWeb -b main 
+```
+According to the prompt, enter an `env name`, and select `subscription` and `location`, these are the necessary parameters when you create resources. Wait a moment for the resource deployment to complete, click the web endpoint and you will see the home page.
+
+**Notes:**
+Considering security, we store its related data (id, password) in the key vault when we create the database, and obtain it from the key vault when we use it. This is different from directly deploying applications locally.
+
+You can also run the sample directly locally, some adjustments are required when configuring SQL Server (See below).
+
+## Running the sample locally
 Most of the site's functionality works with just the web application running. However, the site's Admin page relies on Blazor WebAssembly running in the browser, and it must communicate with the server using the site's PublicApi web application. You'll need to also run this project. You can configure Visual Studio to start multiple projects, or just go to the PublicApi folder in a terminal window and run `dotnet run` from there. After that from the Web folder you should run `dotnet run --launch-profile Web`. Now you should be able to browse to `https://localhost:5001/`. The admin part in Blazor is accessible to `https://localhost:5001/admin`  
 
 Note that if you use this approach, you'll need to stop the application manually in order to build the solution (otherwise you'll get file locking errors).
@@ -58,6 +92,25 @@ You can also run the samples in Docker (see below).
 
 ### Configuring the sample to use SQL Server
 
+1. In the `src/Web/Program.cs` file, switch to the `Locally` configuration of SQL Server.
+    ``` csharp
+    // Configure SQL Server (Locally)
+    // Microsoft.eShopWeb.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, builder.Services);
+
+    // Configure SQL Server (Azd template)
+    var credential = new ChainedTokenCredential(new AzureDeveloperCliCredential(), new DefaultAzureCredential());
+    builder.Configuration.AddAzureKeyVault(new Uri(builder.Configuration["AZURE_KEY_VAULT_ENDPOINT"]), credential);
+    builder.Services.AddDbContext<CatalogContext>(c =>
+    {
+        var connectionString = builder.Configuration[builder.Configuration["AZURE_SQL_CATALOG_CONNECTION_STRING_KEY"]];
+        c.UseSqlServer(connectionString, sqlOptions => sqlOptions.EnableRetryOnFailure());
+    });
+    builder.Services.AddDbContext<AppIdentityDbContext>(options =>
+    {
+        var connectionString = builder.Configuration[builder.Configuration["AZURE_SQL_IDENTITY_CONNECTION_STRING_KEY"]];
+        options.UseSqlServer(connectionString, sqlOptions => sqlOptions.EnableRetryOnFailure());
+    });
+    ```
 1. By default, the project uses a real database. If you want an in memory database, you can add in `appsettings.json`
 
     ```json
