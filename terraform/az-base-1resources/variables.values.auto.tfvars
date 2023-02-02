@@ -1,11 +1,11 @@
 #   Base variables values
 team_name = "team-a"
-iterator = "01"
+iterator = "02"
 location = "southcentralus"
 base_tags = {
     test_by = "emberger"
-    cust = "CPChem"
-    proj = "TerraformImmersionDays"
+    cust    = "CPChem"
+    proj    = "Terraform-Immersion-Days"
   }
 
 #   Virtual Network values
