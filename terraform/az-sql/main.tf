@@ -1,6 +1,8 @@
 # Overview:
 #   This module:
-#   - Creates an Azure SQL Server with Encryption and Security.
+#   - Creates an Azure SQL Server with Encryption and Security,
+#   - Creates 2 Azure SQL databases.
+
 
 #
 # - Dependencies data resources
@@ -136,28 +138,40 @@ resource "azurerm_mssql_server_transparent_data_encryption" "this" {
   depends_on = [azurerm_mssql_server.this]
 }
 
+# -
+# - Allow access to SQL Server from the Azure Services
+# -
+resource azurerm_mssql_firewall_rule this {
+  name                = "AllowAzureServicesAccess"
+  server_id           = azurerm_mssql_server.this.id
+  start_ip_address    = "0.0.0.0"
+  end_ip_address      = "0.0.0.0"
+}
+
 
 #--------------------------------------------------------------
 #  Creating 2 SQL Databases
 #--------------------------------------------------------------
-resource "azurerm_mssql_database" "db1" {
-  name           = lower("sqldb-cpchem-${var.team_name}-${var.iterator}-db1")
-  server_id      = azurerm_mssql_server.this.id
-  collation      = "SQL_Latin1_General_CP1_CI_AS"
-  license_type   = "LicenseIncluded"
-  max_size_gb    = 1
-  read_scale     = false
-  sku_name       = "S0"
-  zone_redundant = false
+resource "azurerm_mssql_database" "eshopweb_catalog" {
+  name                  = lower("sqldb-cpchem-${var.team_name}-${var.iterator}-catalog")
+  server_id             = azurerm_mssql_server.this.id
+  collation             = "SQL_Latin1_General_CP1_CI_AS"
+  license_type          = "LicenseIncluded"
+  max_size_gb           = 1
+  read_scale            = false
+  sku_name              = "S0"
+  zone_redundant        = false
+  storage_account_type  = "Local"
 }
-resource "azurerm_mssql_database" "db2" {
-  name           = lower("sqldb-cpchem-${var.team_name}-${var.iterator}-db2")
-  server_id      = azurerm_mssql_server.this.id
-  collation      = "SQL_Latin1_General_CP1_CI_AS"
-  license_type   = "LicenseIncluded"
-  max_size_gb    = 1
-  read_scale     = false
-  sku_name       = "S0"
-  zone_redundant = false
+resource "azurerm_mssql_database" "eshopweb_identity" {
+  name                  = lower("sqldb-cpchem-${var.team_name}-${var.iterator}-identity")
+  server_id             = azurerm_mssql_server.this.id
+  collation             = "SQL_Latin1_General_CP1_CI_AS"
+  license_type          = "LicenseIncluded"
+  max_size_gb           = 1
+  read_scale            = false
+  sku_name              = "S0"
+  zone_redundant        = false
+  storage_account_type  = "Local"
 }
-
+#*/
