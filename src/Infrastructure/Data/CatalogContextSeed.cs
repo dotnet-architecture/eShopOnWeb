@@ -84,6 +84,7 @@ public class CatalogContextSeed
     {
         return new List<CatalogItem>
             {
+                new(2,1, "Chevron Phillips Chemical", "CPChem", 15, "http://catalogbaseurltobereplaced/images/products/0.png"),
                 new(2,2, ".NET Bot Black Sweatshirt", ".NET Bot Black Sweatshirt", 19.5M,  "http://catalogbaseurltobereplaced/images/products/1.png"),
                 new(1,2, ".NET Black & White Mug", ".NET Black & White Mug", 8.50M, "http://catalogbaseurltobereplaced/images/products/2.png"),
                 new(2,5, "Prism White T-Shirt", "Prism White T-Shirt", 12,  "http://catalogbaseurltobereplaced/images/products/3.png"),
@@ -95,8 +96,7 @@ public class CatalogContextSeed
                 new(1,5, "Cup<T> White Mug", "Cup<T> White Mug", 12, "http://catalogbaseurltobereplaced/images/products/9.png"),
                 new(3,2, ".NET Foundation Sheet", ".NET Foundation Sheet", 12, "http://catalogbaseurltobereplaced/images/products/10.png"),
                 new(3,2, "Cup<T> Sheet", "Cup<T> Sheet", 8.5M, "http://catalogbaseurltobereplaced/images/products/11.png"),
-                new(2,5, "Prism White TShirt", "Prism White TShirt", 12, "http://catalogbaseurltobereplaced/images/products/12.png"),
-                new(2,1, "Chevron Phillips Chemical", "CPChem", 15, "http://catalogbaseurltobereplaced/images/products/13.png")
+                new(2,5, "Prism White TShirt", "Prism White TShirt", 12, "http://catalogbaseurltobereplaced/images/products/12.png")
             };
     }
 }
