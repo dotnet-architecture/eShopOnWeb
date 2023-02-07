@@ -78,7 +78,7 @@ According to the prompt, enter an `env name`, and select `subscription` and `loc
 **Notes:**
 Considering security, we store its related data (id, password) in the key vault when we create the database, and obtain it from the key vault when we use it. This is different from directly deploying applications locally.
 
-You can also run the sample directly locally, some adjustments are required when configuring SQL Server (See below).
+You can also run the sample directly locally. (See below).
 
 ## Running the sample locally
 Most of the site's functionality works with just the web application running. However, the site's Admin page relies on Blazor WebAssembly running in the browser, and it must communicate with the server using the site's PublicApi web application. You'll need to also run this project. You can configure Visual Studio to start multiple projects, or just go to the PublicApi folder in a terminal window and run `dotnet run` from there. After that from the Web folder you should run `dotnet run --launch-profile Web`. Now you should be able to browse to `https://localhost:5001/`. The admin part in Blazor is accessible to `https://localhost:5001/admin`  
@@ -92,25 +92,6 @@ You can also run the samples in Docker (see below).
 
 ### Configuring the sample to use SQL Server
 
-1. In the `src/Web/Program.cs` file, switch to the `Locally` configuration of SQL Server.
-    ``` csharp
-    // Configure SQL Server (Locally)
-    // Microsoft.eShopWeb.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, builder.Services);
-
-    // Configure SQL Server (Azd template)
-    var credential = new ChainedTokenCredential(new AzureDeveloperCliCredential(), new DefaultAzureCredential());
-    builder.Configuration.AddAzureKeyVault(new Uri(builder.Configuration["AZURE_KEY_VAULT_ENDPOINT"]), credential);
-    builder.Services.AddDbContext<CatalogContext>(c =>
-    {
-        var connectionString = builder.Configuration[builder.Configuration["AZURE_SQL_CATALOG_CONNECTION_STRING_KEY"]];
-        c.UseSqlServer(connectionString, sqlOptions => sqlOptions.EnableRetryOnFailure());
-    });
-    builder.Services.AddDbContext<AppIdentityDbContext>(options =>
-    {
-        var connectionString = builder.Configuration[builder.Configuration["AZURE_SQL_IDENTITY_CONNECTION_STRING_KEY"]];
-        options.UseSqlServer(connectionString, sqlOptions => sqlOptions.EnableRetryOnFailure());
-    });
-    ```
 1. By default, the project uses a real database. If you want an in memory database, you can add in `appsettings.json`
 
     ```json

@@ -23,22 +23,41 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.AddConsole();
 
+var azdTemplate= builder.Configuration["AZD_TEMPLATE"];
+
+if (azdTemplate == "enable"){
+    var credential = new ChainedTokenCredential(new AzureDeveloperCliCredential(), new DefaultAzureCredential());
+    builder.Configuration.AddAzureKeyVault(new Uri(builder.Configuration["AZURE_KEY_VAULT_ENDPOINT"]), credential);
+    builder.Services.AddDbContext<CatalogContext>(c =>
+    {
+        var connectionString = builder.Configuration[builder.Configuration["AZURE_SQL_CATALOG_CONNECTION_STRING_KEY"]];
+        c.UseSqlServer(connectionString, sqlOptions => sqlOptions.EnableRetryOnFailure());
+    });
+    builder.Services.AddDbContext<AppIdentityDbContext>(options =>
+    {
+        var connectionString = builder.Configuration[builder.Configuration["AZURE_SQL_IDENTITY_CONNECTION_STRING_KEY"]];
+        options.UseSqlServer(connectionString, sqlOptions => sqlOptions.EnableRetryOnFailure());
+    });
+}
+else{
+    Microsoft.eShopWeb.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, builder.Services);
+}
 // Configure SQL Server (Locally)
 // Microsoft.eShopWeb.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, builder.Services);
 
 // Configure SQL Server (Azd template)
-var credential = new ChainedTokenCredential(new AzureDeveloperCliCredential(), new DefaultAzureCredential());
-builder.Configuration.AddAzureKeyVault(new Uri(builder.Configuration["AZURE_KEY_VAULT_ENDPOINT"]), credential);
-builder.Services.AddDbContext<CatalogContext>(c =>
-{
-    var connectionString = builder.Configuration[builder.Configuration["AZURE_SQL_CATALOG_CONNECTION_STRING_KEY"]];
-    c.UseSqlServer(connectionString, sqlOptions => sqlOptions.EnableRetryOnFailure());
-});
-builder.Services.AddDbContext<AppIdentityDbContext>(options =>
-{
-    var connectionString = builder.Configuration[builder.Configuration["AZURE_SQL_IDENTITY_CONNECTION_STRING_KEY"]];
-    options.UseSqlServer(connectionString, sqlOptions => sqlOptions.EnableRetryOnFailure());
-});
+// var credential = new ChainedTokenCredential(new AzureDeveloperCliCredential(), new DefaultAzureCredential());
+// builder.Configuration.AddAzureKeyVault(new Uri(builder.Configuration["AZURE_KEY_VAULT_ENDPOINT"]), credential);
+// builder.Services.AddDbContext<CatalogContext>(c =>
+// {
+//     var connectionString = builder.Configuration[builder.Configuration["AZURE_SQL_CATALOG_CONNECTION_STRING_KEY"]];
+//     c.UseSqlServer(connectionString, sqlOptions => sqlOptions.EnableRetryOnFailure());
+// });
+// builder.Services.AddDbContext<AppIdentityDbContext>(options =>
+// {
+//     var connectionString = builder.Configuration[builder.Configuration["AZURE_SQL_IDENTITY_CONNECTION_STRING_KEY"]];
+//     options.UseSqlServer(connectionString, sqlOptions => sqlOptions.EnableRetryOnFailure());
+// });
 
 builder.Services.AddCookieSettings();
 
