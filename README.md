@@ -71,7 +71,7 @@ azd login
 
 Then, just use the `azd up` command to complete all operations of clone, provision and deployment.
 ```
-azd up -t dotnet-architecture/eShopOnWeb -b main 
+azd up -t dotnet-architecture/eShopOnWeb 
 ```
 According to the prompt, enter an `env name`, and select `subscription` and `location`, these are the necessary parameters when you create resources. Wait a moment for the resource deployment to complete, click the web endpoint and you will see the home page.
 
