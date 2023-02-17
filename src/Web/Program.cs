@@ -23,10 +23,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.AddConsole();
 
-var azdTemplate= builder.Configuration["AZD_TEMPLATE"];
+var env = builder.Configuration["Environment"];
 
-if (azdTemplate == "enable"){
-    // Configure SQL Server (Azd template)
+if (env == "Local"){
+    // Configure SQL Server (local)
+    Microsoft.eShopWeb.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, builder.Services);
+}
+else{
+    // Configure SQL Server (prod)
     var credential = new ChainedTokenCredential(new AzureDeveloperCliCredential(), new DefaultAzureCredential());
     builder.Configuration.AddAzureKeyVault(new Uri(builder.Configuration["AZURE_KEY_VAULT_ENDPOINT"]), credential);
     builder.Services.AddDbContext<CatalogContext>(c =>
@@ -39,10 +43,6 @@ if (azdTemplate == "enable"){
         var connectionString = builder.Configuration[builder.Configuration["AZURE_SQL_IDENTITY_CONNECTION_STRING_KEY"]];
         options.UseSqlServer(connectionString, sqlOptions => sqlOptions.EnableRetryOnFailure());
     });
-}
-else{
-    // Configure SQL Server (Locally)
-    Microsoft.eShopWeb.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, builder.Services);
 }
 
 builder.Services.AddCookieSettings();
