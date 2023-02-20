@@ -21,11 +21,13 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var detectEnvBuilder = WebApplication.CreateBuilder(args);
+
 builder.Logging.AddConsole();
 
-var env = builder.Configuration["Environment"];
+var detectEnvApp = detectEnvBuilder.Build();
 
-if (env == "Local"){
+if (detectEnvApp.Environment.IsDevelopment() || detectEnvApp.Environment.EnvironmentName == "Docker"){
     // Configure SQL Server (local)
     Microsoft.eShopWeb.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, builder.Services);
 }
