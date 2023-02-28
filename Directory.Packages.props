@@ -15,8 +15,7 @@
     <PackageVersion Include="Blazored.LocalStorage" Version="4.3.0" />
     <PackageVersion Include="BuildBundlerMinifier" Version="3.2.449" PrivateAssets="All" />
     <PackageVersion Include="FluentValidation" Version="11.5.1" />
-    <PackageVersion Include="MediatR" Version="11.1.0" />
-    <PackageVersion Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageVersion Include="MediatR" Version="12.0.1" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.3" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.3" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="7.0.3" />
