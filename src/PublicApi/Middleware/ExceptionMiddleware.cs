@@ -41,12 +41,14 @@ public class ExceptionMiddleware
                 Message = duplicationException.Message
             }.ToString());
         }
-
-        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-        await context.Response.WriteAsync(new ErrorDetails()
+        else
         {
-            StatusCode = context.Response.StatusCode,
-            Message = exception.Message
-        }.ToString());
+            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            await context.Response.WriteAsync(new ErrorDetails()
+            {
+                StatusCode = context.Response.StatusCode,
+                Message = exception.Message
+            }.ToString());
+        }
     }
 }
