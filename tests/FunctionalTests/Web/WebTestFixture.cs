@@ -23,6 +23,16 @@ public class TestApplication : WebApplicationFactory<IBasketViewModelService>
         // Add mock/test services to the builder here
         builder.ConfigureServices(services =>
         {
+            var descriptors = services.Where(d =>
+                                                d.ServiceType == typeof(DbContextOptions<CatalogContext>) ||
+                                                d.ServiceType == typeof(DbContextOptions<AppIdentityDbContext>))
+                                            .ToList();
+
+            foreach (var descriptor in descriptors)
+            {
+                services.Remove(descriptor);
+            }
+
             services.AddScoped(sp =>
             {
                 // Replace SQLite with in-memory database for tests
