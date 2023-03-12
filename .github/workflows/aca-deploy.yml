@@ -15,7 +15,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: eshoponweb
+  IMAGE_NAME: rsciriano/eshoponweb
 
 jobs:
   build:
