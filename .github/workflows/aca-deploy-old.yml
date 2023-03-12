@@ -1,6 +1,7 @@
 name: eShopOnWeb ACA Deploy
 
-on: [push, pull_request, workflow_dispatch]
+#on: [push, pull_request, workflow_dispatch]
+on: [workflow_dispatch]
 
 env:
   REGISTRY: ghcr.io
