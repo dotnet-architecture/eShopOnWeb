@@ -1,4 +1,4 @@
-name: Trigger auto deployment for eshop-demo
+name: eShop-demo Deploy
 
 # When this action will be executed
 on:
@@ -12,6 +12,10 @@ on:
 
   # Allow mannually trigger 
   workflow_dispatch:      
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build:
@@ -27,7 +31,7 @@ jobs:
       - name: Log in to container registry
         uses: docker/login-action@v1
         with:
-          registry: ghcr.io
+          registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
@@ -35,7 +39,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: rsciriano/eshop-demo:${{ github.sha }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
           file: ./src/Web/Dockerfile
           context: ./
 
@@ -57,4 +61,4 @@ jobs:
           inlineScript: |
             az config set extension.use_dynamic_install=yes_without_prompt
             az containerapp registry set -n eshop-demo -g eshop-demo-rg --server docker.io --username  ${{ github.actor }} --password ${{ secrets.GITHUB_TOKEN }}
-            az containerapp update -n eshop-demo -g eshop-demo-rg --image rsciriano/eshop-demo:${{ github.sha }}
+            az containerapp update -n eshop-demo -g eshop-demo-rg --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
