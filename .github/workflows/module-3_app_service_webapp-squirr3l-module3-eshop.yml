@@ -6,7 +6,7 @@ name: Build and deploy ASP.Net Core app to Azure Web App - webapp-squirr3l-modul
 on:
   push:
     branches:
-      - module/3_app_service
+      - 'module/**'
   workflow_dispatch:
 
 jobs:
