@@ -56,8 +56,8 @@ jobs:
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_1701B41799E34CEE90BF27C1F50C40F0 }}
           package: .
 
-      - name: Deploy to Azure Web App Slot1
-        id: deploy-to-webapp
+      - name: Deploy to Azure Web App Slot
+        id: deploy-to-webapp-slot
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'webapp-squirr3l-module3-eshop'
