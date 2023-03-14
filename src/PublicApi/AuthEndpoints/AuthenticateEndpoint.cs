@@ -33,7 +33,8 @@ public class AuthenticateEndpoint : EndpointBaseAsync
         OperationId = "auth.authenticate",
         Tags = new[] { "AuthEndpoints" })
     ]
-    public override async Task<ActionResult<AuthenticateResponse>> HandleAsync(AuthenticateRequest request, CancellationToken cancellationToken = default)
+    public override async Task<ActionResult<AuthenticateResponse>> HandleAsync(AuthenticateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var response = new AuthenticateResponse(request.CorrelationId());
 

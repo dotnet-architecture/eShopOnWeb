@@ -35,7 +35,7 @@ public class RegisterModel : PageModel
     }
 
     [BindProperty]
-    public InputModel? Input { get; set; }
+    public required InputModel Input { get; set; }
 
     public string? ReturnUrl { get; set; }
 

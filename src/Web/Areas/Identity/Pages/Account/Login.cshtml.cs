@@ -25,7 +25,7 @@ public class LoginModel : PageModel
     }
 
     [BindProperty]
-    public InputModel? Input { get; set; }
+    public required InputModel Input { get; set; }
 
     public IList<AuthenticationScheme>? ExternalLogins { get; set; }
 

@@ -13,7 +13,7 @@ public class IndexModel : PageModel
         _catalogViewModelService = catalogViewModelService;
     }
 
-    public CatalogIndexViewModel CatalogModel { get; set; } = new CatalogIndexViewModel();
+    public required CatalogIndexViewModel CatalogModel { get; set; } = new CatalogIndexViewModel();
 
     public async Task OnGet(CatalogIndexViewModel catalogModel, int? pageId)
     {

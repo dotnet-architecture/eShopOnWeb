@@ -21,11 +21,11 @@ public class CachedCatalogViewModelService : ICatalogViewModelService
 
     public async Task<IEnumerable<SelectListItem>> GetBrands()
     {
-        return await _cache.GetOrCreateAsync(CacheHelpers.GenerateBrandsCacheKey(), async entry =>
+        return (await _cache.GetOrCreateAsync(CacheHelpers.GenerateBrandsCacheKey(), async entry =>
                 {
                     entry.SlidingExpiration = CacheHelpers.DefaultCacheDuration;
                     return await _catalogViewModelService.GetBrands();
-                });
+                })) ?? new List<SelectListItem>();
     }
 
     public async Task<CatalogIndexViewModel> GetCatalogItems(int pageIndex, int itemsPage, int? brandId, int? typeId)
