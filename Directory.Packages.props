@@ -38,7 +38,7 @@
     </PackageVersion>
     <PackageVersion Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
     <PackageVersion Include="MinimalApi.Endpoint" Version="1.3.0" />
-    <PackageVersion Include="System.Net.Http.Json" Version="7.0.0" />
+    <PackageVersion Include="System.Net.Http.Json" Version="7.0.1" />
     <PackageVersion Include="System.Security.Claims" Version="4.3.0" />
     <PackageVersion Include="System.Text.Json" Version="7.0.2" />
     <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="6.27.0" />
