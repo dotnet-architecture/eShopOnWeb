@@ -28,7 +28,7 @@
     <PackageVersion Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageVersion Include="Microsoft.Extensions.Identity.Core" Version="7.0.4" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Configuration" Version="7.0.0" />
-    <PackageVersion Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.4" />
+    <PackageVersion Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.5" />
     <PackageVersion Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.4" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.4" />
