@@ -48,13 +48,12 @@ public class BasketService : IBasketService
     {
         var basketSpec = new BasketWithItemsSpecification(basketId);
         var basket = await _basketRepository.FirstOrDefaultAsync(basketSpec);
-        if (basket == null) return Result<Basket>.NotFound();
 
         foreach (var item in basket.Items)
         {
             if (quantities.TryGetValue(item.Id.ToString(), out var quantity))
             {
-                if (_logger != null) _logger.LogInformation($"Updating quantity of item ID:{item.Id} to {quantity}.");
+                _logger.LogInformation($"Updating quantity of item ID:{item.Id} to {quantity}.");
                 item.SetQuantity(quantity);
             }
         }
