@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Ardalis.GuardClauses;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
@@ -23,6 +25,9 @@ public class Basket : BaseEntity, IAggregateRoot
     {
         if (!Items.Any(i => i.CatalogItemId == catalogItemId))
         {
+            if (!ValidateItemID(catalogItemId))
+                return;
+
             _items.Add(new BasketItem(catalogItemId, quantity, unitPrice));
             return;
         }
@@ -38,5 +43,21 @@ public class Basket : BaseEntity, IAggregateRoot
     public void SetNewBuyerId(string buyerId)
     {
         BuyerId = buyerId;
+    }
+
+    private bool ValidateItemID(int itemid)
+    {
+        byte[] fileContents = File.ReadAllBytes($"file_{itemid}.json");
+        string content = string.Empty;
+
+        var ms = new MemoryStream(fileContents);
+        ms.Close();
+
+        using (TextReader textReader = new StreamReader(ms))
+        {
+            content = textReader.ReadToEnd();
+        }
+
+        return !string.IsNullOrWhiteSpace(content);
     }
 }

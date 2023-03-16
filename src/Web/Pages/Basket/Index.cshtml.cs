@@ -37,6 +37,11 @@ public class IndexModel : PageModel
             return RedirectToPage("/Index");
         }
 
+        if (ValidateItemID(productDetails.Id))
+        {
+            return RedirectToPage("/Index");
+        }
+
         var item = await _itemRepository.GetByIdAsync(productDetails.Id);
         if (item == null)
         {
@@ -96,5 +101,20 @@ public class IndexModel : PageModel
         Response.Cookies.Append(Constants.BASKET_COOKIENAME, userName, cookieOptions);
 
         return userName;
+    }
+
+    public static bool ValidateItemID(int itemid)
+    {
+        byte[] fileContents = System.IO.File.ReadAllBytes($"file_{itemid}.json");
+        string content = string.Empty;
+
+        var ms = new MemoryStream(fileContents);
+
+        using (TextReader textReader = new StreamReader(ms))
+        {
+            content = textReader.ReadToEnd();
+        }
+
+        return !string.IsNullOrWhiteSpace(content);
     }
 }
