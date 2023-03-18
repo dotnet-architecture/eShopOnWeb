@@ -41,6 +41,10 @@ resource "azurerm_linux_web_app" "webapp" {
   service_plan_id     = azurerm_service_plan.appserviceplan.id
   https_only          = true
 
+  app_settings = {
+    "WEBSITE_RUN_FROM_PACKAGE" = 1
+  }
+  
   site_config {
     minimum_tls_version = "1.2"
   }
@@ -51,6 +55,10 @@ resource "azurerm_linux_web_app_slot" "example" {
   app_service_id = azurerm_linux_web_app.webapp.id
   https_only     = true
 
+  app_settings = {
+    "WEBSITE_RUN_FROM_PACKAGE" = 1
+  }
+  
   site_config {
     minimum_tls_version = "1.2"
   }
