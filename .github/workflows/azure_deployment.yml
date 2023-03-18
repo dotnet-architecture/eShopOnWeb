@@ -57,7 +57,7 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'webapp-squirr3l-module3-eshop'
-          slot-name: 'Production'
+          slot-name: 'prod'
           package: .
 
       - name: Deploy to Azure Web App Slot
@@ -65,7 +65,7 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'webapp-squirr3l-module3-eshop'
-          slot-name: 'web-app-slot-squirr3l-module3-eshop'
+          slot-name: 'dev'
           package: .
 
       - name: Sign out of Azure.
