@@ -19,6 +19,9 @@ locals {
   #dotnet publish ./src/PublicApi/PublicApi.csproj -c Release -o eshop.zip
   #zip -r eshop.zip ./src/PublicApi/bin/Release/net7.0/publish
   file_path = "../eshop.zip"
+
+  #throw an error if file doesn't exist
+  zip_deploy_file = fileexists(local.file_path) ? local.file_path : [][0]
 }
 
 resource "azurerm_resource_group" "rg" {
@@ -46,8 +49,7 @@ resource "azurerm_linux_web_app" "webapp" {
   service_plan_id     = azurerm_service_plan.appserviceplan.id
   https_only          = true
 
-  #throw an error if file doesn't exist
-  zip_deploy_file = fileexists(local.file_path) ? local.file_path : [][0]
+  zip_deploy_file = local.zip_deploy_file
   
   app_settings = {
     "WEBSITE_RUN_FROM_PACKAGE" = 1
@@ -67,8 +69,7 @@ resource "azurerm_linux_web_app_slot" "example" {
   app_service_id = azurerm_linux_web_app.webapp.id
   https_only     = true
 
-  #throw an error if file doesn't exist
-  zip_deploy_file = fileexists(local.file_path) ? local.file_path : [][0]
+  zip_deploy_file = local.zip_deploy_file
 
   app_settings = {
     "WEBSITE_RUN_FROM_PACKAGE" = 1
