@@ -40,28 +40,18 @@ resource "azurerm_linux_web_app" "webapp" {
   resource_group_name = azurerm_resource_group.rg.name
   service_plan_id     = azurerm_service_plan.appserviceplan.id
   https_only          = true
+
+  app_settings = {
+    "WEBSITE_RUN_FROM_PACKAGE" = 1
+  }
   
   site_config {
     minimum_tls_version = "1.2"
   }
 }
 
-resource "azurerm_linux_web_app_slot" "production" {
-  name           = "prod"
-  app_service_id = azurerm_linux_web_app.webapp.id
-  https_only     = true
-
-  app_settings = {
-    "WEBSITE_RUN_FROM_PACKAGE" = 1
-  }
-
-  site_config {
-    minimum_tls_version = "1.2"
-  }
-}
-
-resource "azurerm_linux_web_app_slot" "dev" {
-  name           = "dev"
+resource "azurerm_linux_web_app_slot" "example" {
+  name           = "web-app-slot-${local.name}"
   app_service_id = azurerm_linux_web_app.webapp.id
   https_only     = true
 
