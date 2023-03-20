@@ -23,7 +23,7 @@ public class OrderIndexOnGet : IClassFixture<TestApplication>
     public async Task ReturnsRedirectGivenAnonymousUser()
     {
         var response = await Client.GetAsync("/order/my-orders");
-        var redirectLocation = response.Headers.Location.OriginalString;
+        var redirectLocation = response!.Headers.Location!.OriginalString;
 
         Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
         Assert.Contains("/Account/Login", redirectLocation);

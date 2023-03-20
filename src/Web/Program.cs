@@ -82,7 +82,7 @@ var baseUrlConfig = configSection.Get<BaseUrlConfiguration>();
 // Blazor Admin Required Services for Prerendering
 builder.Services.AddScoped<HttpClient>(s => new HttpClient
 {
-    BaseAddress = new Uri(baseUrlConfig.WebBase)
+    BaseAddress = new Uri(baseUrlConfig!.WebBase)
 });
 
 // add blazor services
@@ -171,15 +171,13 @@ app.UseCookiePolicy();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllerRoute("default", "{controller:slugify=Home}/{action:slugify=Index}/{id?}");
-    endpoints.MapRazorPages();
-    endpoints.MapHealthChecks("home_page_health_check", new HealthCheckOptions { Predicate = check => check.Tags.Contains("homePageHealthCheck") });
-    endpoints.MapHealthChecks("api_health_check", new HealthCheckOptions { Predicate = check => check.Tags.Contains("apiHealthCheck") });
-    //endpoints.MapBlazorHub("/admin");
-    endpoints.MapFallbackToFile("index.html");
-});
+
+app.MapControllerRoute("default", "{controller:slugify=Home}/{action:slugify=Index}/{id?}");
+app.MapRazorPages();
+app.MapHealthChecks("home_page_health_check", new HealthCheckOptions { Predicate = check => check.Tags.Contains("homePageHealthCheck") });
+app.MapHealthChecks("api_health_check", new HealthCheckOptions { Predicate = check => check.Tags.Contains("apiHealthCheck") });
+//endpoints.MapBlazorHub("/admin");
+app.MapFallbackToFile("index.html");
 
 app.Logger.LogInformation("LAUNCHING");
 app.Run();
