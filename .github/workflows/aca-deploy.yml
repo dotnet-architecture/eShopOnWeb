@@ -17,8 +17,9 @@ on:
 permissions:
   id-token: write
   contents: read
+  packages: write
   pull-requests: write
-  
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: rsciriano/eshoponweb
