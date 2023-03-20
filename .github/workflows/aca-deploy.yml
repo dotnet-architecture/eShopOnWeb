@@ -57,9 +57,11 @@ jobs:
     needs: build
     defaults:
       run:
-        working-directory: deploy/terraform
+        working-directory: ./deploy/terraform
     
     steps:
+    - name: Checkout to the branch
+      uses: actions/checkout@v2    
     # Install the latest version of the Terraform CLI
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
