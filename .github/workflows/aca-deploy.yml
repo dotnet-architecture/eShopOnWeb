@@ -13,6 +13,12 @@ on:
   # Allow mannually trigger 
   workflow_dispatch:      
 
+#Special permissions required for OIDC authentication
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+  
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: rsciriano/eshoponweb
