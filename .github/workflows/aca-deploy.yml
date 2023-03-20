@@ -57,7 +57,7 @@ jobs:
     needs: build
     defaults:
       run:
-        working-directory: ./deploy/terraform
+        working-directory: deploy/terraform
     
     steps:
     # Install the latest version of the Terraform CLI
