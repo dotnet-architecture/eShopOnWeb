@@ -70,10 +70,10 @@ jobs:
       uses: hashicorp/setup-terraform@v2
       with:
         terraform_wrapper: false
-    - name: Azure Login
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.ESHOPDEMO_AZURE_CREDENTIALS }}
+    #- name: Azure Login
+    #  uses: azure/login@v1
+    #  with:
+    #    creds: ${{ secrets.ESHOPDEMO_AZURE_CREDENTIALS }}
     - name: Terraform vars
       run: | 
         tee -a terraform.tfvars <<EOF
