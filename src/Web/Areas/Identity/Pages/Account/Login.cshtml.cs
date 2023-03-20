@@ -25,7 +25,7 @@ public class LoginModel : PageModel
     }
 
     [BindProperty]
-    public InputModel? Input { get; set; }
+    public required InputModel Input { get; set; }
 
     public IList<AuthenticationScheme>? ExternalLogins { get; set; }
 
@@ -74,7 +74,8 @@ public class LoginModel : PageModel
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, set lockoutOnFailure: true
             //var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
-            var result = await _signInManager.PasswordSignInAsync(Input?.Email, Input?.Password, false, true);
+            var result = await _signInManager.PasswordSignInAsync(Input!.Email!, Input!.Password!, 
+                false, true);
 
             if (result.Succeeded)
             {

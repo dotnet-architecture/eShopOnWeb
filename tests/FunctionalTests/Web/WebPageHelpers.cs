@@ -22,6 +22,6 @@ public static class WebPageHelpers
     {
         var regex = new Regex(regexpression);
         var match = regex.Match(input);
-        return match.Groups.Values.LastOrDefault().Value;
+        return match!.Groups!.Values!.LastOrDefault()!.Value;
     }
 }

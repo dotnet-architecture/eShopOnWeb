@@ -52,7 +52,7 @@ public class IndexTest : IClassFixture<TestApplication>
 
         var stringUpdateResponse = await updateResponse.Content.ReadAsStringAsync();
 
-        Assert.Contains("/basket/update", updateResponse.RequestMessage.RequestUri.ToString());
+        Assert.Contains("/basket/update", updateResponse!.RequestMessage!.RequestUri!.ToString()!);
         decimal expectedTotalAmount = 416.50M;
         Assert.Contains(expectedTotalAmount.ToString("N2"), stringUpdateResponse);
     }
@@ -92,7 +92,7 @@ public class IndexTest : IClassFixture<TestApplication>
 
         var stringUpdateResponse = await updateResponse.Content.ReadAsStringAsync();
 
-        Assert.Contains("/basket/update", updateResponse.RequestMessage.RequestUri.ToString());
+        Assert.Contains("/basket/update", updateResponse!.RequestMessage!.RequestUri!.ToString()!);
         Assert.Contains("Basket is empty", stringUpdateResponse);
     }
 }

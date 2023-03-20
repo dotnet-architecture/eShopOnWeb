@@ -1,7 +1,11 @@
-﻿namespace Microsoft.eShopWeb.Web.ViewModels.Manage;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Microsoft.eShopWeb.Web.ViewModels.Manage;
 
 public class RemoveLoginViewModel
 {
-    public string? LoginProvider { get; set; }
-    public string? ProviderKey { get; set; }
+    [Required]
+    public string LoginProvider { get; set; } = string.Empty;
+    [Required]
+    public string ProviderKey { get; set; } = string.Empty;
 }

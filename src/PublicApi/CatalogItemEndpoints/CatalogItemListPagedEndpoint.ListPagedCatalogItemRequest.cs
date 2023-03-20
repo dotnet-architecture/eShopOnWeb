@@ -2,8 +2,8 @@
 
 public class ListPagedCatalogItemRequest : BaseRequest
 {
-    public int? PageSize { get; init; }
-    public int? PageIndex { get; init; }
+    public int PageSize { get; init; }
+    public int PageIndex { get; init; }
     public int? CatalogBrandId { get; init; }
     public int? CatalogTypeId { get; init; }
 
