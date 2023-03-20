@@ -257,3 +257,10 @@ pub/
 
 #Ignore marker-file used to know which docker files we have.
 .eshopdocker_*
+
+# Terraform
+.terraform
+.terraform.lock.hcl
+*.tfplan
+tfstate.tf
+*.tfvars
