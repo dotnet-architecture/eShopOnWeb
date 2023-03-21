@@ -22,6 +22,7 @@ permissions:
 
 env:
   ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
+  ARM_CLIENT_SECRET: "${{ secrets.AZURE_CLIENT_SECRET }}"
   ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
   ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
   REGISTRY: ghcr.io
@@ -96,11 +97,7 @@ jobs:
         EOF
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
-      uses: azure/CLI@v1
-      with:
-        inlineScript: |
-          cd ./deploy/terraform  
-          terraform init
+      run: terraform init
 
     # Checks that all Terraform configuration files adhere to a canonical format
     # Will fail the build if not
