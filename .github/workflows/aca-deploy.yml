@@ -201,7 +201,7 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: tfplan
-        path: ./deploy/terraform
+        path: deploy/terraform
 
 
     # Terraform Apply
