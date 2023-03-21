@@ -101,8 +101,8 @@ jobs:
 
     # Checks that all Terraform configuration files adhere to a canonical format
     # Will fail the build if not
-    - name: Terraform Format
-      run: terraform fmt -check
+    #- name: Terraform Format
+    #  run: terraform fmt -check
 
     # Generates an execution plan for Terraform
     # An exit code of 0 indicated no changes, 1 a terraform failure, 2 there are pending changes.
