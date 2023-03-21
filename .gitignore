@@ -264,3 +264,4 @@ pub/
 *.tfplan
 tfstate.tf
 *.tfvars
+terraform.tfstate
