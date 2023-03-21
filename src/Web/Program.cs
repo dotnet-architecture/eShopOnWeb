@@ -4,6 +4,7 @@ using BlazorAdmin;
 using BlazorAdmin.Services;
 using Blazored.LocalStorage;
 using BlazorShared;
+using Microsoft.ApplicationInsights.DependencyCollector;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Identity;
@@ -21,6 +22,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.AddConsole();
 builder.Services.AddApplicationInsightsTelemetry();
+builder.Services.ConfigureTelemetryModule<DependencyTrackingTelemetryModule>((module, o) 
+    => { module.EnableSqlCommandTextInstrumentation = true; });
 
 Microsoft.eShopWeb.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, builder.Services);
 
