@@ -95,13 +95,11 @@ jobs:
         }
         EOF
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
-    - task: AzureCLI@2
-      name: Terraform Init
-      inputs:
-        working-directory: ./deploy/terraform
-        addSpnToEnvironment: true
-        scriptLocation: inlineScript
-        inlineScript: |  
+    - name: Terraform Init
+      uses: azure/CLI@v1
+      with:
+        inlineScript: |
+          cd ./deploy/terraform  
           terraform init
 
     # Checks that all Terraform configuration files adhere to a canonical format
