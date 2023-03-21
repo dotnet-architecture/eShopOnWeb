@@ -235,6 +235,10 @@ module "container_apps" {
           value = module.application_insights.connection_string
         },
         {
+          name = "insights-instrumentationkey"
+          value = module.application_insights.instrumentation_key
+        },
+        {
           name = "catalog-connection"
           value = module.mssql.conection_strings.Catalog
         },
