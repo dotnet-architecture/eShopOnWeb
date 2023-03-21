@@ -62,7 +62,12 @@ jobs:
     defaults:
       run:
         working-directory: ./deploy/terraform
-    
+    env:
+      #this is needed since we are running terraform with read-only permissions
+      ARM_SKIP_PROVIDER_REGISTRATION: true
+    outputs:
+      tfplanExitCode: ${{ steps.tf-plan.outputs.exitcode }}
+          
     steps:
     - name: Checkout to the branch
       uses: actions/checkout@v2    
