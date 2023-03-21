@@ -210,8 +210,8 @@ module "container_apps" {
             cpu                  = 0.5
             memory               = "1Gi"
             env                  = [{
-                name                 = "APPINSIGHTS_INSTRUMENTATIONKEY"
-                secret_name          = "insights-instrumentationkey"
+                name                 = "APPLICATIONINSIGHTS_CONNECTION_STRING"
+                secret_name          = "insights-connection"
             },
             {
                 name                 = "ASPNETCORE_URLS"
@@ -231,8 +231,8 @@ module "container_apps" {
       }
       secrets = [
         {
-          name = "insights-instrumentationkey"
-          value = module.application_insights.instrumentation_key
+          name = "insights-connection"
+          value = module.application_insights.connection_string
         },
         {
           name = "catalog-connection"

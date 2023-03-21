@@ -13,6 +13,11 @@ output "instrumentation_key" {
   description = "Specifies the instrumentation key of the Application Insights."
 }
 
+output "connection_string" {
+  value       = azurerm_application_insights.resource.connection_string
+  description = "Specifies the instrumentation key of the Application Insights."
+}
+
 output "app_id" {
   value       = azurerm_application_insights.resource.app_id
   description = "Specifies the resource id of the resource."
