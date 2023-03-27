@@ -136,3 +136,64 @@ resource "azurerm_linux_web_app" "public_api" {
     }
   }
 }
+
+//task 2
+
+resource "azurerm_monitor_autoscale_setting" "public_api_profile" {
+  name                = "autoscaling_public_api"
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_service_plan.main_service_plan.location
+  target_resource_id  = azurerm_service_plan.main_service_plan.id
+
+  profile {
+    name = "public_api_profile"
+
+    capacity {
+      default = 1
+      minimum = 1
+      maximum = 2
+    }
+
+    rule {
+      metric_trigger {
+        metric_name        = "CpuPercentage"
+        metric_resource_id = azurerm_service_plan.main_service_plan.id
+        time_grain         = "PT1M"
+        statistic          = "Average"
+        time_window        = "PT5M"
+        time_aggregation   = "Average"
+        operator           = "GreaterThan"
+        threshold          = 75
+        metric_namespace   = "Microsoft.Web/serverfarms"
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name        = "CpuPercentage"
+        metric_resource_id = azurerm_service_plan.main_service_plan.id
+        time_grain         = "PT1M"
+        statistic          = "Average"
+        time_window        = "PT5M"
+        time_aggregation   = "Average"
+        operator           = "LessThan"
+        threshold          = 25
+        metric_namespace   = "Microsoft.Web/serverfarms"
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1M"
+      }
+    }
+  }
+}
