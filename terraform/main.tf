@@ -95,12 +95,34 @@ resource "azurerm_service_plan" "second_service_plan" {
 
 resource "azurerm_linux_web_app" "second" {
   name                = "webapp2-${local.name}"
-  location            = local.second_region
+  location            = azurerm_service_plan.second_service_plan.location
   resource_group_name = azurerm_resource_group.rg.name
   service_plan_id     = azurerm_service_plan.second_service_plan.id
   https_only          = true
 
   zip_deploy_file = local.web_zip_deploy_file
+
+  app_settings = {
+    "WEBSITE_RUN_FROM_PACKAGE" = 1
+  }
+
+  site_config {
+    minimum_tls_version = "1.2"
+
+    application_stack {
+      dotnet_version = "7.0"
+    }
+  }
+}
+
+resource "azurerm_linux_web_app" "public_api" {
+  name                = "public-api-${local.name}"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  service_plan_id     = azurerm_service_plan.main_service_plan.id
+  https_only          = true
+
+  zip_deploy_file = local.public_api_zip_deploy_file
 
   app_settings = {
     "WEBSITE_RUN_FROM_PACKAGE" = 1
