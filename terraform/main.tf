@@ -12,7 +12,9 @@ provider "azurerm" {
 }
 
 locals {
-  name = "squirr3l-module3-eshop"
+  name          = "squirr3l-module3-eshop"
+  first_region  = "westeurope"
+  second_region = "northeurope"
 
   #run the commands below to get it (for macos / linux):
   #dotnet publish ./src/PublicApi/PublicApi.csproj -c Release
@@ -30,10 +32,10 @@ locals {
 
 resource "azurerm_resource_group" "rg" {
   name     = "resource-group-${local.name}"
-  location = "westeurope"
+  location = local.first_region
 }
 
-resource "azurerm_service_plan" "appserviceplan" {
+resource "azurerm_service_plan" "main_service_plan" {
   name                = "service-plan-${local.name}"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
@@ -45,15 +47,15 @@ resource "azurerm_linux_web_app" "main" {
   name                = "webapp-${local.name}"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  service_plan_id     = azurerm_service_plan.appserviceplan.id
+  service_plan_id     = azurerm_service_plan.main_service_plan.id
   https_only          = true
 
   zip_deploy_file = local.web_zip_deploy_file
-  
+
   app_settings = {
     "WEBSITE_RUN_FROM_PACKAGE" = 1
   }
-  
+
   site_config {
     minimum_tls_version = "1.2"
 
@@ -67,6 +69,36 @@ resource "azurerm_linux_web_app_slot" "main" {
   name           = "develop"
   app_service_id = azurerm_linux_web_app.main.id
   https_only     = true
+
+  zip_deploy_file = local.web_zip_deploy_file
+
+  app_settings = {
+    "WEBSITE_RUN_FROM_PACKAGE" = 1
+  }
+
+  site_config {
+    minimum_tls_version = "1.2"
+
+    application_stack {
+      dotnet_version = "7.0"
+    }
+  }
+}
+
+resource "azurerm_service_plan" "second_service_plan" {
+  name                = "second-service-plan-${local.name}"
+  location            = local.second_region
+  resource_group_name = azurerm_resource_group.rg.name
+  os_type             = "Linux"
+  sku_name            = "S1"
+}
+
+resource "azurerm_linux_web_app" "second" {
+  name                = "webapp2-${local.name}"
+  location            = local.second_region
+  resource_group_name = azurerm_resource_group.rg.name
+  service_plan_id     = azurerm_service_plan.second_service_plan.id
+  https_only          = true
 
   zip_deploy_file = local.web_zip_deploy_file
 
