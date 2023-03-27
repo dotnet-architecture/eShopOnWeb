@@ -63,20 +63,28 @@ powershell -ex AllSigned -c "Invoke-RestMethod 'https://aka.ms/install-azd.ps1' 
 curl -fsSL https://aka.ms/install-azd.sh | bash
 ```
 
+And you can also install with package managers, like winget, choco, and brew. For more detials, you can follow the documentation: https://aka.ms/azure-dev/install.
+
 After logging in with the following command, you will be able to use the azd cli to quickly provision and deploy the application.
 
 ```
 azd login
 ```
 
-Then, just use the `azd up` command to complete all operations of clone, provision and deployment.
+Then, executes the commands `azd init` to initializes environment.
 ```
-azd up -t dotnet-architecture/eShopOnWeb 
+azd init -t dotnet-architecture/eShopOnWeb 
 ```
+
+And executes the commands `azd up` to complete all operations of provision and deployment.
+```
+azd up 
+```
+
 According to the prompt, enter an `env name`, and select `subscription` and `location`, these are the necessary parameters when you create resources. Wait a moment for the resource deployment to complete, click the web endpoint and you will see the home page.
 
 **Notes:**
-Considering security, we store its related data (id, password) in the key vault when we create the database, and obtain it from the key vault when we use it. This is different from directly deploying applications locally.
+Considering security, we store its related data (id, password) in the **Azure Key Vault** when we create the database, and obtain it from the Key Vault when we use it. This is different from directly deploying applications locally.
 
 You can also run the sample directly locally (See below).
 

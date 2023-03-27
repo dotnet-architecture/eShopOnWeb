@@ -33,7 +33,7 @@ resource sqlServer 'Microsoft.Sql/servers@2022-05-01-preview' = {
   resource firewall 'firewallRules' = {
     name: 'Azure Services'
     properties: {
-      // Allow all clients 
+      // Allow all clients
       // Note: range [0.0.0.0-0.0.0.0] means "allow all Azure-hosted clients only".
       // This is not sufficient, because we also want to allow direct access from developer machine, for debugging purposes.
       startIpAddress: '0.0.0.1'
@@ -127,4 +127,3 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
 var connectionString = 'Server=${sqlServer.properties.fullyQualifiedDomainName}; Database=${sqlServer::database.name}; User=${appUser}'
 output connectionStringKey string = connectionStringKey
 output databaseName string = sqlServer::database.name
-output connectionString string = connectionString
