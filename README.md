@@ -63,7 +63,7 @@ powershell -ex AllSigned -c "Invoke-RestMethod 'https://aka.ms/install-azd.ps1' 
 curl -fsSL https://aka.ms/install-azd.sh | bash
 ```
 
-And you can also install with package managers, like winget, choco, and brew. For more detials, you can follow the documentation: https://aka.ms/azure-dev/install.
+And you can also install with package managers, like winget, choco, and brew. For more details, you can follow the documentation: https://aka.ms/azure-dev/install.
 
 After logging in with the following command, you will be able to use the azd cli to quickly provision and deploy the application.
 
@@ -71,12 +71,12 @@ After logging in with the following command, you will be able to use the azd cli
 azd login
 ```
 
-Then, executes the commands `azd init` to initializes environment.
+Then, execute the `azd init` command to initialize the environment.
 ```
 azd init -t dotnet-architecture/eShopOnWeb 
 ```
 
-And executes the commands `azd up` to complete all operations of provision and deployment.
+Run `azd up` to provision all the resources to Azure and deploy the code to those resources.
 ```
 azd up 
 ```
