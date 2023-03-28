@@ -137,8 +137,6 @@ resource "azurerm_linux_web_app" "public_api" {
   }
 }
 
-//task 2
-
 resource "azurerm_monitor_autoscale_setting" "public_api_profile" {
   name                = "autoscaling_public_api"
   resource_group_name = azurerm_resource_group.rg.name
@@ -196,4 +194,41 @@ resource "azurerm_monitor_autoscale_setting" "public_api_profile" {
       }
     }
   }
+}
+
+resource "azurerm_traffic_manager_profile" "profile" {
+  name                   = "traffic-manager"
+  resource_group_name    = azurerm_resource_group.rg.name
+  traffic_routing_method = "Performance"
+
+  dns_config {
+    relative_name = "squirr3l-dns"
+    ttl           = 100
+  }
+
+  monitor_config {
+    protocol                     = "HTTPS"
+    port                         = 443
+    path                         = "/"
+    interval_in_seconds          = 30
+    timeout_in_seconds           = 9
+    tolerated_number_of_failures = 3
+  }
+
+  //without 'depends_on' it will fail with error "waiting for Zip Deployment to complete"
+  depends_on             = [azurerm_linux_web_app.main, azurerm_linux_web_app.second]
+}
+
+resource "azurerm_traffic_manager_azure_endpoint" "main" {
+  name               = "main"
+  profile_id         = azurerm_traffic_manager_profile.profile.id
+  weight             = 100
+  target_resource_id = azurerm_linux_web_app.main.id
+}
+
+resource "azurerm_traffic_manager_azure_endpoint" "second" {
+  name               = "second"
+  profile_id         = azurerm_traffic_manager_profile.profile.id
+  weight             = 100
+  target_resource_id = azurerm_linux_web_app.second.id
 }
