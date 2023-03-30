@@ -53,7 +53,7 @@ resource "azurerm_linux_web_app" "main" {
   zip_deploy_file = local.web_zip_deploy_file
 
   app_settings = {
-    "WEBSITE_RUN_FROM_PACKAGE" = 1
+    WEBSITE_RUN_FROM_PACKAGE = 1
   }
 
   site_config {
@@ -73,7 +73,7 @@ resource "azurerm_linux_web_app_slot" "main" {
   zip_deploy_file = local.web_zip_deploy_file
 
   app_settings = {
-    "WEBSITE_RUN_FROM_PACKAGE" = 1
+    WEBSITE_RUN_FROM_PACKAGE = 1
   }
 
   site_config {
@@ -103,7 +103,7 @@ resource "azurerm_linux_web_app" "second" {
   zip_deploy_file = local.web_zip_deploy_file
 
   app_settings = {
-    "WEBSITE_RUN_FROM_PACKAGE" = 1
+    WEBSITE_RUN_FROM_PACKAGE = 1
   }
 
   site_config {
@@ -115,7 +115,15 @@ resource "azurerm_linux_web_app" "second" {
   }
 }
 
+resource "azurerm_application_insights" "application_insights" {
+  name                = "public-api-appinsights"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  application_type    = "web"
+}
+
 resource "azurerm_linux_web_app" "public_api" {
+  depends_on          = [azurerm_application_insights.application_insights]
   name                = "public-api-${local.name}"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
@@ -125,7 +133,10 @@ resource "azurerm_linux_web_app" "public_api" {
   zip_deploy_file = local.public_api_zip_deploy_file
 
   app_settings = {
-    "WEBSITE_RUN_FROM_PACKAGE" = 1
+    WEBSITE_RUN_FROM_PACKAGE                   = 1
+    APPINSIGHTS_INSTRUMENTATIONKEY             = azurerm_application_insights.application_insights.instrumentation_key
+    APPLICATIONINSIGHTS_CONNECTION_STRING      = azurerm_application_insights.application_insights.connection_string
+    ApplicationInsightsAgent_EXTENSION_VERSION = "~3" // ~2 for Windows and ~3 for Linux
   }
 
   site_config {
@@ -216,7 +227,7 @@ resource "azurerm_traffic_manager_profile" "profile" {
   }
 
   //without 'depends_on' it will fail with error "waiting for Zip Deployment to complete"
-  depends_on             = [azurerm_linux_web_app.main, azurerm_linux_web_app.second]
+  depends_on = [azurerm_linux_web_app.main, azurerm_linux_web_app.second]
 }
 
 resource "azurerm_traffic_manager_azure_endpoint" "main" {
