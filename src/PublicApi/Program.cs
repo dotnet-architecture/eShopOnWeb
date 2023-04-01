@@ -81,6 +81,8 @@ builder.Services.AddCors(options =>
         });
 });
 
+builder.Services.AddApplicationInsightsTelemetry();
+builder.Services.AddLogging(logBuilder => logBuilder.AddApplicationInsights());
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 builder.Configuration.AddEnvironmentVariables();
