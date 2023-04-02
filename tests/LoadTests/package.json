@@ -1,0 +1,15 @@
+{
+  "name": "loadtests",
+  "version": "1.0.0",
+  "description": "[Load testing for engineering teams | Grafana k6](https://k6.io/)",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/k6": "^0.43.2"
+  }
+}
