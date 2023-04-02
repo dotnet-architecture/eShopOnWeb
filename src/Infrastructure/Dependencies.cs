@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.Infrastructure.Data;
 using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.Extensions.Configuration;
@@ -35,6 +36,8 @@ public static class Dependencies
             // Add Identity DbContext
             services.AddDbContext<AppIdentityDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("IdentityConnection")));
+
+            services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
         }
     }
 }

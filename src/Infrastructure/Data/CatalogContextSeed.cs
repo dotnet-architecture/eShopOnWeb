@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
@@ -44,6 +45,15 @@ public class CatalogContextSeed
 
                 await catalogContext.SaveChangesAsync();
             }
+
+            if (!await catalogContext.CatalogStock.AnyAsync())
+            {
+                await catalogContext.CatalogStock.AddRangeAsync(
+                    GetPreconfiguredItems().Select(c => new CatalogStock(c.Id, 100000, 0)));
+
+                await catalogContext.SaveChangesAsync();
+            }
+
         }
         catch (Exception ex)
         {

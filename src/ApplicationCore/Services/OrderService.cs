@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Ardalis.GuardClauses;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
@@ -12,6 +13,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services;
 public class OrderService : IOrderService
 {
     private readonly IRepository<Order> _orderRepository;
+    private readonly IInventoryService _inventoryService;
     private readonly IUriComposer _uriComposer;
     private readonly IRepository<Basket> _basketRepository;
     private readonly IRepository<CatalogItem> _itemRepository;
@@ -19,9 +21,11 @@ public class OrderService : IOrderService
     public OrderService(IRepository<Basket> basketRepository,
         IRepository<CatalogItem> itemRepository,
         IRepository<Order> orderRepository,
+        IInventoryService inventoryService,
         IUriComposer uriComposer)
     {
         _orderRepository = orderRepository;
+        _inventoryService = inventoryService;
         _uriComposer = uriComposer;
         _basketRepository = basketRepository;
         _itemRepository = itemRepository;
@@ -48,6 +52,12 @@ public class OrderService : IOrderService
 
         var order = new Order(basket.BuyerId, shippingAddress, items);
 
-        await _orderRepository.AddAsync(order);
+        using (var ts = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+        {
+            await _orderRepository.AddAsync(order);
+            await _inventoryService.UpdateOrderReservedQuantity(order.Id);
+
+            ts.Complete();
+        }
     }
 }

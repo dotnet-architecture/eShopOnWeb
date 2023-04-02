@@ -15,6 +15,8 @@ public class CatalogContext : DbContext
     public DbSet<CatalogItem> CatalogItems { get; set; }
     public DbSet<CatalogBrand> CatalogBrands { get; set; }
     public DbSet<CatalogType> CatalogTypes { get; set; }
+    public DbSet<CatalogStock> CatalogStock { get; set; }
+
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
     public DbSet<BasketItem> BasketItems { get; set; }
