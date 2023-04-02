@@ -1,4 +1,5 @@
 ﻿using System.Net.Mime;
+using System.Security.Claims;
 using Ardalis.ListStartupServices;
 using BlazorAdmin;
 using BlazorAdmin.Services;
@@ -130,6 +131,27 @@ if (!string.IsNullOrEmpty(catalogBaseUrl))
     {
         context.Request.PathBase = new PathString(catalogBaseUrl);
         return next();
+    });
+}
+
+
+// Bypass auth on load testing
+var loadTestsAuthenticationEnabled = app.Configuration.GetValue<bool>("Testing:LoadTestsAuthenticationEnabled", false);
+if (loadTestsAuthenticationEnabled)
+{
+    app.Use(async (context, next) =>
+    {
+        var auth = context.Request.Headers.Authorization.ToString().Split(' ');
+        if (auth.Length == 2 && auth[0] == "LoadTests")
+        {
+            var identity = new ClaimsIdentity(new[]
+            {
+            new Claim(ClaimTypes.Name, auth[1]),
+            },
+            IdentityConstants.ApplicationScheme);
+            context.User = new ClaimsPrincipal(identity);
+        }
+        await next();
     });
 }
 

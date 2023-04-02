@@ -228,6 +228,10 @@ module "container_apps" {
             {
                 name                 = "ConnectionStrings__IdentityConnection"
                 secret_name          = "identity-connection"
+            },
+            {
+                name                 = "Testing__LoadTestsAuthenticationEnabled"
+                value                = true
             }]
         }]
         min_replicas                 = 1

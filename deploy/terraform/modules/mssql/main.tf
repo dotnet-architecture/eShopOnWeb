@@ -45,9 +45,10 @@ resource "azurerm_mssql_database" "db" {
   min_capacity   = 0.5
   max_size_gb    = 4
   read_scale     = false
-  sku_name       = "GP_S_Gen5_2"
+  sku_name       = "GP_S_Gen5_1"
   zone_redundant = false
   auto_pause_delay_in_minutes = 60
+  
 
   tags = var.tags
 }
