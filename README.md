@@ -58,13 +58,12 @@ You can also run the samples in Docker (see below).
 
 ### Configuring the sample to use SQL Server
 
-1. By default, the project uses a real database. If you want an in memory database, you can add in `appsettings.json`
+1. By default, the project uses a real database. If you want an in memory database, you can add in the `appsettings.json` file in the Web folder
 
     ```json
    {
        "UseOnlyInMemoryDatabase": true
    }
-
     ```
 
 1. Ensure your connection strings in `appsettings.json` point to a local SQL Server instance.
