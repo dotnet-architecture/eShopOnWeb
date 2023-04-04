@@ -98,6 +98,14 @@ You can also run the samples in Docker (see below).
     dotnet ef migrations add InitialIdentityModel --context appidentitydbcontext -p ../Infrastructure/Infrastructure.csproj -s Web.csproj -o Identity/Migrations
     ```
 
+## Running the sample in the dev container
+
+This project includes a `.devcontainer` folder with a [dev container configuration](https://containers.dev/), which lets you use a container as a full-featured dev environment.
+
+You can use the dev container to build and run the app without needing to install any of its tools locally! You can work in GitHub Codespaces or the VS Code Dev Containers extension.
+
+Learn more about using the dev container in its [readme](/.devcontainer/devcontainerreadme.md).
+
 ## Running the sample using Docker
 
 You can run the Web sample by running these commands from the root folder (where the .sln file is located):
