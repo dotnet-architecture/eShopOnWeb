@@ -20,13 +20,7 @@ You can also follow these steps to open this sample in a container using the VS 
 
 1. If this is your first time using a development container, please ensure your system meets the pre-reqs (i.e. have Docker installed) in the [getting started steps](https://aka.ms/vscode-remote/containers/getting-started).
 
-2. To use this repository, you can either open the repository in an isolated Docker volume:
-
-    - Press <kbd>F1</kbd> and select the **Dev Containers: Try a Sample...** command.
-    - Choose the "Node" sample, wait for the container to start, and try things out!
-        > **Note:** Under the hood, this will use the **Dev Containers: Clone Repository in Container Volume...** command to clone the source code in a Docker volume instead of the local filesystem. [Volumes](https://docs.docker.com/storage/volumes/) are the preferred mechanism for persisting container data.
-
-    Or open a locally cloned copy of the code:
+2. Open a locally cloned copy of the code:
 
    - Clone this repository to your local filesystem.
    - Press <kbd>F1</kbd> and select the **Dev Containers: Open Folder in Container...** command.
