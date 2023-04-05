@@ -1,5 +1,5 @@
-// For format details, see https://aka.ms/vscode-remote/devcontainer.json or this file's README at:
-// https://github.com/devcontainers/images/tree/main/src/dotnet
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/dotnet
 {
 	"name": "eShopOnWeb",
 	"image": "mcr.microsoft.com/devcontainers/dotnet:0-7.0",
