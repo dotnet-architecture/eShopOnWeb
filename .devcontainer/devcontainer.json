@@ -1,5 +1,5 @@
-// For format details, see https://aka.ms/vscode-remote/devcontainer.json or this file's README at:
-// https://github.com/microsoft/vscode-dev-containers/tree/v0.112.0/containers/dotnetcore-3.1
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/dotnet
 {
 	"name": "eShopOnWeb",
 	"image": "mcr.microsoft.com/devcontainers/dotnet:0-7.0",
@@ -11,9 +11,9 @@
 			"extensions": [
 				"ms-dotnettools.csharp",
 				"formulahendry.dotnet-test-explorer",
-        		"ms-vscode.vscode-node-azure-pack",
-        		"ms-kubernetes-tools.vscode-kubernetes-tools",
-        		"redhat.vscode-yaml"
+        			"ms-vscode.vscode-node-azure-pack",
+        			"ms-kubernetes-tools.vscode-kubernetes-tools",
+        			"redhat.vscode-yaml"
 			]
 		}
 	},
