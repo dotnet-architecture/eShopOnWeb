@@ -5,6 +5,7 @@ using Ardalis.GuardClauses;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
 using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
+using Microsoft.eShopWeb.ApplicationCore.Events;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.ApplicationCore.Specifications;
 
@@ -13,6 +14,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services;
 public class OrderService : IOrderService
 {
     private readonly IRepository<Order> _orderRepository;
+    private readonly IEventPublisher<OrderPaymentSucceeded> _eventPublisher;
     private readonly IInventoryService _inventoryService;
     private readonly IUriComposer _uriComposer;
     private readonly IRepository<Basket> _basketRepository;
@@ -21,11 +23,11 @@ public class OrderService : IOrderService
     public OrderService(IRepository<Basket> basketRepository,
         IRepository<CatalogItem> itemRepository,
         IRepository<Order> orderRepository,
-        IInventoryService inventoryService,
+        IEventPublisher<OrderPaymentSucceeded> eventPublisher,
         IUriComposer uriComposer)
     {
         _orderRepository = orderRepository;
-        _inventoryService = inventoryService;
+        _eventPublisher = eventPublisher;
         _uriComposer = uriComposer;
         _basketRepository = basketRepository;
         _itemRepository = itemRepository;
@@ -52,12 +54,8 @@ public class OrderService : IOrderService
 
         var order = new Order(basket.BuyerId, shippingAddress, items);
 
-        using (var ts = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-        {
-            await _orderRepository.AddAsync(order);
-            await _inventoryService.UpdateOrderReservedQuantity(order.Id);
+        await _orderRepository.AddAsync(order);
 
-            ts.Complete();
-        }
+        await _eventPublisher.PublishEvent(new OrderPaymentSucceeded { OrderId = order.Id });
     }
 }

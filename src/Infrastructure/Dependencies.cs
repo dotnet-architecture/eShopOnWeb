@@ -2,6 +2,7 @@
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.Infrastructure.Data;
 using Microsoft.eShopWeb.Infrastructure.Identity;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -39,5 +40,10 @@ public static class Dependencies
 
             services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
         }
+
+        services.AddAzureClients(builder =>
+        {
+            builder.AddServiceBusClient(configuration.GetConnectionString("ServiceBusConnection"));
+        });
     }
 }
