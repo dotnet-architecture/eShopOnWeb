@@ -10,3 +10,8 @@ output "mssql_conection_strings" {
   value = module.mssql.conection_strings
   sensitive = true
 }
+
+output "servicebus_conection_string" {
+  value = module.servicebus.conection_string
+  sensitive = true
+}
