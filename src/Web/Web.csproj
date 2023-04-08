@@ -8,6 +8,8 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Web' " />
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Web - PROD' " />
   <ItemGroup>
     <Content Remove="compilerconfig.json" />
   </ItemGroup>
