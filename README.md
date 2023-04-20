@@ -12,7 +12,7 @@ A list of Frequently Asked Questions about this repository can be found [here](h
 
 ## eBook
 
-This reference application is meant to support the free .PDF download ebook: [Architecting Modern Web Applications with ASP.NET Core and Azure](https://aka.ms/webappebook), updated to **ASP.NET Core 6.0**. [Also available in ePub/mobi formats](https://dotnet.microsoft.com/learn/web/aspnet-architecture).
+This reference application is meant to support the free .PDF download ebook: [Architecting Modern Web Applications with ASP.NET Core and Azure](https://aka.ms/webappebook), updated to **ASP.NET Core 7.0**. [Also available in ePub/mobi formats](https://dotnet.microsoft.com/learn/web/aspnet-architecture).
 
 You can also read the book in online pages at the .NET docs here: 
 https://docs.microsoft.com/dotnet/architecture/modern-web-apps-azure/
@@ -100,13 +100,12 @@ You can also run the samples in Docker (see below).
 
 ### Configuring the sample to use SQL Server
 
-1. By default, the project uses a real database. If you want an in memory database, you can add in `appsettings.json`
+1. By default, the project uses a real database. If you want an in memory database, you can add in the `appsettings.json` file in the Web folder
 
     ```json
    {
        "UseOnlyInMemoryDatabase": true
    }
-
     ```
 
 1. Ensure your connection strings in `appsettings.json` point to a local SQL Server instance.
@@ -139,6 +138,14 @@ You can also run the samples in Docker (see below).
 
     dotnet ef migrations add InitialIdentityModel --context appidentitydbcontext -p ../Infrastructure/Infrastructure.csproj -s Web.csproj -o Identity/Migrations
     ```
+
+## Running the sample in the dev container
+
+This project includes a `.devcontainer` folder with a [dev container configuration](https://containers.dev/), which lets you use a container as a full-featured dev environment.
+
+You can use the dev container to build and run the app without needing to install any of its tools locally! You can work in GitHub Codespaces or the VS Code Dev Containers extension.
+
+Learn more about using the dev container in its [readme](/.devcontainer/devcontainerreadme.md).
 
 ## Running the sample using Docker
 

@@ -39,6 +39,10 @@ public class UpdateCatalogItemEndpoint : IEndpoint<IResult, UpdateCatalogItemReq
         var response = new UpdateCatalogItemResponse(request.CorrelationId());
 
         var existingItem = await itemRepository.GetByIdAsync(request.Id);
+        if (existingItem == null)
+        {
+            return Results.NotFound();
+        }
 
         CatalogItem.CatalogItemDetails details = new(request.Name, request.Description, request.Price);
         existingItem.UpdateDetails(details);

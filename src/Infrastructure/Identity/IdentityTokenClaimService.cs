@@ -25,6 +25,7 @@ public class IdentityTokenClaimService : ITokenClaimsService
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(AuthorizationConstants.JWT_SECRET_KEY);
         var user = await _userManager.FindByNameAsync(userName);
+        if (user == null) throw new UserNotFoundException(userName);
         var roles = await _userManager.GetRolesAsync(user);
         var claims = new List<Claim> { new Claim(ClaimTypes.Name, userName) };
 

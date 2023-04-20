@@ -46,8 +46,8 @@ public class CatalogItemListPagedEndpoint : IEndpoint<IResult, ListPagedCatalogI
         int totalItems = await itemRepository.CountAsync(filterSpec);
 
         var pagedSpec = new CatalogFilterPaginatedSpecification(
-            skip: request.PageIndex.Value * request.PageSize.Value,
-            take: request.PageSize.Value,
+            skip: request.PageIndex * request.PageSize,
+            take: request.PageSize,
             brandId: request.CatalogBrandId,
             typeId: request.CatalogTypeId);
 
@@ -61,7 +61,7 @@ public class CatalogItemListPagedEndpoint : IEndpoint<IResult, ListPagedCatalogI
 
         if (request.PageSize > 0)
         {
-            response.PageCount = int.Parse(Math.Ceiling((decimal)totalItems / request.PageSize.Value).ToString());
+            response.PageCount = int.Parse(Math.Ceiling((decimal)totalItems / request.PageSize).ToString());
         }
         else
         {
