@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy container app to Azure Web App - eshopwebmvc
+name: Web 1 - Build and deploy container app to Azure Web App
 
 on: [workflow_dispatch]
 
