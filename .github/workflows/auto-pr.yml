@@ -1,0 +1,23 @@
+name: Auto-PR Creation
+on:
+  pull_request:
+    types: [closed]
+    branches: ['development']
+
+jobs:
+  pull-request:
+    name: Open PR to main
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      name: checkout
+
+    - uses: repo-sync/pull-request@v2
+      name: pull-request
+      with:
+        destination_branch: "main"
+        pr_title: "Pulling ${{ github.ref }} into main"
+        pr_body: "👑 *An automated PR*"
+        pr_reviewer: "Roh23"
+        pr_draft: false
+        github_token: ${{ secrets.GITHUB_TOKEN }}
