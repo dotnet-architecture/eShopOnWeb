@@ -11,5 +11,4 @@ public class OrderViewModel
     public decimal Total { get; set; }
     public string Status => DEFAULT_STATUS;
     public Address? ShippingAddress { get; set; }
-    public List<OrderItemViewModel> OrderItems { get; set; } = new();
 }
