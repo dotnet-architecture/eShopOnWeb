@@ -41,6 +41,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorShared", "src\BlazorS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublicApiIntegrationTests", "tests\PublicApiIntegrationTests\PublicApiIntegrationTests.csproj", "{D53EF010-8F8C-4337-A059-456E19D8AE63}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderReserverService", "..\OrederReserverService\OrderReserverService.csproj", "{842D421A-348F-47F2-AE1B-69FB829C8B77}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,10 @@ Global
 		{D53EF010-8F8C-4337-A059-456E19D8AE63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D53EF010-8F8C-4337-A059-456E19D8AE63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D53EF010-8F8C-4337-A059-456E19D8AE63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{842D421A-348F-47F2-AE1B-69FB829C8B77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{842D421A-348F-47F2-AE1B-69FB829C8B77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{842D421A-348F-47F2-AE1B-69FB829C8B77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{842D421A-348F-47F2-AE1B-69FB829C8B77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
