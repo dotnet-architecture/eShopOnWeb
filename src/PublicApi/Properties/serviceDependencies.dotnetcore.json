@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "apis1": {
+      "apiEndpoint": "https://publicapi-dp.azure-api.net/",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ApiManagement/service/PublicApi-dp/apis/eShopOnWeb-Api-Management",
+      "type": "apis.azure"
+    }
+  }
+}
