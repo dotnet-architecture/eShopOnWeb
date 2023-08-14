@@ -8,7 +8,8 @@
 	<ItemGroup>
 		<PackageReference Include="Ardalis.GuardClauses" />
 		<PackageReference Include="Ardalis.Result" />
-		<PackageReference Include="Ardalis.Specification" />		
+		<PackageReference Include="Ardalis.Specification" />
+		<PackageReference Include="Newtonsoft.Json" />		
 		<PackageReference Include="System.Security.Claims" />
 		<PackageReference Include="System.Text.Json" />
 	</ItemGroup>
