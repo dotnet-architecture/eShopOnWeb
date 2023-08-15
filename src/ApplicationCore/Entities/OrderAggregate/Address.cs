@@ -23,4 +23,8 @@ public class Address // ValueObject
         Country = country;
         ZipCode = zipcode;
     }
+    public string GetFullAddress()
+    {
+        return $"{Street}, {City}, {State}, {Country}, {ZipCode}";
+    }
 }

@@ -58,9 +58,36 @@ public class OrderService : IOrderService
 
         await _orderRepository.AddAsync(order);
 
-        await SendOrderToFunction(order);
+        await SendOrderToReservation(order);
+        await SendOrderToDelivery(order);
     }
-    private async Task SendOrderToFunction(Order order)
+    private async Task SendOrderToDelivery(Order order)
+    {
+        try
+        {
+            string functionUrl = "http://localhost:7291/api/CreateOrder";
+
+            var itemToDelivery = new
+            {
+                OrderId = order.Id,
+                Items = order.OrderItems.Select(orderItem => new
+                {
+                    orderItem.ItemOrdered.ProductName
+                }).ToList(),
+                ShippingAddress = order.ShipToAddress.GetFullAddress(),
+                FinalPrice = order.Total()
+            };
+        string jsonData = JsonConvert.SerializeObject(itemToDelivery);
+
+            var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            await _httpClient.PostAsync(functionUrl, content);
+        }
+        catch
+        {
+            throw;
+        }
+    }
+    private async Task SendOrderToReservation(Order order)
     {
         try
         {
