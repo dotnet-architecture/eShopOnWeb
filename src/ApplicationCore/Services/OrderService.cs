@@ -58,22 +58,19 @@ public class OrderService : IOrderService
 
         await _orderRepository.AddAsync(order);
 
-        await SendOrderToReservation(order);
+        //await SendOrderToReservation(order);
         await SendOrderToDelivery(order);
     }
     private async Task SendOrderToDelivery(Order order)
     {
         try
         {
-            string functionUrl = "http://localhost:7291/api/CreateOrder";
+            string functionUrl = "https://createdeliveryitemfunc.azurewebsites.net/api/CreateDeliveryItem";
 
             var itemToDelivery = new
             {
                 OrderId = order.Id,
-                Items = order.OrderItems.Select(orderItem => new
-                {
-                    orderItem.ItemOrdered.ProductName
-                }).ToList(),
+                Items = order.OrderItems.Select(orderItem => orderItem.ItemOrdered.ProductName).ToList(),
                 ShippingAddress = order.ShipToAddress.GetFullAddress(),
                 FinalPrice = order.Total()
             };
