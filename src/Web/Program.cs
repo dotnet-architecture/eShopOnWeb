@@ -20,14 +20,9 @@ using Microsoft.eShopWeb.Web.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
-
-var detectEnvBuilder = WebApplication.CreateBuilder(args);
-
 builder.Logging.AddConsole();
 
-var detectEnvApp = detectEnvBuilder.Build();
-
-if (detectEnvApp.Environment.IsDevelopment() || detectEnvApp.Environment.EnvironmentName == "Docker"){
+if (builder.Environment.IsDevelopment() || builder.Environment.EnvironmentName == "Docker"){
     // Configure SQL Server (local)
     Microsoft.eShopWeb.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, builder.Services);
 }
