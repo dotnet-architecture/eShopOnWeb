@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
+using Microsoft.Azure.ServiceBus;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
 using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
@@ -19,19 +20,23 @@ public class OrderService : IOrderService
     private readonly IRepository<Basket> _basketRepository;
     private readonly IRepository<CatalogItem> _itemRepository;
     private readonly HttpClient _httpClient;
+    private readonly ITopicClient _topicClient;
+
 
 
     public OrderService(IRepository<Basket> basketRepository,
         IRepository<CatalogItem> itemRepository,
         IRepository<Order> orderRepository,
         IUriComposer uriComposer,
-        HttpClient httpClient)
+        HttpClient httpClient,
+        ITopicClient topicClient)
     {
         _orderRepository = orderRepository;
         _uriComposer = uriComposer;
         _basketRepository = basketRepository;
         _itemRepository = itemRepository;
         _httpClient = httpClient;
+        _topicClient = topicClient;
 
     }
 
@@ -58,8 +63,8 @@ public class OrderService : IOrderService
 
         await _orderRepository.AddAsync(order);
 
-        //await SendOrderToReservation(order);
-        await SendOrderToDelivery(order);
+        await SendOrderToReservation(order);
+        //await SendOrderToDelivery(order);
     }
     private async Task SendOrderToDelivery(Order order)
     {
@@ -84,12 +89,28 @@ public class OrderService : IOrderService
             throw;
         }
     }
+    //private async Task SendOrderToReservation(Order order)
+    //{
+    //    string functionUrl = " http://localhost:7271/api/OrderItemsReserver";
+
+    //    var itemReservation = new
+    //    {
+    //        orderId = order.Id,
+    //        orderItems = order.OrderItems.Select(orderItem => new
+    //        {
+    //            itemId = orderItem.ItemOrdered.CatalogItemId,
+    //            quantity = orderItem.Units
+    //        }).ToList()
+    //    };
+    //    string jsonData = JsonConvert.SerializeObject(itemReservation);
+    //    var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+    //    await _httpClient.PostAsync(functionUrl, content);
+    //}
+
     private async Task SendOrderToReservation(Order order)
     {
         try
         {
-            string functionUrl = "https://orderreserverservice20230802222629.azurewebsites.net/api/OrderItemsReserver";
-
             var itemReservation = new
             {
                 orderId = order.Id,
@@ -99,15 +120,17 @@ public class OrderService : IOrderService
                     quantity = orderItem.Units
                 }).ToList()
             };
-            string jsonData = JsonConvert.SerializeObject(itemReservation);
 
-            var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            await _httpClient.PostAsync(functionUrl, content);            
+            string messageBody = JsonConvert.SerializeObject(itemReservation);
+            byte[] messageBytes = Encoding.UTF8.GetBytes(messageBody);
+            Message message = new Message(messageBytes);
+
+            await _topicClient.SendAsync(message);
         }
         catch
         {
             throw;
         }
-       
+
     }
 }
