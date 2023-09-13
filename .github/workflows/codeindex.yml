@@ -20,3 +20,4 @@ jobs:
     - uses: microsoft/RichCodeNavIndexer@v0.1
       with:
         repo-token: ${{ github.token }}
+        languages: 'csharp'
