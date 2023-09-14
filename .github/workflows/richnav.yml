@@ -15,7 +15,7 @@ jobs:
         dotnet-version: 7.0.x
 
     - name: Build with dotnet
-      run: dotnet build ./eShopOnWeb.sln --configuration Release /bl
+      run: dotnet build ./Everything.sln --configuration Release /bl
 
     - uses: microsoft/RichCodeNavIndexer@v0.1
       with:
