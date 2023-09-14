@@ -6,7 +6,7 @@ using Microsoft.eShopWeb.Web.ViewModels;
 
 namespace Microsoft.eShopWeb.Web.Features.OrderDetails;
 
-public class GetOrderDetailsHandler : IRequestHandler<GetOrderDetails, OrderViewModel?>
+public class GetOrderDetailsHandler : IRequestHandler<GetOrderDetails, OrderDetailViewModel?>
 {
     private readonly IReadRepository<Order> _orderRepository;
 
@@ -15,7 +15,7 @@ public class GetOrderDetailsHandler : IRequestHandler<GetOrderDetails, OrderView
         _orderRepository = orderRepository;
     }
 
-    public async Task<OrderViewModel?> Handle(GetOrderDetails request,
+    public async Task<OrderDetailViewModel?> Handle(GetOrderDetails request,
         CancellationToken cancellationToken)
     {
         var spec = new OrderWithItemsByIdSpec(request.OrderId);
@@ -26,7 +26,7 @@ public class GetOrderDetailsHandler : IRequestHandler<GetOrderDetails, OrderView
             return null;
         }
 
-        return new OrderViewModel
+        return new OrderDetailViewModel
         {
             OrderDate = order.OrderDate,
             OrderItems = order.OrderItems.Select(oi => new OrderItemViewModel

@@ -18,20 +18,12 @@ public class GetMyOrdersHandler : IRequestHandler<GetMyOrders, IEnumerable<Order
     public async Task<IEnumerable<OrderViewModel>> Handle(GetMyOrders request,
         CancellationToken cancellationToken)
     {
-        var specification = new CustomerOrdersWithItemsSpecification(request.UserName);
+        var specification = new CustomerOrdersSpecification(request.UserName);
         var orders = await _orderRepository.ListAsync(specification, cancellationToken);
 
         return orders.Select(o => new OrderViewModel
         {
             OrderDate = o.OrderDate,
-            OrderItems = o.OrderItems.Select(oi => new OrderItemViewModel()
-            {
-                PictureUrl = oi.ItemOrdered.PictureUri,
-                ProductId = oi.ItemOrdered.CatalogItemId,
-                ProductName = oi.ItemOrdered.ProductName,
-                UnitPrice = oi.UnitPrice,
-                Units = oi.Units
-            }).ToList(),
             OrderNumber = o.Id,
             ShippingAddress = o.ShipToAddress,
             Total = o.Total()

@@ -1,11 +1,11 @@
-name: eShopOnWeb Rich Code Navigation
+name: eShopOnWeb - Code Index
 
-on: [push, pull_request, workflow_dispatch]
+on: workflow_dispatch
 
 jobs:
   build:
 
-    runs-on: windows-2019
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -15,8 +15,10 @@ jobs:
         dotnet-version: 7.0.x
 
     - name: Build with dotnet
-      run: dotnet build ./eShopOnWeb.sln --configuration Release
+      run: dotnet build ./Everything.sln --configuration Release /bl
 
     - uses: microsoft/RichCodeNavIndexer@v0.1
       with:
         repo-token: ${{ github.token }}
+        languages: 'csharp'
+        environment: 'internal'
