@@ -1,0 +1,51 @@
+on:
+  pull_request:
+    branches:
+    - dev
+
+  status:
+  - stage: Build
+    displayName: Build .Net Core Solution
+    jobs:
+    - job: Build
+      pool:
+        vmImage: ubuntu-latest
+      steps:
+      - task: DotNetCoreCLI@2
+        displayName: Restore
+        inputs:
+          command: 'restore'
+          projects: '**/*.sln'
+          feedsToUse: 'select'
+  
+      - task: DotNetCoreCLI@2
+        displayName: Build
+        inputs:
+          command: 'build'
+          projects: '**/*.sln'
+      
+      - task: DotNetCoreCLI@2
+        displayName: Test
+        inputs:
+          command: 'test'
+          projects: 'tests/UnitTests/*.csproj'
+      
+      - task: DotNetCoreCLI@2
+        displayName: Publish
+        inputs:
+          command: 'publish'
+          publishWebProjects: true
+          arguments: '-o $(Build.ArtifactStagingDirectory)'
+      
+      - task: PublishBuildArtifacts@1
+        displayName: Publish Artifacts ADO - Website
+        inputs:
+          pathToPublish: '$(Build.ArtifactStagingDirectory)'
+          artifactName: Website
+      
+      - task: PublishBuildArtifacts@1
+        displayName: Publish Artifacts ADO - Bicep
+        inputs:
+          PathtoPublish: '$(Build.SourcesDirectory)/.azure/bicep/webapp.bicep'
+          ArtifactName: 'Bicep'
+          publishLocation: 'Container'
