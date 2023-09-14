@@ -21,3 +21,4 @@ jobs:
       with:
         repo-token: ${{ github.token }}
         languages: 'csharp'
+        environment: 'internal'
