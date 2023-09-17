@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using BlazorShared;
+using BlazorShared.Models;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -73,15 +75,17 @@ const string CORS_POLICY = "CorsPolicy";
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: CORS_POLICY,
-        corsPolicyBuilder =>
-        {
+                      corsPolicyBuilder =>
+                      {
             corsPolicyBuilder.WithOrigins(baseUrlConfig!.WebBase.Replace("host.docker.internal", "localhost").TrimEnd('/'));
-            corsPolicyBuilder.AllowAnyMethod();
-            corsPolicyBuilder.AllowAnyHeader();
-        });
+                          corsPolicyBuilder.AllowAnyMethod();
+                          corsPolicyBuilder.AllowAnyHeader();
+                      });
 });
 
 builder.Services.AddControllers();
+
+builder.Services.AddMediatR(typeof(CatalogItem).Assembly);
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 builder.Configuration.AddEnvironmentVariables();
 

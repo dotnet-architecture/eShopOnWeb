@@ -5,7 +5,7 @@
 
 @code {
     protected override void OnInitialized()
-    {       
+    {
         var returnUrl = HttpUtility.UrlEncode($"/{Uri.EscapeDataString(Navigation.ToBaseRelativePath(Navigation.Uri))}");
         JsRuntime.InvokeVoidAsync("location.replace", $"Identity/Account/Login?returnUrl={returnUrl}");
     }

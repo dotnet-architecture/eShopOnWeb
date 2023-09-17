@@ -26,7 +26,7 @@ public class AppIdentityDbContextSeed
         adminUser = await userManager.FindByNameAsync(adminUserName);
         if (adminUser != null)
         {
-            await userManager.AddToRoleAsync(adminUser, BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS);
-        }
+        await userManager.AddToRoleAsync(adminUser, BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS);
     }
+}
 }
