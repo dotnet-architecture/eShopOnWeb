@@ -41,6 +41,11 @@
         "signalr.min.js"
       ],
       "destination": "wwwroot/lib/@aspnet/signalr/dist/browser/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "bootstrap@5.3.2",
+      "destination": "wwwroot/lib/bootstrap-origin/"
     }
   ]
 }

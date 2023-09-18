@@ -1,18 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net7.0</TargetFramework>
 		<RootNamespace>Microsoft.eShopWeb.ApplicationCore</RootNamespace>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="AlipaySDKNet.Standard" />
 		<PackageReference Include="Ardalis.GuardClauses" />
 		<PackageReference Include="Ardalis.Result" />
-		<PackageReference Include="Ardalis.Specification" />		
+		<PackageReference Include="Ardalis.Specification" />
+		<PackageReference Include="Snowflake.Core" />		
 		<PackageReference Include="System.Security.Claims" />
 		<PackageReference Include="System.Text.Json" />
-		<PackageReference Include="AlipaySDKNet.Standard" Version="4.8.12" />
 	</ItemGroup>
 
 	<ItemGroup>

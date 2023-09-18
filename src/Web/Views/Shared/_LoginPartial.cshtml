@@ -1,6 +1,6 @@
 ﻿@if (Context!.User!.Identity!.IsAuthenticated)
 {
-    <section class="col-lg-4 col-md-5 col-xs-12">
+    <section class="col-lg-4 col-md-5 col-12">
         <div class="esh-identity">
             <form asp-area="Identity" asp-page="/Account/Logout" method="post" id="logoutForm" class="navbar-right">
                 <section class="esh-identity-section">
@@ -34,14 +34,14 @@
         </div>
     </section>
 
-    <section class="col-lg-1 col-xs-12">
+    <section class="col-lg-1 col-12">
         @await Component.InvokeAsync("Basket")
     </section>
 
 }
 else
 {
-    <section class="col-lg-4 col-md-5 col-xs-12">
+    <section class="col-lg-4 col-md-5 col-12">
         <div class="esh-identity">
             <section class="esh-identity-section">
                 <div class="esh-identity-item">
@@ -54,7 +54,7 @@ else
         </div>
     </section>
 
-    <section class="col-lg-1 col-xs-12">
+    <section class="col-lg-1 col-12">
         @await Component.InvokeAsync("Basket")
     </section>
 }
