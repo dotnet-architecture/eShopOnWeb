@@ -2,7 +2,8 @@
 using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.ApplicationCore.Services;
-using Moq;
+//using Moq;
+using NSubstitute;
 using Xunit;
 
 namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.BasketServiceTests;
@@ -10,21 +11,21 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.BasketServiceTes
 public class DeleteBasket
 {
     private readonly string _buyerId = "Test buyerId";
-    private readonly Mock<IRepository<Basket>> _mockBasketRepo = new();
-    private readonly Mock<IAppLogger<BasketService>> _mockLogger = new();
+    private readonly IRepository<Basket> _mockBasketRepo = Substitute.For<IRepository<Basket>>();
+    private readonly IAppLogger<BasketService> _mockLogger = Substitute.For<IAppLogger<BasketService>>();
 
     [Fact]
     public async Task ShouldInvokeBasketRepositoryDeleteAsyncOnce()
     {
         var basket = new Basket(_buyerId);
-        basket.AddItem(1, It.IsAny<decimal>(), It.IsAny<int>());
-        basket.AddItem(2, It.IsAny<decimal>(), It.IsAny<int>());
-        _mockBasketRepo.Setup(x => x.GetByIdAsync(It.IsAny<int>(), default))
-            .ReturnsAsync(basket);
-        var basketService = new BasketService(_mockBasketRepo.Object, _mockLogger.Object);
+        basket.AddItem(1, 1.1m, 1);
+        basket.AddItem(2, 1.1m, 1);
+        _mockBasketRepo.GetByIdAsync(Arg.Any<int>(), default)
+            .Returns(basket);
+        var basketService = new BasketService(_mockBasketRepo, _mockLogger);
 
-        await basketService.DeleteBasketAsync(It.IsAny<int>());
+        await basketService.DeleteBasketAsync(1);
 
-        _mockBasketRepo.Verify(x => x.DeleteAsync(It.IsAny<Basket>(), default), Times.Once);
+        await _mockBasketRepo.Received().DeleteAsync(Arg.Any<Basket>(), default);
     }
 }
