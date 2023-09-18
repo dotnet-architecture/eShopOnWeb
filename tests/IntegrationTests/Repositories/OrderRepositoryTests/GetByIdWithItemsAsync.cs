@@ -36,14 +36,14 @@ public class GetByIdWithItemsAsync
 
         var firstOrder = OrderBuilder.WithDefaultValues();
         _catalogContext.Orders.Add(firstOrder);
-        int firstOrderId = firstOrder.Id;
+        long firstOrderId = firstOrder.Id;
 
         var secondOrderItems = new List<OrderItem>();
         secondOrderItems.Add(new OrderItem(OrderBuilder.TestCatalogItemOrdered, itemOneUnitPrice, itemOneUnits));
         secondOrderItems.Add(new OrderItem(OrderBuilder.TestCatalogItemOrdered, itemTwoUnitPrice, itemTwoUnits));
         var secondOrder = OrderBuilder.WithItems(secondOrderItems);
         _catalogContext.Orders.Add(secondOrder);
-        int secondOrderId = secondOrder.Id;
+        long secondOrderId = secondOrder.Id;
 
         _catalogContext.SaveChanges();
 

@@ -6,6 +6,7 @@ using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
 using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.ApplicationCore.Specifications;
+using Microsoft.eShopWeb.Infrastructure.Data.Utils;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Services;
 
@@ -27,7 +28,7 @@ public class OrderService : IOrderService
         _itemRepository = itemRepository;
     }
 
-    public async Task CreateOrderAsync(int basketId, Address shippingAddress)
+    public async Task<Order?> CreateOrderAsync(int basketId, Address shippingAddress)
     {
         var basketSpec = new BasketWithItemsSpecification(basketId);
         var basket = await _basketRepository.FirstOrDefaultAsync(basketSpec);
@@ -46,8 +47,10 @@ public class OrderService : IOrderService
             return orderItem;
         }).ToList();
 
-        var order = new Order(basket.BuyerId, shippingAddress, items);
+        var order = new Order(basket.BuyerId, shippingAddress, items) { Id = CommonHelper.CreateOrderId()};
 
         await _orderRepository.AddAsync(order);
+
+        return order;
     }
 }

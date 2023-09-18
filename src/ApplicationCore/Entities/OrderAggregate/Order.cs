@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Ardalis.GuardClauses;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 
@@ -18,8 +19,9 @@ public class Order : BaseEntity, IAggregateRoot
         ShipToAddress = shipToAddress;
         _orderItems = items;
     }
-
+    public long Id { get; init; }
     public string BuyerId { get; private set; }
+    public string Status { get; set; } = OrderConst.ORDER_STATUS_PENDING;
     public DateTimeOffset OrderDate { get; private set; } = DateTimeOffset.Now;
     public Address ShipToAddress { get; private set; }
 
@@ -44,4 +46,12 @@ public class Order : BaseEntity, IAggregateRoot
         }
         return total;
     }
+}
+
+public class OrderConst
+{
+    public const string ORDER_STATUS_PENDING = "Pending";
+    public const string ORDER_STATIS_PURCHASED = "Purchased";
+    public const string ORDER_STATUS_CLOSED = "Closed";
+    public const string ORDER_STATUS_REFUNDED = "Refunded";
 }

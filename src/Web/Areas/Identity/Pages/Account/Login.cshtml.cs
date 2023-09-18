@@ -81,7 +81,7 @@ public class LoginModel : PageModel
             {
                 _logger.LogInformation("User logged in.");
                 await TransferAnonymousBasketToUserAsync(Input?.Email);
-                return LocalRedirect(returnUrl);
+                return Redirect(returnUrl);
             }
             if (result.RequiresTwoFactor)
             {

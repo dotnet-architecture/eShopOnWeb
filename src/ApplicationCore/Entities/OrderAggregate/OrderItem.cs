@@ -2,6 +2,7 @@
 
 public class OrderItem : BaseEntity
 {
+    public long Id { get; private set; }
     public CatalogItemOrdered ItemOrdered { get; private set; }
     public decimal UnitPrice { get; private set; }
     public int Units { get; private set; }

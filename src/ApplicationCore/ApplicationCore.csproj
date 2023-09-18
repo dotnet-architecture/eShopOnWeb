@@ -12,6 +12,7 @@
 		<PackageReference Include="Ardalis.Specification" />		
 		<PackageReference Include="System.Security.Claims" />
 		<PackageReference Include="System.Text.Json" />
+		<PackageReference Include="AlipaySDKNet.Standard" Version="4.8.12" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -31,7 +31,7 @@ public class GetById
         var existingOrder = OrderBuilder.WithDefaultValues();
         _catalogContext.Orders.Add(existingOrder);
         _catalogContext.SaveChanges();
-        int orderId = existingOrder.Id;
+        long orderId = existingOrder.Id;
         _output.WriteLine($"OrderId: {orderId}");
 
         var orderFromRepo = await _orderRepository.GetByIdAsync(orderId);

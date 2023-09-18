@@ -5,7 +5,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Specifications;
 
 public class OrderWithItemsByIdSpec : Specification<Order>, ISingleResultSpecification
 {
-    public OrderWithItemsByIdSpec(int orderId)
+    public OrderWithItemsByIdSpec(long orderId)
     {
         Query
             .Where(order => order.Id == orderId)
