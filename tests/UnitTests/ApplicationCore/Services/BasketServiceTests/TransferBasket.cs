@@ -37,7 +37,7 @@ public class TransferBasket
             var anonymousBasket = null as Basket;
             var userBasket = new Basket(_existentUserBasketBuyerId);
             
-        var results = new Results<Basket>(anonymousBasket)
+        var results = new Results<Basket?>(anonymousBasket)
                         .Then(userBasket);
 
 
@@ -93,7 +93,7 @@ public class TransferBasket
         var anonymousBasket = new Basket(_existentAnonymousBasketBuyerId);
         var userBasket = null as Basket;
 
-        var results = new Results<Basket>(anonymousBasket)
+        var results = new Results<Basket?>(anonymousBasket)
                        .Then(userBasket);
 
         _mockBasketRepo.FirstOrDefaultAsync(Arg.Any<BasketWithItemsSpecification>(), default).Returns(x => results.Next());
