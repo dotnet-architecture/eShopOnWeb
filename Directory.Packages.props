@@ -61,7 +61,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageVersion>
-    <PackageVersion Include="MSTest.TestAdapter" Version="3.0.2" />
+    <PackageVersion Include="MSTest.TestAdapter" Version="3.1.1" />
     <PackageVersion Include="MSTest.TestFramework" Version="3.0.2" />
     <PackageVersion Include="coverlet.collector" Version="6.0.0" />
   </ItemGroup>
