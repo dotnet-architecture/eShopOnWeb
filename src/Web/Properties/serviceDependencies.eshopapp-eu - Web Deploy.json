@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/mariaadz-dbserver/databases/Web_db_Catalog",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:CatalogConnectionProdaction"
+    },
+    "mssql2": {
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/mariaadz-dbserver/databases/Web_db_Identity",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:IdentityConnectionProdaction"
+    }
+  }
+}

@@ -20,15 +20,17 @@ public static class ConfigureCoreServices
         services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
         services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 
-        services.Configure<ServiceBusSettings>(configuration.GetSection("ServiceBus"));
         services.AddSingleton<ITopicClient>(sp =>
         {
-            var serviceBusConnectionString = "Endpoint=sb://reserver-queue.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=Fl5PLzi/OAW2iM07kBeIV2FxvChbt9gT++ASbAIS19c=";
-            var serviceBusTopicName = "paid-orders";
+            var serviceBusConnectionString = configuration["ServiceBusConnectionString"];
+            var serviceBusTopicName = configuration["ServiceBusTopicName"];
             return new TopicClient(serviceBusConnectionString, serviceBusTopicName);
+        });
 
-            //var settings = sp.GetRequiredService<IOptions<ServiceBusSettings>>().Value;
-            //return new TopicClient(settings.ConnectionString, settings.TopicName);
+        services.AddHttpClient("OderToDeliveryClient", client =>
+        {
+            var deliveryURL = configuration["OderToDeliveryFuncURL"];
+            client.BaseAddress = new Uri(deliveryURL);
         });
 
         services.AddScoped<IBasketService, BasketService>();

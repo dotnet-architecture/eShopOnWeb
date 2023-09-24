@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,16 +29,15 @@ public class OrderService : IOrderService
         IRepository<CatalogItem> itemRepository,
         IRepository<Order> orderRepository,
         IUriComposer uriComposer,
-        HttpClient httpClient,
+        IHttpClientFactory httpClientFactory,
         ITopicClient topicClient)
     {
         _orderRepository = orderRepository;
         _uriComposer = uriComposer;
         _basketRepository = basketRepository;
         _itemRepository = itemRepository;
-        _httpClient = httpClient;
+        _httpClient = httpClientFactory.CreateClient("OderToDeliveryClient");
         _topicClient = topicClient;
-
     }
 
     public async Task CreateOrderAsync(int basketId, Address shippingAddress)
@@ -64,14 +64,14 @@ public class OrderService : IOrderService
         await _orderRepository.AddAsync(order);
 
         await SendOrderToReservation(order);
-        //await SendOrderToDelivery(order);
+        await SendOrderToDelivery(order);
     }
     private async Task SendOrderToDelivery(Order order)
     {
         try
         {
-            string functionUrl = "https://createdeliveryitemfunc.azurewebsites.net/api/CreateDeliveryItem";
-
+            var functionUrl = _httpClient.BaseAddress;
+            
             var itemToDelivery = new
             {
                 OrderId = order.Id,
@@ -89,24 +89,6 @@ public class OrderService : IOrderService
             throw;
         }
     }
-    //private async Task SendOrderToReservation(Order order)
-    //{
-    //    string functionUrl = " http://localhost:7271/api/OrderItemsReserver";
-
-    //    var itemReservation = new
-    //    {
-    //        orderId = order.Id,
-    //        orderItems = order.OrderItems.Select(orderItem => new
-    //        {
-    //            itemId = orderItem.ItemOrdered.CatalogItemId,
-    //            quantity = orderItem.Units
-    //        }).ToList()
-    //    };
-    //    string jsonData = JsonConvert.SerializeObject(itemReservation);
-    //    var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-    //    await _httpClient.PostAsync(functionUrl, content);
-    //}
-
     private async Task SendOrderToReservation(Order order)
     {
         try
