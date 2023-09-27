@@ -1,4 +1,4 @@
-name: eShopOnWeb Build and Test
+name: eShopOnWeb Build and Test Updating test project
 
 on: [push, pull_request, workflow_dispatch]
 
