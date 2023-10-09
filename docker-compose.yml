@@ -1,5 +1,5 @@
 version: '3.4'
- 
+   
 services:
   eshopwebmvc:
     image: ${DOCKER_REGISTRY-}eshopwebmvc
