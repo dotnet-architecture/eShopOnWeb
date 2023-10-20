@@ -3,7 +3,7 @@ using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Specifications;
 
-public sealed class BasketWithItemsSpecification : Specification<Basket>, ISingleResultSpecification
+public sealed class BasketWithItemsSpecification : Specification<Basket>
 {
     public BasketWithItemsSpecification(int basketId)
     {
