@@ -2,10 +2,10 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/dotnet
 {
 	"name": "eShopOnWeb",
-	"image": "mcr.microsoft.com/devcontainers/dotnet:0-7.0",
-
+	"image": "mcr.microsoft.com/devcontainers/dotnet:0-8.0",
+ 
 	"customizations": {
-		// Configure properties specific to VS Code.
+		 // Configure properties specific to VS Code.
 		"vscode": {
 			// Add the IDs of extensions you want installed when the container is created.
 			"extensions": [
