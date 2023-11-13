@@ -48,6 +48,7 @@ public class AuthenticateEndpoint : EndpointBaseAsync
         response.IsNotAllowed = result.IsNotAllowed;
         response.RequiresTwoFactor = result.RequiresTwoFactor;
         response.Username = request.Username;
+        response.Message = "Invalid Login";
 
         if (result.Succeeded)
         {

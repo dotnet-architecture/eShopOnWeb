@@ -43,4 +43,6 @@ public class IdentityTokenClaimService : ITokenClaimsService
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
     }
+
+  
 }

@@ -17,4 +17,5 @@ public class AuthenticateResponse : BaseResponse
     public bool IsLockedOut { get; set; } = false;
     public bool IsNotAllowed { get; set; } = false;
     public bool RequiresTwoFactor { get; set; } = false;
+    public string Message { get; set; }
 }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Text;
 using BlazorShared;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -44,6 +46,8 @@ var catalogSettings = builder.Configuration.Get<CatalogSettings>() ?? new Catalo
 builder.Services.AddSingleton<IUriComposer>(new UriComposer(catalogSettings));
 builder.Services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
 builder.Services.AddScoped<ITokenClaimsService, IdentityTokenClaimService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
 
 var configSection = builder.Configuration.GetRequiredSection(BaseUrlConfiguration.CONFIG_NAME);
 builder.Services.Configure<BaseUrlConfiguration>(configSection);
@@ -56,6 +60,25 @@ builder.Services.AddAuthentication(config =>
 {
     config.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 })
+ .AddGoogle(options =>
+ {
+     options.ClientId = "942302889559-ssqijom4id25er830h8u833vc43vq256.apps.googleusercontent.com";
+     options.ClientSecret = "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";
+     options.AuthorizationEndpoint = "https://accounts.google.com/o/oauth2/auth";
+     options.TokenEndpoint = "https://oauth2.googleapis.com/token";
+     options.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+     options.ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
+
+     // store the user image in this claim, instead of creating a new one
+     options.ClaimActions.MapJsonKey(ClaimTypes.UserData, "picture");
+
+     // also store the email verification here so that it can be used to confirm email
+     options.ClaimActions.MapJsonKey(ClaimTypes.AuthorizationDecision, "email_verified");
+
+     // options.CallbackPath = "/ExternalLoginCallback";
+     options.SaveTokens = true;
+ })
+
 .AddJwtBearer(config =>
 {
     config.RequireHttpsMetadata = false;
