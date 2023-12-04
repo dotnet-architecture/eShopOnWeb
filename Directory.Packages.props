@@ -2,10 +2,10 @@
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <TargetFramework>net8.0</TargetFramework>
-    <AspNetVersion>8.0.0-rc.2.23480.2</AspNetVersion>
-    <SystemExtensionVersion>8.0.0-rc.2.23479.6</SystemExtensionVersion>
-    <EntityFramworkCoreVersion>8.0.0-rc.2.23480.1</EntityFramworkCoreVersion>
-    <VSCodeGeneratorVersion>8.0.0-rc.2.23509.1</VSCodeGeneratorVersion>
+    <AspNetVersion>8.0.0</AspNetVersion>
+    <SystemExtensionVersion>8.0.0</SystemExtensionVersion>
+    <EntityFramworkCoreVersion>8.0.0</EntityFramworkCoreVersion>
+    <VSCodeGeneratorVersion>8.0.0</VSCodeGeneratorVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="Ardalis.ApiEndpoints" Version="4.0.1" />
