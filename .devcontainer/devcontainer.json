@@ -10,6 +10,7 @@
 			// Add the IDs of extensions you want installed when the container is created.
 			"extensions": [
 				"ms-dotnettools.csharp",
+				"ms-dotnettools.csdevkit",
 				"formulahendry.dotnet-test-explorer",
         			"ms-vscode.vscode-node-azure-pack",
         			"ms-kubernetes-tools.vscode-kubernetes-tools",
