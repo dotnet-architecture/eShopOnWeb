@@ -1,57 +1,18 @@
-# Uncomment later for testing shared codeql workflow
-# name: "CodeQL Analysis"
-
-# on:
-#   push:
-#     branches:
-#       - main
-#   pull_request:
-#     branches:
-#       - main
-
-# jobs:
-#   codeql:
-#     uses: stigian-nmmes-minicore-rpoc/.github/workflows/20-codeql.yaml@main
-
-# Code below for testing CodeQL local to current repo
-name: SAST
+name: CodeQL SAST
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - main
-  # pull_request:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  # trivy:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: Checkout repository
-  #     uses: actions/checkout@v4
-
-  #   # Scans Dockerfile, docker-compose.yml, and k8s yaml files
-  #   - name: Run Trivy vulnerability scanner in IaC mode
-  #     uses: aquasecurity/trivy-action@master
-  #     with:
-  #       scan-type: 'config'
-  #       hide-progress: false
-  #       format: 'sarif'
-  #       output: 'trivy-iac-results.sarif'
-  #       exit-code: '1'
-  #       ignore-unfixed: true
-  #       severity: 'CRITICAL,HIGH'
-
-  #   - name: Upload Trivy scan results to GitHub Security tab
-  #     uses: github/codeql-action/upload-sarif@v2
-  #     with:
-  #       sarif_file: 'trivy-iac-results.sarif'
-
-  codeql: # Scan just dotnet code and artifacts
+  codeql:
     runs-on: ubuntu-latest
-    timeout-minutes: 20 # TODO: adjust as needed once we have a better idea of how long this takes
+    timeout-minutes: 20
     permissions:
       actions: read
       contents: read
@@ -71,12 +32,11 @@ jobs:
     - name: Autobuild
       uses: github/codeql-action/autobuild@v3
 
-    #  If the Autobuild fails above, remove it and uncomment the following three lines.
-    #  modify them (or add more) to build your code if your project, please refer to the EXAMPLE below for guidance.
+    #  If the Autobuild fails above, remove it and uncomment the following lines.
+    #  Use either the buildscript.sh step, or the solution file steps.
 
-    # - run: |
-    #     echo "Run, Build Application using script"
-    #     ./location_of_script_within_repo/buildscript.sh
+    # - name: Run, Build Application using script
+    #   run: ./location_of_script_within_repo/buildscript.sh
 
     # - name: Find solution file
     #   run: echo "SOLUTION_FILE=$(find . -maxdepth 1 -name '*.sln' | head -n 1)" >> $GITHUB_ENV
@@ -84,9 +44,5 @@ jobs:
     # - name: Build solution
     #   run: dotnet build $SOLUTION_FILE --configuration Release
 
-    - name: Perform CodeQL Analysis
+    - name: Perform CodeQL Analysis # Automatically uploads results to GitHub Security tab
       uses: github/codeql-action/analyze@v3
-
-    # CodeQL action uploads SARIF results to GitHub automatically
-    # See https://docs.github.com/en/code-security/code-scanning/integrating-with-code-scanning/uploading-a-sarif-file-to-github
-    # for more information.
