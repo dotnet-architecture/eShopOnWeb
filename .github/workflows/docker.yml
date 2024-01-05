@@ -14,6 +14,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    # TODO: change auth to use GitHub app instead of PAT
     - name: Login to ${{ env.REGISTRY }}
       uses: docker/login-action@v3
       with:
@@ -25,6 +26,7 @@ jobs:
       run: echo "IMAGE_NAME_LOWER=${IMAGE_NAME,,}" >> $GITHUB_ENV
 
     # TODO: add instructions to README that these build&push steps needs to be tweaked to match the project
+    # TODO: add mods to suit image tags for different branches
     - name: Build and push Docker image for Web
       uses: docker/build-push-action@v5
       with:
