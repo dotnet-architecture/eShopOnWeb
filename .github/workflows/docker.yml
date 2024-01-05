@@ -31,7 +31,7 @@ jobs:
         context: ./src/Web
         file: ./src/Web/Dockerfile
         push: true
-        tags: ghcr.io/$IMAGE_NAME_LOWER/web:latest
+        tags: ghcr.io/${{ env.IMAGE_NAME_LOWER }}/web:latest
 
     - name: Build and push Docker image for PublicApi
       uses: docker/build-push-action@v5
@@ -39,4 +39,4 @@ jobs:
         context: ./src/PublicApi
         file: ./src/PublicApi/Dockerfile
         push: true
-        tags: ghcr.io/$IMAGE_NAME_LOWER/publicapi:latest
+        tags: ghcr.io/${{ env.IMAGE_NAME_LOWER }}/publicapi:latest
