@@ -2,9 +2,7 @@ name: CodeQL SAST
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
+  push: # Any branch
   pull_request:
     branches:
       - main
@@ -12,7 +10,7 @@ on:
 jobs:
   codeql:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     permissions:
       actions: read
       contents: read
