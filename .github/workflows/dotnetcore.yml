@@ -1,4 +1,4 @@
-name: eShopOnWeb Build and Test
+name: Dotnet Build and Test
 
 on: [push, pull_request, workflow_dispatch]
 
