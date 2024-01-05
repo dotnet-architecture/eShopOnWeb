@@ -35,7 +35,7 @@ jobs:
         push: true
         tags: ghcr.io/${{ env.IMAGE_NAME_LOWER }}/web:latest
         labels: |
-          org.opencontainers.image.source=${{ github.repositoryUrl }}
+          org.opencontainers.image.source=https://github.com/${{ github.repository }}
 
     - name: Build and push Docker image for PublicApi
       uses: docker/build-push-action@v5
@@ -45,4 +45,4 @@ jobs:
         push: true
         tags: ghcr.io/${{ env.IMAGE_NAME_LOWER }}/publicapi:latest
         labels: |
-          org.opencontainers.image.source=${{ github.repositoryUrl }}
+          org.opencontainers.image.source=https://github.com/${{ github.repository }}
