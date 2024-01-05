@@ -5,8 +5,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  # github.repository as <account>/<repo>
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: ${{ github.repository }} # github.repository as <account>/<repo>
 
 jobs:
   build_and_push:
@@ -25,18 +24,23 @@ jobs:
     - name: Convert IMAGE_NAME to lowercase
       run: echo "IMAGE_NAME_LOWER=${IMAGE_NAME,,}" >> $GITHUB_ENV
 
+    # TODO: add instructions to README that these build&push steps needs to be tweaked to match the project
     - name: Build and push Docker image for Web
       uses: docker/build-push-action@v5
       with:
-        context: ./src/Web
+        context: .
         file: ./src/Web/Dockerfile
         push: true
         tags: ghcr.io/${{ env.IMAGE_NAME_LOWER }}/web:latest
+        annotations: |
+          org.opencontainers.image.source=https://github.com/${{ github.repository }}
 
     - name: Build and push Docker image for PublicApi
       uses: docker/build-push-action@v5
       with:
-        context: ./src/PublicApi
+        context: .
         file: ./src/PublicApi/Dockerfile
         push: true
         tags: ghcr.io/${{ env.IMAGE_NAME_LOWER }}/publicapi:latest
+        annotations: |
+          org.opencontainers.image.source=https://github.com/${{ github.repository }}
