@@ -16,8 +16,48 @@ jobs:
       with:
         global-json-file: ./global.json
 
+    - name: Read solution paths from JSON
+      id: read_config
+      run: |
+        SOLUTION_PATHS=$(jq -r '.solution_paths[]' solutions.json)
+        echo "SOLUTION_PATHS=$SOLUTION_PATHS" >> $GITHUB_ENV
+
     - name: Build with dotnet
-      run: dotnet build ./eShopOnWeb.sln --configuration Release
+      run: |
+        for SOLUTION_PATH in $SOLUTION_PATHS
+        do
+          dotnet build $SOLUTION_PATH --configuration Release
+        done
+      shell: bash
 
     - name: Test with dotnet
-      run: dotnet test ./eShopOnWeb.sln --configuration Release
+      run: |
+        for SOLUTION_PATH in $SOLUTION_PATHS
+        do
+          dotnet test $SOLUTION_PATH --configuration Release
+        done
+      shell: bash
+
+# name: eShopOnWeb Build and Test
+
+# on: [push, pull_request, workflow_dispatch]
+
+# jobs:
+#   build:
+
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - name: Checkout repository
+#       uses: actions/checkout@v4
+
+#     - name: Setup .NET
+#       uses: actions/setup-dotnet@v4
+#       with:
+#         global-json-file: ./global.json
+
+#     - name: Build with dotnet
+#       run: dotnet build ./eShopOnWeb.sln --configuration Release
+
+#     - name: Test with dotnet
+#       run: dotnet test ./eShopOnWeb.sln --configuration Release
