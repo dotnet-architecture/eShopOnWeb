@@ -10,9 +10,6 @@ env:
 
 jobs:
   build_and_push:
-    permissions:
-      contents: read
-      packages: write
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
@@ -24,7 +21,7 @@ jobs:
       with:
         registry: ${{ env.REGISTRY }}
         username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        password: ${{ secrets.RPOC_PAT }}
 
     - name: Convert IMAGE_NAME to lowercase
       run: echo "IMAGE_NAME_LOWER=${IMAGE_NAME,,}" >> $GITHUB_ENV
