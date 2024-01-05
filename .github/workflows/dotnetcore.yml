@@ -19,12 +19,12 @@ jobs:
     - name: Read solution paths from JSON
       id: read_config
       run: |
-        SOLUTION_PATHS=$(jq -r '.solution_paths[]' solutions.json)
-        echo "SOLUTION_PATHS=$SOLUTION_PATHS" >> $GITHUB_ENV
+        SOLUTION_PATH=$(jq -r '.SOLUTION_PATH[]' solutions.json)
+        echo "SOLUTION_PATH=$SOLUTION_PATH" >> $GITHUB_ENV
 
     - name: Build with dotnet
       run: |
-        for SOLUTION_PATH in $SOLUTION_PATHS
+        for SOLUTION_PATH in $SOLUTION_PATH
         do
           dotnet build $SOLUTION_PATH --configuration Release
         done
@@ -32,7 +32,7 @@ jobs:
 
     - name: Test with dotnet
       run: |
-        for SOLUTION_PATH in $SOLUTION_PATHS
+        for SOLUTION_PATH in $SOLUTION_PATH
         do
           dotnet test $SOLUTION_PATH --configuration Release
         done
