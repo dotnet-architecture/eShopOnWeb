@@ -20,6 +20,7 @@ jobs:
       id: read_config
       run: |
         SOLUTION_PATH=$(jq -r '.solution_path[]' solutions.json)
+        echo "Read solution_path: $SOLUTION_PATH"
         echo "SOLUTION_PATH=$SOLUTION_PATH" >> $GITHUB_ENV
 
     - name: Build with dotnet
