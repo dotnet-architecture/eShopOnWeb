@@ -3,6 +3,11 @@ name: Docker Build and Push
 on:
   workflow_dispatch:
 
+env:
+  REGISTRY: ghcr.io
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: ${{ github.repository }}
+
 jobs:
   build_and_push:
     runs-on: ubuntu-latest
@@ -10,12 +15,15 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Login to GitHub Container Registry
+    - name: Login to ${{ env.REGISTRY }}
       uses: docker/login-action@v3
       with:
-        registry: ghcr.io
+        registry: ${{ env.REGISTRY }}
         username: ${{ github.actor }}
         password: ${{ secrets.RPOC_PAT }}
+
+    - name: Convert IMAGE_NAME to lowercase
+      run: echo "IMAGE_NAME_LOWER=${IMAGE_NAME,,}" >> $GITHUB_ENV
 
     - name: Build and push Docker image for Web
       uses: docker/build-push-action@v5
@@ -23,7 +31,7 @@ jobs:
         context: ./src/Web
         file: ./src/Web/Dockerfile
         push: true
-        tags: ghcr.io/${{ github.repository }}/web:latest
+        tags: ghcr.io/$IMAGE_NAME_LOWER/web:latest
 
     - name: Build and push Docker image for PublicApi
       uses: docker/build-push-action@v5
@@ -31,4 +39,4 @@ jobs:
         context: ./src/PublicApi
         file: ./src/PublicApi/Dockerfile
         push: true
-        tags: ghcr.io/${{ github.repository }}/publicapi:latest
+        tags: ghcr.io/$IMAGE_NAME_LOWER/publicapi:latest
