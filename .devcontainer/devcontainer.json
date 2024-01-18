@@ -2,7 +2,7 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/dotnet
 {
 	"name": "eShopOnWeb",
-	"image": "mcr.microsoft.com/devcontainers/dotnet:0-8.0",
+	"image": "mcr.microsoft.com/devcontainers/dotnet:8.0",
  
 	"customizations": {
 		 // Configure properties specific to VS Code.
