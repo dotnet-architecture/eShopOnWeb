@@ -9,8 +9,13 @@ env:
   IMAGE_NAME: ${{ github.repository }} # github.repository as <account>/<repo>
 
 jobs:
-  build_and_push:
+  docker:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        image:
+          - Web
+          - PublicApi
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -28,22 +33,24 @@ jobs:
 
     # TODO: add docker/metadata-action to apply tags based on branch, env, etc.
     # TODO: consider project structure, where dockerfile might be, how devs might provide manifests, etc.
-    - name: Build and push Docker image for Web
+    - name: Build Docker image for Web
       uses: docker/build-push-action@v5
       with:
         context: .
-        file: ./src/Web/Dockerfile
-        push: true
-        tags: ghcr.io/${{ env.IMAGE_NAME_LOWER }}/web:latest
+        file: ./src/${{ matrix.image }}/Dockerfile
+        push: false
+        tags: ghcr.io/${{ env.IMAGE_NAME_LOWER }}/${{ matrix.image }}:latest
         labels: |
           org.opencontainers.image.source=https://github.com/${{ github.repository }}
 
-    - name: Build and push Docker image for PublicApi
-      uses: docker/build-push-action@v5
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
       with:
-        context: .
-        file: ./src/PublicApi/Dockerfile
-        push: true
-        tags: ghcr.io/${{ env.IMAGE_NAME_LOWER }}/publicapi:latest
-        labels: |
-          org.opencontainers.image.source=https://github.com/${{ github.repository }}
+        scan-type: 'image'
+        scanners: 'vuln,secret'
+        image-ref: 'docker.io/${{ env.IMAGE_NAME_LOWER }}/${{ matrix.image }}:${{ github.sha }}'
+        format: 'table'
+        exit-code: '1'
+        ignore-unfixed: true
+        vuln-type: 'os,library'
+        severity: 'CRITICAL,HIGH'
