@@ -47,9 +47,18 @@ jobs:
       with:
         scan-type: 'image'
         scanners: 'vuln,secret'
-        image-ref: 'docker.io/${{ env.IMAGE_NAME }}:latest'
-        format: 'table'
+        image-ref: 'ghcr.io/${{ env.IMAGE_NAME }}:latest'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
         exit-code: '1'
         ignore-unfixed: true
         vuln-type: 'os,library'
         severity: 'CRITICAL,HIGH'
+      env:
+        TRIVY_USERNAME: ${{ github.actor }}
+        TRIVY_PASSWORD: ${{ secrets.RPOC_PAT }}
+
+    - name: Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: 'trivy-results.sarif'
