@@ -47,7 +47,7 @@ jobs:
       with:
         scan-type: 'image'
         scanners: 'vuln,secret'
-        image-ref: 'docker.io/${{ env.IMAGE_NAME }}:${{ github.sha }}'
+        image-ref: 'docker.io/${{ env.IMAGE_NAME }}:latest'
         format: 'table'
         exit-code: '1'
         ignore-unfixed: true
