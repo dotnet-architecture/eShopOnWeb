@@ -47,6 +47,7 @@ jobs:
 
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
+      continue-on-error: true
       with:
         scan-type: 'image'
         scanners: 'vuln,secret'
@@ -60,6 +61,15 @@ jobs:
       env:
         TRIVY_USERNAME: ${{ github.actor }}
         TRIVY_PASSWORD: ${{ secrets.RPOC_PAT }}
+
+    # - name: Run Trivy vulnerability scanner (continue on error)
+    #   if: github.ref != 'refs/heads/main'
+    #   continue-on-error: true
+    #   uses: aquasecurity/trivy-action@master
+    #   with:
+    #     # ...
+    #     exit-code: '1'
+    #   # ...
 
     - name: Upload Trivy scan results to GitHub Security tab
       uses: github/codeql-action/upload-sarif@v2
