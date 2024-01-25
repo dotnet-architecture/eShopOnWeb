@@ -6,7 +6,6 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }} # github.repository as <account>/<repo>
 
 jobs:
   docker:
@@ -28,8 +27,8 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.RPOC_PAT }}
 
-    - name: Convert IMAGE_NAME to lowercase
-      run: echo "IMAGE_NAME_LOWER=${IMAGE_NAME,,}" >> $GITHUB_ENV
+    - name: Convert image name to lowercase
+      run: echo "IMAGE_NAME=$(echo "${{ github.repository }}/${{ matrix.image }}" | awk '{print tolower($0)}')" >> $GITHUB_ENV
 
     # TODO: add docker/metadata-action to apply tags based on branch, env, etc.
     # TODO: consider project structure, where dockerfile might be, how devs might provide manifests, etc.
@@ -39,7 +38,7 @@ jobs:
         context: .
         file: ./src/${{ matrix.image }}/Dockerfile
         push: false
-        tags: ghcr.io/${{ env.IMAGE_NAME_LOWER }}/${{ matrix.image }}:latest
+        tags: ghcr.io/${{ env.IMAGE_NAME }}:latest
         labels: |
           org.opencontainers.image.source=https://github.com/${{ github.repository }}
 
@@ -48,7 +47,7 @@ jobs:
       with:
         scan-type: 'image'
         scanners: 'vuln,secret'
-        image-ref: 'docker.io/${{ env.IMAGE_NAME_LOWER }}/${{ matrix.image }}:${{ github.sha }}'
+        image-ref: 'docker.io/${{ env.IMAGE_NAME }}:${{ github.sha }}'
         format: 'table'
         exit-code: '1'
         ignore-unfixed: true
