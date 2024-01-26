@@ -58,6 +58,7 @@ jobs:
         ignore-unfixed: false
         vuln-type: 'os,library'
         severity: 'CRITICAL,HIGH'
+        github-pat: ${{ secrets.RPOC_PAT }}
       env:
         TRIVY_USERNAME: ${{ github.actor }}
         TRIVY_PASSWORD: ${{ secrets.RPOC_PAT }}
