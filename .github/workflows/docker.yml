@@ -52,10 +52,10 @@ jobs:
         scan-type: 'image'
         scanners: 'vuln,secret'
         image-ref: 'ghcr.io/${{ env.IMAGE_NAME }}:latest'
-        format: 'sarif'
-        output: 'trivy-results.sarif'
+        format: 'github'
+        # output: 'trivy-results.sarif'
         exit-code: '1'
-        ignore-unfixed: true
+        ignore-unfixed: false
         vuln-type: 'os,library'
         severity: 'CRITICAL,HIGH'
       env:
