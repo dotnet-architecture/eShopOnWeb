@@ -71,8 +71,9 @@ jobs:
     #     exit-code: '1'
     #   # ...
 
-    - name: Upload Trivy scan results to GitHub Security tab
-      uses: github/codeql-action/upload-sarif@v2
-      if: always()
-      with:
-        sarif_file: 'trivy-results.sarif'
+    # Not required when using format: 'github' option in the Trivy action
+    # - name: Upload Trivy scan results to GitHub Security tab
+    #   uses: github/codeql-action/upload-sarif@v2
+    #   if: always()
+    #   with:
+    #     sarif_file: 'trivy-results.sarif'
