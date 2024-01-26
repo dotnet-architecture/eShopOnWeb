@@ -52,8 +52,8 @@ jobs:
         scan-type: 'image'
         scanners: 'vuln,secret'
         image-ref: 'ghcr.io/${{ env.IMAGE_NAME }}:latest'
-        format: 'github'
-        # output: 'trivy-results.sarif'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
         exit-code: '1'
         ignore-unfixed: false
         vuln-type: 'os,library'
@@ -72,9 +72,9 @@ jobs:
     #     exit-code: '1'
     #   # ...
 
-    # Not required when using format: 'github' option in the Trivy action
-    # - name: Upload Trivy scan results to GitHub Security tab
-    #   uses: github/codeql-action/upload-sarif@v2
-    #   if: always()
-    #   with:
-    #     sarif_file: 'trivy-results.sarif'
+    # Remove this step if we ever get format: github working in trivy-action
+    - name: Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v2
+      if: always()
+      with:
+        sarif_file: 'trivy-results.sarif'
