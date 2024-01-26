@@ -35,7 +35,7 @@ jobs:
 
     # TODO: add docker/metadata-action to apply tags based on branch, env, etc.
     # TODO: consider project structure, where dockerfile might be, how devs might provide manifests, etc.
-    - name: Build Docker image for Web
+    - name: Build Docker image for ${{ matrix.image }}
       uses: docker/build-push-action@v5
       with:
         context: .
