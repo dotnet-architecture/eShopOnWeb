@@ -31,7 +31,7 @@ public class CustomerOrdersWithItemsSpecification
         var result = spec.Evaluate(GetTestCollection()).ToList();
 
         Assert.NotNull(result);
-        Assert.Single(result);
+        Assert.Equal(2, result.Count);
         Assert.Single(result[0].OrderItems);
         Assert.NotNull(result[0].OrderItems.FirstOrDefault()?.ItemOrdered);
         Assert.Single(result[1].OrderItems);
