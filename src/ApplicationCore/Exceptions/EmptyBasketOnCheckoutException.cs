@@ -9,7 +9,8 @@ public class EmptyBasketOnCheckoutException : Exception
     {
     }
 
-    protected EmptyBasketOnCheckoutException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
+    protected EmptyBasketOnCheckoutException() 
+        : base("An exception occurred due to an empty basket during checkout.")
     {
     }
 
