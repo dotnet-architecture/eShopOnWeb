@@ -16,7 +16,7 @@ public class AddItemToBasket
     private readonly IAppLogger<BasketService> _mockLogger = Substitute.For<IAppLogger<BasketService>>();
 
     [Fact]
-    public async Task InvokesBasketRepositoryGetBySpecAsyncOnce()
+    public async Task InvokesBasketRepositoryGetBySpecOnceAsync()
     {
         var basket = new Basket(_buyerId);
         basket.AddItem(1, 1.5m);
@@ -25,13 +25,13 @@ public class AddItemToBasket
 
         var basketService = new BasketService(_mockBasketRepo, _mockLogger);
 
-        await basketService.AddItemToBasket(basket.BuyerId, 1, 1.50m);
+        await basketService.AddItemToBasketAsync(basket.BuyerId, 1, 1.50m);
 
         await _mockBasketRepo.Received().FirstOrDefaultAsync(Arg.Any<BasketWithItemsSpecification>(), default);
     }
 
     [Fact]
-    public async Task InvokesBasketRepositoryUpdateAsyncOnce()
+    public async Task InvokesBasketRepositoryUpdateOnceAsync()
     {
         var basket = new Basket(_buyerId);
         basket.AddItem(1, 1.1m, 1);
@@ -39,7 +39,7 @@ public class AddItemToBasket
 
         var basketService = new BasketService(_mockBasketRepo, _mockLogger);
 
-        await basketService.AddItemToBasket(basket.BuyerId, 1, 1.50m);
+        await basketService.AddItemToBasketAsync(basket.BuyerId, 1, 1.50m);
 
         await _mockBasketRepo.Received().UpdateAsync(basket, default);
     }

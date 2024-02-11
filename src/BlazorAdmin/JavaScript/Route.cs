@@ -12,7 +12,7 @@ public class Route
         _jsRuntime = jsRuntime;
     }
 
-    public async Task RouteOutside(string path)
+    public async Task RouteOutsideAsync(string path)
     {
         await _jsRuntime.InvokeAsync<string>(JSInteropConstants.RouteOutside, path);
     }

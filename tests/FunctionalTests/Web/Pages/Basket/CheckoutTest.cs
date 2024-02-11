@@ -17,7 +17,7 @@ public class CheckoutTest : IClassFixture<TestApplication>
     public HttpClient Client { get; }
 
     [Fact]
-    public async Task SucessfullyPay()
+    public async Task SucessfullyPayAsync()
     {
 
         // Load Home Page

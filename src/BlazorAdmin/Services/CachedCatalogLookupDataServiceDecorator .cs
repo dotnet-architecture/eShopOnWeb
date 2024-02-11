@@ -26,7 +26,7 @@ public class CachedCatalogLookupDataServiceDecorator<TLookupData, TReponse>
         _logger = logger;
     }
 
-    public async Task<List<TLookupData>> List()
+    public async Task<List<TLookupData>> ListAsync()
     {
         string key = typeof(TLookupData).Name;
         var cacheEntry = await _localStorageService.GetItemAsync<CacheEntry<List<TLookupData>>>(key);
@@ -44,7 +44,7 @@ public class CachedCatalogLookupDataServiceDecorator<TLookupData, TReponse>
             }
         }
 
-        var types = await _catalogTypeService.List();
+        var types = await _catalogTypeService.ListAsync();
         var entry = new CacheEntry<List<TLookupData>>(types);
         await _localStorageService.SetItemAsync(key, entry);
         return types;

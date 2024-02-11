@@ -12,12 +12,12 @@ public class Css
         _jsRuntime = jsRuntime;
     }
 
-    public async Task ShowBodyOverflow()
+    public async Task ShowBodyOverflowAsync()
     {
         await _jsRuntime.InvokeAsync<string>(JSInteropConstants.ShowBodyOverflow);
     }
 
-    public async Task<string> HideBodyOverflow()
+    public async Task<string> HideBodyOverflowAsync()
     {
         return await _jsRuntime.InvokeAsync<string>(JSInteropConstants.HideBodyOverflow);
     }

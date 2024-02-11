@@ -36,12 +36,12 @@ public class CheckoutModel : PageModel
 
     public BasketViewModel BasketModel { get; set; } = new BasketViewModel();
 
-    public async Task OnGet()
+    public async Task OnGetAsync()
     {
         await SetBasketModelAsync();
     }
 
-    public async Task<IActionResult> OnPost(IEnumerable<BasketItemViewModel> items)
+    public async Task<IActionResult> OnPostAsync(IEnumerable<BasketItemViewModel> items)
     {
         try
         {
@@ -53,7 +53,7 @@ public class CheckoutModel : PageModel
             }
 
             var updateModel = items.ToDictionary(b => b.Id.ToString(), b => b.Quantity);
-            await _basketService.SetQuantities(BasketModel.Id, updateModel);
+            await _basketService.SetQuantitiesAsync(BasketModel.Id, updateModel);
             await _orderService.CreateOrderAsync(BasketModel.Id, new Address("123 Main St.", "Kent", "OH", "United States", "44240"));
             await _basketService.DeleteBasketAsync(BasketModel.Id);
         }
@@ -72,12 +72,12 @@ public class CheckoutModel : PageModel
         Guard.Against.Null(User?.Identity?.Name, nameof(User.Identity.Name));
         if (_signInManager.IsSignedIn(HttpContext.User))
         {
-            BasketModel = await _basketViewModelService.GetOrCreateBasketForUser(User.Identity.Name);
+            BasketModel = await _basketViewModelService.GetOrCreateBasketForUserAsync(User.Identity.Name);
         }
         else
         {
             GetOrSetBasketCookieAndUserName();
-            BasketModel = await _basketViewModelService.GetOrCreateBasketForUser(_username!);
+            BasketModel = await _basketViewModelService.GetOrCreateBasketForUserAsync(_username!);
         }
     }
 
