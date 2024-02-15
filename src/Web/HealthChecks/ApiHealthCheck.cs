@@ -18,12 +18,12 @@ public class ApiHealthCheck : IHealthCheck
 
     public async Task<HealthCheckResult> CheckHealthAsync(
         HealthCheckContext context,
-        CancellationToken cancellationToken = default(CancellationToken))
+        CancellationToken cancellationToken = default)
     {
         string myUrl = _baseUrlConfiguration.ApiBase + "catalog-items";
         var client = new HttpClient();
-        var response = await client.GetAsync(myUrl);
-        var pageContents = await response.Content.ReadAsStringAsync();
+        var response = await client.GetAsync(myUrl, cancellationToken);
+        var pageContents = await response.Content.ReadAsStringAsync(cancellationToken);
         if (pageContents.Contains(".NET Bot Black Sweatshirt"))
         {
             return HealthCheckResult.Healthy("The check indicates a healthy result.");
