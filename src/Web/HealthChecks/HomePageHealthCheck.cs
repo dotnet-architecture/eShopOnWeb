@@ -6,24 +6,16 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Microsoft.eShopWeb.Web.HealthChecks;
 
-public class HomePageHealthCheck : IHealthCheck
+public class HomePageHealthCheck(IHttpContextAccessor httpContextAccessor, IHttpClientFactory httpClientFactory) : IHealthCheck
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
+    private HttpClient? _httpClient;
 
-    public HomePageHealthCheck(IHttpContextAccessor httpContextAccessor)
+    public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
     {
-        _httpContextAccessor = httpContextAccessor;
-    }
-
-    public async Task<HealthCheckResult> CheckHealthAsync(
-        HealthCheckContext context,
-        CancellationToken cancellationToken = default)
-    {
-        var request = _httpContextAccessor.HttpContext?.Request;
+        _httpClient = httpClientFactory.CreateClient();
+        var request = httpContextAccessor.HttpContext?.Request;
         string myUrl = request?.Scheme + "://" + request?.Host.ToString();
-
-        var client = new HttpClient();
-        var response = await client.GetAsync(myUrl, cancellationToken);
+        var response = await _httpClient.GetAsync(myUrl, cancellationToken);
         var pageContents = await response.Content.ReadAsStringAsync(cancellationToken);
         if (pageContents.Contains(".NET Bot Black Sweatshirt"))
         {
