@@ -58,7 +58,7 @@ public class CheckoutTest : IClassFixture<TestApplication>
             new KeyValuePair<string, string>("Items[0].Quantity", "1"),
             new KeyValuePair<string, string>(WebPageHelpers.TokenTag, WebPageHelpers.GetRequestVerificationToken(loginStringResponse))
         };
-        var checkOutContent = new FormUrlEncodedContent(checkOutKeyValues);     
+        var checkOutContent = new FormUrlEncodedContent(checkOutKeyValues);
         var checkOutResponse = await Client.PostAsync("/basket/checkout", checkOutContent);
         var stringCheckOutResponse = await checkOutResponse.Content.ReadAsStringAsync();
 

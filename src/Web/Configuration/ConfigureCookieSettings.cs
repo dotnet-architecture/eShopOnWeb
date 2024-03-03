@@ -1,9 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace Microsoft.eShopWeb.Web.Configuration;
+﻿namespace Microsoft.eShopWeb.Web.Configuration;
 
 public static class ConfigureCookieSettings
 {
@@ -14,10 +9,10 @@ public static class ConfigureCookieSettings
     {
         services.Configure<CookiePolicyOptions>(options =>
         {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                //TODO need to check that.
-                //options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.Strict;
+            // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+            //TODO need to check that.
+            //options.CheckConsentNeeded = context => true;
+            options.MinimumSameSitePolicy = SameSiteMode.Strict;
         });
         services.ConfigureApplicationCookie(options =>
         {
@@ -30,7 +25,7 @@ public static class ConfigureCookieSettings
             {
                 Name = IdentifierCookieName,
                 IsEssential = true // required for auth to work without explicit user consent; adjust to suit your privacy policy
-                };
+            };
         });
 
         services.AddScoped<RevokeAuthenticationEvents>();

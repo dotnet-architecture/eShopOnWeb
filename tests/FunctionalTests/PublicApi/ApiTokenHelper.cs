@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.eShopWeb.ApplicationCore.Constants;
@@ -10,6 +8,10 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Api;
 
 public class ApiTokenHelper
 {
+    protected ApiTokenHelper()
+    {
+
+    }
     public static string GetAdminUserToken()
     {
         string userName = "admin@microsoft.com";

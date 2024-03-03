@@ -26,10 +26,10 @@ public class BasketTotalItems
     {
         var basket = new Basket(_buyerId);
         basket.AddItem(_testCatalogItemId, _testUnitPrice, _testQuantity);
-        basket.AddItem(_testCatalogItemId, _testUnitPrice, _testQuantity*2);
+        basket.AddItem(_testCatalogItemId, _testUnitPrice, _testQuantity * 2);
 
         var result = basket.TotalItems;
 
-        Assert.Equal(_testQuantity*3, result);
+        Assert.Equal(_testQuantity * 3, result);
     }
 }
