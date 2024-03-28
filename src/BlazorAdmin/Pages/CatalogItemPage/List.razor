@@ -15,7 +15,7 @@ else
 {
 
     <p class="esh-link-wrapper">
-        <button class="btn btn-primary" @onclick="@(CreateClick)">
+        <button class="btn btn-primary" @onclick="@(CreateClickAsync)">
             Create New
         </button>
     </p>
@@ -36,7 +36,7 @@ else
         <tbody class="cursor-pointer">
             @foreach (var item in catalogItems)
             {
-                <tr @onclick="@(() => DetailsClick(item.Id))">
+                <tr @onclick="@(() => DetailsClickAsync(item.Id))">
                     <td>
                         <img class="img-thumbnail" src="@($"{item.PictureUri}")">
                     </td>
@@ -47,11 +47,11 @@ else
                     <td>@item.Description</td>
                     <td>@item.Price</td>
                     <td>
-                        <button @onclick="@(() => EditClick(item.Id))" @onclick:stopPropagation="true" class="btn btn-primary">
+                        <button @onclick="@(() => EditClickAsync(item.Id))" @onclick:stopPropagation="true" class="btn btn-primary">
                             Edit
                         </button>
 
-                        <button @onclick="@(() => DeleteClick(item.Id))" @onclick:stopPropagation="true" class="btn btn-danger">
+                        <button @onclick="@(() => DeleteClickAsync(item.Id))" @onclick:stopPropagation="true" class="btn btn-danger">
                             Delete
                         </button>
                     </td>
@@ -60,8 +60,8 @@ else
         </tbody>
     </table>
 
-    <Details Brands="@catalogBrands" Types="@catalogTypes" OnEditClick="EditClick" @ref="DetailsComponent"></Details>
-    <Edit Brands="@catalogBrands" Types="@catalogTypes" OnSaveClick="ReloadCatalogItems" @ref="EditComponent"></Edit>
-    <Create Brands="@catalogBrands" Types="@catalogTypes" OnSaveClick="ReloadCatalogItems" @ref="CreateComponent"></Create>
-    <Delete Brands="@catalogBrands" Types="@catalogTypes" OnSaveClick="ReloadCatalogItems" @ref="DeleteComponent"></Delete>
+    <Details Brands="@catalogBrands" Types="@catalogTypes" OnEditClick="EditClickAsync" @ref="DetailsComponent"></Details>
+    <Edit Brands="@catalogBrands" Types="@catalogTypes" OnSaveClick="ReloadCatalogItemsAsync" @ref="EditComponent"></Edit>
+    <Create Brands="@catalogBrands" Types="@catalogTypes" OnSaveClick="ReloadCatalogItemsAsync" @ref="CreateComponent"></Create>
+    <Delete Brands="@catalogBrands" Types="@catalogTypes" OnSaveClick="ReloadCatalogItemsAsync" @ref="DeleteComponent"></Delete>
 }

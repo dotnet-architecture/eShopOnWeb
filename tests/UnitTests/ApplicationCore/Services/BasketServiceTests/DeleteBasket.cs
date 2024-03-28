@@ -15,7 +15,7 @@ public class DeleteBasket
     private readonly IAppLogger<BasketService> _mockLogger = Substitute.For<IAppLogger<BasketService>>();
 
     [Fact]
-    public async Task ShouldInvokeBasketRepositoryDeleteAsyncOnce()
+    public async Task ShouldInvokeBasketRepositoryDeleteOnceAsync()
     {
         var basket = new Basket(_buyerId);
         basket.AddItem(1, 1.1m, 1);

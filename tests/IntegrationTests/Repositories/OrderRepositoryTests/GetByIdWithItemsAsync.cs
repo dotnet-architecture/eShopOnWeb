@@ -26,7 +26,7 @@ public class GetByIdWithItemsAsync
     }
 
     [Fact]
-    public async Task GetOrderAndItemsByOrderIdWhenMultipleOrdersPresent()
+    public async Task GetOrderAndItemsByOrderIdWhenMultipleOrdersPresentAsync()
     {
         //Arrange
         var itemOneUnitPrice = 5.50m;

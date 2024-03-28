@@ -60,7 +60,7 @@ public class CatalogItem
         return null;
     }
 
-    public static async Task<string> DataToBase64(IFileListEntry fileItem)
+    public static async Task<string> DataToBase64Async(IFileListEntry fileItem)
     {
         using (var reader = new StreamReader(fileItem.Data))
         {

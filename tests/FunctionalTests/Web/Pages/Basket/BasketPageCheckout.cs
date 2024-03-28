@@ -17,7 +17,7 @@ public class BasketPageCheckout : IClassFixture<TestApplication>
     public HttpClient Client { get; }
 
     [Fact]
-    public async Task RedirectsToLoginIfNotAuthenticated()
+    public async Task RedirectsToLoginIfNotAuthenticatedAsync()
     {
 
         // Load Home Page

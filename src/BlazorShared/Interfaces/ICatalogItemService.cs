@@ -6,10 +6,10 @@ namespace BlazorShared.Interfaces;
 
 public interface ICatalogItemService
 {
-    Task<CatalogItem> Create(CreateCatalogItemRequest catalogItem);
-    Task<CatalogItem> Edit(CatalogItem catalogItem);
-    Task<string> Delete(int id);
-    Task<CatalogItem> GetById(int id);
-    Task<List<CatalogItem>> ListPaged(int pageSize);
-    Task<List<CatalogItem>> List();
+    Task<CatalogItem> CreateAsync(CreateCatalogItemRequest catalogItem);
+    Task<CatalogItem> EditAsync(CatalogItem catalogItem);
+    Task<string> DeleteAsync(int id);
+    Task<CatalogItem> GetByIdAsync(int id);
+    Task<List<CatalogItem>> ListPagedAsync(int pageSize);
+    Task<List<CatalogItem>> ListAsync();
 }

@@ -31,7 +31,7 @@
 
                 if (authState.User == null)
                 {
-                    await new Route(JSRuntime).RouteOutside("/Identity/Account/Login");
+                await new Route(JSRuntime).RouteOutsideAsync("/Identity/Account/Login");
                 }
                 CallRequestRefresh();
             }

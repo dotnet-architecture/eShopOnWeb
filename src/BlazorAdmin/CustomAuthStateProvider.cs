@@ -30,10 +30,10 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-        return new AuthenticationState(await GetUser(useCache: true));
+        return new AuthenticationState(await GetUserAsync(useCache: true));
     }
 
-    private async ValueTask<ClaimsPrincipal> GetUser(bool useCache = false)
+    private async ValueTask<ClaimsPrincipal> GetUserAsync(bool useCache = false)
     {
         var now = DateTimeOffset.Now;
         if (useCache && now < _userLastCheck + UserCacheRefreshInterval)
@@ -41,13 +41,13 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
             return _cachedUser;
         }
 
-        _cachedUser = await FetchUser();
+        _cachedUser = await FetchUserAsync();
         _userLastCheck = now;
 
         return _cachedUser;
     }
 
-    private async Task<ClaimsPrincipal> FetchUser()
+    private async Task<ClaimsPrincipal> FetchUserAsync()
     {
         UserInfo user = null;
 

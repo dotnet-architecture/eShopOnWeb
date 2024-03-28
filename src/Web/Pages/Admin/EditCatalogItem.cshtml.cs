@@ -30,7 +30,7 @@ public class EditCatalogItemModel : PageModel
     {
         if (ModelState.IsValid)
         {
-            await _catalogItemViewModelService.UpdateCatalogItem(CatalogModel);
+            await _catalogItemViewModelService.UpdateCatalogItemAsync(CatalogModel);
         }
 
         return RedirectToPage("/Admin/Index");

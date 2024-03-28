@@ -11,7 +11,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Details @_item.Name</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="CloseAsync">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -79,8 +79,8 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Close</button>
-                <button class="btn btn-primary" @onclick="EditClick">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="CloseAsync">Close</button>
+                <button class="btn btn-primary" @onclick="EditClickAsync">
                     Edit
                 </button>
             </div>
@@ -108,20 +108,20 @@
     private bool _showDetailsModal = false;
     private CatalogItem _item = new CatalogItem();
 
-    public async Task EditClick()
+    public async Task EditClickAsync()
     {
         await OnEditClick.InvokeAsync(_item.Id);
-        await Close();
+        await CloseAsync();
     }
 
-    public async Task Open(int id)
+    public async Task OpenAsync(int id)
     {
 
         Logger.LogInformation("Now loading... /Catalog/Details/{Id}", id);
 
-        await new Css(JSRuntime).HideBodyOverflow();
+        await new Css(JSRuntime).HideBodyOverflowAsync();
 
-        _item = await CatalogItemService.GetById(id);
+        _item = await CatalogItemService.GetByIdAsync(id);
 
         _modalDisplay = "block;";
         _modalClass = "Show";
@@ -130,9 +130,9 @@
         StateHasChanged();
     }
 
-    public async Task Close()
+    public async Task CloseAsync()
     {
-        await new Css(JSRuntime).ShowBodyOverflow();
+        await new Css(JSRuntime).ShowBodyOverflowAsync();
 
         _modalDisplay = "none";
         _modalClass = "";

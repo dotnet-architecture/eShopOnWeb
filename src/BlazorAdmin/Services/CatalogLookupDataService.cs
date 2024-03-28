@@ -32,7 +32,7 @@ public class CatalogLookupDataService<TLookupData, TReponse>
         _apiUrl = baseUrlConfiguration.Value.ApiBase;
     }
 
-    public async Task<List<TLookupData>> List()
+    public async Task<List<TLookupData>> ListAsync()
     {
         var endpointName = typeof(TLookupData).GetCustomAttribute<EndpointAttribute>().Name;
         _logger.LogInformation($"Fetching {typeof(TLookupData).Name} from API. Enpoint : {endpointName}");

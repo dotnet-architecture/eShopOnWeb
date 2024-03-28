@@ -37,7 +37,7 @@ public class CatalogViewModelService : ICatalogViewModelService
         _uriComposer = uriComposer;
     }
 
-    public async Task<CatalogIndexViewModel> GetCatalogItems(int pageIndex, int itemsPage, int? brandId, int? typeId)
+    public async Task<CatalogIndexViewModel> GetCatalogItemsAsync(int pageIndex, int itemsPage, int? brandId, int? typeId)
     {
         _logger.LogInformation("GetCatalogItems called.");
 
@@ -58,8 +58,8 @@ public class CatalogViewModelService : ICatalogViewModelService
                 PictureUri = _uriComposer.ComposePicUri(i.PictureUri),
                 Price = i.Price
             }).ToList(),
-            Brands = (await GetBrands()).ToList(),
-            Types = (await GetTypes()).ToList(),
+            Brands = (await GetBrandsAsync()).ToList(),
+            Types = (await GetTypesAsync()).ToList(),
             BrandFilterApplied = brandId ?? 0,
             TypesFilterApplied = typeId ?? 0,
             PaginationInfo = new PaginationInfoViewModel()
@@ -77,7 +77,7 @@ public class CatalogViewModelService : ICatalogViewModelService
         return vm;
     }
 
-    public async Task<IEnumerable<SelectListItem>> GetBrands()
+    public async Task<IEnumerable<SelectListItem>> GetBrandsAsync()
     {
         _logger.LogInformation("GetBrands called.");
         var brands = await _brandRepository.ListAsync();
@@ -93,7 +93,7 @@ public class CatalogViewModelService : ICatalogViewModelService
         return items;
     }
 
-    public async Task<IEnumerable<SelectListItem>> GetTypes()
+    public async Task<IEnumerable<SelectListItem>> GetTypesAsync()
     {
         _logger.LogInformation("GetTypes called.");
         var types = await _typeRepository.ListAsync();

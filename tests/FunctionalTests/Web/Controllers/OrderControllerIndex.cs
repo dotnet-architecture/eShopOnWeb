@@ -20,7 +20,7 @@ public class OrderIndexOnGet : IClassFixture<TestApplication>
     public HttpClient Client { get; }
 
     [Fact]
-    public async Task ReturnsRedirectGivenAnonymousUser()
+    public async Task ReturnsRedirectGivenAnonymousUserAsync()
     {
         var response = await Client.GetAsync("/order/my-orders");
         var redirectLocation = response!.Headers.Location!.OriginalString;

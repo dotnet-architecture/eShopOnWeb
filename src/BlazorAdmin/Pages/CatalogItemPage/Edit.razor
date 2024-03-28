@@ -9,11 +9,11 @@
 <div class="modal @_modalClass" tabindex="-1" role="dialog" style="display:@_modalDisplay">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <EditForm Model="_item" OnValidSubmit="@SaveClick">
+            <EditForm Model="_item" OnValidSubmit="@SaveClickAsync">
                 <DataAnnotationsValidator />
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Edit @_item.Name</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="CloseAsync">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -90,7 +90,7 @@
                     }
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Cancel</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="CloseAsync">Cancel</button>
                     <button type="submit" class="btn btn-primary">
                         Save
                     </button>
@@ -124,20 +124,20 @@
     private bool _showEditModal = false;
     private CatalogItem _item = new CatalogItem();
 
-    private async Task SaveClick()
+    private async Task SaveClickAsync()
     {
-        await CatalogItemService.Edit(_item);
+        await CatalogItemService.EditAsync(_item);
         await OnSaveClick.InvokeAsync(null);
-        await Close();
+        await CloseAsync();
     }
 
-    public async Task Open(int id)
+    public async Task OpenAsync(int id)
     {
         Logger.LogInformation("Now loading... /Catalog/Edit/{Id}", id);
 
-        await new Css(JSRuntime).HideBodyOverflow();
+        await new Css(JSRuntime).HideBodyOverflowAsync();
 
-        _item = await CatalogItemService.GetById(id);
+        _item = await CatalogItemService.GetByIdAsync(id);
 
         _modalDisplay = "block;";
         _modalClass = "Show";
@@ -146,9 +146,9 @@
         StateHasChanged();
     }
 
-    private async Task Close()
+    private async Task CloseAsync()
     {
-        await new Css(JSRuntime).ShowBodyOverflow();
+        await new Css(JSRuntime).ShowBodyOverflowAsync();
 
         _modalDisplay = "none";
         _modalClass = "";

@@ -20,7 +20,7 @@ public class OrderController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> MyOrders()
+    public async Task<IActionResult> MyOrdersAsync()
     {   
         Guard.Against.Null(User?.Identity?.Name, nameof(User.Identity.Name));
         var viewModel = await _mediator.Send(new GetMyOrders(User.Identity.Name));
@@ -29,7 +29,7 @@ public class OrderController : Controller
     }
 
     [HttpGet("{orderId}")]
-    public async Task<IActionResult> Detail(int orderId)
+    public async Task<IActionResult> DetailAsync(int orderId)
     {
         Guard.Against.Null(User?.Identity?.Name, nameof(User.Identity.Name));
         var viewModel = await _mediator.Send(new GetOrderDetails(User.Identity.Name, orderId));

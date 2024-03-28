@@ -26,27 +26,27 @@ public class CatalogItemService : ICatalogItemService
         _logger = logger;
     }
 
-    public async Task<CatalogItem> Create(CreateCatalogItemRequest catalogItem)
+    public async Task<CatalogItem> CreateAsync(CreateCatalogItemRequest catalogItem)
     {
-        var response = await _httpService.HttpPost<CreateCatalogItemResponse>("catalog-items", catalogItem);
+        var response = await _httpService.HttpPostAsync<CreateCatalogItemResponse>("catalog-items", catalogItem);
         return response?.CatalogItem;
     }
 
-    public async Task<CatalogItem> Edit(CatalogItem catalogItem)
+    public async Task<CatalogItem> EditAsync(CatalogItem catalogItem)
     {
-        return (await _httpService.HttpPut<EditCatalogItemResult>("catalog-items", catalogItem)).CatalogItem;
+        return (await _httpService.HttpPutAsync<EditCatalogItemResult>("catalog-items", catalogItem)).CatalogItem;
     }
 
-    public async Task<string> Delete(int catalogItemId)
+    public async Task<string> DeleteAsync(int catalogItemId)
     {
-        return (await _httpService.HttpDelete<DeleteCatalogItemResponse>("catalog-items", catalogItemId)).Status;
+        return (await _httpService.HttpDeleteAsync<DeleteCatalogItemResponse>("catalog-items", catalogItemId)).Status;
     }
 
-    public async Task<CatalogItem> GetById(int id)
+    public async Task<CatalogItem> GetByIdAsync(int id)
     {
-        var brandListTask = _brandService.List();
-        var typeListTask = _typeService.List();
-        var itemGetTask = _httpService.HttpGet<EditCatalogItemResult>($"catalog-items/{id}");
+        var brandListTask = _brandService.ListAsync();
+        var typeListTask = _typeService.ListAsync();
+        var itemGetTask = _httpService.HttpGetAsync<EditCatalogItemResult>($"catalog-items/{id}");
         await Task.WhenAll(brandListTask, typeListTask, itemGetTask);
         var brands = brandListTask.Result;
         var types = typeListTask.Result;
@@ -56,13 +56,13 @@ public class CatalogItemService : ICatalogItemService
         return catalogItem;
     }
 
-    public async Task<List<CatalogItem>> ListPaged(int pageSize)
+    public async Task<List<CatalogItem>> ListPagedAsync(int pageSize)
     {
         _logger.LogInformation("Fetching catalog items from API.");
 
-        var brandListTask = _brandService.List();
-        var typeListTask = _typeService.List();
-        var itemListTask = _httpService.HttpGet<PagedCatalogItemResponse>($"catalog-items?PageSize=10");
+        var brandListTask = _brandService.ListAsync();
+        var typeListTask = _typeService.ListAsync();
+        var itemListTask = _httpService.HttpGetAsync<PagedCatalogItemResponse>($"catalog-items?PageSize=10");
         await Task.WhenAll(brandListTask, typeListTask, itemListTask);
         var brands = brandListTask.Result;
         var types = typeListTask.Result;
@@ -75,13 +75,13 @@ public class CatalogItemService : ICatalogItemService
         return items;
     }
 
-    public async Task<List<CatalogItem>> List()
+    public async Task<List<CatalogItem>> ListAsync()
     {
         _logger.LogInformation("Fetching catalog items from API.");
 
-        var brandListTask = _brandService.List();
-        var typeListTask = _typeService.List();
-        var itemListTask = _httpService.HttpGet<PagedCatalogItemResponse>($"catalog-items");
+        var brandListTask = _brandService.ListAsync();
+        var typeListTask = _typeService.ListAsync();
+        var itemListTask = _httpService.HttpGetAsync<PagedCatalogItemResponse>($"catalog-items");
         await Task.WhenAll(brandListTask, typeListTask, itemListTask);
         var brands = brandListTask.Result;
         var types = typeListTask.Result;

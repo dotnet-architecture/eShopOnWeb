@@ -75,6 +75,20 @@ dotnet_naming_symbols.instance_fields.applicable_kinds = field
 
 dotnet_naming_style.instance_field_style.capitalization = camel_case
 dotnet_naming_style.instance_field_style.required_prefix = _
+
+# Async naming conventions
+dotnet_naming_rule.suffix_async_should_be_asyncsuffix.severity = error #suggestion
+dotnet_naming_rule.suffix_async_should_be_asyncsuffix.symbols = suffix_async
+dotnet_naming_rule.suffix_async_should_be_asyncsuffix.style = asyncsuffix
+
+dotnet_naming_symbols.suffix_async.applicable_kinds = method
+dotnet_naming_symbols.suffix_async.applicable_accessibilities = *
+dotnet_naming_symbols.suffix_async.required_modifiers = async
+
+dotnet_naming_style.asyncsuffix.required_prefix = 
+dotnet_naming_style.asyncsuffix.required_suffix = Async
+dotnet_naming_style.asyncsuffix.word_separator = 
+dotnet_naming_style.asyncsuffix.capitalization = pascal_case
 ###############################
 # C# Coding Conventions       #
 ###############################

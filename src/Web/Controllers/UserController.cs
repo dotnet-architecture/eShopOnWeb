@@ -35,14 +35,14 @@ public class UserController : ControllerBase
     [HttpGet]
     [Authorize]
     [AllowAnonymous]
-    public async Task<IActionResult> GetCurrentUser() =>
-        Ok(await CreateUserInfo(User));
+    public async Task<IActionResult> GetCurrentUserAsync() =>
+        Ok(await CreateUserInfoAsync(User));
 
     [Route("Logout")]
     [HttpPost]
     [Authorize]
     [AllowAnonymous]
-    public async Task<IActionResult> Logout()
+    public async Task<IActionResult> LogoutAsync()
     {
         await _signInManager.SignOutAsync();
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
@@ -57,7 +57,7 @@ public class UserController : ControllerBase
         return Ok();
     }
 
-    private async Task<UserInfo> CreateUserInfo(ClaimsPrincipal claimsPrincipal)
+    private async Task<UserInfo> CreateUserInfoAsync(ClaimsPrincipal claimsPrincipal)
     {
         if (claimsPrincipal.Identity == null || claimsPrincipal.Identity.Name == null || !claimsPrincipal.Identity.IsAuthenticated)
         {

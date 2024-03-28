@@ -30,9 +30,9 @@ public partial class List : BlazorComponent
     {
         if (firstRender)
         {
-            catalogItems = await CatalogItemService.List();
-            catalogTypes = await CatalogTypeService.List();
-            catalogBrands = await CatalogBrandService.List();
+            catalogItems = await CatalogItemService.ListAsync();
+            catalogTypes = await CatalogTypeService.ListAsync();
+            catalogBrands = await CatalogBrandService.ListAsync();
 
             CallRequestRefresh();
         }
@@ -40,29 +40,29 @@ public partial class List : BlazorComponent
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    private async void DetailsClick(int id)
+    private async void DetailsClickAsync(int id)
     {
-        await DetailsComponent.Open(id);
+        await DetailsComponent.OpenAsync(id);
     }
 
-    private async Task CreateClick()
+    private async Task CreateClickAsync()
     {
-        await CreateComponent.Open();
+        await CreateComponent.OpenAsync();
     }
 
-    private async Task EditClick(int id)
+    private async Task EditClickAsync(int id)
     {
-        await EditComponent.Open(id);
+        await EditComponent.OpenAsync(id);
     }
 
-    private async Task DeleteClick(int id)
+    private async Task DeleteClickAsync(int id)
     {
-        await DeleteComponent.Open(id);
+        await DeleteComponent.OpenAsync(id);
     }
 
-    private async Task ReloadCatalogItems()
+    private async Task ReloadCatalogItemsAsync()
     {
-        catalogItems = await CatalogItemService.List();
+        catalogItems = await CatalogItemService.ListAsync();
         StateHasChanged();
     }
 }

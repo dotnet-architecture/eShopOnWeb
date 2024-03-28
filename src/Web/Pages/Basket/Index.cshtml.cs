@@ -25,12 +25,12 @@ public class IndexModel : PageModel
 
     public BasketViewModel BasketModel { get; set; } = new BasketViewModel();
 
-    public async Task OnGet()
+    public async Task OnGetAsync()
     {
-        BasketModel = await _basketViewModelService.GetOrCreateBasketForUser(GetOrSetBasketCookieAndUserName());
+        BasketModel = await _basketViewModelService.GetOrCreateBasketForUserAsync(GetOrSetBasketCookieAndUserName());
     }
 
-    public async Task<IActionResult> OnPost(CatalogItemViewModel productDetails)
+    public async Task<IActionResult> OnPostAsync(CatalogItemViewModel productDetails)
     {
         if (productDetails?.Id == null)
         {
@@ -44,25 +44,25 @@ public class IndexModel : PageModel
         }
 
         var username = GetOrSetBasketCookieAndUserName();
-        var basket = await _basketService.AddItemToBasket(username,
+        var basket = await _basketService.AddItemToBasketAsync(username,
             productDetails.Id, item.Price);
 
-        BasketModel = await _basketViewModelService.Map(basket);
+        BasketModel = await _basketViewModelService.MapAsync(basket);
 
         return RedirectToPage();
     }
 
-    public async Task OnPostUpdate(IEnumerable<BasketItemViewModel> items)
+    public async Task OnPostUpdateAsync(IEnumerable<BasketItemViewModel> items)
     {
         if (!ModelState.IsValid)
         {
             return;
         }
 
-        var basketView = await _basketViewModelService.GetOrCreateBasketForUser(GetOrSetBasketCookieAndUserName());
+        var basketView = await _basketViewModelService.GetOrCreateBasketForUserAsync(GetOrSetBasketCookieAndUserName());
         var updateModel = items.ToDictionary(b => b.Id.ToString(), b => b.Quantity);
-        var basket = await _basketService.SetQuantities(basketView.Id, updateModel);
-        BasketModel = await _basketViewModelService.Map(basket);
+        var basket = await _basketService.SetQuantitiesAsync(basketView.Id, updateModel);
+        BasketModel = await _basketViewModelService.MapAsync(basket);
     }
 
     private string GetOrSetBasketCookieAndUserName()

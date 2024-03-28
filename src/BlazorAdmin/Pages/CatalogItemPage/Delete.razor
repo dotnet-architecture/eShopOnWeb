@@ -11,7 +11,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Delete @_item.Name</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="CloseAsync">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -75,8 +75,8 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Cancel</button>
-                <button class="btn btn-danger" @onclick="() => DeleteClick(_item.Id)">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="CloseAsync">Cancel</button>
+                <button class="btn btn-danger" @onclick="() => DeleteClickAsync(_item.Id)">
                     Delete
                 </button>
             </div>
@@ -105,23 +105,23 @@
     private bool _showDeleteModal = false;
     private CatalogItem _item = new CatalogItem();
 
-    private async Task DeleteClick(int id)
+    private async Task DeleteClickAsync(int id)
     {
         // TODO: Add some kind of "are you sure" check before this
 
-        await CatalogItemService.Delete(id);
+        await CatalogItemService.DeleteAsync(id);
 
         await OnSaveClick.InvokeAsync(null);
-        await Close();
+        await CloseAsync();
     }
 
-    public async Task Open(int id)
+    public async Task OpenAsync(int id)
     {
         Logger.LogInformation("Now loading... /Catalog/Delete/{Id}", id);
 
-        await new Css(JSRuntime).HideBodyOverflow();
+        await new Css(JSRuntime).HideBodyOverflowAsync();
 
-        _item = await CatalogItemService.GetById(id);
+        _item = await CatalogItemService.GetByIdAsync(id);
 
         _modalDisplay = "block;";
         _modalClass = "Show";
@@ -130,9 +130,9 @@
         StateHasChanged();
     }
 
-    private async Task Close()
+    private async Task CloseAsync()
     {
-        await new Css(JSRuntime).ShowBodyOverflow();
+        await new Css(JSRuntime).ShowBodyOverflowAsync();
         _modalDisplay = "none";
         _modalClass = "";
         _showDeleteModal = false;

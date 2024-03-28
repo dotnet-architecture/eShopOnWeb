@@ -15,7 +15,7 @@ public class CatalogControllerIndex : IClassFixture<TestApplication>
     public HttpClient Client { get; }
 
     [Fact]
-    public async Task ReturnsHomePageWithProductListing()
+    public async Task ReturnsHomePageWithProductListingAsync()
     {
         // Arrange & Act
         var response = await Client.GetAsync("/");

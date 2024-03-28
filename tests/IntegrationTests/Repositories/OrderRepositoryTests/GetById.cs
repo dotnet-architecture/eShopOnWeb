@@ -26,7 +26,7 @@ public class GetById
     }
 
     [Fact]
-    public async Task GetsExistingOrder()
+    public async Task GetsExistingOrderAsync()
     {
         var existingOrder = OrderBuilder.WithDefaultValues();
         _catalogContext.Orders.Add(existingOrder);

@@ -5,7 +5,7 @@ namespace Microsoft.eShopWeb.Web.Interfaces;
 
 public interface IBasketViewModelService
 {
-    Task<BasketViewModel> GetOrCreateBasketForUser(string userName);
-    Task<int> CountTotalBasketItems(string username);
-    Task<BasketViewModel> Map(Basket basket);
+    Task<BasketViewModel> GetOrCreateBasketForUserAsync(string userName);
+    Task<int> CountTotalBasketItemsAsync(string username);
+    Task<BasketViewModel> MapAsync(Basket basket);
 }

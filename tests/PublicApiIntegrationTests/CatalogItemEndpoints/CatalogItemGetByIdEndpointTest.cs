@@ -10,7 +10,7 @@ namespace PublicApiIntegrationTests.CatalogItemEndpoints;
 public class CatalogItemGetByIdEndpointTest
 {
     [TestMethod]
-    public async Task ReturnsItemGivenValidId()
+    public async Task ReturnsItemGivenValidIdAsync()
     {
         var response = await ProgramTest.NewClient.GetAsync("api/catalog-items/5");
         response.EnsureSuccessStatusCode();
@@ -22,7 +22,7 @@ public class CatalogItemGetByIdEndpointTest
     }
 
     [TestMethod]
-    public async Task ReturnsNotFoundGivenInvalidId()
+    public async Task ReturnsNotFoundGivenInvalidIdAsync()
     {
         var response = await ProgramTest.NewClient.GetAsync("api/catalog-items/0");
 

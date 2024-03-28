@@ -15,8 +15,8 @@ public class IndexModel : PageModel
 
     public required CatalogIndexViewModel CatalogModel { get; set; } = new CatalogIndexViewModel();
 
-    public async Task OnGet(CatalogIndexViewModel catalogModel, int? pageId)
+    public async Task OnGetAsync(CatalogIndexViewModel catalogModel, int? pageId)
     {
-        CatalogModel = await _catalogViewModelService.GetCatalogItems(pageId ?? 0, Constants.ITEMS_PER_PAGE, catalogModel.BrandFilterApplied, catalogModel.TypesFilterApplied);
+        CatalogModel = await _catalogViewModelService.GetCatalogItemsAsync(pageId ?? 0, Constants.ITEMS_PER_PAGE, catalogModel.BrandFilterApplied, catalogModel.TypesFilterApplied);
     }
 }
