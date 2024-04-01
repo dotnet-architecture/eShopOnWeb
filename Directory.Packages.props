@@ -48,7 +48,7 @@
     <PackageVersion Include="NSubstitute.Analyzers.CSharp" Version="1.0.17" />
     <PackageVersion Include="System.Net.Http.Json" Version="$(SystemExtensionVersion)" />
     <PackageVersion Include="System.Security.Claims" Version="4.3.0" />
-    <PackageVersion Include="System.Text.Json" Version="8.0.1" />
+    <PackageVersion Include="System.Text.Json" Version="8.0.3" />
     <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="7.3.1" />
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageVersion Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
@@ -56,17 +56,17 @@
     <!-- Test -->
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="$(AspNetVersion)" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
-    <PackageVersion Include="xunit" Version="2.6.6" />
+    <PackageVersion Include="xunit" Version="2.7.0" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.5.6">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageVersion>
-    <PackageVersion Include="xunit.runner.console" Version="2.6.6">
+    <PackageVersion Include="xunit.runner.console" Version="2.7.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageVersion>
     <PackageVersion Include="MSTest.TestAdapter" Version="3.2.2" />
     <PackageVersion Include="MSTest.TestFramework" Version="3.2.2" />
-    <PackageVersion Include="coverlet.collector" Version="6.0.0" />
+    <PackageVersion Include="coverlet.collector" Version="6.0.2" />
   </ItemGroup>
 </Project>
