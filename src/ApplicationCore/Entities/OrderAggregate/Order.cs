@@ -18,7 +18,6 @@ public class Order : BaseEntity, IAggregateRoot
         ShipToAddress = shipToAddress;
         _orderItems = items;
         OrderStatus = orderStatus;  
-
     }
 
     public string BuyerId { get; private set; }
