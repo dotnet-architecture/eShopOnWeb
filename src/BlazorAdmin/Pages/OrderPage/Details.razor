@@ -1,0 +1,10 @@
+﻿@page "/order/{id:int}"
+@attribute [Authorize(Roles = BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS)]
+@using Microsoft.eShopWeb.ApplicationCore.Services
+@inherits BlazorAdmin.Helpers.BlazorComponent
+
+<h3>Details</h3>
+
+@code {
+    
+}

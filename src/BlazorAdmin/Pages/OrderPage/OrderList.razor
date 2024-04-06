@@ -1,0 +1,38 @@
+﻿@page "/admin/orderlist"
+@attribute [Authorize(Roles = BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS)]
+@inherits BlazorAdmin.Helpers.BlazorComponent
+@namespace BlazorAdmin.Pages.OrderPage
+
+<h3>Orders List</h3>
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Order Id</th>
+                    <th>Order Date</th>
+                    <th>Order Status</th>
+                    <th>Order Total</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Orders)
+                {
+                    <tr>
+                        <td>@order.Id</td>
+                        <td>@order.OrderDate</td>
+                        <td>@order.OrderStatus</td>
+                        <td>@order.Total().ToString("C")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+@code {
+
+}

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using BlazorShared.Interfaces;
 using BlazorShared.Models;
+using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.Extensions.Logging;
 
 namespace BlazorAdmin.Services;
@@ -14,7 +15,7 @@ public class CachedCatalogItemServiceDecorator : ICatalogItemService
     private readonly ILocalStorageService _localStorageService;
     private readonly CatalogItemService _catalogItemService;
     private ILogger<CachedCatalogItemServiceDecorator> _logger;
-
+    
     public CachedCatalogItemServiceDecorator(ILocalStorageService localStorageService,
         CatalogItemService catalogItemService,
         ILogger<CachedCatalogItemServiceDecorator> logger)

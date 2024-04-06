@@ -7,8 +7,8 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 
 public class Order : BaseEntity, IAggregateRoot
 {
-    #pragma warning disable CS8618 // Required by Entity Framework
-    private Order() {}
+#pragma warning disable CS8618 // Required by Entity Framework
+    private Order() { }
 
     public Order(string buyerId, Address shipToAddress, List<OrderItem> items)
     {
@@ -44,4 +44,15 @@ public class Order : BaseEntity, IAggregateRoot
         }
         return total;
     }
+
+    public OrderStatus OrderStatus { get; private set; }
+}
+
+public enum OrderStatus
+{
+    Pending,
+    Approved,
+    Shipped,
+    Delivered,
+    Canceled
 }

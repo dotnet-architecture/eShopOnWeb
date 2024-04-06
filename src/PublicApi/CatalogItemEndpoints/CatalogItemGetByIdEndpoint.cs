@@ -39,7 +39,7 @@ public class CatalogItemGetByIdEndpoint : IEndpoint<IResult, GetByIdCatalogItemR
         if (item is null)
             return Results.NotFound();
 
-        response.CatalogItem = new CatalogItemDto
+        response.CatalogItem = new CatalogItemDto()
         {
             Id = item.Id,
             CatalogBrandId = item.CatalogBrandId,

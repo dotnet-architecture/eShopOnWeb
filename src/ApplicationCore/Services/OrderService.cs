@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
@@ -49,5 +50,20 @@ public class OrderService : IOrderService
         var order = new Order(basket.BuyerId, shippingAddress, items);
 
         await _orderRepository.AddAsync(order);
+    }
+
+    public async Task<List<Order>> GetOrdersAsync()
+    {
+        return await _orderRepository.ListAsync();
+    }
+
+    public async Task<Order> GetOrderByIdAsync(int id)
+    {
+        return await _orderRepository.GetByIdAsync(id);
+    }
+
+    public Task<List<OrderItem>> GetOrderItemsByOrderIdAsync(int orderId)
+    {
+        throw new System.NotImplementedException();
     }
 }

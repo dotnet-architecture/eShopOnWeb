@@ -1,4 +1,5 @@
-﻿@model IEnumerable<OrderViewModel>
+﻿@using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate
+@model IEnumerable<OrderViewModel>
 @{
     ViewData["Title"] = "My Order History";
 }
@@ -21,12 +22,12 @@
                     <section class="esh-orders-item col-xs-2">@Html.DisplayFor(modelItem => item.OrderNumber)</section>
                     <section class="esh-orders-item col-xs-4">@Html.DisplayFor(modelItem => item.OrderDate)</section>
                     <section class="esh-orders-item col-xs-2">$ @Html.DisplayFor(modelItem => item.Total)</section>
-                    <section class="esh-orders-item col-xs-2">@Html.DisplayFor(modelItem => item.Status)</section>
+                    <section class="esh-orders-item col-xs-2">@Html.DisplayFor(modelItem => item.OrderStatus)</section>
                     <section class="esh-orders-item col-xs-1">
                         <a class="esh-orders-link" asp-controller="Order" asp-action="Detail" asp-route-orderId="@item.OrderNumber">Detail</a>
                     </section>
                     <section class="esh-orders-item col-xs-1">
-                        @if (item.Status.ToLower() == "submitted")
+                        @if (item.OrderStatus == OrderStatus.Pending)
                     {
                             <a class="esh-orders-link" asp-controller="Order" asp-action="cancel" asp-route-orderId="@item.OrderNumber">Cancel</a>
                         }

@@ -11,31 +11,27 @@
 </AuthorizeView>
 
 <div class="main">
-   
-    <div class="top-row px-4">
-        <a href="https://github.com/dotnet-architecture/eShopOnWeb" target="_blank" class="ml-md-auto">About eShopOnWeb</a>
-    </div>
 
     <div class="content px-4">
         <Toast></Toast>
         @Body
     </div>
 </div>
-    @code
+@code
 {
-        protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
         {
-            if (firstRender)
+            var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+
+            if (authState.User == null)
             {
-                var authState = await AuthStateProvider.GetAuthenticationStateAsync();
-
-                if (authState.User == null)
-                {
-                    await new Route(JSRuntime).RouteOutside("/Identity/Account/Login");
-                }
-                CallRequestRefresh();
+                await new Route(JSRuntime).RouteOutside("/Identity/Account/Login");
             }
-
-            await base.OnAfterRenderAsync(firstRender);
+            CallRequestRefresh();
         }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
     }
