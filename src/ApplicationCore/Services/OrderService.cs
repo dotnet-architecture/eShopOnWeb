@@ -7,6 +7,7 @@ using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
 using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.ApplicationCore.Specifications;
+using Microsoft.Extensions.Logging;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Services;
 
@@ -52,18 +53,13 @@ public class OrderService : IOrderService
         await _orderRepository.AddAsync(order);
     }
 
-    public async Task<List<Order>> GetOrdersAsync()
-    {
-        return await _orderRepository.ListAsync();
-    }
-
-    public async Task<Order> GetOrderByIdAsync(int id)
+    public async Task<Order> GetById(int id)
     {
         return await _orderRepository.GetByIdAsync(id);
     }
 
-    public Task<List<OrderItem>> GetOrderItemsByOrderIdAsync(int orderId)
+    public async Task<List<Order>> List()
     {
-        throw new System.NotImplementedException();
+        return await _orderRepository.ListAsync();
     }
 }

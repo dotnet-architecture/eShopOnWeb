@@ -1,42 +1,35 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using BlazorAdmin.Helpers;
-using BlazorAdmin.Pages.CatalogItemPage;
-using BlazorShared.Interfaces;
+using BlazorAdmin.Services;
+using BlazorShared.Models;
+using Microsoft.AspNetCore.Components;
 using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
+
 
 namespace BlazorAdmin.Pages.OrderPage;
 
 public partial class OrderList : BlazorComponent
 {
-    [Microsoft.AspNetCore.Components.Inject]
-    public IOrderService OrderService { get; set; }
+    //inject HttpService
+    [Inject]
+    public HttpService HttpService { get; set; }
 
-    private List<Order> Orders = new List<Order>();
-    //private List<OrderItem> OrderItems= new List<OrderItem>();
+    private List<OrderListResponse> Orders = new List<OrderListResponse>();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            Orders = await OrderService.GetOrdersAsync();
+            Orders = HttpService.HttpGet<List<OrderListResponse>>("orders").Result;
             CallRequestRefresh();
         }
 
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    private Details DetailsComponent { get; set; }
 
-    public async Task ReloadOrder()
-    {
-        Orders = await OrderService.GetOrdersAsync();
-        StateHasChanged();
-    }
-
-    //private async void DetailsClick(int id)
-    //{
-    //    await DetailsComponent.Open(id);
-    //}
 }

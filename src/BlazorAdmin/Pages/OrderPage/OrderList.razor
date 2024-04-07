@@ -18,14 +18,15 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var order in Orders)
+            @foreach (var order in Orders)
                 {
-                    <tr>
-                        <td>@order.Id</td>
-                        <td>@order.OrderDate</td>
-                        <td>@order.OrderStatus</td>
-                        <td>@order.Total().ToString("C")</td>
-                    </tr>
+                    @foreach(var item in order.List)
+                        {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.Name</td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>
