@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Ardalis.GuardClauses;
+using BlazorShared.Enums;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
@@ -45,14 +46,5 @@ public class Order : BaseEntity, IAggregateRoot
         return total;
     }
 
-    public OrderStatus OrderStatus { get; private set; }
-}
-
-public enum OrderStatus
-{
-    Pending,
-    Approved,
-    Shipped,
-    Delivered,
-    Canceled
+    public OrderStatus OrderStatus { get; set; }
 }

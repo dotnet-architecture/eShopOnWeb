@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using AutoMapper;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 using Microsoft.eShopWeb.PublicApi.CatalogBrandEndpoints;
 using Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints;
 using Microsoft.eShopWeb.PublicApi.CatalogTypeEndpoints;
+using Microsoft.eShopWeb.PublicApi.OrderDetailEndpoints;
 using Microsoft.eShopWeb.PublicApi.OrderEndpoints;
-using Microsoft.eShopWeb.PublicApi.OrderItemEndpoints;
 
 namespace Microsoft.eShopWeb.PublicApi;
 
@@ -25,16 +24,15 @@ public class MappingProfile : Profile
             .ForMember(dto => dto.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dto => dto.BuyerId, opt => opt.MapFrom(src => src.BuyerId))
             .ForMember(dto => dto.OrderDate, opt => opt.MapFrom(src => src.OrderDate))
-            .ForMember(dto => dto.OrderStatus, opt => opt.MapFrom(src => src.OrderStatus)).ReverseMap();
+            .ForMember(dto => dto.OrderStatus, opt => opt.MapFrom(src => src.OrderStatus))
+            .ForMember(dto => dto.OrderItems, opt => opt.MapFrom(src => src.OrderItems))
+            .ForMember(dto => dto.Total, opt => opt.MapFrom(src => src.Total()));
 
-        CreateMap<Order, OrderDetailDto>()
-            .ForMember(dto => dto.OrderId, opt => opt.MapFrom(src => src.Id))
-            .ForMember(dto => dto.OrderDate, opt => opt.MapFrom(src => src.OrderDate))
-            .ForMember(dto => dto.OrderStatus, opt => opt.MapFrom(src => src.OrderStatus));
 
-        CreateMap<OrderItem, OrderDetailDto>()
+        CreateMap<OrderItem, OrderItemDto>()
+            .ForMember(dto => dto.ProductName, opt => opt.MapFrom(src => src.ItemOrdered.ProductName))
             .ForMember(dto => dto.UnitPrice, opt => opt.MapFrom(src => src.UnitPrice))
-            .ForMember(dto => dto.Units, opt => opt.MapFrom(src => src.Units))
-            .ForMember(dto => dto.ProductName, opt => opt.MapFrom(src => src.ItemOrdered.ProductName)).ReverseMap();
+            .ForMember(dto => dto.Units, opt => opt.MapFrom(src => src.Units));
+
     }
 }

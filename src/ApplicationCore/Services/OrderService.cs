@@ -52,14 +52,4 @@ public class OrderService : IOrderService
 
         await _orderRepository.AddAsync(order);
     }
-
-    public async Task<Order> GetById(int id)
-    {
-        return await _orderRepository.GetByIdAsync(id);
-    }
-
-    public async Task<List<Order>> List()
-    {
-        return await _orderRepository.ListAsync();
-    }
 }

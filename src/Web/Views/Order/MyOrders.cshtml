@@ -1,4 +1,8 @@
 ﻿@using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate
+@using BlazorShared
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using BlazorShared.Enums
+
 @model IEnumerable<OrderViewModel>
 @{
     ViewData["Title"] = "My Order History";
@@ -28,7 +32,7 @@
                     </section>
                     <section class="esh-orders-item col-xs-1">
                         @if (item.OrderStatus == OrderStatus.Pending)
-                    {
+                        {
                             <a class="esh-orders-link" asp-controller="Order" asp-action="cancel" asp-route-orderId="@item.OrderNumber">Cancel</a>
                         }
                     </section>

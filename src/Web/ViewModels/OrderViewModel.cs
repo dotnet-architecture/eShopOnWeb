@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using BlazorShared.Enums;
 using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 
 namespace Microsoft.eShopWeb.Web.ViewModels;

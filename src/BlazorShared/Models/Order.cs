@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using BlazorShared.Attributes;
 using BlazorShared.Enums;
-using Microsoft.eShopWeb.PublicApi.OrderDetailEndpoints;
 
-namespace Microsoft.eShopWeb.PublicApi.OrderEndpoints;
+namespace BlazorShared.Models;
 
-public class OrderDto
+[Endpoint(Name = "orders")]
+public class Order
 {
     public int Id { get; set; }
     public string BuyerId { get; set; }
     public DateTimeOffset OrderDate { get; set; }
-    public List<OrderItemDto> OrderItems { get; set; }
     public decimal Total { get; set; }
     public OrderStatus OrderStatus { get; set; }
+    public List<OrderItem> OrderItems { get; set; }
 }

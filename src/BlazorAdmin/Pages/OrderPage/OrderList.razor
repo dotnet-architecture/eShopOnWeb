@@ -4,36 +4,41 @@
 @namespace BlazorAdmin.Pages.OrderPage
 
 <h3>Orders List</h3>
-
-<div class="row">
-    <div class="col-md-12">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Order Id</th>
-                    <th>Order Date</th>
-                    <th>Order Status</th>
-                    <th>Order Total</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-            @foreach (var order in Orders)
-                {
-                    @foreach(var item in order.List)
-                        {
-                        <tr>
-                            <td>@item.Id</td>
-                            <td>@item.Name</td>
+@if (Orders == null)
+{
+    <Spinner></Spinner>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Order Date</th>
+                        <th>Buyer Id</th>
+                        <th>Order Total</th>
+                        <th>Order Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Orders)
+                    {
+                        <tr @onclick="@(() => DetailsClick(order.Id,order.OrderStatus))">
+                            <td hidden>@order.Id</td>
+                            <td>@order.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>@order.BuyerId</td>
+                            <td>@order.Total.ToString("C2")</td>
+                            <td>@order.OrderStatus</td>
                         </tr>
                     }
-                }
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 
-
-@code {
-
+    <OrderDetails Items="@orderItems" OnApproveClick="@ReloadOrders" @ref="OrderDetailsComponent"></OrderDetails>
 }
+
+
+

@@ -4,8 +4,9 @@ using BlazorShared.Interfaces;
 
 namespace BlazorShared.Models;
 
-public class OrderListResponse : ILookupDataResponse<OrderList>
+public class PagedOrderListResponse
 {
     [JsonPropertyName("Orders")]
-    public List<OrderList> List { get; set; } = new List<OrderList>();
+    public List<Order> Orders { get; set; } = new List<Order>();
+    public int PageCount { get; set; } = 0;
 }

@@ -7,8 +7,8 @@ public class OrderWithItemsSpecification : Specification<Order>
 {
     public OrderWithItemsSpecification()
     {
-        Query.Include(o => o.OrderItems)
-            .ThenInclude(i => i.ItemOrdered)
-            .ThenInclude(c => c.CatalogItemId);
+        Query
+            .Include(o => o.OrderItems)
+            .ThenInclude(i => i.ItemOrdered);
     }
 }

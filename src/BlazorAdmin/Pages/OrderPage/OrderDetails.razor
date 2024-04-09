@@ -1,0 +1,132 @@
+﻿@inject ILogger<OrderDetails> Logger
+@inject IJSRuntime JsRuntime
+@inject HttpService HttpService
+@using BlazorShared.Models
+@using System.Collections
+@using BlazorShared;
+@using BlazorShared.Enums
+@inherits BlazorAdmin.Helpers.BlazorComponent
+
+@namespace BlazorAdmin.Pages.OrderPage
+
+<div class="modal @_modalClass" tabindex="-1" role="dialog" style="display:@_modalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="orderDetailModal">Order Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                @if (_items == null)
+                {
+                    <Spinner></Spinner>
+                }
+                else
+                {
+                    <div class="container">
+                        <div class="row">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in _items)
+                                    {
+                                        <tr>
+                                            <td>@item.ProductName</td>
+                                            <td>@item.Units</td>
+                                            <td>@item.UnitPrice.ToString("C2")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Close</button>
+                @if (OrderStatus == OrderStatus.Pending)
+                {
+                    <button class="btn btn-success" @onclick="ApproveClick">
+                        Approve
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@if (_showDetailsModal)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+@code {
+    [Parameter]
+    public IEnumerable<OrderItem> Items { get; set; }
+    [Parameter]
+    public int OrderId { get; set; }
+
+    [Parameter]
+    public OrderStatus OrderStatus { get; set; }
+
+    private string _modalDisplay = "none;";
+    private string _modalClass = "";
+    private bool _showDetailsModal = false;
+
+    private List<OrderItem> _items = new List<OrderItem>();
+
+    [Parameter]
+    public EventCallback<int> OnApproveClick { get; set; }
+
+    public async Task Open(int id, OrderStatus status)
+    {
+        Logger.LogInformation("Now loading... /Order/Details/{Id}", id);
+
+        await new Css(JsRuntime).HideBodyOverflow();
+
+        _items = await HttpService.HttpGet<List<OrderItem>>($"order-details/{id}");
+
+        OrderId = id;
+        OrderStatus = status;
+
+        _modalDisplay = "block;";
+        _modalClass = "Show";
+        _showDetailsModal = true;
+
+        StateHasChanged();
+    }
+
+    private async Task Close()
+    {
+        Logger.LogInformation("Closing the modal...");
+
+        await new Css(JsRuntime).ShowBodyOverflow();
+
+        _modalDisplay = "none;";
+        _modalClass = "";
+        _showDetailsModal = false;
+    }
+
+    public async Task ApproveClick()
+    {
+        var orderResult = new EditOrderResult()
+            {
+                Id = OrderId,
+                OrderStatus = OrderStatus.Approved
+            };
+        await HttpService.HttpPut<EditOrderResult>($"order-update", orderResult);
+
+        await OnApproveClick.InvokeAsync(orderResult.Id);
+        await Close();
+    }
+}
