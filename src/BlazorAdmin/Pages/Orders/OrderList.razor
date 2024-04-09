@@ -1,0 +1,97 @@
+﻿@page "/admin/order-list"
+
+@attribute [Authorize(Roles = BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS)]
+@namespace BlazorAdmin.Pages.Orders
+@inherits BlazorAdmin.Helpers.BlazorComponent
+
+@inject ILogger<OrderList> Logger
+
+    @if (_isLoading)
+{
+    <div style="height: 90% !important; align-content: center">
+        <Spinner></Spinner>
+    </div>
+}
+else
+{
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Customer Email</th>
+                <th>Order Date</th>
+                <th>Total Price</th>
+                <th>Status</th>
+                <th>Detail</th>
+            </tr>
+        </thead>
+        <tbody class="cursor-pointer">
+            @foreach (var item in orderList)
+            {
+                <tr @onclick="@(() => DetailsClick(item))">
+                    <td>@item.BuyerId</td>
+                    <td>@item.OrderDate</td>
+                    <td>@item.TotalPrice</td>
+                    <td>@item.Status</td>
+                    <td>
+                        <button @onclick="@(() => DetailsClick(item))" @onclick:stopPropagation="true" class="btn btn-primary">
+                            Detail
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <Details OnEditClick="Approved" @ref="DetailsComponent"></Details>
+}
+
+@code {
+    private Details DetailsComponent { get; set; }
+
+    private bool _isLoading = true;
+
+    private IEnumerable<OrderModel> orderList = new List<OrderModel>();
+    private OrderModel choosedOrder = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ListOrders();
+
+        _isLoading = false;
+    }
+
+    private async Task ListOrders()
+    {
+        _isLoading = true;
+
+        var response = await OrderService.ListAsync();
+        orderList = response;
+
+        _isLoading = false;
+    }
+
+    private async void DetailsClick(OrderModel order)
+    {
+        choosedOrder = order;
+        await DetailsComponent.Open(order);
+    }
+
+    private async Task Approved()
+    {
+        _isLoading = true;
+        choosedOrder.Status = "Approved";
+
+        var response = await OrderService.EditAsync(choosedOrder);
+
+        if (response != null && response == "Successfull")
+        {
+            await ListOrders();
+        }
+        else
+        {
+            choosedOrder.Status = "Pending";
+        }
+
+        _isLoading = false;
+    }
+}

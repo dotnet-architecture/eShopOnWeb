@@ -7,8 +7,8 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 
 public class Order : BaseEntity, IAggregateRoot
 {
-    #pragma warning disable CS8618 // Required by Entity Framework
-    private Order() {}
+#pragma warning disable CS8618 // Required by Entity Framework
+    private Order() { }
 
     public Order(string buyerId, Address shipToAddress, List<OrderItem> items)
     {
@@ -20,6 +20,7 @@ public class Order : BaseEntity, IAggregateRoot
     }
 
     public string BuyerId { get; private set; }
+    public string? Status { get; set; } = "Pending";
     public DateTimeOffset OrderDate { get; private set; } = DateTimeOffset.Now;
     public Address ShipToAddress { get; private set; }
 

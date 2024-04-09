@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using BlazorAdmin;
+using BlazorAdmin.Pages.Orders;
 using BlazorAdmin.Services;
 using Blazored.LocalStorage;
 using BlazorShared;
@@ -24,9 +25,9 @@ builder.Services.AddScoped(sp => new HttpClient() { BaseAddress = new Uri(builde
 
 builder.Services.AddScoped<ToastService>();
 builder.Services.AddScoped<HttpService>();
+builder.Services.AddScoped<OrderList>();
 
 builder.Services.AddBlazoredLocalStorage();
-
 builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 builder.Services.AddScoped(sp => (CustomAuthStateProvider)sp.GetRequiredService<AuthenticationStateProvider>());
