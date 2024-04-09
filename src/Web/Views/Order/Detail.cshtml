@@ -10,7 +10,7 @@
     <div class="container">
         <section class="esh-orders-detail-section">
             <article class="esh-orders-detail-titles row">
-                <section class="esh-orders-detail-title col-xs-3">Order number</section>
+                <section class="esh-orders-detail-title col-xs-3">User Id</section>
                 <section class="esh-orders-detail-title col-xs-3">Date</section>
                 <section class="esh-orders-detail-title col-xs-2">Total</section>
                 <section class="esh-orders-detail-title col-xs-3">Status</section>
@@ -66,12 +66,37 @@
             <article class="esh-orders-detail-titles esh-basket-titles--clean row">
                 <section class="esh-orders-detail-title col-xs-9"></section>
                 <section class="esh-orders-detail-title col-xs-2">TOTAL</section>
+                
             </article>
 
             <article class="esh-orders-detail-items row">
                 <section class="esh-orders-detail-item col-xs-9"></section>
                 <section class="esh-orders-detail-item esh-orders-detail-item--mark col-xs-2">$ @Model.Total.ToString("N2")</section>
+                <button class="btn btn-primary" id="approveOrderBtn">Approve Order</button>
             </article>
+            
         </section>
     </div>
 </div>
+<script>
+    document.getElementById("approveOrderBtn").addEventListener("click", function () {
+        fetch('/approveOrder', {
+            method: 'POST',
+            body: JSON.stringify({ orderId: '@Model.OrderId' }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Sipariş başarıyla onaylandı.');
+                    window.location.reload();
+                } else {
+                    alert('Sipariş başarıyla onaylandı');
+                }
+            })
+            .catch(error => {
+                alert('Bir ağ hatası oluştu. Lütfen tekrar deneyin.');
+            });
+    });
+</script>
