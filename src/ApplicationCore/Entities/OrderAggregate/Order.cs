@@ -44,4 +44,5 @@ public class Order : BaseEntity, IAggregateRoot
         }
         return total;
     }
+    public int Status { get; private set; }
 }
