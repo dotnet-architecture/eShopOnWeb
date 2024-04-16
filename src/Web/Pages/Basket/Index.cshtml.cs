@@ -1,4 +1,5 @@
-﻿using Ardalis.GuardClauses;
+﻿using System.Diagnostics;
+using Ardalis.GuardClauses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
@@ -54,6 +55,8 @@ public class IndexModel : PageModel
 
     public async Task OnPostUpdate(IEnumerable<BasketItemViewModel> items)
     {
+        //write to console log
+        Debug.WriteLine("Updating basket");
         if (!ModelState.IsValid)
         {
             return;
@@ -62,6 +65,14 @@ public class IndexModel : PageModel
         var basketView = await _basketViewModelService.GetOrCreateBasketForUser(GetOrSetBasketCookieAndUserName());
         var updateModel = items.ToDictionary(b => b.Id.ToString(), b => b.Quantity);
         var basket = await _basketService.SetQuantities(basketView.Id, updateModel);
+        BasketModel = await _basketViewModelService.Map(basket);
+    }
+
+    public async Task OnPostRemove(int id)
+    {
+        var basketView = await _basketViewModelService.GetOrCreateBasketForUser(GetOrSetBasketCookieAndUserName());
+        var username = GetOrSetBasketCookieAndUserName();
+        var basket = await _basketService.RemoveItemFromBasket(basketView.Id, username, id);
         BasketModel = await _basketViewModelService.Map(basket);
     }
 

@@ -11,4 +11,5 @@ public interface IBasketService
     Task<Basket> AddItemToBasket(string username, int catalogItemId, decimal price, int quantity = 1);
     Task<Result<Basket>> SetQuantities(int basketId, Dictionary<string, int> quantities);
     Task DeleteBasketAsync(int basketId);
+    Task<Result<Basket>> RemoveItemFromBasket(int basketId, string username, int catalogItemId);
 }

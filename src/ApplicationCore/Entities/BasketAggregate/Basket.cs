@@ -39,4 +39,9 @@ public class Basket : BaseEntity, IAggregateRoot
     {
         BuyerId = buyerId;
     }
+
+    public void RemoveItem(int catalogItemId)
+    {
+        _items.RemoveAll(i => i.CatalogItemId == catalogItemId);
+    }
 }
