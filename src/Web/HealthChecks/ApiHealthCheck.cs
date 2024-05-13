@@ -1,29 +1,20 @@
-﻿using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using BlazorShared;
+﻿using BlazorShared;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
 
 namespace Microsoft.eShopWeb.Web.HealthChecks;
 
-public class ApiHealthCheck : IHealthCheck
+public class ApiHealthCheck(IOptions<BaseUrlConfiguration> baseUrlConfiguration, IHttpClientFactory httpClientFactory) : IHealthCheck
 {
-    private readonly BaseUrlConfiguration _baseUrlConfiguration;
+    private readonly BaseUrlConfiguration _baseUrlConfiguration = baseUrlConfiguration.Value;
+    private HttpClient? _httpClient;
 
-    public ApiHealthCheck(IOptions<BaseUrlConfiguration> baseUrlConfiguration)
+    public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
     {
-        _baseUrlConfiguration = baseUrlConfiguration.Value;
-    }
-
-    public async Task<HealthCheckResult> CheckHealthAsync(
-        HealthCheckContext context,
-        CancellationToken cancellationToken = default(CancellationToken))
-    {
+        _httpClient = httpClientFactory.CreateClient();
         string myUrl = _baseUrlConfiguration.ApiBase + "catalog-items";
-        var client = new HttpClient();
-        var response = await client.GetAsync(myUrl);
-        var pageContents = await response.Content.ReadAsStringAsync();
+        var response = await _httpClient.GetAsync(myUrl, cancellationToken);
+        var pageContents = await response.Content.ReadAsStringAsync(cancellationToken);
         if (pageContents.Contains(".NET Bot Black Sweatshirt"))
         {
             return HealthCheckResult.Healthy("The check indicates a healthy result.");
