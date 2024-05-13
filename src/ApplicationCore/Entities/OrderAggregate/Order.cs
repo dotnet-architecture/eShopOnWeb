@@ -7,8 +7,8 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 
 public class Order : BaseEntity, IAggregateRoot
 {
-    #pragma warning disable CS8618 // Required by Entity Framework
-    private Order() {}
+#pragma warning disable CS8618 // Required by Entity Framework
+    private Order() { }
 
     public Order(string buyerId, Address shipToAddress, List<OrderItem> items)
     {

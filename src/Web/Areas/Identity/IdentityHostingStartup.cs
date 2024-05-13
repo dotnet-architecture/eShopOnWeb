@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
-
-[assembly: HostingStartup(typeof(Microsoft.eShopWeb.Web.Areas.Identity.IdentityHostingStartup))]
+﻿[assembly: HostingStartup(typeof(Microsoft.eShopWeb.Web.Areas.Identity.IdentityHostingStartup))]
 namespace Microsoft.eShopWeb.Web.Areas.Identity;
 
 public class IdentityHostingStartup : IHostingStartup

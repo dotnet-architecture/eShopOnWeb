@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Microsoft.eShopWeb.Web.Extensions;
+﻿namespace Microsoft.eShopWeb.Web.Extensions;
 
 public static class CacheHelpers
 {

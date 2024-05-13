@@ -16,6 +16,6 @@ public class BasketRemoveEmptyItems
         basket.AddItem(_testCatalogItemId, _testUnitPrice, 0);
         basket.RemoveEmptyItems();
 
-        Assert.Equal(0, basket.Items.Count);
+        Assert.Empty(basket.Items);
     }
 }

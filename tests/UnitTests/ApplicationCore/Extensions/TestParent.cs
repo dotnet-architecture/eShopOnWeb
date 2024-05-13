@@ -10,7 +10,7 @@ public class TestParent : IEquatable<TestParent>
 
     public IEnumerable<TestChild>? Children { get; set; }
 
-    public bool Equals([AllowNull] TestParent other) 
+    public bool Equals([AllowNull] TestParent other)
     {
         if (other?.Id == Id && other?.Name == Name)
         {

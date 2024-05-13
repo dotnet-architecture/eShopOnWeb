@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
+﻿using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 using Xunit;
 
 namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Specifications;
@@ -8,7 +6,7 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Specifications;
 public class CustomerOrdersWithItemsSpecification
 {
     private readonly string _buyerId = "TestBuyerId";
-    private Address _shipToAddress = new Address("Street", "City", "OH", "US", "11111");
+    private readonly Address _shipToAddress = new Address("Street", "City", "OH", "US", "11111");
 
     [Fact]
     public void ReturnsOrderWithOrderedItem()
@@ -19,7 +17,7 @@ public class CustomerOrdersWithItemsSpecification
 
         Assert.NotNull(result);
         Assert.NotNull(result.OrderItems);
-        Assert.Equal(1, result.OrderItems.Count);
+        Assert.Single(result.OrderItems);
         Assert.NotNull(result.OrderItems.FirstOrDefault()?.ItemOrdered);
     }
 
@@ -32,7 +30,7 @@ public class CustomerOrdersWithItemsSpecification
 
         Assert.NotNull(result);
         Assert.Equal(2, result.Count);
-        Assert.Equal(1, result[0].OrderItems.Count);
+        Assert.Single(result[0].OrderItems);
         Assert.NotNull(result[0].OrderItems.FirstOrDefault()?.ItemOrdered);
         Assert.Equal(2, result[1].OrderItems.Count);
         Assert.NotNull(result[1].OrderItems.ToList()[0].ItemOrdered);

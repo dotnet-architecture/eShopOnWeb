@@ -12,7 +12,7 @@ public class Buyer : BaseEntity, IAggregateRoot
 
     public IEnumerable<PaymentMethod> PaymentMethods => _paymentMethods.AsReadOnly();
 
-    #pragma warning disable CS8618 // Required by Entity Framework
+#pragma warning disable CS8618 // Required by Entity Framework
     private Buyer() { }
 
     public Buyer(string identity) : this()

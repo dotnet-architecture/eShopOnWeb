@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.eShopWeb.ApplicationCore.Entities;
+﻿using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Xunit;
 
 namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Specifications;
@@ -21,7 +19,7 @@ public class CatalogFilterSpecification
 
         var result = spec.Evaluate(GetTestItemCollection()).ToList();
 
-        Assert.Equal(expectedCount, result.Count());
+        Assert.Equal(expectedCount, result.Count);
     }
 
     public List<CatalogItem> GetTestItemCollection()

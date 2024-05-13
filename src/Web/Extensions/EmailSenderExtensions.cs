@@ -1,5 +1,4 @@
 ﻿using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 
 namespace Microsoft.eShopWeb.Web.Services;

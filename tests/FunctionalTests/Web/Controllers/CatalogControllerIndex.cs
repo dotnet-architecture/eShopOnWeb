@@ -1,6 +1,4 @@
-﻿using System.Net.Http;
-using System.Threading.Tasks;
-using Xunit;
+﻿using Xunit;
 
 namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers;
 
