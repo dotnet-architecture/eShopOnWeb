@@ -19,7 +19,7 @@ public class AccountControllerSignIn : IClassFixture<TestApplication>
     public HttpClient Client { get; }
 
     [Fact]
-    public async Task ReturnsSignInScreenOnGet()
+    public async Task ReturnsSignInScreenOnGetAsync()
     {
         var response = await Client.GetAsync("/identity/account/login");
         response.EnsureSuccessStatusCode();
@@ -43,7 +43,7 @@ public class AccountControllerSignIn : IClassFixture<TestApplication>
     }
 
     [Fact]
-    public async Task ReturnsFormWithRequestVerificationToken()
+    public async Task ReturnsFormWithRequestVerificationTokenAsync()
     {
         var response = await Client.GetAsync("/identity/account/login");
         response.EnsureSuccessStatusCode();
@@ -54,7 +54,7 @@ public class AccountControllerSignIn : IClassFixture<TestApplication>
     }
 
     [Fact]
-    public async Task ReturnsSuccessfulSignInOnPostWithValidCredentials()
+    public async Task ReturnsSuccessfulSignInOnPostWithValidCredentialsAsync()
     {
         var getResponse = await Client.GetAsync("/identity/account/login");
         getResponse.EnsureSuccessStatusCode();
@@ -74,7 +74,7 @@ public class AccountControllerSignIn : IClassFixture<TestApplication>
     }
 
     [Fact]
-    public async Task UpdatePhoneNumberProfile()
+    public async Task UpdatePhoneNumberProfileAsync()
     {
         //Login
         var getResponse = await Client.GetAsync("/identity/account/login");

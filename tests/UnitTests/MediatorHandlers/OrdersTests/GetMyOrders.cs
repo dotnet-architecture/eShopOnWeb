@@ -24,7 +24,7 @@ public class GetMyOrders
     }
 
     [Fact]
-    public async Task NotReturnNullIfOrdersArePresIent()
+    public async Task NotReturnNullIfOrdersArePresIentAsync()
     {
         var request = new eShopWeb.Web.Features.MyOrders.GetMyOrders("SomeUserName");
 

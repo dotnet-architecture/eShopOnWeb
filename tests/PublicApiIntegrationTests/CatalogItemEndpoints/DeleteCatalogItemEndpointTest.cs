@@ -11,7 +11,7 @@ namespace PublicApiIntegrationTests.CatalogItemEndpoints;
 public class DeleteCatalogItemEndpointTest
 {
     [TestMethod]
-    public async Task ReturnsSuccessGivenValidIdAndAdminUserToken()
+    public async Task ReturnsSuccessGivenValidIdAndAdminUserTokenAsync()
     {
         var adminToken = ApiTokenHelper.GetAdminUserToken();
         var client = ProgramTest.NewClient;
@@ -25,7 +25,7 @@ public class DeleteCatalogItemEndpointTest
     }
 
     [TestMethod]
-    public async Task ReturnsNotFoundGivenInvalidIdAndAdminUserToken()
+    public async Task ReturnsNotFoundGivenInvalidIdAndAdminUserTokenAsync()
     {
         var adminToken = ApiTokenHelper.GetAdminUserToken();
         var client = ProgramTest.NewClient;

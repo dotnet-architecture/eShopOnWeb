@@ -24,7 +24,7 @@ public class CachedCatalogItemServiceDecorator : ICatalogItemService
         _logger = logger;
     }
 
-    public async Task<List<CatalogItem>> ListPaged(int pageSize)
+    public async Task<List<CatalogItem>> ListPagedAsync(int pageSize)
     {
         string key = "items";
         var cacheEntry = await _localStorageService.GetItemAsync<CacheEntry<List<CatalogItem>>>(key);
@@ -42,13 +42,13 @@ public class CachedCatalogItemServiceDecorator : ICatalogItemService
             }
         }
 
-        var items = await _catalogItemService.ListPaged(pageSize);
+        var items = await _catalogItemService.ListPagedAsync(pageSize);
         var entry = new CacheEntry<List<CatalogItem>>(items);
         await _localStorageService.SetItemAsync(key, entry);
         return items;
     }
 
-    public async Task<List<CatalogItem>> List()
+    public async Task<List<CatalogItem>> ListAsync()
     {
         string key = "items";
         var cacheEntry = await _localStorageService.GetItemAsync<CacheEntry<List<CatalogItem>>>(key);
@@ -66,47 +66,47 @@ public class CachedCatalogItemServiceDecorator : ICatalogItemService
             }
         }
 
-        var items = await _catalogItemService.List();
+        var items = await _catalogItemService.ListAsync();
         var entry = new CacheEntry<List<CatalogItem>>(items);
         await _localStorageService.SetItemAsync(key, entry);
         return items;
     }
 
-    public async Task<CatalogItem> GetById(int id)
+    public async Task<CatalogItem> GetByIdAsync(int id)
     {
-        return (await List()).FirstOrDefault(x => x.Id == id);
+        return (await ListAsync()).FirstOrDefault(x => x.Id == id);
     }
 
-    public async Task<CatalogItem> Create(CreateCatalogItemRequest catalogItem)
+    public async Task<CatalogItem> CreateAsync(CreateCatalogItemRequest catalogItem)
     {
-        var result = await _catalogItemService.Create(catalogItem);
-        await RefreshLocalStorageList();
+        var result = await _catalogItemService.CreateAsync(catalogItem);
+        await RefreshLocalStorageListAsync();
 
         return result;
     }
 
-    public async Task<CatalogItem> Edit(CatalogItem catalogItem)
+    public async Task<CatalogItem> EditAsync(CatalogItem catalogItem)
     {
-        var result = await _catalogItemService.Edit(catalogItem);
-        await RefreshLocalStorageList();
+        var result = await _catalogItemService.EditAsync(catalogItem);
+        await RefreshLocalStorageListAsync();
 
         return result;
     }
 
-    public async Task<string> Delete(int id)
+    public async Task<string> DeleteAsync(int id)
     {
-        var result = await _catalogItemService.Delete(id);
-        await RefreshLocalStorageList();
+        var result = await _catalogItemService.DeleteAsync(id);
+        await RefreshLocalStorageListAsync();
 
         return result;
     }
 
-    private async Task RefreshLocalStorageList()
+    private async Task RefreshLocalStorageListAsync()
     {
         string key = "items";
 
         await _localStorageService.RemoveItemAsync(key);
-        var items = await _catalogItemService.List();
+        var items = await _catalogItemService.ListAsync();
         var entry = new CacheEntry<List<CatalogItem>>(items);
         await _localStorageService.SetItemAsync(key, entry);
     }

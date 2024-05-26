@@ -15,7 +15,7 @@ public class CatalogItemViewModelService : ICatalogItemViewModelService
         _catalogItemRepository = catalogItemRepository;
     }
 
-    public async Task UpdateCatalogItem(CatalogItemViewModel viewModel)
+    public async Task UpdateCatalogItemAsync(CatalogItemViewModel viewModel)
     {
         var existingCatalogItem = await _catalogItemRepository.GetByIdAsync(viewModel.Id);
 

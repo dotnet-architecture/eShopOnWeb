@@ -18,7 +18,7 @@ public class IndexTest : IClassFixture<TestApplication>
 
 
     [Fact]
-    public async Task OnPostUpdateTo50Successfully()
+    public async Task OnPostUpdateTo50SuccessfullyAsync()
     {
         // Load Home Page
         var response = await Client.GetAsync("/");
@@ -58,7 +58,7 @@ public class IndexTest : IClassFixture<TestApplication>
     }
 
     [Fact]
-    public async Task OnPostUpdateTo0EmptyBasket()
+    public async Task OnPostUpdateTo0EmptyBasketAsync()
     {
         // Load Home Page
         var response = await Client.GetAsync("/");

@@ -44,7 +44,7 @@ public class ManageController : Controller
     public string? StatusMessage { get; set; }
 
     [HttpGet]
-    public async Task<IActionResult> MyAccount()
+    public async Task<IActionResult> MyAccountAsync()
     {
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
@@ -66,7 +66,7 @@ public class ManageController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> MyAccount(IndexViewModel model)
+    public async Task<IActionResult> MyAccountAsync(IndexViewModel model)
     {
         if (!ModelState.IsValid)
         {
@@ -100,12 +100,12 @@ public class ManageController : Controller
         }
 
         StatusMessage = "Your profile has been updated";
-        return RedirectToAction(nameof(MyAccount));
+        return RedirectToAction(nameof(MyAccountAsync));
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> SendVerificationEmail(IndexViewModel model)
+    public async Task<IActionResult> SendVerificationEmailAsync(IndexViewModel model)
     {
         if (!ModelState.IsValid)
         {
@@ -130,11 +130,11 @@ public class ManageController : Controller
         await _emailSender.SendEmailConfirmationAsync(email, callbackUrl);
 
         StatusMessage = "Verification email sent. Please check your email.";
-        return RedirectToAction(nameof(MyAccount));
+        return RedirectToAction(nameof(MyAccountAsync));
     }
 
     [HttpGet]
-    public async Task<IActionResult> ChangePassword()
+    public async Task<IActionResult> ChangePasswordAsync()
     {
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
@@ -145,7 +145,7 @@ public class ManageController : Controller
         var hasPassword = await _userManager.HasPasswordAsync(user);
         if (!hasPassword)
         {
-            return RedirectToAction(nameof(SetPassword));
+            return RedirectToAction(nameof(SetPasswordAsync));
         }
 
         var model = new ChangePasswordViewModel { StatusMessage = StatusMessage };
@@ -154,7 +154,7 @@ public class ManageController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+    public async Task<IActionResult> ChangePasswordAsync(ChangePasswordViewModel model)
     {
         if (!ModelState.IsValid)
         {
@@ -179,11 +179,11 @@ public class ManageController : Controller
         _logger.LogInformation("User changed their password successfully.");
         StatusMessage = "Your password has been changed.";
 
-        return RedirectToAction(nameof(ChangePassword));
+        return RedirectToAction(nameof(ChangePasswordAsync));
     }
 
     [HttpGet]
-    public async Task<IActionResult> SetPassword()
+    public async Task<IActionResult> SetPasswordAsync()
     {
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
@@ -195,7 +195,7 @@ public class ManageController : Controller
 
         if (hasPassword)
         {
-            return RedirectToAction(nameof(ChangePassword));
+            return RedirectToAction(nameof(ChangePasswordAsync));
         }
 
         var model = new SetPasswordViewModel { StatusMessage = StatusMessage };
@@ -204,7 +204,7 @@ public class ManageController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> SetPassword(SetPasswordViewModel model)
+    public async Task<IActionResult> SetPasswordAsync(SetPasswordViewModel model)
     {
         if (!ModelState.IsValid)
         {
@@ -227,11 +227,11 @@ public class ManageController : Controller
         await _signInManager.SignInAsync(user, isPersistent: false);
         StatusMessage = "Your password has been set.";
 
-        return RedirectToAction(nameof(SetPassword));
+        return RedirectToAction(nameof(SetPasswordAsync));
     }
 
     [HttpGet]
-    public async Task<IActionResult> ExternalLogins()
+    public async Task<IActionResult> ExternalLoginsAsync()
     {
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
@@ -251,19 +251,19 @@ public class ManageController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> LinkLogin(string provider)
+    public async Task<IActionResult> LinkLoginAsync(string provider)
     {
         // Clear the existing external cookie to ensure a clean login process
         await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
         // Request a redirect to the external login provider to link a login for the current user
-        var redirectUrl = Url.Action(nameof(LinkLoginCallback));
+        var redirectUrl = Url.Action(nameof(LinkLoginCallbackAsync));
         var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl, _userManager.GetUserId(User));
         return new ChallengeResult(provider, properties);
     }
 
     [HttpGet]
-    public async Task<IActionResult> LinkLoginCallback()
+    public async Task<IActionResult> LinkLoginCallbackAsync()
     {
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
@@ -287,12 +287,12 @@ public class ManageController : Controller
         await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
         StatusMessage = "The external login was added.";
-        return RedirectToAction(nameof(ExternalLogins));
+        return RedirectToAction(nameof(ExternalLoginsAsync));
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> RemoveLogin(RemoveLoginViewModel model)
+    public async Task<IActionResult> RemoveLoginAsync(RemoveLoginViewModel model)
     {
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
@@ -312,11 +312,11 @@ public class ManageController : Controller
 
         await _signInManager.SignInAsync(user, isPersistent: false);
         StatusMessage = "The external login was removed.";
-        return RedirectToAction(nameof(ExternalLogins));
+        return RedirectToAction(nameof(ExternalLoginsAsync));
     }
 
     [HttpGet]
-    public async Task<IActionResult> TwoFactorAuthentication()
+    public async Task<IActionResult> TwoFactorAuthenticationAsync()
     {
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
@@ -335,7 +335,7 @@ public class ManageController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Disable2faWarning()
+    public async Task<IActionResult> Disable2faWarningAsync()
     {
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
@@ -348,12 +348,12 @@ public class ManageController : Controller
             throw new ApplicationException($"Unexpected error occured disabling 2FA for user with ID '{user.Id}'.");
         }
 
-        return View(nameof(Disable2fa));
+        return View(nameof(Disable2faAsync));
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Disable2fa()
+    public async Task<IActionResult> Disable2faAsync()
     {
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
@@ -368,11 +368,11 @@ public class ManageController : Controller
         }
 
         _logger.LogInformation("User with ID {UserId} has disabled 2fa.", user.Id);
-        return RedirectToAction(nameof(TwoFactorAuthentication));
+        return RedirectToAction(nameof(TwoFactorAuthenticationAsync));
     }
 
     [HttpGet]
-    public async Task<IActionResult> EnableAuthenticator()
+    public async Task<IActionResult> EnableAuthenticatorAsync()
     {
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
@@ -392,7 +392,7 @@ public class ManageController : Controller
         var recoveryCodes = (string[]?)TempData[RecoveryCodesKey];
         if (recoveryCodes == null)
         {
-            return RedirectToAction(nameof(TwoFactorAuthentication));
+            return RedirectToAction(nameof(TwoFactorAuthenticationAsync));
         }
 
         var model = new ShowRecoveryCodesViewModel { RecoveryCodes = recoveryCodes };
@@ -402,7 +402,7 @@ public class ManageController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> EnableAuthenticator(EnableAuthenticatorViewModel model)
+    public async Task<IActionResult> EnableAuthenticatorAsync(EnableAuthenticatorViewModel model)
     {
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
@@ -440,12 +440,12 @@ public class ManageController : Controller
     [HttpGet]
     public IActionResult ResetAuthenticatorWarning()
     {
-        return View(nameof(ResetAuthenticator));
+        return View(nameof(ResetAuthenticatorAsync));
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ResetAuthenticator()
+    public async Task<IActionResult> ResetAuthenticatorAsync()
     {
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
@@ -457,12 +457,12 @@ public class ManageController : Controller
         await _userManager.ResetAuthenticatorKeyAsync(user);
         _logger.LogInformation("User with id '{UserId}' has reset their authentication app key.", user.Id);
 
-        return RedirectToAction(nameof(EnableAuthenticator));
+        return RedirectToAction(nameof(EnableAuthenticatorAsync));
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> GenerateRecoveryCodes()
+    public async Task<IActionResult> GenerateRecoveryCodesAsync()
     {
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
@@ -484,7 +484,7 @@ public class ManageController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> GenerateRecoveryCodesWarning()
+    public async Task<IActionResult> GenerateRecoveryCodesWarningAsync()
     {
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
@@ -497,7 +497,7 @@ public class ManageController : Controller
             throw new ApplicationException($"Cannot generate recovery codes for user with ID '{user.Id}' because they do not have 2FA enabled.");
         }
 
-        return View(nameof(GenerateRecoveryCodesWarning));
+        return View(nameof(GenerateRecoveryCodesWarningAsync));
     }
 
     private void AddErrors(IdentityResult result)

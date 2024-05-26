@@ -32,7 +32,7 @@ public class TransferBasket
     }
 
         [Fact]
-    public async Task InvokesBasketRepositoryFirstOrDefaultAsyncOnceIfAnonymousBasketNotExists()
+    public async Task InvokesBasketRepositoryFirstOrDefaultAsyncOnceIfAnonymousBasketNotExistsAsync()
     {
             var anonymousBasket = null as Basket;
             var userBasket = new Basket(_existentUserBasketBuyerId);
@@ -48,7 +48,7 @@ public class TransferBasket
     }
 
     [Fact]
-    public async Task TransferAnonymousBasketItemsWhilePreservingExistingUserBasketItems()
+    public async Task TransferAnonymousBasketItemsWhilePreservingExistingUserBasketItemsAsync()
     {
         var anonymousBasket = new Basket(_existentAnonymousBasketBuyerId);
         anonymousBasket.AddItem(1, 10, 1);
@@ -72,7 +72,7 @@ public class TransferBasket
     }
 
     [Fact]
-    public async Task RemovesAnonymousBasketAfterUpdatingUserBasket()
+    public async Task RemovesAnonymousBasketAfterUpdatingUserBasketAsync()
     {
         var anonymousBasket = new Basket(_existentAnonymousBasketBuyerId);
         var userBasket = new Basket(_existentUserBasketBuyerId);
@@ -88,7 +88,7 @@ public class TransferBasket
     }
 
     [Fact]
-    public async Task CreatesNewUserBasketIfNotExists()
+    public async Task CreatesNewUserBasketIfNotExistsAsync()
     {
         var anonymousBasket = new Basket(_existentAnonymousBasketBuyerId);
         var userBasket = null as Basket;

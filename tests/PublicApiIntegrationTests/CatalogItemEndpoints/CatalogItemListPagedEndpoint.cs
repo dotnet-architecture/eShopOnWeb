@@ -14,7 +14,7 @@ namespace PublicApiIntegrationTests.CatalogItemEndpoints;
 public class CatalogItemListPagedEndpoint
 {
     [TestMethod]
-    public async Task ReturnsFirst10CatalogItems()
+    public async Task ReturnsFirst10CatalogItemsAsync()
     {
         var client = ProgramTest.NewClient;
         var response = await client.GetAsync("/api/catalog-items?pageSize=10");
@@ -26,7 +26,7 @@ public class CatalogItemListPagedEndpoint
     }
 
     [TestMethod]
-    public async Task ReturnsCorrectCatalogItemsGivenPageIndex1()
+    public async Task ReturnsCorrectCatalogItemsGivenPageIndex1Async()
     {
 
         var pageSize = 10;
@@ -54,7 +54,7 @@ public class CatalogItemListPagedEndpoint
     [DataRow("catalog-brands")]
     [DataRow("catalog-types")]
     [DataRow("catalog-items/1")]
-    public async Task SuccessFullMutipleParallelCall(string endpointName)
+    public async Task SuccessFullMutipleParallelCallAsync(string endpointName)
     {
         var client = ProgramTest.NewClient;
         var tasks = new List<Task<HttpResponseMessage>>();

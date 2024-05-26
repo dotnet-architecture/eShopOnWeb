@@ -21,7 +21,7 @@ public class CreateCatalogItemEndpointTest
 
 
     [TestMethod]
-    public async Task ReturnsNotAuthorizedGivenNormalUserToken()
+    public async Task ReturnsNotAuthorizedGivenNormalUserTokenAsync()
     {
         var jsonContent = GetValidNewItemJson();
         var token = ApiTokenHelper.GetNormalUserToken();
@@ -33,7 +33,7 @@ public class CreateCatalogItemEndpointTest
     }
 
     [TestMethod]
-    public async Task ReturnsSuccessGivenValidNewItemAndAdminUserToken()
+    public async Task ReturnsSuccessGivenValidNewItemAndAdminUserTokenAsync()
     {
         var jsonContent = GetValidNewItemJson();
         var adminToken = ApiTokenHelper.GetAdminUserToken();

@@ -25,24 +25,24 @@ public class Basket : ViewComponent
     {
         var vm = new BasketComponentViewModel
         {
-            ItemsCount = await CountTotalBasketItems()
+            ItemsCount = await CountTotalBasketItemsAsync()
         };
         return View(vm);
     }
 
-    private async Task<int> CountTotalBasketItems()
+    private async Task<int> CountTotalBasketItemsAsync()
     {
         if (_signInManager.IsSignedIn(HttpContext.User))
         {
             Guard.Against.Null(User?.Identity?.Name, nameof(User.Identity.Name));
-            return await _basketService.CountTotalBasketItems(User.Identity.Name);
+            return await _basketService.CountTotalBasketItemsAsync(User.Identity.Name);
         }
 
         string? anonymousId = GetAnnonymousIdFromCookie();
         if (anonymousId == null)
             return 0;
 
-        return await _basketService.CountTotalBasketItems(anonymousId);
+        return await _basketService.CountTotalBasketItemsAsync(anonymousId);
     }
 
     private string? GetAnnonymousIdFromCookie()

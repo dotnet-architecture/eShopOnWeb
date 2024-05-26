@@ -22,7 +22,7 @@ public class HttpService
         _apiUrl = baseUrlConfiguration.Value.ApiBase;
     }
 
-    public async Task<T> HttpGet<T>(string uri)
+    public async Task<T> HttpGetAsync<T>(string uri)
         where T : class
     {
         var result = await _httpClient.GetAsync($"{_apiUrl}{uri}");
@@ -31,10 +31,10 @@ public class HttpService
             return null;
         }
 
-        return await FromHttpResponseMessage<T>(result);
+        return await FromHttpResponseMessageAsync<T>(result);
     }
 
-    public async Task<T> HttpDelete<T>(string uri, int id)
+    public async Task<T> HttpDeleteAsync<T>(string uri, int id)
         where T : class
     {
         var result = await _httpClient.DeleteAsync($"{_apiUrl}{uri}/{id}");
@@ -43,10 +43,10 @@ public class HttpService
             return null;
         }
 
-        return await FromHttpResponseMessage<T>(result);
+        return await FromHttpResponseMessageAsync<T>(result);
     }
 
-    public async Task<T> HttpPost<T>(string uri, object dataToSend)
+    public async Task<T> HttpPostAsync<T>(string uri, object dataToSend)
         where T : class
     {
         var content = ToJson(dataToSend);
@@ -63,10 +63,10 @@ public class HttpService
             return null;
         }
 
-        return await FromHttpResponseMessage<T>(result);
+        return await FromHttpResponseMessageAsync<T>(result);
     }
 
-    public async Task<T> HttpPut<T>(string uri, object dataToSend)
+    public async Task<T> HttpPutAsync<T>(string uri, object dataToSend)
         where T : class
     {
         var content = ToJson(dataToSend);
@@ -78,7 +78,7 @@ public class HttpService
             return null;
         }
 
-        return await FromHttpResponseMessage<T>(result);
+        return await FromHttpResponseMessageAsync<T>(result);
     }
 
     private StringContent ToJson(object obj)
@@ -86,7 +86,7 @@ public class HttpService
         return new StringContent(JsonSerializer.Serialize(obj), Encoding.UTF8, "application/json");
     }
 
-    private async Task<T> FromHttpResponseMessage<T>(HttpResponseMessage result)
+    private async Task<T> FromHttpResponseMessageAsync<T>(HttpResponseMessage result)
     {
         return JsonSerializer.Deserialize<T>(await result.Content.ReadAsStringAsync(), new JsonSerializerOptions
         {

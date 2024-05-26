@@ -7,6 +7,6 @@ namespace Microsoft.eShopWeb.ApplicationCore.Interfaces;
 /// </summary>
 public interface IBasketQueryService
 {
-    Task<int> CountTotalBasketItems(string username);
+    Task<int> CountTotalBasketItemsAsync(string username);
 }
 
